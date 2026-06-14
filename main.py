@@ -32,7 +32,15 @@ def get_updates(offset=None):
 def get_top():
     try:
         url = "https://api.binance.com/api/v3/ticker/24hr"
-        data = requests.get(url, timeout=20).json()
+        response = requests.get(url, timeout=20)
+
+        try:
+            data = response.json()
+        except Exception:
+            return f"Binance вернул не JSON:\n{response.text[:300]}"
+
+        if not isinstance(data, list):
+            return f"Binance вернул ошибку:\n{data}"
 
         usdt_pairs = []
 
@@ -50,16 +58,16 @@ def get_top():
         text = "📈 Топ монет Binance по объёму:\n\n"
 
         for coin in top:
-            symbol = coin["symbol"].replace("USDT", "")
-            price = coin["lastPrice"]
-            change = coin["priceChangePercent"]
-
+            symbol = coin.get("symbol", "").replace("USDT", "")
+            price = coin.get("lastPrice", "нет цены")
+            change = coin.get("priceChangePercent", "нет данных")
             text += f"{symbol}: ${price} | 24ч: {change}%\n"
 
         return text
 
     except Exception as e:
         return f"Ошибка получения данных:\n{e}"
+    
 def main():
     global CHAT_ID
 
