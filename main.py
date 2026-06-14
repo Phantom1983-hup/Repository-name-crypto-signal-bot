@@ -31,6 +31,25 @@ def get_updates(offset=None):
     return requests.get(url, params=params).json()
 
 def get_top():
+    try:
+        url = "https://api.coingecko.com/api/v3/coins/markets"
+        params = {
+            "vs_currency": "usd",
+            "order": "market_cap_desc",
+            "per_page": 10,
+            "page": 1
+        }
+        response = requests.get(url, params=params, timeout=20)
+        data = response.json()
+        text = "📈 Топ монет:\n\n"
+        for coin in data[:10]:
+            text += (
+                f"{coin['symbol'].upper()} "
+                f"${coin['current_price']}\n"
+            )
+        return text
+    except Exception as e:
+        return f"Ошибка получения данных:\n{e}"
     url = "https://api.coingecko.com/api/v3/coins/markets"
     params = {
         "vs_currency": "usd",
