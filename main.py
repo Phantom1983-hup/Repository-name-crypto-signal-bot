@@ -31,43 +31,43 @@ def get_updates(offset=None):
     return requests.get(url, params=params).json()
 def get_top():
     try:
-        url = "https://api.binance.com/api/v3/ticker/24hr"
-        response = requests.get(url, timeout=20)
+        url = "https://api.bybit.com/v5/market/tickers"
+        params = {"category": "spot"}
 
-        try:
-            data = response.json()
-        except Exception:
-            return f"Binance вернул не JSON:\n{response.text[:300]}"
+        response = requests.get(url, params=params, timeout=20)
+        data = response.json()
 
-        if not isinstance(data, list):
-            return f"Binance вернул ошибку:\n{data}"
+        if data.get("retCode") != 0:
+            return f"Bybit вернул ошибку:\n{data}"
+
+        coins = data.get("result", {}).get("list", [])
 
         usdt_pairs = []
 
-        for coin in data:
+        for coin in coins:
             symbol = coin.get("symbol", "")
             if symbol.endswith("USDT"):
                 usdt_pairs.append(coin)
 
         top = sorted(
             usdt_pairs,
-            key=lambda x: float(x.get("quoteVolume", 0)),
+            key=lambda x: float(x.get("turnover24h", 0)),
             reverse=True
         )[:10]
 
-        text = "📈 Топ монет Binance по объёму:\n\n"
+        text = "📈 Топ монет Bybit по объёму:\n\n"
 
         for coin in top:
             symbol = coin.get("symbol", "").replace("USDT", "")
             price = coin.get("lastPrice", "нет цены")
-            change = coin.get("priceChangePercent", "нет данных")
-            text += f"{symbol}: ${price} | 24ч: {change}%\n"
+            change = float(coin.get("price24hPcnt", 0)) * 100
+
+            text += f"{symbol}: ${price} | 24ч: {change:.2f}%\n"
 
         return text
 
     except Exception as e:
         return f"Ошибка получения данных:\n{e}"
-    
 def main():
     global CHAT_ID
 
