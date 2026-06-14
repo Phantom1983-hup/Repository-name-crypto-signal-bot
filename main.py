@@ -31,34 +31,35 @@ def get_updates(offset=None):
     return requests.get(url, params=params).json()
 def get_top():
     try:
-        url = "https://api.coingecko.com/api/v3/coins/markets"
+        url = "https://api.binance.com/api/v3/ticker/24hr"
+        data = requests.get(url, timeout=20).json()
 
-        params = {
-            "vs_currency": "usd",
-            "order": "market_cap_desc",
-            "per_page": 10,
-            "page": 1
-        }
-
-        response = requests.get(url, params=params, timeout=20)
-        data = response.json()
-
-        if not isinstance(data, list):
-            return f"CoinGecko вернул ошибку:\n{data}"
-
-        text = "📈 Топ монет:\n\n"
+        usdt_pairs = []
 
         for coin in data:
-            symbol = coin.get("symbol", "").upper()
-            price = coin.get("current_price", "нет цены")
-            text += f"{symbol}  ${price}\n"
+            symbol = coin.get("symbol", "")
+            if symbol.endswith("USDT"):
+                usdt_pairs.append(coin)
+
+        top = sorted(
+            usdt_pairs,
+            key=lambda x: float(x.get("quoteVolume", 0)),
+            reverse=True
+        )[:10]
+
+        text = "📈 Топ монет Binance по объёму:\n\n"
+
+        for coin in top:
+            symbol = coin["symbol"].replace("USDT", "")
+            price = coin["lastPrice"]
+            change = coin["priceChangePercent"]
+
+            text += f"{symbol}: ${price} | 24ч: {change}%\n"
 
         return text
 
     except Exception as e:
         return f"Ошибка получения данных:\n{e}"
-
-    
 def main():
     global CHAT_ID
 
