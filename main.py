@@ -14,6 +14,9 @@ def keep_alive():
     Thread(target=run).start()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID_FILE = "chat_id.txt"
+AUTO_SIGNAL_EVERY = 6 * 60 * 60       # 1 раз в 6 часов
+AUTO_MARKET_EVERY = 24 * 60 * 60      # 1 раз в сутки
+AUTO_ALERT_EVERY = 60 * 60            # проверка сильных пампов не чаще 1 раза в час
 def save_chat_id(chat_id):
     with open(CHAT_ID_FILE, "w") as f:
         f.write(str(chat_id))
@@ -67,8 +70,7 @@ def get_candles(symbol, interval="1hour"):
     data = requests.get(url, params=params, timeout=20).json()
     if data.get("code") != "200000":
         raise Exception(data)
-    candles = data.get("data", [])
-    candles = sorted(candles, key=lambda x: int(x[0]))
+    candles = sorted(data.get("data", []), key=lambda x: int(x[0]))
     closes = [float(c[2]) for c in candles]
     highs = [float(c[3]) for c in candles]
     lows = [float(c[4]) for c in candles]
@@ -120,8 +122,6 @@ def trend_score(symbol, interval):
             "score": 0,
             "rsi": 0,
             "macd": 0,
-            "ema_fast": 0,
-            "ema_slow": 0,
             "volume_x": 1,
             "support": 0,
             "resistance": 0
@@ -153,8 +153,6 @@ def trend_score(symbol, interval):
         "score": score,
         "rsi": r or 0,
         "macd": m or 0,
-        "ema_fast": e9 or 0,
-        "ema_slow": e21 or 0,
         "volume_x": vx,
         "support": min(lows[-24:]) if lows else 0,
         "resistance": max(highs[-24:]) if highs else 0
@@ -175,15 +173,11 @@ def btc_market_filter():
         if h1["rsi"] > 78:
             score -= 20
         if score >= 60:
-            status = "🟢 BTC фон бычий"
-            modifier = 10
+            return "🟢 BTC фон бычий", 10, change
         elif score >= 35:
-            status = "🟡 BTC фон нейтральный"
-            modifier = 0
+            return "🟡 BTC фон нейтральный", 0, change
         else:
-            status = "🔴 BTC фон слабый"
-            modifier = -20
-        return status, modifier, change
+            return "🔴 BTC фон слабый", -20, change
     except:
         return "⚪ BTC фон не определён", 0, 0
 def analyze_coin(symbol):
@@ -235,7 +229,7 @@ def analyze_coin(symbol):
         risks.append("RSI перегрет")
     if h1["rsi"] < 35:
         score -= 10
-        risks.append("импульс слабый / перепроданность")
+        risks.append("импульс слабый")
     score += btc_modifier
     if btc_modifier < 0:
         risks.append("BTC фон слабый")
@@ -259,7 +253,7 @@ def analyze_coin(symbol):
         verdict = "🔴 Слабый сигнал"
         forecast = "лучше пропустить"
     if change > 18:
-        forecast = "опасно: возможен резкий откат после пампа"
+        forecast = "опасно: возможен откат после пампа"
     return {
         "symbol": symbol.replace("-USDT", ""),
         "price": price,
@@ -282,7 +276,6 @@ def analyze_coin(symbol):
     }
 def get_signal():
     try:
-        send_limit = 3
         tickers = kucoin_tickers()
         usdt = []
         for coin in tickers:
@@ -296,8 +289,6 @@ def get_signal():
             preliminary = volume / 1_000_000 + max(change, 0) * 2
             usdt.append({
                 "symbol": symbol,
-                "volume": volume,
-                "change": change,
                 "preliminary": preliminary
             })
         preselected = sorted(
@@ -314,7 +305,7 @@ def get_signal():
                 time.sleep(0.25)
             except:
                 continue
-        top = sorted(analyzed, key=lambda x: x["score"], reverse=True)[:send_limit]
+        top = sorted(analyzed, key=lambda x: x["score"], reverse=True)[:3]
         if not top:
             return "Сейчас качественных сигналов нет."
         btc_status = top[0]["btc_status"]
@@ -338,7 +329,7 @@ def get_signal():
                 f"Почему: {', '.join(c['reasons']) if c['reasons'] else 'нет сильных причин'}\n"
                 f"Риски: {', '.join(c['risks']) if c['risks'] else 'умеренные'}\n\n"
             )
-        text += "⚠️ Это не гарантия и не финсовет. Сигнал = вероятность, а не обещание роста."
+        text += "⚠️ Сигнал = вероятность, не гарантия."
         return text
     except Exception as e:
         return f"Ошибка /signal:\n{e}"
@@ -395,24 +386,24 @@ def pump_alert():
                 continue
             change = float(coin.get("changeRate", 0) or 0) * 100
             volume = float(coin.get("volValue", 0) or 0)
-            if change >= 12 and volume >= 1_000_000:
+            if change >= 18 and volume >= 5_000_000:
                 alerts.append((symbol.replace("-USDT", ""), change, volume))
-        alerts = sorted(alerts, key=lambda x: x[1], reverse=True)[:5]
+        alerts = sorted(alerts, key=lambda x: x[1], reverse=True)[:3]
         if not alerts:
-            return "Сильных пампов сейчас не найдено."
-        text = "🔥 Сильные движения:\n\n"
+            return None
+        text = "🔥 Сильные движения рынка:\n\n"
         for symbol, change, volume in alerts:
             text += f"{symbol}: +{change:.2f}% | объём ${volume:,.0f}\n"
-        text += "\n⚠️ Это зона повышенного риска. Часто после таких движений бывает откат."
+        text += "\n⚠️ Это не сигнал покупки. Возможен перегрев."
         return text
-    except Exception as e:
-        return f"Ошибка /alerts:\n{e}"
+    except:
+        return None
 def market_status():
     try:
         btc = analyze_coin("BTC-USDT")
         eth = analyze_coin("ETH-USDT")
         sol = analyze_coin("SOL-USDT")
-        text = "🌍 Состояние рынка\n\n"
+        text = "🌍 Суточный обзор рынка\n\n"
         for c in [btc, eth, sol]:
             text += (
                 f"{c['symbol']}: {c['score']}/100 | "
@@ -425,19 +416,23 @@ def market_status():
 def help_text():
     return (
         "✅ Команды:\n\n"
-        "/signal — лучший прогноз монет на 24ч\n"
+        "/signal — прогноз монет на 24ч\n"
         "/top — топ монет по объёму\n"
         "/btc — анализ BTC\n"
         "/sol — анализ SOL\n"
-        "/alerts — памп-алерты\n"
-        "/market — состояние рынка\n"
+        "/alerts — ручная проверка сильных движений\n"
+        "/market — обзор рынка\n"
         "/help — помощь\n\n"
-        "Бот сам присылает /signal раз в час и памп-алерты раз в 15 минут."
+        "Автоуведомления без спама:\n"
+        "• /signal — 1 раз в 6 часов\n"
+        "• /market — 1 раз в сутки\n"
+        "• alert — не чаще 1 раза в час и только при сильном пампе"
     )
 def main():
     last_update = None
-    last_hourly_signal = 0
-    last_pump_check = 0
+    last_hourly_signal = time.time()
+    last_market_report = time.time()
+    last_pump_check = time.time()
     while True:
         try:
             updates = get_updates(last_update)
@@ -463,18 +458,22 @@ def main():
                 elif text == "/sol":
                     send_message(chat_id, single_analysis("SOL-USDT"))
                 elif text == "/alerts":
-                    send_message(chat_id, pump_alert())
+                    alert = pump_alert()
+                    send_message(chat_id, alert if alert else "Сильных пампов сейчас не найдено.")
                 elif text == "/market":
                     send_message(chat_id, market_status())
             saved_chat_id = load_chat_id()
             if saved_chat_id:
                 now = time.time()
-                if now - last_hourly_signal > 3600:
+                if now - last_hourly_signal > AUTO_SIGNAL_EVERY:
                     send_message(saved_chat_id, get_signal())
                     last_hourly_signal = now
-                if now - last_pump_check > 900:
+                if now - last_market_report > AUTO_MARKET_EVERY:
+                    send_message(saved_chat_id, market_status())
+                    last_market_report = now
+                if now - last_pump_check > AUTO_ALERT_EVERY:
                     alert = pump_alert()
-                    if "Сильных пампов" not in alert:
+                    if alert:
                         send_message(saved_chat_id, alert)
                     last_pump_check = now
             time.sleep(2)
