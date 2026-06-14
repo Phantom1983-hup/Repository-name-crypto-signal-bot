@@ -64,6 +64,83 @@ def get_top():
 
     except Exception as e:
         return f"Ошибка получения данных:\n{e}"
+        def get_signal():
+    try:
+        url = "https://api.kucoin.com/api/v1/market/allTickers"
+        response = requests.get(url, timeout=20)
+        data = response.json()
+
+        if data.get("code") != "200000":
+            return f"KuCoin вернул ошибку:\n{data}"
+
+        tickers = data.get("data", {}).get("ticker", [])
+
+        candidates = []
+
+        for coin in tickers:
+            symbol = coin.get("symbol", "")
+
+            if not symbol.endswith("-USDT"):
+                continue
+
+            price = float(coin.get("last", 0) or 0)
+            change = float(coin.get("changeRate", 0) or 0) * 100
+            volume = float(coin.get("volValue", 0) or 0)
+
+            if volume < 500000:
+                continue
+
+            score = 0
+            reasons = []
+
+            if change > 0:
+                score += 20
+                reasons.append("монета в плюсе за 24ч")
+
+            if change > 3:
+                score += 25
+                reasons.append("есть сильный импульс")
+
+            if change > 8:
+                score += 15
+                reasons.append("возможен памп")
+
+            if volume > 5000000:
+                score += 25
+                reasons.append("хороший объём")
+
+            if change > 20:
+                score -= 25
+                reasons.append("риск перегрева")
+
+            candidates.append({
+                "symbol": symbol.replace("-USDT", ""),
+                "price": price,
+                "change": change,
+                "volume": volume,
+                "score": score,
+                "reasons": reasons
+            })
+
+        top = sorted(candidates, key=lambda x: x["score"], reverse=True)[:3]
+
+        text = "🚀 Сигналы на рост 24ч:\n\n"
+
+        for i, coin in enumerate(top, 1):
+            text += (
+                f"{i}. {coin['symbol']}\n"
+                f"Цена: ${coin['price']}\n"
+                f"24ч: {coin['change']:.2f}%\n"
+                f"Оценка: {coin['score']}/100\n"
+                f"Причины: {', '.join(coin['reasons'])}\n\n"
+            )
+
+        text += "⚠️ Не финсовет. Это фильтр импульса, а не гарантия роста."
+
+        return text
+
+    except Exception as e:
+        return f"Ошибка сигнала:\n{e}"
 def main():
     global CHAT_ID
 
@@ -86,8 +163,10 @@ def main():
                     send_message(chat_id, "✅ Бот работает")
 
                 elif text == "/top":
-                    send_message(chat_id, get_top())
+    send_message(chat_id, get_top())
 
+elif text == "/signal":
+    send_message(chat_id, get_signal())
             time.sleep(2)
 
         except Exception as e:
