@@ -1,6 +1,7 @@
 from flask import Flask
 from threading import Thread
 import os, time, json, requests, statistics
+from datetime import datetime, timedelta
 
 app = Flask("")
 
@@ -21,9 +22,12 @@ CHAT_ID_FILE = "chat_id.txt"
 HISTORY_FILE = "signal_history.json"
 PUMP_FILE = "pump_history.json"
 
-AUTO_SIGNAL_EVERY = 6 * 60 * 60
-AUTO_MARKET_EVERY = 24 * 60 * 60
-AUTO_PUMP_EVERY = 60 * 60
+SIGNAL_HOURS = [9, 15, 21]
+MARKET_HOUR = 9
+PUMP_MINUTES = [0, 30]
+
+MOSCOW_OFFSET_HOURS = 3
+
 REPEAT_PUMP_AFTER = 3 * 60 * 60
 
 QUALITY_ASSETS = [
@@ -1153,12 +1157,14 @@ def help_text():
         "🟠 РИСКОВАННЫЙ ПАМП — можно заработать, но риск высокий\n"
         "🔴 НЕ ПОКУПАТЬ — лучше пропустить"
     )
+def moscow_now():
+    return datetime.utcnow() + timedelta(hours=MOSCOW_OFFSET_HOURS)
 
 def main():
     last_update = None
-    last_signal = time.time()
-    last_market = time.time()
-    last_pump = time.time()
+    last_signal_key = None
+    last_market_key = None
+    last_pump_key = None
 
     while True:
         try:
@@ -1208,24 +1214,39 @@ def main():
 
             saved_chat_id = load_chat_id()
 
-            if saved_chat_id:
-                now = time.time()
+                        if saved_chat_id:
+                now_msk = moscow_now()
 
-                if now - last_signal >= AUTO_SIGNAL_EVERY:
+                signal_key = now_msk.strftime("%Y-%m-%d %H")
+                market_key = now_msk.strftime("%Y-%m-%d")
+                pump_key = now_msk.strftime("%Y-%m-%d %H:%M")
+
+                if (
+                    now_msk.hour in SIGNAL_HOURS
+                    and now_msk.minute < 5
+                    and last_signal_key != signal_key
+                ):
                     send_message(saved_chat_id, get_signal())
-                    last_signal = now
+                    last_signal_key = signal_key
 
-                if now - last_market >= AUTO_MARKET_EVERY:
+                if (
+                    now_msk.hour == MARKET_HOUR
+                    and now_msk.minute < 5
+                    and last_market_key != market_key
+                ):
                     send_message(saved_chat_id, market_status())
-                    last_market = now
+                    last_market_key = market_key
 
-                if now - last_pump >= AUTO_PUMP_EVERY:
+                if (
+                    now_msk.minute in PUMP_MINUTES
+                    and last_pump_key != pump_key
+                ):
                     text_alert, items = get_fast_pumps()
 
                     if text_alert and should_send_pump(items):
                         send_message(saved_chat_id, text_alert)
 
-                    last_pump = now
+                    last_pump_key = pump_key
 
             time.sleep(2)
 
