@@ -1,4 +1,4 @@
-```python
+
 from flask import Flask
 from threading import Thread
 import os, time, json, requests, statistics
@@ -1235,4 +1235,3 @@ def main():
 if __name__ == "__main__":
     keep_alive()
     main()
-```
