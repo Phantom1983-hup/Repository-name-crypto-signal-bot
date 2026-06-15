@@ -339,18 +339,23 @@ def market_context():
     }
 def alex_edge_ultra(symbol):
     ticker = get_ticker(symbol)
+
     if not ticker:
         return None
+
     asset = symbol.replace("-USDT", "")
     price = float(ticker.get("last", 0) or 0)
     change_24 = float(ticker.get("changeRate", 0) or 0) * 100
     volume_usd = float(ticker.get("volValue", 0) or 0)
+
     profile, base_low, base_high, is_quality = coin_profile(asset, volume_usd)
     d = diagnostics(symbol)
     ctx = market_context()
+
     score = 0
     plus = []
     minus = []
+
     if 1 <= change_24 <= 8:
         score += 18
         plus.append("монета уже начала рост, но ещё не выглядит слишком улетевшей")
@@ -363,26 +368,33 @@ def alex_edge_ultra(symbol):
     elif change_24 < -5:
         score -= 10
         minus.append("монета слабее рынка")
+
     if d["move_15"] >= 0.8:
         score += 12
         plus.append("есть свежий краткосрочный импульс")
+
     if d["move_1h"] >= 1.2:
         score += 12
         plus.append("движение поддерживается последние часы")
+
     if d["trend_1h"]:
         score += 15
         plus.append("краткосрочный тренд вверх")
+
     if d["trend_4h"]:
         score += 15
         plus.append("старший тренд тоже вверх")
+
     if d["strong_trend"]:
         score += 10
         plus.append("цена держится выше важных уровней")
+
     if d["macd"] > 0:
         score += 8
     else:
         score -= 8
         minus.append("импульс пока слабый")
+
     if d["vol_1h"] >= 1.8:
         score += 20
         plus.append("покупатели заходят сильнее обычного")
@@ -390,17 +402,20 @@ def alex_edge_ultra(symbol):
         score += 10
         plus.append("объём нормальный")
     else:
-        score -= 20
-        minus.append("рост плохо подтверждён объёмом")
+        score -= 14
+        minus.append("рост пока слабовато подтверждён объёмом")
+
     if d["above_mean"] and d["higher_lows"]:
         score += 14
         plus.append("покупатели удерживают цену")
+
     if d["local_breakout"] and d["vol_1h"] >= 1.2:
         score += 16
         plus.append("цена пробивает уровень с поддержкой объёма")
     elif d["local_breakout"] and d["vol_1h"] < 1.2:
-        score -= 8
+        score -= 6
         minus.append("пробой без сильного объёма может быть ложным")
+
     if d["room_up"] >= 10:
         score += 22
         plus.append("есть потенциал движения выше +10%")
@@ -411,94 +426,141 @@ def alex_edge_ultra(symbol):
         score += 4
         minus.append("запас хода ограничен")
     else:
-        score -= 22
+        score -= 16
         minus.append("рядом сопротивление, рост может быстро остановиться")
+
     if 55 <= d["rsi"] <= 76:
         score += 10
     elif 76 < d["rsi"] <= 84:
-        score -= 6
+        score -= 4
         minus.append("монета уже горячая")
     elif d["rsi"] > 84:
-        score -= 20
+        score -= 14
         minus.append("монета перегрета")
+
     if is_quality:
         score += 8
     else:
         score -= 8
         minus.append("монета спекулятивная, риск выше")
+
     score += ctx["market_mod"]
+
     if ctx["market_mod"] >= 0:
         plus.append("общий рынок не мешает росту")
     else:
         minus.append("общий рынок добавляет риск")
+
     if ctx["geo_mod"] <= -8:
         minus.append("внешний фон сейчас опасный")
+
     raw_score = score
     cap = 94
+
     if not is_quality:
         cap = min(cap, 78)
+
     if d["vol_1h"] < 1:
-        cap = min(cap, 70)
+        cap = min(cap, 74)
+
     if d["room_up"] < 5:
-        cap = min(cap, 68)
+        cap = min(cap, 72)
+
     if d["rsi"] > 82:
-        cap = min(cap, 66)
+        cap = min(cap, 70)
+
     if d["macd"] < 0:
         cap = min(cap, 60)
+
     if change_24 > 12 and not is_quality:
         cap = min(cap, 62)
+
     if change_24 > 25:
         cap = min(cap, 55)
+
     score = max(0, min(100, min(raw_score, cap)))
+
+    # защита для качественных монет: если SOL/TAO/ETH и тренды вверх,
+    # не опускаем их сразу в "не покупать"
+    quality_trend_floor = False
+    if is_quality and d["trend_1h"] and d["trend_4h"] and ctx["btc_mod"] >= 0:
+        quality_trend_floor = True
+        score = max(score, 52)
+
     chance_5 = int(22 + score * 0.62)
     chance_10 = int(8 + score * 0.42)
     chance_15 = int(3 + score * 0.25)
+
     if d["room_up"] < 5:
-        chance_5 -= 15
-        chance_10 -= 20
+        chance_5 -= 10
+        chance_10 -= 18
+
     if d["room_up"] < 10:
         chance_10 -= 12
+
     if d["vol_1h"] < 1:
-        chance_5 -= 10
-        chance_10 -= 12
-    if d["rsi"] > 82:
-        chance_5 -= 8
+        chance_5 -= 7
         chance_10 -= 10
+
+    if d["rsi"] > 82:
+        chance_5 -= 7
+        chance_10 -= 10
+
     if not is_quality:
         chance_5 -= 5
         chance_10 -= 7
+
     if ctx["market_mod"] < -5:
         chance_5 -= 8
         chance_10 -= 10
+
+    if quality_trend_floor:
+        chance_5 = max(chance_5, 38)
+        chance_10 = max(chance_10, 8)
+
     chance_5 = max(5, min(82, chance_5))
     chance_10 = max(2, min(70, chance_10))
     chance_15 = max(1, min(55, chance_15))
+
     low = base_low
     high = base_high
+
     if score >= 78:
         low += 2
         high += 2
     elif score >= 65:
         low += 1
     elif score >= 50:
-        low = -1
+        low = 0
         high = min(high, 4)
     else:
-        low = -3
+        low = -2
         high = 1.5
+
     high = min(high, max(1.0, d["atr_pct"] * 2.7))
+
     if d["room_up"] > 0:
         high = min(high, max(1.0, d["room_up"]))
+
     if d["vol_1h"] < 1:
-        high -= 1
+        high -= 0.7
+
     if d["rsi"] > 82:
-        high -= 1
+        high -= 0.8
+
     if ctx["market_mod"] < -5:
         high -= 0.8
+
+    if quality_trend_floor:
+        high = max(high, 2.0)
+        low = max(low, 0.0)
+
     low = round(low, 1)
     high = round(max(high, low), 1)
+
     target_low = price * (1 + low / 100)
     target_high = price * (1 + high / 100)
+
     if asset in ["BTC", "ETH"]:
         max_stop_pct = 4
     elif is_quality:
@@ -507,16 +569,22 @@ def alex_edge_ultra(symbol):
         max_stop_pct = 12
     else:
         max_stop_pct = 10
+
     technical_stop = d["support"] if d["support"] < price else price * (1 - max_stop_pct / 100)
     max_allowed_stop = price * (1 - max_stop_pct / 100)
+
     stop = max(technical_stop, max_allowed_stop)
     downside = percent_change(price, stop)
+
     if chance_10 >= 45 and high >= 10:
         verdict = "🚀 ПОКУПКА / цель +10%"
         action = "BUY"
     elif chance_5 >= 65 and high >= 5:
         verdict = "🟢 ПОКУПКА / цель +5%"
         action = "BUY"
+    elif chance_5 >= 38 and is_quality and d["trend_1h"] and d["trend_4h"]:
+        verdict = "🟡 НАБЛЮДАТЬ"
+        action = "WATCH"
     elif chance_5 >= 50 and high >= 4:
         verdict = "🟡 НАБЛЮДАТЬ"
         action = "WATCH"
@@ -530,8 +598,10 @@ def alex_edge_ultra(symbol):
     else:
         verdict = "🔴 НЕ ПОКУПАТЬ"
         action = "SKIP"
+
     history = load_json(HISTORY_FILE)
     old = history.get(asset)
+
     if old:
         old_price = old.get("price", price)
         old_time = old.get("time", time.time())
@@ -540,6 +610,7 @@ def alex_edge_ultra(symbol):
         status = f"с прошлого сигнала {hours:.1f}ч, цена {fact:+.2f}%"
     else:
         status = "новый сигнал"
+
     return {
         "symbol": asset,
         "profile": profile,
