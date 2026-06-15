@@ -1,6 +1,6 @@
 from flask import Flask
 from threading import Thread
-import os, time, requests, statistics, json
+import os, time, json, requests, statistics, math
 
 app = Flask("")
 
@@ -17,15 +17,20 @@ def keep_alive():
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID_FILE = "chat_id.txt"
 HISTORY_FILE = "signal_history.json"
+PUMP_FILE = "pump_history.json"
 
 AUTO_SIGNAL_EVERY = 6 * 60 * 60
 AUTO_MARKET_EVERY = 24 * 60 * 60
-AUTO_ALERT_EVERY = 60 * 60
+AUTO_PUMP_EVERY = 60 * 60
+REPEAT_PUMP_AFTER = 3 * 60 * 60
 
 QUALITY_ASSETS = [
-    "BTC", "ETH", "SOL", "BNB", "XRP", "ADA", "AVAX",
-    "LINK", "TON", "DOGE", "NEAR", "TAO", "DOT", "LTC"
+    "BTC", "ETH", "SOL", "BNB", "XRP", "ADA", "AVAX", "LINK",
+    "TON", "DOGE", "NEAR", "TAO", "DOT", "LTC", "SUI", "APT",
+    "ARB", "OP", "INJ", "SEI", "ATOM", "FIL", "TRX"
 ]
+
+_ticker_cache = {"time": 0, "data": []}
 
 def save_chat_id(chat_id):
     with open(CHAT_ID_FILE, "w") as f:
@@ -37,14 +42,14 @@ def load_chat_id():
     except:
         return None
 
-def load_history():
+def load_json(path):
     try:
-        return json.load(open(HISTORY_FILE))
+        return json.load(open(path))
     except:
         return {}
 
-def save_history(data):
-    with open(HISTORY_FILE, "w") as f:
+def save_json(path, data):
+    with open(path, "w") as f:
         json.dump(data, f)
 
 def keyboard():
@@ -59,16 +64,28 @@ def keyboard():
     }
 
 def send_message(chat_id, text):
-    requests.post(
-        f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
-        json={"chat_id": chat_id, "text": text, "reply_markup": keyboard()},
-        timeout=20
-    )
+    parts = []
+    while len(text) > 3900:
+        cut = text.rfind("\n", 0, 3900)
+        if cut == -1:
+            cut = 3900
+        parts.append(text[:cut])
+        text = text[cut:]
+    parts.append(text)
+
+    for part in parts:
+        requests.post(
+            f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
+            json={"chat_id": chat_id, "text": part, "reply_markup": keyboard()},
+            timeout=20
+        )
+        time.sleep(0.3)
 
 def get_updates(offset=None):
     params = {"timeout": 30}
     if offset:
         params["offset"] = offset
+
     return requests.get(
         f"https://api.telegram.org/bot{BOT_TOKEN}/getUpdates",
         params=params,
@@ -76,10 +93,21 @@ def get_updates(offset=None):
     ).json()
 
 def kucoin_tickers():
+    now = time.time()
+
+    if now - _ticker_cache["time"] < 20 and _ticker_cache["data"]:
+        return _ticker_cache["data"]
+
     data = requests.get("https://api.kucoin.com/api/v1/market/allTickers", timeout=20).json()
+
     if data.get("code") != "200000":
         raise Exception(data)
-    return data.get("data", {}).get("ticker", [])
+
+    tickers = data.get("data", {}).get("ticker", [])
+    _ticker_cache["time"] = now
+    _ticker_cache["data"] = tickers
+
+    return tickers
 
 def get_ticker(symbol):
     for t in kucoin_tickers():
@@ -142,8 +170,8 @@ def macd(values):
     if len(values) < 35:
         return 0
 
-    e12 = ema(values[-60:], 12)
-    e26 = ema(values[-60:], 26)
+    e12 = ema(values[-80:], 12)
+    e26 = ema(values[-80:], 26)
 
     if not e12 or not e26:
         return 0
@@ -157,137 +185,835 @@ def atr(highs, lows, closes, period=14):
     trs = []
 
     for i in range(1, len(closes)):
-        tr = max(
+        trs.append(max(
             highs[i] - lows[i],
             abs(highs[i] - closes[i - 1]),
             abs(lows[i] - closes[i - 1])
-        )
-        trs.append(tr)
+        ))
 
     return statistics.mean(trs[-period:])
 
-def volume_spike(volumes):
-    if len(volumes) < 20:
+def volume_ratio(volumes):
+    if len(volumes) < 24:
         return 1
 
-    avg = statistics.mean(volumes[-20:-1])
+    avg = statistics.mean(volumes[-24:-1])
 
-    if avg == 0:
+    if avg <= 0:
         return 1
 
     return volumes[-1] / avg
 
+def percent_change(a, b):
+    if a == 0:
+        return 0
+    return ((b / a) - 1) * 100
+
 def coin_profile(asset, volume):
     if asset == "BTC":
-        return "надежный крупный актив", 0.5, 2.8, True
+        return "крупный актив", 0.5, 3.0, True
 
     if asset == "ETH":
-        return "крупный актив", 0.8, 3.8, True
+        return "крупный актив", 0.8, 4.0, True
 
     if asset in QUALITY_ASSETS:
-        return "крупный альт", 1.2, 6.0, True
+        return "качественный альт", 1.5, 7.0, True
 
-    if volume >= 30_000_000:
-        return "ликвидный, но рискованный альт", 1.5, 7.0, False
+    if volume >= 40_000_000:
+        return "ликвидный рискованный альт", 2.0, 9.0, False
 
-    return "спекулятивный альт", 1.5, 8.0, False
+    return "спекулятивный альт", 2.0, 12.0, False
 
-def rsi_series(closes, period=14):
-    result = []
-
-    for i in range(len(closes)):
-        if i < period + 1:
-            result.append(50)
-        else:
-            result.append(rsi(closes[:i + 1], period))
-
-    return result
-
-def divergence_check(closes, rsi_values):
-    if len(closes) < 20 or len(rsi_values) < 20:
+def candle_health(closes, highs, lows):
+    if len(closes) < 10:
         return 0
-
-    price_recent = max(closes[-6:])
-    price_prev = max(closes[-18:-6])
-
-    rsi_recent = max(rsi_values[-6:])
-    rsi_prev = max(rsi_values[-18:-6])
-
-    if price_recent > price_prev and rsi_recent < rsi_prev:
-        return -12
-
-    if price_recent < price_prev and rsi_recent > rsi_prev:
-        return 8
-
-    return 0
-
-def trend_score(symbol, interval):
-    closes, highs, lows, volumes = get_candles(symbol, interval)
-
-    if len(closes) < 30:
-        return {
-            "score": 0,
-            "rsi": 50,
-            "macd": 0,
-            "volume_x": 1,
-            "support": 0,
-            "resistance": 0,
-            "atr_pct": 0,
-            "buyers": "непонятно",
-            "overheat": "непонятно",
-            "trend": "непонятно"
-        }
-
-    last = closes[-1]
-    r = rsi(closes)
-    rsis = rsi_series(closes)
-    div = divergence_check(closes, rsis)
-
-    e9 = ema(closes[-60:], 9)
-    e21 = ema(closes[-60:], 21)
-    e50 = ema(closes[-100:], 50)
-    m = macd(closes)
-    vx = volume_spike(volumes)
-    a = atr(highs, lows, closes)
-    atr_pct = (a / last) * 100 if last else 0
 
     score = 0
 
-    if e9 and e21 and e9 > e21:
-        score += 15
+    last = closes[-1]
+    body_up = closes[-1] > closes[-2]
+    above_mean = last > statistics.mean(closes[-20:]) if len(closes) >= 20 else False
+    higher_lows = lows[-1] > min(lows[-8:-1])
+    local_high = last > max(highs[-10:-1])
 
-    if e21 and e50 and e21 > e50:
-        score += 15
-
-    if m > 0:
-        score += 15
-
-    if vx >= 2:
-        score += 18
-    elif vx >= 1.2:
+    if body_up:
         score += 8
-    elif vx < 0.8:
-        score -= 20
-
-    if 45 <= r <= 70:
-        score += 18
-    elif 70 < r <= 78:
-        score += 8
-    elif 78 < r <= 86:
-        score -= 5
-    elif r > 86:
-        score -= 18
-
-    price_above_mean = last > statistics.mean(closes[-20:])
-    higher_lows = lows[-1] > min(lows[-10:-1])
-    local_breakout = last > max(highs[-12:-1])
-
-    if price_above_mean:
-        score += 8
-
+    if above_mean:
+        score += 10
     if higher_lows:
+        score += 12
+    if local_high:
+        score += 12
+
+    return score
+
+def hidden_diagnostics(symbol):
+    closes_15, highs_15, lows_15, vols_15 = get_candles(symbol, "15min")
+    closes_1h, highs_1h, lows_1h, vols_1h = get_candles(symbol, "1hour")
+    closes_4h, highs_4h, lows_4h, vols_4h = get_candles(symbol, "4hour")
+
+    price = closes_1h[-1]
+
+    rsi_1h = rsi(closes_1h)
+    macd_1h = macd(closes_1h)
+    atr_1h = atr(highs_1h, lows_1h, closes_1h)
+    atr_pct = atr_1h / price * 100 if price else 0
+
+    vol_15 = volume_ratio(vols_15)
+    vol_1h = volume_ratio(vols_1h)
+
+    ema9_1h = ema(closes_1h[-80:], 9)
+    ema21_1h = ema(closes_1h[-80:], 21)
+    ema50_1h = ema(closes_1h[-100:], 50)
+
+    ema9_4h = ema(closes_4h[-80:], 9)
+    ema21_4h = ema(closes_4h[-80:], 21)
+
+    trend_1h = ema9_1h and ema21_1h and ema9_1h > ema21_1h
+    trend_4h = ema9_4h and ema21_4h and ema9_4h > ema21_4h
+    full_trend = ema9_1h and ema21_1h and ema50_1h and ema9_1h > ema21_1h > ema50_1h
+
+    move_15 = percent_change(closes_15[-5], closes_15[-1]) if len(closes_15) >= 6 else 0
+    move_1h = percent_change(closes_1h[-4], closes_1h[-1]) if len(closes_1h) >= 5 else 0
+    move_4h = percent_change(closes_4h[-3], closes_4h[-1]) if len(closes_4h) >= 4 else 0
+
+    resistance = max(highs_1h[-36:])
+    support = min(lows_1h[-24:])
+    room_up = percent_change(price, resistance) if resistance > price else 0
+
+    health = candle_health(closes_1h, highs_1h, lows_1h)
+
+    return {
+        "price": price,
+        "rsi": rsi_1h,
+        "macd": macd_1h,
+        "atr_pct": atr_pct,
+        "vol_15": vol_15,
+        "vol_1h": vol_1h,
+        "trend_1h": trend_1h,
+        "trend_4h": trend_4h,
+        "full_trend": full_trend,
+        "move_15": move_15,
+        "move_1h": move_1h,
+        "move_4h": move_4h,
+        "room_up": room_up,
+        "support": support,
+        "resistance": resistance,
+        "health": health
+    }
+
+def get_fear_greed():
+    try:
+        data = requests.get("https://api.alternative.me/fng/", timeout=10).json()
+        value = int(data["data"][0]["value"])
+
+        if value < 25:
+            return value, "страх", 5
+        if value < 45:
+            return value, "осторожность", 2
+        if value < 60:
+            return value, "нейтрально", 0
+        if value < 75:
+            return value, "жадность", -2
+
+        return value, "сильная жадность", -6
+
+    except:
+        return 50, "нет данных", 0
+
+def get_btc_dominance():
+    try:
+        data = requests.get("https://api.coingecko.com/api/v3/global", timeout=10).json()
+        dom = float(data["data"]["market_cap_percentage"]["btc"])
+
+        if dom > 55:
+            return dom, -5, "деньги уходят в BTC, альтам сложнее"
+        if dom < 52:
+            return dom, 5, "альтам легче расти"
+
+        return dom, 0, "нейтрально"
+
+    except:
+        return None, 0, "нет данных"
+
+def get_news_risk():
+    try:
+        url = "https://news.google.com/rss/search?q=iran+oil+hormuz+fed+inflation+war+tariff+trump+crypto+bitcoin&hl=en-US&gl=US&ceid=US:en"
+        xml = requests.get(url, timeout=10).text.lower()
+
+        words = {
+            "iran": 2,
+            "hormuz": 3,
+            "strait": 2,
+            "oil": 2,
+            "war": 3,
+            "attack": 2,
+            "fed": 2,
+            "inflation": 2,
+            "tariff": 2,
+            "sanction": 2,
+            "trump": 1,
+            "missile": 3
+        }
+
+        score = 0
+        found = []
+
+        for word, weight in words.items():
+            if word in xml:
+                score += weight
+                found.append(word)
+
+        found = list(dict.fromkeys(found))[:6]
+
+        if score >= 10:
+            return "высокий риск", -8, found
+        if score >= 5:
+            return "средний риск", -4, found
+
+        return "низкий риск", 0, found
+
+    except:
+        return "нет данных", 0, []
+
+def btc_filter():
+    try:
+        ticker = get_ticker("BTC-USDT")
+        change = float(ticker.get("changeRate", 0) or 0) * 100
+        d = hidden_diagnostics("BTC-USDT")
+
+        score = 0
+
+        if change > 0:
+            score += 15
+        if d["trend_1h"]:
+            score += 20
+        if d["trend_4h"]:
+            score += 20
+        if d["macd"] > 0:
+            score += 10
+        if d["vol_1h"] >= 1:
+            score += 10
+        if d["rsi"] > 82:
+            score -= 10
+        if change < -2:
+            score -= 25
+
+        if score >= 55:
+            return "BTC помогает рынку", 8, change
+        if score >= 30:
+            return "BTC нейтральный", 0, change
+
+        return "BTC мешает рынку", -12, change
+
+    except:
+        return "BTC фон не определён", 0, 0
+
+def market_context():
+    fg_value, fg_text, fg_mod = get_fear_greed()
+    dom, dom_mod, dom_text = get_btc_dominance()
+    geo_text, geo_mod, geo_words = get_news_risk()
+    btc_text, btc_mod, btc_change = btc_filter()
+
+    total = fg_mod + dom_mod + geo_mod + btc_mod
+
+    if "высокий" in geo_text:
+        state = "осторожный рынок из-за внешнего риска"
+    elif total >= 8:
+        state = "рынок помогает росту"
+    elif total >= -5:
+        state = "рынок нейтральный"
+    else:
+        state = "рынок рискованный"
+
+    return {
+        "state": state,
+        "fg_value": fg_value,
+        "fg_text": fg_text,
+        "dom": dom,
+        "dom_text": dom_text,
+        "geo_text": geo_text,
+        "geo_mod": geo_mod,
+        "geo_words": geo_words,
+        "btc_text": btc_text,
+        "btc_mod": btc_mod,
+        "btc_change": btc_change,
+        "market_mod": total
+    }
+
+def alex_edge_24(symbol):
+    ticker = get_ticker(symbol)
+    if not ticker:
+        return None
+
+    asset = symbol.replace("-USDT", "")
+    price = float(ticker.get("last", 0) or 0)
+    change_24 = float(ticker.get("changeRate", 0) or 0) * 100
+    volume_usd = float(ticker.get("volValue", 0) or 0)
+
+    profile, base_low, base_high, is_quality = coin_profile(asset, volume_usd)
+    d = hidden_diagnostics(symbol)
+    ctx = market_context()
+
+    score = 0
+    plus = []
+    minus = []
+
+    if 1.5 <= change_24 <= 8:
+        score += 18
+        plus.append("монета уже начала рост, но ещё не выглядит слишком улетевшей")
+    elif 8 < change_24 <= 15:
+        score += 8
+        minus.append("монета уже сильно выросла, часть движения могла пройти")
+    elif change_24 > 15:
+        score -= 15
+        minus.append("монета в зоне пампа, риск отката высокий")
+
+    if d["move_15"] > 0.7:
+        score += 12
+        plus.append("есть свежий краткосрочный импульс")
+
+    if d["move_1h"] > 1.2:
+        score += 12
+        plus.append("движение поддерживается последние часы")
+
+    if d["trend_1h"]:
+        score += 15
+        plus.append("краткосрочный тренд вверх")
+
+    if d["trend_4h"]:
+        score += 15
+        plus.append("старший тренд тоже вверх")
+
+    if d["full_trend"]:
+        score += 10
+        plus.append("цена держится выше важных средних")
+
+    if d["macd"] > 0:
         score += 8
 
-    if local_breakout and vx >= 1.2:
+    if d["vol_1h"] >= 1.8:
+        score += 18
+        plus.append("покупатели заходят сильнее обычного")
+    elif d["vol_1h"] >= 1.1:
+        score += 8
+        plus.append("объём нормальный")
+    else:
+        score -= 18
+        minus.append("рост пока слабовато подтверждён объёмом")
+
+    if d["health"] >= 25:
         score += 12
-    elif local
+        plus.append("покупатели удерживают цену")
+
+    if d["room_up"] >= 5:
+        score += 16
+        plus.append("до ближайшей цели есть запас хода")
+    elif d["room_up"] >= 2:
+        score += 6
+        minus.append("запас хода ограничен")
+    else:
+        score -= 18
+        minus.append("рядом сопротивление, рост может быстро остановиться")
+
+    if 55 <= d["rsi"] <= 76:
+        score += 10
+    elif 76 < d["rsi"] <= 84:
+        score -= 5
+        minus.append("монета уже горячая")
+    elif d["rsi"] > 84:
+        score -= 18
+        minus.append("монета перегрета")
+
+    if is_quality:
+        score += 8
+    else:
+        score -= 8
+        minus.append("монета спекулятивная, риск выше")
+
+    score += ctx["market_mod"]
+
+    if ctx["market_mod"] >= 0:
+        plus.append("общий фон рынка не мешает")
+    else:
+        minus.append("общий фон рынка добавляет риск")
+
+    if ctx["geo_mod"] <= -8:
+        minus.append("геополитика может резко испортить рынок")
+
+    raw_score = score
+    cap = 92
+
+    if not is_quality:
+        cap = min(cap, 78)
+
+    if d["vol_1h"] < 1:
+        cap = min(cap, 72)
+
+    if d["room_up"] < 5:
+        cap = min(cap, 70)
+
+    if d["rsi"] > 82:
+        cap = min(cap, 68)
+
+    if d["macd"] < 0:
+        cap = min(cap, 62)
+
+    if change_24 > 12 and not is_quality:
+        cap = min(cap, 62)
+
+    score = max(0, min(100, min(raw_score, cap)))
+
+    probability_5 = int(25 + score * 0.55)
+
+    if d["room_up"] < 5:
+        probability_5 -= 12
+
+    if d["vol_1h"] < 1:
+        probability_5 -= 8
+
+    if d["rsi"] > 82:
+        probability_5 -= 8
+
+    if not is_quality:
+        probability_5 -= 5
+
+    probability_5 = max(10, min(78, probability_5))
+
+    low = base_low
+    high = base_high
+
+    if score >= 75:
+        low += 1.5
+    elif score >= 62:
+        low += 0.5
+        high -= 1.0
+    elif score >= 45:
+        low = -1.0
+        high = min(3.0, high)
+    else:
+        low = -3.0
+        high = 1.5
+
+    high = min(high, max(1.0, d["atr_pct"] * 2.5))
+
+    if d["room_up"] > 0:
+        high = min(high, max(1.0, d["room_up"]))
+
+    if d["vol_1h"] < 1:
+        high -= 1.0
+
+    if d["rsi"] > 82:
+        high -= 1.0
+
+    if ctx["market_mod"] < -5:
+        high -= 0.8
+
+    if score >= 70 and high < 5 and d["room_up"] >= 5 and d["vol_1h"] >= 1.2:
+        high = 5.0
+
+    low = round(low, 1)
+    high = round(max(high, low), 1)
+
+    target_low = price * (1 + low / 100)
+    target_high = price * (1 + high / 100)
+
+    stop = d["support"] if d["support"] < price else price * 0.97
+    downside = percent_change(price, stop)
+
+    if probability_5 >= 65 and high >= 5:
+        verdict = "🟢 кандидат на +5%"
+    elif probability_5 >= 52:
+        verdict = "🟡 есть шанс, но нужен контроль"
+    elif probability_5 >= 40:
+        verdict = "🟠 рискованно"
+    else:
+        verdict = "🔴 лучше пропустить"
+
+    history = load_json(HISTORY_FILE)
+    old = history.get(asset)
+
+    if old:
+        old_price = old.get("price", price)
+        old_time = old.get("time", time.time())
+        fact = percent_change(old_price, price)
+        hours = (time.time() - old_time) / 3600
+        status = f"с прошлого сигнала {hours:.1f}ч, цена изменилась {fact:+.2f}%"
+    else:
+        status = "новый сигнал"
+
+    return {
+        "symbol": asset,
+        "profile": profile,
+        "is_quality": is_quality,
+        "price": price,
+        "change_24": change_24,
+        "volume_usd": volume_usd,
+        "score": score,
+        "probability_5": probability_5,
+        "low": low,
+        "high": high,
+        "target_low": target_low,
+        "target_high": target_high,
+        "stop": stop,
+        "downside": downside,
+        "verdict": verdict,
+        "plus": list(dict.fromkeys(plus))[:5],
+        "minus": list(dict.fromkeys(minus))[:5],
+        "ctx": ctx,
+        "status": status,
+        "fast_move": d["move_15"],
+        "vol_power": d["vol_1h"],
+        "room_up": d["room_up"]
+    }
+
+def save_signal_history(items):
+    h = load_json(HISTORY_FILE)
+
+    for c in items:
+        h[c["symbol"]] = {
+            "price": c["price"],
+            "score": c["score"],
+            "time": time.time()
+        }
+
+    save_json(HISTORY_FILE, h)
+
+def format_signal_item(i, c):
+    plus = "\n".join([f"✅ {x}" for x in c["plus"]]) if c["plus"] else "✅ явных плюсов мало"
+    minus = "\n".join([f"⚠️ {x}" for x in c["minus"]]) if c["minus"] else "⚠️ критичных минусов мало"
+
+    return (
+        f"{i}. {c['symbol']} — {c['verdict']}\n"
+        f"Тип: {c['profile']}\n"
+        f"{c['status']}\n\n"
+        f"Цена сейчас: ${c['price']:.6g}\n"
+        f"Рост за сутки: {c['change_24']:.2f}%\n"
+        f"Шанс роста +5% за 24ч: ~{c['probability_5']}%\n"
+        f"Качество момента: {c['score']}/100\n\n"
+        f"📈 Ожидаемый сценарий 24ч: {c['low']}%…{c['high']}%\n"
+        f"🎯 Цель: ${c['target_low']:.6g}…${c['target_high']:.6g}\n"
+        f"🛑 Опасная зона: ниже ${c['stop']:.6g} ({c['downside']:.2f}%)\n\n"
+        f"Почему может вырасти:\n{plus}\n\n"
+        f"Что мешает:\n{minus}\n\n"
+        f"Итог: {human_final(c)}\n\n"
+    )
+
+def human_final(c):
+    if c["probability_5"] >= 65 and c["high"] >= 5:
+        return "момент интересный, но вход лучше искать без резкой зелёной свечи."
+    if c["probability_5"] >= 52:
+        return "идея есть, но нужен контроль BTC и объёма."
+    if c["probability_5"] >= 40:
+        return "может дёрнуться, но риск уже высокий."
+    return "сейчас лучше не лезть."
+
+def get_signal():
+    try:
+        tickers = kucoin_tickers()
+        candidates = []
+
+        for t in tickers:
+            symbol = t.get("symbol", "")
+
+            if not symbol.endswith("-USDT"):
+                continue
+
+            volume = float(t.get("volValue", 0) or 0)
+            change = float(t.get("changeRate", 0) or 0) * 100
+
+            if volume < 1_000_000:
+                continue
+
+            priority = volume / 1_000_000 + max(change, 0) * 2
+            candidates.append((symbol, priority))
+
+        selected = sorted(candidates, key=lambda x: x[1], reverse=True)[:35]
+
+        analyzed = []
+
+        for symbol, _ in selected:
+            try:
+                c = alex_edge_24(symbol)
+                if c:
+                    analyzed.append(c)
+                time.sleep(0.2)
+            except:
+                continue
+
+        good = sorted(
+            [x for x in analyzed if x["probability_5"] >= 52 and x["high"] >= 4],
+            key=lambda x: (x["probability_5"], x["score"]),
+            reverse=True
+        )[:5]
+
+        watch = sorted(
+            [x for x in analyzed if x not in good and x["probability_5"] >= 40],
+            key=lambda x: x["probability_5"],
+            reverse=True
+        )[:3]
+
+        if not good and not watch:
+            return "Сейчас сильных идей на +5% за 24ч нет."
+
+        save_signal_history(good + watch)
+
+        ctx = (good[0] if good else watch[0])["ctx"]
+
+        dom_text = "нет данных"
+        if ctx["dom"] is not None:
+            dom_text = f"{ctx['dom']:.1f}%"
+
+        text = (
+            f"🚀 ALEX EDGE 24 — поиск +5% за 24ч\n"
+            f"Рынок: {ctx['state']}\n"
+            f"BTC: {ctx['btc_text']} | BTC 24ч: {ctx['btc_change']:.2f}%\n"
+            f"Настроение: {ctx['fg_value']} — {ctx['fg_text']}\n"
+            f"BTC dominance: {dom_text} — {ctx['dom_text']}\n"
+            f"Глобальные риски: {ctx['geo_text']}"
+        )
+
+        if ctx["geo_words"]:
+            text += f" | темы: {', '.join(ctx['geo_words'])}"
+
+        text += "\n\n"
+
+        if good:
+            text += "🥇 Лучшие кандидаты на рост:\n\n"
+            for i, c in enumerate(good, 1):
+                text += format_signal_item(i, c)
+
+        if watch:
+            text += "👀 Наблюдать, но осторожно:\n\n"
+            for i, c in enumerate(watch, 1):
+                text += format_signal_item(i, c)
+
+        text += "⚠️ Это вероятностный прогноз. Цель бота — найти момент, где шанс +5% выше среднего, а не дать гарантию."
+        return text
+
+    except Exception as e:
+        return f"Ошибка /signal:\n{e}"
+
+def get_fast_pumps():
+    try:
+        tickers = kucoin_tickers()
+        candidates = []
+
+        for t in tickers:
+            symbol = t.get("symbol", "")
+
+            if not symbol.endswith("-USDT"):
+                continue
+
+            volume = float(t.get("volValue", 0) or 0)
+
+            if volume < 1_000_000:
+                continue
+
+            candidates.append((symbol, volume))
+
+        selected = sorted(candidates, key=lambda x: x[1], reverse=True)[:50]
+        found = []
+
+        for symbol, _ in selected:
+            try:
+                c = alex_edge_24(symbol)
+
+                if not c:
+                    continue
+
+                if (
+                    c["fast_move"] >= 1.2 and
+                    c["vol_power"] >= 1.5 and
+                    c["high"] >= 2.5 and
+                    c["probability_5"] >= 45
+                ):
+                    found.append(c)
+
+                time.sleep(0.2)
+
+            except:
+                continue
+
+        found = sorted(found, key=lambda x: (x["fast_move"], x["vol_power"]), reverse=True)[:3]
+
+        if not found:
+            return None
+
+        text = "🔥 ALEX FAST PUMP — быстрый импульс\n\n"
+
+        for i, c in enumerate(found, 1):
+            text += (
+                f"{i}. {c['symbol']}\n"
+                f"Цена: ${c['price']:.6g}\n"
+                f"Быстрый импульс: +{c['fast_move']:.2f}%\n"
+                f"Сила покупателей: x{c['vol_power']:.1f}\n"
+                f"Ожидаемый добор: {max(0, c['low'])}%…{c['high']}%\n"
+                f"Шанс +5% за 24ч: ~{c['probability_5']}%\n"
+                f"Риск: высокий, не держать долго\n\n"
+            )
+
+        text += "⚠️ Это быстрый рискованный сигнал, не долгосрочная идея."
+        return text, found
+
+    except:
+        return None
+
+def should_send_pump(items):
+    history = load_json(PUMP_FILE)
+    now = time.time()
+    allowed = []
+
+    for c in items:
+        last = history.get(c["symbol"], 0)
+        if now - last >= REPEAT_PUMP_AFTER:
+            allowed.append(c)
+            history[c["symbol"]] = now
+
+    save_json(PUMP_FILE, history)
+    return allowed
+
+def get_top():
+    try:
+        pairs = [x for x in kucoin_tickers() if x.get("symbol", "").endswith("-USDT")]
+        top = sorted(pairs, key=lambda x: float(x.get("volValue", 0) or 0), reverse=True)[:10]
+
+        text = "📈 Топ KuCoin по объёму:\n\n"
+
+        for coin in top:
+            symbol = coin.get("symbol", "").replace("-USDT", "")
+            price = coin.get("last", "0")
+            change = float(coin.get("changeRate", 0) or 0) * 100
+            text += f"{symbol}: ${price} | 24ч: {change:.2f}%\n"
+
+        return text
+
+    except Exception as e:
+        return f"Ошибка /top:\n{e}"
+
+def single_analysis(symbol):
+    c = alex_edge_24(symbol)
+
+    if not c:
+        return "Монета не найдена."
+
+    return format_signal_item(1, c)
+
+def market_status():
+    ctx = market_context()
+
+    dom_text = "нет данных"
+    if ctx["dom"] is not None:
+        dom_text = f"{ctx['dom']:.1f}%"
+
+    return (
+        f"🌍 Обзор рынка\n\n"
+        f"Рынок: {ctx['state']}\n"
+        f"BTC: {ctx['btc_text']} | BTC 24ч: {ctx['btc_change']:.2f}%\n"
+        f"Настроение: {ctx['fg_value']} — {ctx['fg_text']}\n"
+        f"BTC dominance: {dom_text} — {ctx['dom_text']}\n"
+        f"Глобальные риски: {ctx['geo_text']}\n"
+        f"Темы: {', '.join(ctx['geo_words']) if ctx['geo_words'] else 'нет сильных триггеров'}\n\n"
+        f"Простыми словами: если BTC сильный, объём есть и внешний фон не ломает рынок — альтам легче дать +5%."
+    )
+
+def help_text():
+    return (
+        "✅ Команды:\n\n"
+        "/signal — поиск монет с шансом +5% за 24ч\n"
+        "/top — топ монет по объёму\n"
+        "/btc — анализ BTC\n"
+        "/sol — анализ SOL\n"
+        "/alerts — быстрые пампы\n"
+        "/market — фон рынка\n"
+        "/help — помощь\n\n"
+        "Методика ALEX EDGE 24 учитывает: импульс, покупателей, запас хода, перегрев, BTC, макро, геополитику и риск пампа."
+    )
+
+def main():
+    last_update = None
+    last_signal = time.time()
+    last_market = time.time()
+    last_pump = time.time()
+
+    while True:
+        try:
+            updates = get_updates(last_update)
+
+            for item in updates.get("result", []):
+                last_update = item["update_id"] + 1
+
+                msg = item.get("message", {})
+                chat_id = msg.get("chat", {}).get("id")
+                text = msg.get("text", "")
+
+                if not chat_id:
+                    continue
+
+                save_chat_id(chat_id)
+
+                if text == "/start":
+                    send_message(chat_id, "✅ Бот работает\n\n" + help_text())
+
+                elif text == "/help":
+                    send_message(chat_id, help_text())
+
+                elif text == "/top":
+                    send_message(chat_id, get_top())
+
+                elif text == "/signal":
+                    send_message(chat_id, "⏳ Ищу монеты с шансом +5% за 24ч, подожди 30–60 секунд...")
+                    send_message(chat_id, get_signal())
+
+                elif text == "/btc":
+                    send_message(chat_id, single_analysis("BTC-USDT"))
+
+                elif text == "/sol":
+                    send_message(chat_id, single_analysis("SOL-USDT"))
+
+                elif text == "/market":
+                    send_message(chat_id, market_status())
+
+                elif text == "/alerts":
+                    send_message(chat_id, "⏳ Проверяю быстрые пампы...")
+                    result = get_fast_pumps()
+                    if result:
+                        text_alert, _ = result
+                        send_message(chat_id, text_alert)
+                    else:
+                        send_message(chat_id, "Сейчас быстрых памп-сигналов нет.")
+
+            saved_chat_id = load_chat_id()
+
+            if saved_chat_id:
+                now = time.time()
+
+                if now - last_signal >= AUTO_SIGNAL_EVERY:
+                    send_message(saved_chat_id, get_signal())
+                    last_signal = now
+
+                if now - last_market >= AUTO_MARKET_EVERY:
+                    send_message(saved_chat_id, market_status())
+                    last_market = now
+
+                if now - last_pump >= AUTO_PUMP_EVERY:
+                    result = get_fast_pumps()
+
+                    if result:
+                        text_alert, items = result
+                        allowed = should_send_pump(items)
+
+                        if allowed:
+                            send_message(saved_chat_id, text_alert)
+
+                    last_pump = now
+
+            time.sleep(2)
+
+        except Exception as e:
+            print(e)
+            time.sleep(5)
+
+if __name__ == "__main__":
+    keep_alive()
+    main()
