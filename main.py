@@ -96,6 +96,7 @@ def get_updates(offset=None):
     params = {"timeout": 30}
     if offset:
         params["offset"] = offset
+
     return requests.get(
         f"https://api.telegram.org/bot{BOT_TOKEN}/getUpdates",
         params=params,
@@ -104,16 +105,19 @@ def get_updates(offset=None):
 
 def kucoin_tickers():
     now = time.time()
+
     if now - _ticker_cache["time"] < 20 and _ticker_cache["data"]:
         return _ticker_cache["data"]
 
     data = requests.get("https://api.kucoin.com/api/v1/market/allTickers", timeout=20).json()
+
     if data.get("code") != "200000":
         raise Exception(data)
 
     tickers = data.get("data", {}).get("ticker", [])
     _ticker_cache["time"] = now
     _ticker_cache["data"] = tickers
+
     return tickers
 
 def get_ticker(symbol):
@@ -195,6 +199,7 @@ def atr(highs, lows, closes, period=14):
         return 0
 
     trs = []
+
     for i in range(1, len(closes)):
         trs.append(max(
             highs[i] - lows[i],
@@ -209,6 +214,7 @@ def volume_power(volumes):
         return 1
 
     avg = statistics.mean(volumes[-24:-1])
+
     if avg <= 0:
         return 1
 
@@ -217,12 +223,16 @@ def volume_power(volumes):
 def coin_profile(asset, volume):
     if asset == "BTC":
         return "крупный актив", 0.5, 3.0, True
+
     if asset == "ETH":
         return "крупный актив", 0.8, 4.0, True
+
     if asset in QUALITY_ASSETS:
         return "качественный альт", 1.5, 7.0, True
+
     if volume >= 40_000_000:
         return "ликвидный рискованный альт", 2.0, 9.0, False
+
     return "спекулятивный альт", 2.0, 12.0, False
 
 def get_fear_greed():
@@ -251,6 +261,7 @@ def get_btc_dominance():
 
         if dom > 55:
             return dom, -5, "BTC забирает деньги у альтов"
+
         if dom < 52:
             return dom, 5, "альтам легче расти"
 
@@ -280,12 +291,14 @@ def get_news_risk():
         }
 
         score = 0
+
         for word, weight in risk_words.items():
             if word in xml:
                 score += weight
 
         if score >= 10:
             return -8, "🟥 Внешний фон опасный — новости могут резко ударить по крипте"
+
         if score >= 5:
             return -4, "🟡 Внешний фон нестабильный — рынок чувствителен к новостям"
 
@@ -398,6 +411,7 @@ def btc_filter():
 
         if score >= 55:
             return "BTC помогает рынку", 8, change
+
         if score >= 30:
             return "BTC нейтральный", 0, change
 
@@ -439,6 +453,7 @@ def market_context():
 
 def alex_edge_ultra(symbol):
     ticker = get_ticker(symbol)
+
     if not ticker:
         return None
 
@@ -568,27 +583,29 @@ def alex_edge_ultra(symbol):
 
     if not is_quality:
         cap = min(cap, 78)
+
     if d["vol_1h"] < 1:
         cap = min(cap, 74)
+
     if d["room_up"] < 5 and asset not in EVENT_ASSETS:
         cap = min(cap, 72)
+
     if d["rsi"] > 82:
         cap = min(cap, 70)
+
     if d["macd"] < 0:
         cap = min(cap, 60)
+
     if change_24 > 12 and not is_quality:
         cap = min(cap, 62)
+
     if change_24 > 25:
         cap = min(cap, 55)
 
     score = max(0, min(100, min(raw_score, cap)))
 
-    quality_trend_floor = False
-    if is_quality and d["trend_1h"] and d["trend_4h"] and ctx["btc_mod"] >= 0 and change_24 > 0:
-        quality_trend_floor = True
-        score = max(score, 52)
-
     event_floor = False
+
     if asset in EVENT_ASSETS and ctx["btc_mod"] >= 0:
         event_floor = True
         score = max(score, 55)
@@ -619,10 +636,6 @@ def alex_edge_ultra(symbol):
     if ctx["market_mod"] < -5:
         chance_5 -= 8
         chance_10 -= 10
-
-    if quality_trend_floor:
-        chance_5 = max(chance_5, 38)
-        chance_10 = max(chance_10, 8)
 
     if event_floor:
         chance_5 = max(chance_5, 45)
@@ -664,14 +677,12 @@ def alex_edge_ultra(symbol):
 
     if d["vol_1h"] < 1:
         high -= 0.7
+
     if d["rsi"] > 82:
         high -= 0.8
+
     if ctx["market_mod"] < -5:
         high -= 0.8
-
-    if quality_trend_floor:
-        low = max(low, 0)
-        high = max(high, 2.0)
 
     if high < 2:
         chance_5 = min(chance_5, 12)
@@ -712,7 +723,10 @@ def alex_edge_ultra(symbol):
     stop = max(technical_stop, max_allowed_stop)
     downside = percent_change(price, stop)
 
-    if d["early_impulse"] and chance_5 >= 58 and high >= 5:
+    if asset in EVENT_ASSETS and chance_5 >= 42:
+        verdict = "📌 СОБЫТИЙНАЯ МОНЕТА"
+        action = "WATCH"
+    elif d["early_impulse"] and chance_5 >= 58 and high >= 5:
         verdict = "🔥 РАННИЙ ИМПУЛЬС / цель +5%"
         action = "BUY"
     elif chance_10 >= 45 and high >= 10:
@@ -721,29 +735,18 @@ def alex_edge_ultra(symbol):
     elif chance_5 >= 65 and high >= 5:
         verdict = "🟢 ПОКУПКА / цель +5%"
         action = "BUY"
-    elif asset in EVENT_ASSETS and chance_5 >= 42:
-        verdict = "📌 СОБЫТИЙНАЯ МОНЕТА"
+    elif chance_5 >= 35 and high >= 4:
+        verdict = "🟡 НАБЛЮДАТЬ"
         action = "WATCH"
     elif (
-        is_quality
-        and d["trend_1h"]
-        and d["trend_4h"]
-        and change_24 > 0
-        and chance_5 >= 35
-        and high >= 4
+        chance_5 >= 40
+        and high >= 4.5
+        and d["vol_1h"] >= 1.5
+        and score >= 40
+        and change_24 <= 15
     ):
-        verdict = "🟡 НАБЛЮДАТЬ"
-        action = "WATCH"
-    elif chance_5 >= 50 and high >= 4:
-        verdict = "🟡 НАБЛЮДАТЬ"
-        action = "WATCH"
-    elif change_24 > 12 or not is_quality:
-        if chance_5 >= 40 and high >= 4.5 and d["vol_1h"] >= 1.5 and score >= 40:
-            verdict = "🟠 РИСКОВАННЫЙ ПАМП"
-            action = "PUMP"
-        else:
-            verdict = "🔴 НЕ ПОКУПАТЬ"
-            action = "SKIP"
+        verdict = "🟠 РИСКОВАННЫЙ ПАМП"
+        action = "PUMP"
     else:
         verdict = "🔴 НЕ ПОКУПАТЬ"
         action = "SKIP"
@@ -845,6 +848,7 @@ def get_signal():
 
         for t in kucoin_tickers():
             symbol = t.get("symbol", "")
+
             if not symbol.endswith("-USDT"):
                 continue
 
@@ -875,7 +879,10 @@ def get_signal():
                 continue
 
         buy = sorted(
-            [x for x in analyzed if x["action"] == "BUY"],
+            [
+                x for x in analyzed
+                if x["chance_5"] >= 65 and x["high"] >= 5
+            ],
             key=lambda x: (x["chance_10"], x["chance_5"], x["score"]),
             reverse=True
         )[:5]
@@ -884,7 +891,7 @@ def get_signal():
             [
                 x for x in analyzed
                 if (
-                    x["action"] == "WATCH"
+                    x not in buy
                     and (
                         (
                             x["chance_5"] >= 35
@@ -897,6 +904,7 @@ def get_signal():
             key=lambda x: (
                 1 if "СОБЫТИЙНАЯ" in x["verdict"] else 0,
                 x["chance_5"],
+                x["high"],
                 x["score"]
             ),
             reverse=True
@@ -905,12 +913,16 @@ def get_signal():
         pumps = sorted(
             [
                 x for x in analyzed
-                if x["action"] == "PUMP"
-                and x["chance_5"] >= 40
-                and x["high"] >= 4.5
-                and x["vol_power"] >= 1.5
+                if (
+                    x not in buy
+                    and x not in watch
+                    and x["chance_5"] >= 40
+                    and x["high"] >= 4.5
+                    and x["vol_power"] >= 1.5
+                    and x["change_24"] <= 15
+                )
             ],
-            key=lambda x: (x["chance_5"], x["change_24"]),
+            key=lambda x: (x["chance_5"], x["high"], x["vol_power"]),
             reverse=True
         )[:3]
 
@@ -918,8 +930,10 @@ def get_signal():
             [
                 x for x in analyzed
                 if (
-                    x["action"] == "SKIP"
-                    and x["change_24"] > 12
+                    x["change_24"] > 12
+                    and x not in buy
+                    and x not in watch
+                    and x not in pumps
                 )
             ],
             key=lambda x: x["change_24"],
@@ -992,10 +1006,12 @@ def get_fast_pumps():
 
         for t in kucoin_tickers():
             symbol = t.get("symbol", "")
+
             if not symbol.endswith("-USDT"):
                 continue
 
             volume = float(t.get("volValue", 0) or 0)
+
             if volume < 1_000_000:
                 continue
 
@@ -1003,11 +1019,11 @@ def get_fast_pumps():
                 c = alex_edge_ultra(symbol)
 
                 if (
-                    c["action"] == "PUMP"
-                    and c["fast_move"] >= 1.2
-                    and c["vol_power"] >= 1.5
+                    c["chance_5"] >= 40
                     and c["high"] >= 4.5
-                    and c["chance_5"] >= 40
+                    and c["vol_power"] >= 1.5
+                    and c["fast_move"] >= 1.2
+                    and c["change_24"] <= 15
                 ):
                     found.append(c)
 
@@ -1050,6 +1066,7 @@ def should_send_pump(items):
 
     for c in items:
         last = history.get(c["symbol"], 0)
+
         if now - last >= REPEAT_PUMP_AFTER:
             allowed.append(c)
             history[c["symbol"]] = now
@@ -1085,6 +1102,7 @@ def get_top():
 
 def single_analysis(symbol):
     c = alex_edge_ultra(symbol)
+
     if not c:
         return "Монета не найдена."
 
