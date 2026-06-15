@@ -1156,9 +1156,7 @@ def help_text():
         "🟡 НАБЛЮДАТЬ — пока не покупать\n"
         "🟠 РИСКОВАННЫЙ ПАМП — можно заработать, но риск высокий\n"
         "🔴 НЕ ПОКУПАТЬ — лучше пропустить"
-    )
-def moscow_now():
-def moscow_now():
+    def moscow_now():
 return datetime.utcnow() + timedelta(hours=MOSCOW_OFFSET_HOURS)
 
 def main():
@@ -1166,19 +1164,7 @@ last_update = None
 last_signal_key = None
 last_market_key = None
 last_pump_key = None
-
-while True:
-    try:
-        updates = get_updates(last_update)
-
-        for item in updates.get("result", []):
-            last_update = item["update_id"] + 1
-
-            msg = item.get("message", {})
-            chat_id = msg.get("chat", {}).get("id")
-            text = msg.get("text", "")
-
-            if not chat_id:
+      if not chat_id:
                 continue
 
             save_chat_id(chat_id)
