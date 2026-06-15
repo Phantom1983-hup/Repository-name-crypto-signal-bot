@@ -263,6 +263,12 @@ def diagnostics(symbol):
     above_mean = price > statistics.mean(close1h[-20:])
     higher_lows = low1h[-1] > min(low1h[-10:-1])
     local_breakout = price > max(high1h[-12:-1])
+    early_impulse = (
+        0.6 <= move_15 <= 3.5 and
+        0.5 <= move_1h <= 6.0 and
+        vol_power_15 >= 1.4 and
+        vol_power_1h >= 1.1
+    )
     return {
         "price": price,
         "rsi": r,
@@ -279,6 +285,7 @@ def diagnostics(symbol):
         "above_mean": above_mean,
         "higher_lows": higher_lows,
         "local_breakout": local_breakout,
+        "early_impulse": early_impulse,
         "room_up": room_up,
         "support": support,
         "resistance": resistance
@@ -363,6 +370,9 @@ def alex_edge_ultra(symbol):
     elif change_24 < -5:
         score -= 10
         minus.append("монета слабее рынка")
+    if d["early_impulse"]:
+        score += 22
+        plus.append("🔥 ранний импульс: покупатели начали разгон")
     if d["move_15"] >= 0.8:
         score += 12
         plus.append("есть свежий краткосрочный импульс")
@@ -477,6 +487,9 @@ def alex_edge_ultra(symbol):
     if quality_trend_floor:
         chance_5 = max(chance_5, 38)
         chance_10 = max(chance_10, 8)
+    if d["early_impulse"] and d["room_up"] >= 5 and d["vol_1h"] >= 1.1:
+        chance_5 += 8
+        chance_10 += 6
     chance_5 = max(5, min(82, chance_5))
     chance_10 = max(2, min(70, chance_10))
     chance_15 = max(1, min(55, chance_15))
@@ -493,6 +506,8 @@ def alex_edge_ultra(symbol):
     else:
         low = -2
         high = 1.5
+    if d["early_impulse"] and d["room_up"] >= 5:
+        high += 1.5
     high = min(high, max(1.0, d["atr_pct"] * 2.7))
     if d["room_up"] > 0:
         high = min(high, max(1.0, d["room_up"]))
@@ -521,7 +536,10 @@ def alex_edge_ultra(symbol):
     max_allowed_stop = price * (1 - max_stop_pct / 100)
     stop = max(technical_stop, max_allowed_stop)
     downside = percent_change(price, stop)
-    if chance_10 >= 45 and high >= 10:
+    if d["early_impulse"] and chance_5 >= 58 and high >= 5:
+        verdict = "🔥 РАННИЙ ИМПУЛЬС / цель +5%"
+        action = "BUY"
+    elif chance_10 >= 45 and high >= 10:
         verdict = "🚀 ПОКУПКА / цель +10%"
         action = "BUY"
     elif chance_5 >= 65 and high >= 5:
@@ -534,7 +552,7 @@ def alex_edge_ultra(symbol):
         verdict = "🟡 НАБЛЮДАТЬ"
         action = "WATCH"
     elif change_24 > 12 or not is_quality:
-        if chance_5 >= 35 and high > 1.5 and score >= 35:
+        if chance_5 >= 40 and high >= 4.5 and d["vol_1h"] >= 1.5 and score >= 40:
             verdict = "🟠 РИСКОВАННЫЙ ПАМП"
             action = "PUMP"
         else:
@@ -590,13 +608,13 @@ def save_signal_history(items):
     save_json(HISTORY_FILE, h)
 def human_final(c):
     if c["action"] == "BUY":
+        if "РАННИЙ ИМПУЛЬС" in c["verdict"]:
+            return "интересный ранний момент, но вход только небольшим объёмом и без погони за свечой."
         return "можно рассмотреть покупку, но не после резкой зелёной свечи."
     if c["action"] == "WATCH":
         return "идея есть, но пока НЕ покупать — ждать усиления объёма."
     if c["action"] == "PUMP":
-        if c["chance_5"] >= 35 and c["high"] > 1.5:
-            return "это быстрый рискованный импульс, можно заработать, но риск высокий."
-        return "поздний памп — лучше не покупать."
+        return "это быстрый рискованный импульс, можно заработать, но риск высокий."
     return "сейчас лучше не покупать."
 def format_signal_item(i, c):
     plus = "\n".join([f"✅ {x}" for x in c["plus"]]) if c["plus"] else "✅ явных плюсов мало"
@@ -656,8 +674,9 @@ def get_signal():
             [
                 x for x in analyzed
                 if x["action"] == "PUMP"
-                and x["chance_5"] >= 35
-                and x["high"] > 1.5
+                and x["chance_5"] >= 40
+                and x["high"] >= 4.5
+                and x["vol_power"] >= 1.5
             ],
             key=lambda x: (x["chance_5"], x["change_24"]),
             reverse=True
@@ -736,8 +755,8 @@ def get_fast_pumps():
                     c["action"] == "PUMP"
                     and c["fast_move"] >= 1.2
                     and c["vol_power"] >= 1.5
-                    and c["high"] >= 2.5
-                    and c["chance_5"] >= 35
+                    and c["high"] >= 4.5
+                    and c["chance_5"] >= 40
                 ):
                     found.append(c)
                 time.sleep(0.15)
@@ -828,6 +847,7 @@ def help_text():
         "/help — помощь\n\n"
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход\n"
+        "🔥 РАННИЙ ИМПУЛЬС — агрессивная возможность\n"
         "🟡 НАБЛЮДАТЬ — пока не покупать\n"
         "🟠 РИСКОВАННЫЙ ПАМП — можно заработать, но риск высокий\n"
         "🔴 НЕ ПОКУПАТЬ — лучше пропустить"
