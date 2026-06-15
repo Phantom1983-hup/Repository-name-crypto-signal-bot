@@ -10,13 +10,13 @@ app = Flask("")
 
 @app.route("/")
 def home():
-return "Bot is alive"
+    return "Bot is alive"
 
 def run():
-app.run(host="0.0.0.0", port=10000)
+    app.run(host="0.0.0.0", port=10000)
 
 def keep_alive():
-Thread(target=run).start()
+    Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 BOT_VERSION = "v2.4 EARLY BREAKOUT"
