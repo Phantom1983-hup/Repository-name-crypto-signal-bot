@@ -1161,7 +1161,7 @@ def moscow_now():
     return datetime.utcnow() + timedelta(hours=MOSCOW_OFFSET_HOURS)
 
 def moscow_now():
-return datetime.utcnow() + timedelta(hours=MOSCOW_OFFSET_HOURS)
+    return datetime.utcnow() + timedelta(hours=MOSCOW_OFFSET_HOURS)
 
 def main():
 last_update = None
