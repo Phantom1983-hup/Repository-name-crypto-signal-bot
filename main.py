@@ -14,8 +14,8 @@ import feedparser
 # SETTINGS
 # =========================
 
-TOKEN = "ТВОЙ_TELEGRAM_BOT_TOKEN"
-CHAT_ID = ТВОЙ_CHAT_ID
+TOKEN = "8648228628:AAEXNW13Pg5S5MXPRbeC-3A8mE6vS9W0mxU"
+CHAT_ID = 789781192
 
 bot = telebot.TeleBot(TOKEN)
 
