@@ -704,8 +704,27 @@ def get_signal():
             key=lambda x: (x["chance_10"], x["chance_5"], x["score"]),
             reverse=True
         )[:5]
-        watch = sorted(
-            [x for x in analyzed if x["action"] == "WATCH"],
+      ```python
+watch = sorted(
+    [
+        x for x in analyzed
+        if (
+            x["action"] == "WATCH"
+            and (
+                x["chance_5"] >= 35
+                or "СОБЫТИЙНАЯ" in x["verdict"]
+            )
+        )
+    ],
+    key=lambda x: (
+        1 if "СОБЫТИЙНАЯ" in x["verdict"] else 0,
+        x["chance_5"],
+        x["score"]
+    ),
+    reverse=True
+)[:5]
+```
+
             key=lambda x: (1 if "СОБЫТИЙНАЯ" in x["verdict"] else 0, x["chance_5"], x["score"]),
             reverse=True
         )[:5]
