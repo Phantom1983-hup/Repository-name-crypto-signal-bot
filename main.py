@@ -1160,100 +1160,105 @@ def help_text():
 def moscow_now():
     return datetime.utcnow() + timedelta(hours=MOSCOW_OFFSET_HOURS)
 
+def moscow_now():
+return datetime.utcnow() + timedelta(hours=MOSCOW_OFFSET_HOURS)
+
 def main():
-    last_update = None
-    last_signal_key = None
-    last_market_key = None
-    last_pump_key = None
+last_update = None
+last_signal_key = None
+last_market_key = None
+last_pump_key = None
 
-    while True:
-        try:
-            updates = get_updates(last_update)
+```
+while True:
+    try:
+        updates = get_updates(last_update)
 
-            for item in updates.get("result", []):
-                last_update = item["update_id"] + 1
+        for item in updates.get("result", []):
+            last_update = item["update_id"] + 1
 
-                msg = item.get("message", {})
-                chat_id = msg.get("chat", {}).get("id")
-                text = msg.get("text", "")
+            msg = item.get("message", {})
+            chat_id = msg.get("chat", {}).get("id")
+            text = msg.get("text", "")
 
-                if not chat_id:
-                    continue
+            if not chat_id:
+                continue
 
-                save_chat_id(chat_id)
+            save_chat_id(chat_id)
 
-                if text == "/start":
-                    send_message(chat_id, "✅ Бот работает\n\n" + help_text())
+            if text == "/start":
+                send_message(chat_id, "✅ Бот работает\n\n" + help_text())
 
-                elif text == "/help":
-                    send_message(chat_id, help_text())
+            elif text == "/help":
+                send_message(chat_id, help_text())
 
-                elif text == "/version":
-                    send_message(chat_id, f"✅ Текущая версия бота: {BOT_VERSION}")
+            elif text == "/version":
+                send_message(chat_id, f"✅ Текущая версия бота: {BOT_VERSION}")
 
-                elif text == "/top":
-                    send_message(chat_id, get_top())
+            elif text == "/top":
+                send_message(chat_id, get_top())
 
-                elif text == "/signal":
-                    send_message(chat_id, "⏳ Ищу монеты для покупки, подожди 30–60 секунд...")
-                    send_message(chat_id, get_signal())
+            elif text == "/signal":
+                send_message(chat_id, "⏳ Ищу монеты для покупки, подожди 30–60 секунд...")
+                send_message(chat_id, get_signal())
 
-                elif text == "/btc":
-                    send_message(chat_id, single_analysis("BTC-USDT"))
+            elif text == "/btc":
+                send_message(chat_id, single_analysis("BTC-USDT"))
 
-                elif text == "/sol":
-                    send_message(chat_id, single_analysis("SOL-USDT"))
+            elif text == "/sol":
+                send_message(chat_id, single_analysis("SOL-USDT"))
 
-                elif text == "/market":
-                    send_message(chat_id, market_status())
+            elif text == "/market":
+                send_message(chat_id, market_status())
 
-                elif text == "/alerts":
-                    send_message(chat_id, "⏳ Проверяю быстрые пампы...")
-                    text_alert, _ = get_fast_pumps()
-                    send_message(chat_id, text_alert if text_alert else f"Версия: {BOT_VERSION}\nСейчас быстрых памп-сигналов нет.")
+            elif text == "/alerts":
+                send_message(chat_id, "⏳ Проверяю быстрые пампы...")
+                text_alert, _ = get_fast_pumps()
+                send_message(chat_id, text_alert if text_alert else f"Версия: {BOT_VERSION}\nСейчас быстрых памп-сигналов нет.")
 
-            saved_chat_id = load_chat_id()
+        saved_chat_id = load_chat_id()
 
-                        if saved_chat_id:
-                now_msk = moscow_now()
+        if saved_chat_id:
+            now_msk = moscow_now()
 
-                signal_key = now_msk.strftime("%Y-%m-%d %H")
-                market_key = now_msk.strftime("%Y-%m-%d")
-                pump_key = now_msk.strftime("%Y-%m-%d %H:%M")
+            signal_key = now_msk.strftime("%Y-%m-%d %H")
+            market_key = now_msk.strftime("%Y-%m-%d")
+            pump_key = now_msk.strftime("%Y-%m-%d %H:%M")
 
-                if (
-                    now_msk.hour in SIGNAL_HOURS
-                    and now_msk.minute < 5
-                    and last_signal_key != signal_key
-                ):
-                    send_message(saved_chat_id, get_signal())
-                    last_signal_key = signal_key
+            if (
+                now_msk.hour in SIGNAL_HOURS
+                and now_msk.minute < 5
+                and last_signal_key != signal_key
+            ):
+                send_message(saved_chat_id, get_signal())
+                last_signal_key = signal_key
 
-                if (
-                    now_msk.hour == MARKET_HOUR
-                    and now_msk.minute < 5
-                    and last_market_key != market_key
-                ):
-                    send_message(saved_chat_id, market_status())
-                    last_market_key = market_key
+            if (
+                now_msk.hour == MARKET_HOUR
+                and now_msk.minute < 5
+                and last_market_key != market_key
+            ):
+                send_message(saved_chat_id, market_status())
+                last_market_key = market_key
 
-                if (
-                    now_msk.minute in PUMP_MINUTES
-                    and last_pump_key != pump_key
-                ):
-                    text_alert, items = get_fast_pumps()
+            if (
+                now_msk.minute in PUMP_MINUTES
+                and last_pump_key != pump_key
+            ):
+                text_alert, items = get_fast_pumps()
 
-                    if text_alert and should_send_pump(items):
-                        send_message(saved_chat_id, text_alert)
+                if text_alert and should_send_pump(items):
+                    send_message(saved_chat_id, text_alert)
 
-                    last_pump_key = pump_key
+                last_pump_key = pump_key
 
-            time.sleep(2)
+        time.sleep(2)
 
-        except Exception as e:
-            print(e)
-            time.sleep(5)
+    except Exception as e:
+        print(e)
+        time.sleep(5)
+```
 
-if __name__ == "__main__":
-    keep_alive()
-    main()
+if **name** == "**main**":
+keep_alive()
+main()
