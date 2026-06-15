@@ -1,36 +1,47 @@
 from flask import Flask
 from threading import Thread
 import os, time, requests, statistics, json
+
 app = Flask("")
+
 @app.route("/")
 def home():
     return "Bot is alive"
+
 def run():
     app.run(host="0.0.0.0", port=10000)
+
 def keep_alive():
     Thread(target=run).start()
+
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID_FILE = "chat_id.txt"
 HISTORY_FILE = "signal_history.json"
+
 AUTO_SIGNAL_EVERY = 6 * 60 * 60
 AUTO_MARKET_EVERY = 24 * 60 * 60
 AUTO_ALERT_EVERY = 60 * 60
+
 def save_chat_id(chat_id):
     with open(CHAT_ID_FILE, "w") as f:
         f.write(str(chat_id))
+
 def load_chat_id():
     try:
         return open(CHAT_ID_FILE).read().strip()
     except:
         return None
+
 def load_history():
     try:
         return json.load(open(HISTORY_FILE))
     except:
         return {}
+
 def save_history(data):
     with open(HISTORY_FILE, "w") as f:
         json.dump(data, f)
+
 def keyboard():
     return {
         "keyboard": [
@@ -41,6 +52,7 @@ def keyboard():
         ],
         "resize_keyboard": True
     }
+
 def send_message(chat_id, text):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     requests.post(
@@ -48,33 +60,41 @@ def send_message(chat_id, text):
         json={"chat_id": chat_id, "text": text, "reply_markup": keyboard()},
         timeout=20
     )
+
 def get_updates(offset=None):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/getUpdates"
     params = {"timeout": 30}
     if offset:
         params["offset"] = offset
     return requests.get(url, params=params, timeout=40).json()
+
 def kucoin_tickers():
     data = requests.get("https://api.kucoin.com/api/v1/market/allTickers", timeout=20).json()
     if data.get("code") != "200000":
         raise Exception(data)
     return data.get("data", {}).get("ticker", [])
+
 def get_ticker(symbol):
     for t in kucoin_tickers():
         if t.get("symbol") == symbol:
             return t
     return None
+
 def get_candles(symbol, interval="1hour"):
     url = "https://api.kucoin.com/api/v1/market/candles"
     data = requests.get(url, params={"symbol": symbol, "type": interval}, timeout=20).json()
     if data.get("code") != "200000":
         raise Exception(data)
+
     candles = sorted(data.get("data", []), key=lambda x: int(x[0]))
+
     closes = [float(c[2]) for c in candles]
     highs = [float(c[3]) for c in candles]
     lows = [float(c[4]) for c in candles]
     volumes = [float(c[5]) for c in candles]
+
     return closes, highs, lows, volumes
+
 def ema(values, period):
     if len(values) < period:
         return None
@@ -83,20 +103,26 @@ def ema(values, period):
     for price in values[1:]:
         result = price * k + result * (1 - k)
     return result
+
 def rsi(values, period=14):
     if len(values) < period + 1:
         return 0
+
     gains, losses = [], []
     for i in range(1, len(values)):
         diff = values[i] - values[i - 1]
         gains.append(max(diff, 0))
         losses.append(abs(min(diff, 0)))
+
     avg_gain = statistics.mean(gains[-period:])
     avg_loss = statistics.mean(losses[-period:])
+
     if avg_loss == 0:
         return 100
+
     rs = avg_gain / avg_loss
     return 100 - (100 / (1 + rs))
+
 def macd(values):
     if len(values) < 35:
         return 0
@@ -105,9 +131,11 @@ def macd(values):
     if not e12 or not e26:
         return 0
     return e12 - e26
+
 def atr(highs, lows, closes, period=14):
     if len(closes) < period + 1:
         return 0
+
     trs = []
     for i in range(1, len(closes)):
         tr = max(
@@ -116,7 +144,9 @@ def atr(highs, lows, closes, period=14):
             abs(lows[i] - closes[i - 1])
         )
         trs.append(tr)
+
     return statistics.mean(trs[-period:])
+
 def volume_spike(volumes):
     if len(volumes) < 20:
         return 1
@@ -124,6 +154,7 @@ def volume_spike(volumes):
     if avg == 0:
         return 1
     return volumes[-1] / avg
+
 def coin_profile(asset, volume):
     if asset == "BTC":
         return "BTC / низкая волатильность", 0.5, 3.0
@@ -134,18 +165,7 @@ def coin_profile(asset, volume):
     if volume >= 20_000_000:
         return "ликвидный альт", 2.0, 9.0
     return "спекулятивный альт", 2.0, 12.0
-def divergence_check(closes, rsi_values):
-    if len(closes) < 20 or len(rsi_values) < 20:
-        return 0, "нет данных"
-    price_recent = max(closes[-6:])
-    price_prev = max(closes[-18:-6])
-    rsi_recent = max(rsi_values[-6:])
-    rsi_prev = max(rsi_values[-18:-6])
-    if price_recent > price_prev and rsi_recent < rsi_prev:
-        return -15, "bearish divergence"
-    if price_recent < price_prev and rsi_recent > rsi_prev:
-        return 10, "bullish divergence"
-    return 0, "дивергенции нет"
+
 def rsi_series(closes, period=14):
     result = []
     for i in range(len(closes)):
@@ -154,16 +174,38 @@ def rsi_series(closes, period=14):
         else:
             result.append(rsi(closes[:i + 1], period))
     return result
+
+def divergence_check(closes, rsi_values):
+    if len(closes) < 20 or len(rsi_values) < 20:
+        return 0, "нет данных"
+
+    price_recent = max(closes[-6:])
+    price_prev = max(closes[-18:-6])
+
+    rsi_recent = max(rsi_values[-6:])
+    rsi_prev = max(rsi_values[-18:-6])
+
+    if price_recent > price_prev and rsi_recent < rsi_prev:
+        return -15, "bearish divergence"
+
+    if price_recent < price_prev and rsi_recent > rsi_prev:
+        return 10, "bullish divergence"
+
+    return 0, "дивергенции нет"
+
 def continuation_score(closes, highs, lows, volumes):
     if len(closes) < 25:
         return 0, [], False
+
     score = 0
     reasons = []
     breakout_confirmed = False
+
     last = closes[-1]
     prev_high = max(highs[-12:-1])
     prev_low = min(lows[-12:-1])
     vx = volume_spike(volumes)
+
     if last > prev_high:
         if vx >= 1.2:
             score += 20
@@ -172,18 +214,24 @@ def continuation_score(closes, highs, lows, volumes):
         else:
             score += 5
             reasons.append("пробой high без сильного объёма")
+
     if lows[-1] > prev_low and lows[-3] > min(lows[-10:-3]):
         score += 15
         reasons.append("higher lows")
+
     if closes[-1] > statistics.mean(closes[-20:]):
         score += 10
         reasons.append("цена выше средней 20 свечей")
+
     if closes[-1] > closes[-2] > closes[-3] and vx >= 1:
         score += 10
         reasons.append("3 свечи роста подряд")
+
     return score, reasons, breakout_confirmed
+
 def trend_score(symbol, interval):
     closes, highs, lows, volumes = get_candles(symbol, interval)
+
     if len(closes) < 30:
         return {
             "score": 0,
@@ -199,10 +247,12 @@ def trend_score(symbol, interval):
             "divergence": "нет данных",
             "divergence_score": 0
         }
+
     last = closes[-1]
     r = rsi(closes)
     rsis = rsi_series(closes)
     div_score, div_text = divergence_check(closes, rsis)
+
     e9 = ema(closes[-60:], 9)
     e21 = ema(closes[-60:], 21)
     e50 = ema(closes[-100:], 50)
@@ -210,12 +260,17 @@ def trend_score(symbol, interval):
     vx = volume_spike(volumes)
     a = atr(highs, lows, closes)
     atr_pct = (a / last) * 100 if last else 0
+
     cont_score, cont_reasons, breakout_confirmed = continuation_score(closes, highs, lows, volumes)
+
     score = 0
+
     if e9 and e21 and e9 > e21:
         score += 18
+
     if e21 and e50 and e21 > e50:
         score += 18
+
     if 45 <= r <= 68:
         score += 22
     elif 68 < r <= 82:
@@ -224,16 +279,21 @@ def trend_score(symbol, interval):
         score += 3
     elif r > 90:
         score -= 12
+
     if m > 0:
         score += 18
+
     if vx >= 1.5:
         score += 15
     elif vx < 0.7:
         score -= 15
+
     if vx >= 3:
         score += 15
+
     score += cont_score
     score += div_score
+
     return {
         "score": score,
         "rsi": r,
@@ -248,10 +308,12 @@ def trend_score(symbol, interval):
         "divergence": div_text,
         "divergence_score": div_score
     }
+
 def get_fear_greed():
     try:
         data = requests.get("https://api.alternative.me/fng/", timeout=10).json()
         value = int(data["data"][0]["value"])
+
         if value < 25:
             return value, "Extreme Fear", 5
         elif value < 45:
@@ -264,21 +326,27 @@ def get_fear_greed():
             return value, "Extreme Greed", -6
     except:
         return 50, "no data", 0
+
 def get_btc_dominance():
     try:
         data = requests.get("https://api.coingecko.com/api/v3/global", timeout=10).json()
         dom = float(data["data"]["market_cap_percentage"]["btc"])
+
         if dom > 55:
             return dom, -5, "BTC dominance высокая"
         if dom < 52:
             return dom, 5, "BTC dominance снижается, альтам легче"
+
         return dom, 0, "BTC dominance нейтральная"
+
     except:
-        return 0, 0, "BTC dominance нет данных"
+        return None, 0, "BTC dominance нет данных"
+
 def get_news_risk():
     try:
         url = "https://news.google.com/rss/search?q=iran+oil+hormuz+fed+trump+tariff+war+crypto+bitcoin&hl=en-US&gl=US&ceid=US:en"
         xml = requests.get(url, timeout=10).text.lower()
+
         words = {
             "iran": 2,
             "hormuz": 3,
@@ -293,27 +361,34 @@ def get_news_risk():
             "trump": 1,
             "missile": 3
         }
+
         score = 0
         found = []
+
         for word, weight in words.items():
             if word in xml:
                 score += weight
                 found.append(word)
+
         if score >= 10:
             return "🔴 высокий", -5, list(set(found))[:6]
         elif score >= 5:
             return "🟠 средний", -2, list(set(found))[:6]
         else:
             return "🟢 низкий", 0, list(set(found))[:6]
+
     except:
         return "⚪ нет данных", 0, []
+
 def btc_market_filter():
     try:
         t = get_ticker("BTC-USDT")
         change = float(t.get("changeRate", 0) or 0) * 100
         h1 = trend_score("BTC-USDT", "1hour")
         h4 = trend_score("BTC-USDT", "4hour")
+
         score = 0
+
         if change > 0:
             score += 20
         if h1["score"] > 50:
@@ -324,26 +399,32 @@ def btc_market_filter():
             score -= 10
         if change < -2:
             score -= 25
+
         if score >= 60:
             return "🟢 BTC фон бычий", 10, change
         elif score >= 35:
             return "🟡 BTC фон нейтральный", 0, change
         else:
             return "🔴 BTC фон слабый", -15, change
+
     except:
         return "⚪ BTC фон не определён", 0, 0
+
 def market_context():
     fg_value, fg_label, fg_mod = get_fear_greed()
     geo_label, geo_mod, geo_words = get_news_risk()
     btc_status, btc_mod, btc_change = btc_market_filter()
     dom, dom_mod, dom_text = get_btc_dominance()
+
     total_mod = fg_mod + geo_mod + btc_mod + dom_mod
+
     if total_mod >= 8:
         state = "🟢 благоприятный"
     elif total_mod >= -5:
         state = "🟡 нейтральный/осторожный"
     else:
         state = "🔴 рискованный"
+
     return {
         "state": state,
         "fg_value": fg_value,
@@ -357,26 +438,34 @@ def market_context():
         "btc_dominance_text": dom_text,
         "macro_mod": total_mod
     }
+
 def get_signal_status(symbol, price, score):
     history = load_history()
     old = history.get(symbol)
+
     if not old:
         return "🆕 новый сигнал", 0
+
     old_price = old.get("price", price)
     old_score = old.get("score", score)
     old_time = old.get("time", time.time())
+
     hours = (time.time() - old_time) / 3600
     fact = ((price / old_price) - 1) * 100 if old_price else 0
     score_diff = score - old_score
+
     if score_diff >= 10:
         status = f"✅ усилился за {hours:.1f}ч"
     elif score_diff <= -15:
         status = f"⚠️ ухудшился за {hours:.1f}ч"
     else:
         status = f"↔️ подтверждается {hours:.1f}ч"
+
     return f"{status}, факт с прошлого сигнала: {fact:+.2f}%", fact
+
 def save_signal_history(results):
     history = load_history()
+
     for c in results:
         history[c["symbol"]] = {
             "price": c["price"],
@@ -385,9 +474,46 @@ def save_signal_history(results):
             "pot_low": c["pot_low"],
             "pot_high": c["pot_high"]
         }
+
     save_history(history)
+
+def apply_score_caps(score, asset, profile, change, rsi_value, volume_x, risks):
+    cap = 100
+
+    if volume_x < 0.7:
+        cap = min(cap, 80)
+        risks.append("рост без подтверждения объёмом")
+
+    if volume_x < 0.5:
+        cap = min(cap, 75)
+
+    if rsi_value > 82:
+        cap = min(cap, 85)
+        risks.append("RSI высокий")
+
+    if rsi_value > 90:
+        cap = min(cap, 70)
+        risks.append("RSI экстремально перегрет")
+
+    if "спекулятивный альт" in profile and change > 12:
+        cap = min(cap, 75)
+        risks.append("спекулятивный памп")
+
+    if "спекулятивный альт" in profile and change > 20:
+        cap = min(cap, 65)
+        risks.append("очень высокий риск отката")
+
+    if volume_x < 0.5 and rsi_value > 80:
+        cap = min(cap, 70)
+        risks.append("перегрев без объёма")
+
+    score = min(score, cap)
+
+    return score, risks
+
 def potential_range(asset, score, change, rsi_value, volume_x, atr_pct, macro_mod, resistance_gap, continuation, breakout_confirmed, divergence_score, volume):
     profile, base_low, base_high = coin_profile(asset, volume)
+
     if score >= 90:
         low, high = base_low + 2.0, base_high
     elif score >= 80:
@@ -398,116 +524,167 @@ def potential_range(asset, score, change, rsi_value, volume_x, atr_pct, macro_mo
         low, high = 0.5, min(base_high, 3.5)
     else:
         low, high = -1.5, 2.0
+
     if atr_pct > 0:
         high = min(high, max(1.5, atr_pct * 2.5))
+
     if continuation >= 25:
         low += 0.8
         high += 1.0
+
     if breakout_confirmed:
         high += 1.0
+
     if volume_x < 0.7:
         low -= 0.5
         high -= 1.5
+
     if volume_x >= 2:
         high += 0.8
+
     if macro_mod < -10:
         high -= 1.0
     elif macro_mod < 0:
         high -= 0.5
     elif macro_mod > 8:
         high += 0.5
+
     if divergence_score < 0:
         low -= 1.0
         high -= 2.0
+
     if rsi_value > 90:
         low -= 2.0
         high -= 2.5
     elif rsi_value > 82:
         high -= 0.8
+
     if change > 25:
         low = min(low, -4)
         high = min(high, 3)
+
     if resistance_gap > 0 and not breakout_confirmed:
         high = min(high, max(1.0, resistance_gap))
+
     low = round(low, 1)
     high = round(max(high, low), 1)
+
     return low, high, profile
+
 def analyze_coin(symbol):
     ticker = get_ticker(symbol)
     if not ticker:
         return None
+
     asset = symbol.replace("-USDT", "")
     price = float(ticker.get("last", 0) or 0)
     change = float(ticker.get("changeRate", 0) or 0) * 100
     volume = float(ticker.get("volValue", 0) or 0)
+
     m15 = trend_score(symbol, "15min")
     h1 = trend_score(symbol, "1hour")
     h4 = trend_score(symbol, "4hour")
     ctx = market_context()
+
     score = 0
     reasons = []
     risks = []
+
     if change > 0:
         score += 10
         reasons.append("рост за 24ч")
+
     if 2 <= change <= 8:
         score += 20
         reasons.append("здоровый импульс 2–8%")
+
     if 8 < change <= 15:
         score += 8
         reasons.append("сильный импульс")
+
     if change > 25:
         score -= 20
         risks.append("очень сильный памп")
+
     if volume > 1_000_000:
         score += 10
         reasons.append("ликвидность > $1M")
+
     if volume > 5_000_000:
         score += 15
         reasons.append("ликвидность > $5M")
+
     if m15["score"] >= 50:
         score += 10
         reasons.append("15m bullish")
+
     if h1["score"] >= 50:
         score += 20
         reasons.append("1h bullish")
+
     if h4["score"] >= 50:
         score += 20
         reasons.append("4h bullish")
+
     if h1["volume_x"] >= 2:
         score += 15
         reasons.append(f"объём x{h1['volume_x']:.1f}")
+
     if h1["volume_x"] < 0.7:
         score -= 20
         risks.append("рост без подтверждения объёмом")
+
     if h1["continuation"] >= 25:
         score += 20
         reasons += h1["continuation_reasons"]
+
     if h1["divergence_score"] < 0:
         score -= 15
         risks.append("bearish divergence")
+
     if h1["breakout_confirmed"]:
         score += 10
         reasons.append("breakout подтверждён")
+
     if 70 <= h1["rsi"] <= 82:
         score += 8
         reasons.append("RSI подтверждает сильный тренд")
+
     elif 82 < h1["rsi"] <= 90:
         score -= 5
         risks.append("RSI высокий, возможен откат")
+
     elif h1["rsi"] > 90:
         score -= 20
         risks.append("RSI экстремально перегрет")
+
     if h1["rsi"] < 35:
         score -= 10
         risks.append("импульс слабый")
+
     score += ctx["macro_mod"]
+
     if ctx["macro_mod"] < -8:
         risks.append("макро/геополитика давит на риск-активы")
+
+    profile, _, _ = coin_profile(asset, volume)
+
     score = max(0, min(100, score))
+
+    score, risks = apply_score_caps(
+        score,
+        asset,
+        profile,
+        change,
+        h1["rsi"],
+        h1["volume_x"],
+        risks
+    )
+
     support = h1["support"]
     resistance = h1["resistance"]
     resistance_gap = ((resistance / price) - 1) * 100 if resistance > price else 0
+
     pot_low, pot_high, profile = potential_range(
         asset,
         score,
@@ -522,10 +699,13 @@ def analyze_coin(symbol):
         h1["divergence_score"],
         volume
     )
+
     target_low = price * (1 + pot_low / 100)
     target_high = price * (1 + pot_high / 100)
+
     stop = support if support < price else price * 0.97
     downside = ((price / stop) - 1) * 100 if stop else 0
+
     if score >= 80:
         verdict = "🟢 сильный сигнал"
         probability = min(76, 48 + int(score / 4))
@@ -535,14 +715,20 @@ def analyze_coin(symbol):
     else:
         verdict = "🔴 слабый сигнал"
         probability = min(48, 30 + int(score / 6))
+
     if h1["volume_x"] < 0.7:
         probability -= 8
+
     if h1["rsi"] > 90:
         probability -= 12
+
     probability = max(20, min(78, probability))
+
     if pot_high <= 1.5:
         verdict = "🟡 потенциал ограничен"
+
     status, fact = get_signal_status(asset, price, score)
+
     return {
         "symbol": asset,
         "profile": profile,
@@ -566,24 +752,32 @@ def analyze_coin(symbol):
         "status": status,
         "divergence": h1["divergence"],
         "reasons": reasons,
-        "risks": risks
+        "risks": list(dict.fromkeys(risks))
     }
+
 def get_signal():
     try:
         tickers = kucoin_tickers()
         usdt = []
+
         for coin in tickers:
             symbol = coin.get("symbol", "")
             if not symbol.endswith("-USDT"):
                 continue
+
             volume = float(coin.get("volValue", 0) or 0)
             change = float(coin.get("changeRate", 0) or 0) * 100
+
             if volume < 1_000_000:
                 continue
+
             preliminary = volume / 1_000_000 + max(change, 0) * 2
             usdt.append({"symbol": symbol, "preliminary": preliminary})
+
         preselected = sorted(usdt, key=lambda x: x["preliminary"], reverse=True)[:20]
+
         analyzed = []
+
         for item in preselected:
             try:
                 result = analyze_coin(item["symbol"])
@@ -592,22 +786,34 @@ def get_signal():
                 time.sleep(0.25)
             except:
                 continue
+
         top = sorted(analyzed, key=lambda x: x["score"], reverse=True)[:3]
+
         if not top:
             return "Сейчас качественных сигналов нет."
+
         save_signal_history(top)
+
         ctx = top[0]["ctx"]
+
+        dom_text = "нет данных"
+        if ctx["btc_dominance"] is not None:
+            dom_text = f"{ctx['btc_dominance']:.1f}%"
+
         text = (
             f"🚀 Прогноз /signal на 24ч\n"
             f"Рынок: {ctx['state']}\n"
             f"{ctx['btc_status']} | BTC 24ч: {ctx['btc_change']:.2f}%\n"
             f"Fear & Greed: {ctx['fg_value']} ({ctx['fg_label']})\n"
-            f"BTC dominance: {ctx['btc_dominance']:.1f}% — {ctx['btc_dominance_text']}\n"
+            f"BTC dominance: {dom_text} — {ctx['btc_dominance_text']}\n"
             f"Геориск: {ctx['geo_label']}"
         )
+
         if ctx["geo_words"]:
             text += f" | темы: {', '.join(ctx['geo_words'])}"
+
         text += "\n\n"
+
         for i, c in enumerate(top, 1):
             text += (
                 f"{i}. {c['symbol']} — {c['verdict']}\n"
@@ -628,28 +834,35 @@ def get_signal():
                 f"Почему: {', '.join(c['reasons']) if c['reasons'] else 'нет сильных причин'}\n"
                 f"Риски: {', '.join(c['risks']) if c['risks'] else 'умеренные'}\n\n"
             )
+
         text += "⚠️ Это вероятностный сценарий. Если BTC резко развернётся, прогноз отменяется."
         return text
+
     except Exception as e:
         return f"Ошибка /signal:\n{e}"
+
 def get_top():
     try:
         tickers = kucoin_tickers()
         pairs = [x for x in tickers if x.get("symbol", "").endswith("-USDT")]
         top = sorted(pairs, key=lambda x: float(x.get("volValue", 0) or 0), reverse=True)[:10]
+
         text = "📈 Топ KuCoin по объёму:\n\n"
         for coin in top:
             symbol = coin.get("symbol", "").replace("-USDT", "")
             price = coin.get("last", "0")
             change = float(coin.get("changeRate", 0) or 0) * 100
             text += f"{symbol}: ${price} | 24ч: {change:.2f}%\n"
+
         return text
     except Exception as e:
         return f"Ошибка /top:\n{e}"
+
 def single_analysis(symbol):
     c = analyze_coin(symbol)
     if not c:
         return "Монета не найдена."
+
     return (
         f"📊 Анализ {c['symbol']}\n\n"
         f"Тип: {c['profile']}\n"
@@ -671,39 +884,55 @@ def single_analysis(symbol):
         f"Почему: {', '.join(c['reasons']) if c['reasons'] else 'нет сильных причин'}\n"
         f"Риски: {', '.join(c['risks']) if c['risks'] else 'умеренные'}"
     )
+
 def pump_alert():
     try:
         alerts = []
+
         for coin in kucoin_tickers():
             symbol = coin.get("symbol", "")
             if not symbol.endswith("-USDT"):
                 continue
+
             change = float(coin.get("changeRate", 0) or 0) * 100
             volume = float(coin.get("volValue", 0) or 0)
+
             if change >= 18 and volume >= 5_000_000:
                 alerts.append((symbol.replace("-USDT", ""), change, volume))
+
         alerts = sorted(alerts, key=lambda x: x[1], reverse=True)[:3]
+
         if not alerts:
             return None
+
         text = "🔥 Сильные движения рынка:\n\n"
         for symbol, change, volume in alerts:
             text += f"{symbol}: +{change:.2f}% | объём ${volume:,.0f}\n"
+
         text += "\n⚠️ Это не сигнал покупки. Возможен перегрев."
         return text
+
     except:
         return None
+
 def market_status():
     ctx = market_context()
+
+    dom_text = "нет данных"
+    if ctx["btc_dominance"] is not None:
+        dom_text = f"{ctx['btc_dominance']:.1f}%"
+
     return (
         f"🌍 Суточный обзор рынка\n\n"
         f"Рынок: {ctx['state']}\n"
         f"{ctx['btc_status']} | BTC 24ч: {ctx['btc_change']:.2f}%\n"
         f"Fear & Greed: {ctx['fg_value']} ({ctx['fg_label']})\n"
-        f"BTC dominance: {ctx['btc_dominance']:.1f}% — {ctx['btc_dominance_text']}\n"
+        f"BTC dominance: {dom_text} — {ctx['btc_dominance_text']}\n"
         f"Геориск: {ctx['geo_label']}\n"
         f"Темы: {', '.join(ctx['geo_words']) if ctx['geo_words'] else 'нет сильных триггеров'}\n\n"
         f"Если геориск высокий или BTC слабый — альт-сигналы использовать осторожно."
     )
+
 def help_text():
     return (
         "✅ Команды:\n\n"
@@ -716,22 +945,28 @@ def help_text():
         "/help — помощь\n\n"
         "В /signal учитывается: BTC фон, Fear & Greed, BTC dominance, геополитика, RSI, MACD, ATR, объём, уровни, breakout, divergence, continuation и история прошлого сигнала."
     )
+
 def main():
     last_update = None
     last_hourly_signal = time.time()
     last_market_report = time.time()
     last_pump_check = time.time()
+
     while True:
         try:
             updates = get_updates(last_update)
+
             for item in updates.get("result", []):
                 last_update = item["update_id"] + 1
                 msg = item.get("message", {})
                 chat_id = msg.get("chat", {}).get("id")
                 text = msg.get("text", "")
+
                 if not chat_id:
                     continue
+
                 save_chat_id(chat_id)
+
                 if text == "/start":
                     send_message(chat_id, "✅ Бот работает\n\n" + help_text())
                 elif text == "/help":
@@ -750,24 +985,32 @@ def main():
                     send_message(chat_id, alert if alert else "Сильных пампов сейчас не найдено.")
                 elif text == "/market":
                     send_message(chat_id, market_status())
+
             saved_chat_id = load_chat_id()
+
             if saved_chat_id:
                 now = time.time()
+
                 if now - last_hourly_signal > AUTO_SIGNAL_EVERY:
                     send_message(saved_chat_id, get_signal())
                     last_hourly_signal = now
+
                 if now - last_market_report > AUTO_MARKET_EVERY:
                     send_message(saved_chat_id, market_status())
                     last_market_report = now
+
                 if now - last_pump_check > AUTO_ALERT_EVERY:
                     alert = pump_alert()
                     if alert:
                         send_message(saved_chat_id, alert)
                     last_pump_check = now
+
             time.sleep(2)
+
         except Exception as e:
             print(e)
             time.sleep(5)
+
 if __name__ == "__main__":
     keep_alive()
     main()
