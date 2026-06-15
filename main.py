@@ -1258,6 +1258,6 @@ def main():
             time.sleep(5)
 
 if name == "main":
-keep_alive()
-main()
+    keep_alive()
+    main()
 
