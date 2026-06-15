@@ -22,6 +22,14 @@ QUALITY_ASSETS = [
     "TON", "DOGE", "NEAR", "TAO", "DOT", "LTC", "SUI", "APT",
     "ARB", "OP", "INJ", "SEI", "ATOM", "FIL", "TRX"
 ]
+FORCE_ANALYZE_ASSETS = ["TON-USDT", "SOL-USDT", "TAO-USDT", "SUI-USDT", "ETH-USDT"]
+EVENT_ASSETS = {
+    "TON": {
+        "title": "событийная монета TON / GRAM",
+        "bonus": 14,
+        "risk": "есть новостной катализатор, но возможен резкий слив после новости"
+    }
+}
 _ticker_cache = {"time": 0, "data": []}
 def save_chat_id(chat_id):
     with open(CHAT_ID_FILE, "w") as f:
@@ -78,10 +86,7 @@ def kucoin_tickers():
     now = time.time()
     if now - _ticker_cache["time"] < 20 and _ticker_cache["data"]:
         return _ticker_cache["data"]
-    data = requests.get(
-        "https://api.kucoin.com/api/v1/market/allTickers",
-        timeout=20
-    ).json()
+    data = requests.get("https://api.kucoin.com/api/v1/market/allTickers", timeout=20).json()
     if data.get("code") != "200000":
         raise Exception(data)
     tickers = data.get("data", {}).get("ticker", [])
@@ -187,10 +192,7 @@ def get_fear_greed():
         return 50, "нет данных", 0
 def get_btc_dominance():
     try:
-        data = requests.get(
-            "https://api.coingecko.com/api/v3/global",
-            timeout=10
-        ).json()
+        data = requests.get("https://api.coingecko.com/api/v3/global", timeout=10).json()
         dom = float(data["data"]["market_cap_percentage"]["btc"])
         if dom > 55:
             return dom, -5, "BTC забирает деньги у альтов"
@@ -358,6 +360,11 @@ def alex_edge_ultra(symbol):
     score = 0
     plus = []
     minus = []
+    if asset in EVENT_ASSETS:
+        event = EVENT_ASSETS[asset]
+        score += event["bonus"]
+        plus.append(event["title"])
+        minus.append(event["risk"])
     if 1 <= change_24 <= 8:
         score += 18
         plus.append("монета уже начала рост, но ещё не выглядит слишком улетевшей")
@@ -449,7 +456,7 @@ def alex_edge_ultra(symbol):
         cap = min(cap, 78)
     if d["vol_1h"] < 1:
         cap = min(cap, 74)
-    if d["room_up"] < 5:
+    if d["room_up"] < 5 and asset not in EVENT_ASSETS:
         cap = min(cap, 72)
     if d["rsi"] > 82:
         cap = min(cap, 70)
@@ -464,10 +471,14 @@ def alex_edge_ultra(symbol):
     if is_quality and d["trend_1h"] and d["trend_4h"] and ctx["btc_mod"] >= 0 and change_24 > 0:
         quality_trend_floor = True
         score = max(score, 52)
+    event_floor = False
+    if asset in EVENT_ASSETS and ctx["btc_mod"] >= 0:
+        event_floor = True
+        score = max(score, 55)
     chance_5 = int(22 + score * 0.62)
     chance_10 = int(8 + score * 0.42)
     chance_15 = int(3 + score * 0.25)
-    if d["room_up"] < 5:
+    if d["room_up"] < 5 and asset not in EVENT_ASSETS:
         chance_5 -= 10
         chance_10 -= 18
     if d["room_up"] < 10:
@@ -487,6 +498,9 @@ def alex_edge_ultra(symbol):
     if quality_trend_floor:
         chance_5 = max(chance_5, 38)
         chance_10 = max(chance_10, 8)
+    if event_floor:
+        chance_5 = max(chance_5, 45)
+        chance_10 = max(chance_10, 12)
     if d["early_impulse"] and d["room_up"] >= 5 and d["vol_1h"] >= 1.1:
         chance_5 += 8
         chance_10 += 6
@@ -508,8 +522,10 @@ def alex_edge_ultra(symbol):
         high = 1.5
     if d["early_impulse"] and d["room_up"] >= 5:
         high += 1.5
+    if asset in EVENT_ASSETS:
+        high += 2.0
     high = min(high, max(1.0, d["atr_pct"] * 2.7))
-    if d["room_up"] > 0:
+    if d["room_up"] > 0 and asset not in EVENT_ASSETS:
         high = min(high, max(1.0, d["room_up"]))
     if d["vol_1h"] < 1:
         high -= 0.7
@@ -520,6 +536,21 @@ def alex_edge_ultra(symbol):
     if quality_trend_floor:
         low = max(low, 0)
         high = max(high, 2.0)
+    # ВАЖНО: связываем вероятности с реальным верхом прогноза
+    if high < 2:
+        chance_5 = min(chance_5, 12)
+    elif high < 3:
+        chance_5 = min(chance_5, 20)
+    elif high < 5:
+        chance_5 = min(chance_5, 35)
+    if high < 5:
+        chance_10 = min(chance_10, 8)
+    elif high < 8:
+        chance_10 = min(chance_10, 18)
+    if high < 10:
+        chance_15 = min(chance_15, 10)
+    if asset in EVENT_ASSETS and high >= 4:
+        chance_5 = max(chance_5, 42)
     low = round(low, 1)
     high = round(max(high, low), 1)
     target_low = price * (1 + low / 100)
@@ -545,6 +576,9 @@ def alex_edge_ultra(symbol):
     elif chance_5 >= 65 and high >= 5:
         verdict = "🟢 ПОКУПКА / цель +5%"
         action = "BUY"
+    elif asset in EVENT_ASSETS and chance_5 >= 42:
+        verdict = "📌 СОБЫТИЙНАЯ МОНЕТА"
+        action = "WATCH"
     elif is_quality and d["trend_1h"] and d["trend_4h"] and change_24 > 0:
         verdict = "🟡 НАБЛЮДАТЬ"
         action = "WATCH"
@@ -611,6 +645,8 @@ def human_final(c):
         if "РАННИЙ ИМПУЛЬС" in c["verdict"]:
             return "интересный ранний момент, но вход только небольшим объёмом и без погони за свечой."
         return "можно рассмотреть покупку, но не после резкой зелёной свечи."
+    if "СОБЫТИЙНАЯ" in c["verdict"]:
+        return "следить внимательно: новость может дать импульс, но после события возможен резкий слив."
     if c["action"] == "WATCH":
         return "идея есть, но пока НЕ покупать — ждать усиления объёма."
     if c["action"] == "PUMP":
@@ -650,9 +686,12 @@ def get_signal():
                 continue
             priority = volume / 1_000_000 + max(change, 0) * 2
             candidates.append((symbol, priority))
-        selected = sorted(candidates, key=lambda x: x[1], reverse=True)[:35]
+        selected = [x[0] for x in sorted(candidates, key=lambda x: x[1], reverse=True)[:35]]
+        for forced in FORCE_ANALYZE_ASSETS:
+            if forced not in selected:
+                selected.append(forced)
         analyzed = []
-        for symbol, _ in selected:
+        for symbol in selected:
             try:
                 c = alex_edge_ultra(symbol)
                 if c:
@@ -667,9 +706,9 @@ def get_signal():
         )[:5]
         watch = sorted(
             [x for x in analyzed if x["action"] == "WATCH"],
-            key=lambda x: (x["chance_5"], x["score"]),
+            key=lambda x: (1 if "СОБЫТИЙНАЯ" in x["verdict"] else 0, x["chance_5"], x["score"]),
             reverse=True
-        )[:3]
+        )[:5]
         pumps = sorted(
             [
                 x for x in analyzed
@@ -735,7 +774,7 @@ def get_signal():
                     f"шанс +5% всего ~{c['chance_5']}%, риск отката высокий.\n"
                 )
             text += "\n"
-        text += "⚠️ Покупать стоит только зелёные сигналы. Жёлтые — наблюдение. Оранжевые — высокий риск. Красные — не покупать."
+        text += "⚠️ Покупать стоит только зелёные сигналы. Событийные и жёлтые — наблюдение. Оранжевые — высокий риск. Красные — не покупать."
         return text
     except Exception as e:
         return f"Ошибка /signal:\n{e}"
@@ -848,6 +887,7 @@ def help_text():
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход\n"
         "🔥 РАННИЙ ИМПУЛЬС — агрессивная возможность\n"
+        "📌 СОБЫТИЙНАЯ МОНЕТА — следить из-за новости\n"
         "🟡 НАБЛЮДАТЬ — пока не покупать\n"
         "🟠 РИСКОВАННЫЙ ПАМП — можно заработать, но риск высокий\n"
         "🔴 НЕ ПОКУПАТЬ — лучше пропустить"
