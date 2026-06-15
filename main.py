@@ -1,6 +1,6 @@
 from flask import Flask
 from threading import Thread
-import os, time, requests, statistics, json, re
+import os, time, requests, statistics, json
 app = Flask("")
 @app.route("/")
 def home():
@@ -43,11 +43,11 @@ def keyboard():
     }
 def send_message(chat_id, text):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    requests.post(url, json={
-        "chat_id": chat_id,
-        "text": text,
-        "reply_markup": keyboard()
-    }, timeout=20)
+    requests.post(
+        url,
+        json={"chat_id": chat_id, "text": text, "reply_markup": keyboard()},
+        timeout=20
+    )
 def get_updates(offset=None):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/getUpdates"
     params = {"timeout": 30}
@@ -124,10 +124,41 @@ def volume_spike(volumes):
     if avg == 0:
         return 1
     return volumes[-1] / avg
+def continuation_score(closes, highs, lows):
+    if len(closes) < 20:
+        return 0, []
+    score = 0
+    reasons = []
+    last = closes[-1]
+    prev_high = max(highs[-12:-1])
+    prev_low = min(lows[-12:-1])
+    if last > prev_high:
+        score += 20
+        reasons.append("пробой локального high")
+    if lows[-1] > prev_low and lows[-3] > min(lows[-10:-3]):
+        score += 15
+        reasons.append("higher lows")
+    if closes[-1] > closes[-2] > closes[-3]:
+        score += 10
+        reasons.append("3 свечи роста подряд")
+    if closes[-1] > statistics.mean(closes[-20:]):
+        score += 10
+        reasons.append("цена выше средней 20 свечей")
+    return score, reasons
 def trend_score(symbol, interval):
     closes, highs, lows, volumes = get_candles(symbol, interval)
     if len(closes) < 30:
-        return {"score": 0, "rsi": 0, "macd": 0, "volume_x": 1, "support": 0, "resistance": 0, "atr_pct": 0}
+        return {
+            "score": 0,
+            "rsi": 0,
+            "macd": 0,
+            "volume_x": 1,
+            "support": 0,
+            "resistance": 0,
+            "atr_pct": 0,
+            "continuation": 0,
+            "continuation_reasons": []
+        }
     last = closes[-1]
     r = rsi(closes)
     e9 = ema(closes[-60:], 9)
@@ -137,6 +168,7 @@ def trend_score(symbol, interval):
     vx = volume_spike(volumes)
     a = atr(highs, lows, closes)
     atr_pct = (a / last) * 100 if last else 0
+    cont_score, cont_reasons = continuation_score(closes, highs, lows)
     score = 0
     if e9 and e21 and e9 > e21:
         score += 20
@@ -144,18 +176,17 @@ def trend_score(symbol, interval):
         score += 20
     if 45 <= r <= 68:
         score += 25
-    elif 68 < r <= 75:
-        score += 10
-    elif r > 78:
-        score -= 25
+    elif 68 < r <= 82:
+        score += 12
+    elif r > 82:
+        score -= 5
     if m > 0:
         score += 20
     if vx >= 1.5:
         score += 15
     if vx >= 3:
         score += 15
-    if last > max(closes[-5:-1]):
-        score += 10
+    score += cont_score
     return {
         "score": score,
         "rsi": r,
@@ -163,28 +194,24 @@ def trend_score(symbol, interval):
         "volume_x": vx,
         "support": min(lows[-24:]),
         "resistance": max(highs[-24:]),
-        "atr_pct": atr_pct
+        "atr_pct": atr_pct,
+        "continuation": cont_score,
+        "continuation_reasons": cont_reasons
     }
 def get_fear_greed():
     try:
         data = requests.get("https://api.alternative.me/fng/", timeout=10).json()
         value = int(data["data"][0]["value"])
         if value < 25:
-            label = "Extreme Fear"
-            mod = 5
+            return value, "Extreme Fear", 5
         elif value < 45:
-            label = "Fear"
-            mod = 2
+            return value, "Fear", 2
         elif value < 60:
-            label = "Neutral"
-            mod = 0
+            return value, "Neutral", 0
         elif value < 75:
-            label = "Greed"
-            mod = -3
+            return value, "Greed", -2
         else:
-            label = "Extreme Greed"
-            mod = -8
-        return value, label, mod
+            return value, "Extreme Greed", -6
     except:
         return 50, "no data", 0
 def get_news_risk():
@@ -212,15 +239,11 @@ def get_news_risk():
                 score += weight
                 found.append(word)
         if score >= 10:
-            label = "🔴 высокий"
-            mod = -12
+            return "🔴 высокий", -6, list(set(found))[:6]
         elif score >= 5:
-            label = "🟠 средний"
-            mod = -6
+            return "🟠 средний", -3, list(set(found))[:6]
         else:
-            label = "🟢 низкий"
-            mod = 0
-        return label, mod, list(set(found))[:6]
+            return "🟢 низкий", 0, list(set(found))[:6]
     except:
         return "⚪ нет данных", 0, []
 def btc_market_filter():
@@ -236,8 +259,8 @@ def btc_market_filter():
             score += 30
         if h4["score"] > 50:
             score += 30
-        if h1["rsi"] > 78:
-            score -= 20
+        if h1["rsi"] > 85:
+            score -= 10
         if change < -2:
             score -= 25
         if score >= 60:
@@ -245,7 +268,7 @@ def btc_market_filter():
         elif score >= 35:
             return "🟡 BTC фон нейтральный", 0, change
         else:
-            return "🔴 BTC фон слабый", -20, change
+            return "🔴 BTC фон слабый", -15, change
     except:
         return "⚪ BTC фон не определён", 0, 0
 def market_context():
@@ -299,7 +322,7 @@ def save_signal_history(results):
             "pot_high": c["pot_high"]
         }
     save_history(history)
-def potential_range(score, change, rsi_value, volume_x, atr_pct, macro_mod, resistance_gap):
+def potential_range(score, change, rsi_value, volume_x, atr_pct, macro_mod, resistance_gap, continuation):
     if score >= 90:
         low, high = 4.0, 9.0
     elif score >= 80:
@@ -310,28 +333,26 @@ def potential_range(score, change, rsi_value, volume_x, atr_pct, macro_mod, resi
         low, high = 1.0, 3.5
     else:
         low, high = 0.0, 2.0
-    high = min(high, max(2.0, atr_pct * 1.8))
+    high = min(high, max(2.0, atr_pct * 2.2))
+    if continuation >= 25:
+        low += 1.0
+        high += 1.5
     if volume_x >= 3:
         high += 1.5
     elif volume_x >= 2:
         high += 0.8
     if macro_mod < -10:
-        low -= 1.0
-        high -= 2.0
-    elif macro_mod < 0:
         high -= 1.0
+    elif macro_mod < 0:
+        high -= 0.5
     elif macro_mod > 8:
         high += 0.8
-    if rsi_value > 75:
-        high -= 2
-        low -= 0.5
-    if change > 15:
-        low = -3
-        high = min(high, 3)
+    if rsi_value > 82:
+        high -= 0.8
     if change > 25:
-        low = -8
-        high = min(high, 2)
-    if resistance_gap > 0:
+        low = -5
+        high = min(high, 3)
+    if resistance_gap > 0 and continuation < 25:
         high = min(high, max(1.0, resistance_gap))
     low = round(low, 1)
     high = round(max(high, low), 1)
@@ -359,9 +380,9 @@ def analyze_coin(symbol):
     if 8 < change <= 15:
         score += 8
         reasons.append("сильный импульс")
-    if change > 18:
-        score -= 25
-        risks.append("после пампа возможен откат")
+    if change > 25:
+        score -= 20
+        risks.append("очень сильный памп")
     if volume > 1_000_000:
         score += 10
         reasons.append("ликвидность > $1M")
@@ -380,15 +401,22 @@ def analyze_coin(symbol):
     if h1["volume_x"] >= 2:
         score += 15
         reasons.append(f"объём x{h1['volume_x']:.1f}")
-    if h1["rsi"] > 75:
-        score -= 20
-        risks.append("RSI перегрет")
+    if h1["continuation"] >= 25:
+        score += 20
+        reasons += h1["continuation_reasons"]
+    if 70 <= h1["rsi"] <= 82:
+        score += 8
+        reasons.append("RSI подтверждает сильный тренд")
+    elif h1["rsi"] > 82:
+        score -= 5
+        reasons.append("очень сильный импульс")
+        risks.append("возможен резкий откат")
     if h1["rsi"] < 35:
         score -= 10
         risks.append("импульс слабый")
     score += ctx["macro_mod"]
     if ctx["macro_mod"] < -8:
-        risks.append("макро/геополитика давит на риск-активы")
+        risks.append("геополитическая нестабильность")
     score = max(0, min(100, score))
     support = h1["support"]
     resistance = h1["resistance"]
@@ -400,7 +428,8 @@ def analyze_coin(symbol):
         h1["volume_x"],
         h1["atr_pct"],
         ctx["macro_mod"],
-        resistance_gap
+        resistance_gap,
+        h1["continuation"]
     )
     target_low = price * (1 + pot_low / 100)
     target_high = price * (1 + pot_high / 100)
@@ -581,7 +610,7 @@ def help_text():
         "/alerts — сильные движения\n"
         "/market — макро и рынок\n"
         "/help — помощь\n\n"
-        "В /signal учитывается: BTC фон, Fear & Greed, геополитика, RSI, MACD, ATR, объём, уровни и история прошлого сигнала."
+        "В /signal учитывается: BTC фон, Fear & Greed, геополитика, RSI, MACD, ATR, объём, уровни, continuation и история прошлого сигнала."
     )
 def main():
     last_update = None
