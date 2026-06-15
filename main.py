@@ -124,27 +124,64 @@ def volume_spike(volumes):
     if avg == 0:
         return 1
     return volumes[-1] / avg
-def continuation_score(closes, highs, lows):
-    if len(closes) < 20:
-        return 0, []
+def coin_profile(asset, volume):
+    if asset == "BTC":
+        return "BTC / низкая волатильность", 0.5, 3.0
+    if asset == "ETH":
+        return "ETH / средняя волатильность", 0.8, 4.0
+    if asset in ["SOL", "BNB", "XRP", "ADA", "AVAX", "LINK", "TON", "DOGE", "NEAR", "TAO"]:
+        return "крупный альт", 1.5, 7.0
+    if volume >= 20_000_000:
+        return "ликвидный альт", 2.0, 9.0
+    return "спекулятивный альт", 2.0, 12.0
+def divergence_check(closes, rsi_values):
+    if len(closes) < 20 or len(rsi_values) < 20:
+        return 0, "нет данных"
+    price_recent = max(closes[-6:])
+    price_prev = max(closes[-18:-6])
+    rsi_recent = max(rsi_values[-6:])
+    rsi_prev = max(rsi_values[-18:-6])
+    if price_recent > price_prev and rsi_recent < rsi_prev:
+        return -15, "bearish divergence"
+    if price_recent < price_prev and rsi_recent > rsi_prev:
+        return 10, "bullish divergence"
+    return 0, "дивергенции нет"
+def rsi_series(closes, period=14):
+    result = []
+    for i in range(len(closes)):
+        if i < period + 1:
+            result.append(50)
+        else:
+            result.append(rsi(closes[:i + 1], period))
+    return result
+def continuation_score(closes, highs, lows, volumes):
+    if len(closes) < 25:
+        return 0, [], False
     score = 0
     reasons = []
+    breakout_confirmed = False
     last = closes[-1]
     prev_high = max(highs[-12:-1])
     prev_low = min(lows[-12:-1])
+    vx = volume_spike(volumes)
     if last > prev_high:
-        score += 20
-        reasons.append("пробой локального high")
+        if vx >= 1.2:
+            score += 20
+            reasons.append("пробой high подтверждён объёмом")
+            breakout_confirmed = True
+        else:
+            score += 5
+            reasons.append("пробой high без сильного объёма")
     if lows[-1] > prev_low and lows[-3] > min(lows[-10:-3]):
         score += 15
         reasons.append("higher lows")
-    if closes[-1] > closes[-2] > closes[-3]:
-        score += 10
-        reasons.append("3 свечи роста подряд")
     if closes[-1] > statistics.mean(closes[-20:]):
         score += 10
         reasons.append("цена выше средней 20 свечей")
-    return score, reasons
+    if closes[-1] > closes[-2] > closes[-3] and vx >= 1:
+        score += 10
+        reasons.append("3 свечи роста подряд")
+    return score, reasons, breakout_confirmed
 def trend_score(symbol, interval):
     closes, highs, lows, volumes = get_candles(symbol, interval)
     if len(closes) < 30:
@@ -157,10 +194,15 @@ def trend_score(symbol, interval):
             "resistance": 0,
             "atr_pct": 0,
             "continuation": 0,
-            "continuation_reasons": []
+            "continuation_reasons": [],
+            "breakout_confirmed": False,
+            "divergence": "нет данных",
+            "divergence_score": 0
         }
     last = closes[-1]
     r = rsi(closes)
+    rsis = rsi_series(closes)
+    div_score, div_text = divergence_check(closes, rsis)
     e9 = ema(closes[-60:], 9)
     e21 = ema(closes[-60:], 21)
     e50 = ema(closes[-100:], 50)
@@ -168,25 +210,30 @@ def trend_score(symbol, interval):
     vx = volume_spike(volumes)
     a = atr(highs, lows, closes)
     atr_pct = (a / last) * 100 if last else 0
-    cont_score, cont_reasons = continuation_score(closes, highs, lows)
+    cont_score, cont_reasons, breakout_confirmed = continuation_score(closes, highs, lows, volumes)
     score = 0
     if e9 and e21 and e9 > e21:
-        score += 20
+        score += 18
     if e21 and e50 and e21 > e50:
-        score += 20
+        score += 18
     if 45 <= r <= 68:
-        score += 25
+        score += 22
     elif 68 < r <= 82:
         score += 12
-    elif r > 82:
-        score -= 5
+    elif 82 < r <= 90:
+        score += 3
+    elif r > 90:
+        score -= 12
     if m > 0:
-        score += 20
+        score += 18
     if vx >= 1.5:
         score += 15
+    elif vx < 0.7:
+        score -= 15
     if vx >= 3:
         score += 15
     score += cont_score
+    score += div_score
     return {
         "score": score,
         "rsi": r,
@@ -196,7 +243,10 @@ def trend_score(symbol, interval):
         "resistance": max(highs[-24:]),
         "atr_pct": atr_pct,
         "continuation": cont_score,
-        "continuation_reasons": cont_reasons
+        "continuation_reasons": cont_reasons,
+        "breakout_confirmed": breakout_confirmed,
+        "divergence": div_text,
+        "divergence_score": div_score
     }
 def get_fear_greed():
     try:
@@ -214,6 +264,17 @@ def get_fear_greed():
             return value, "Extreme Greed", -6
     except:
         return 50, "no data", 0
+def get_btc_dominance():
+    try:
+        data = requests.get("https://api.coingecko.com/api/v3/global", timeout=10).json()
+        dom = float(data["data"]["market_cap_percentage"]["btc"])
+        if dom > 55:
+            return dom, -5, "BTC dominance высокая"
+        if dom < 52:
+            return dom, 5, "BTC dominance снижается, альтам легче"
+        return dom, 0, "BTC dominance нейтральная"
+    except:
+        return 0, 0, "BTC dominance нет данных"
 def get_news_risk():
     try:
         url = "https://news.google.com/rss/search?q=iran+oil+hormuz+fed+trump+tariff+war+crypto+bitcoin&hl=en-US&gl=US&ceid=US:en"
@@ -239,9 +300,9 @@ def get_news_risk():
                 score += weight
                 found.append(word)
         if score >= 10:
-            return "🔴 высокий", -6, list(set(found))[:6]
+            return "🔴 высокий", -5, list(set(found))[:6]
         elif score >= 5:
-            return "🟠 средний", -3, list(set(found))[:6]
+            return "🟠 средний", -2, list(set(found))[:6]
         else:
             return "🟢 низкий", 0, list(set(found))[:6]
     except:
@@ -259,7 +320,7 @@ def btc_market_filter():
             score += 30
         if h4["score"] > 50:
             score += 30
-        if h1["rsi"] > 85:
+        if h1["rsi"] > 90:
             score -= 10
         if change < -2:
             score -= 25
@@ -275,7 +336,8 @@ def market_context():
     fg_value, fg_label, fg_mod = get_fear_greed()
     geo_label, geo_mod, geo_words = get_news_risk()
     btc_status, btc_mod, btc_change = btc_market_filter()
-    total_mod = fg_mod + geo_mod + btc_mod
+    dom, dom_mod, dom_text = get_btc_dominance()
+    total_mod = fg_mod + geo_mod + btc_mod + dom_mod
     if total_mod >= 8:
         state = "🟢 благоприятный"
     elif total_mod >= -5:
@@ -291,6 +353,8 @@ def market_context():
         "btc_status": btc_status,
         "btc_mod": btc_mod,
         "btc_change": btc_change,
+        "btc_dominance": dom,
+        "btc_dominance_text": dom_text,
         "macro_mod": total_mod
     }
 def get_signal_status(symbol, price, score):
@@ -322,45 +386,57 @@ def save_signal_history(results):
             "pot_high": c["pot_high"]
         }
     save_history(history)
-def potential_range(score, change, rsi_value, volume_x, atr_pct, macro_mod, resistance_gap, continuation):
+def potential_range(asset, score, change, rsi_value, volume_x, atr_pct, macro_mod, resistance_gap, continuation, breakout_confirmed, divergence_score, volume):
+    profile, base_low, base_high = coin_profile(asset, volume)
     if score >= 90:
-        low, high = 4.0, 9.0
+        low, high = base_low + 2.0, base_high
     elif score >= 80:
-        low, high = 3.0, 7.0
+        low, high = base_low + 1.0, base_high - 1.0
     elif score >= 70:
-        low, high = 2.0, 5.0
+        low, high = base_low, base_high - 2.0
     elif score >= 60:
-        low, high = 1.0, 3.5
+        low, high = 0.5, min(base_high, 3.5)
     else:
-        low, high = 0.0, 2.0
-    high = min(high, max(2.0, atr_pct * 2.2))
+        low, high = -1.5, 2.0
+    if atr_pct > 0:
+        high = min(high, max(1.5, atr_pct * 2.5))
     if continuation >= 25:
-        low += 1.0
-        high += 1.5
-    if volume_x >= 3:
-        high += 1.5
-    elif volume_x >= 2:
+        low += 0.8
+        high += 1.0
+    if breakout_confirmed:
+        high += 1.0
+    if volume_x < 0.7:
+        low -= 0.5
+        high -= 1.5
+    if volume_x >= 2:
         high += 0.8
     if macro_mod < -10:
         high -= 1.0
     elif macro_mod < 0:
         high -= 0.5
     elif macro_mod > 8:
-        high += 0.8
-    if rsi_value > 82:
+        high += 0.5
+    if divergence_score < 0:
+        low -= 1.0
+        high -= 2.0
+    if rsi_value > 90:
+        low -= 2.0
+        high -= 2.5
+    elif rsi_value > 82:
         high -= 0.8
     if change > 25:
-        low = -5
+        low = min(low, -4)
         high = min(high, 3)
-    if resistance_gap > 0 and continuation < 25:
+    if resistance_gap > 0 and not breakout_confirmed:
         high = min(high, max(1.0, resistance_gap))
     low = round(low, 1)
     high = round(max(high, low), 1)
-    return low, high
+    return low, high, profile
 def analyze_coin(symbol):
     ticker = get_ticker(symbol)
     if not ticker:
         return None
+    asset = symbol.replace("-USDT", "")
     price = float(ticker.get("last", 0) or 0)
     change = float(ticker.get("changeRate", 0) or 0) * 100
     volume = float(ticker.get("volValue", 0) or 0)
@@ -401,27 +477,39 @@ def analyze_coin(symbol):
     if h1["volume_x"] >= 2:
         score += 15
         reasons.append(f"объём x{h1['volume_x']:.1f}")
+    if h1["volume_x"] < 0.7:
+        score -= 20
+        risks.append("рост без подтверждения объёмом")
     if h1["continuation"] >= 25:
         score += 20
         reasons += h1["continuation_reasons"]
+    if h1["divergence_score"] < 0:
+        score -= 15
+        risks.append("bearish divergence")
+    if h1["breakout_confirmed"]:
+        score += 10
+        reasons.append("breakout подтверждён")
     if 70 <= h1["rsi"] <= 82:
         score += 8
         reasons.append("RSI подтверждает сильный тренд")
-    elif h1["rsi"] > 82:
+    elif 82 < h1["rsi"] <= 90:
         score -= 5
-        reasons.append("очень сильный импульс")
-        risks.append("возможен резкий откат")
+        risks.append("RSI высокий, возможен откат")
+    elif h1["rsi"] > 90:
+        score -= 20
+        risks.append("RSI экстремально перегрет")
     if h1["rsi"] < 35:
         score -= 10
         risks.append("импульс слабый")
     score += ctx["macro_mod"]
     if ctx["macro_mod"] < -8:
-        risks.append("геополитическая нестабильность")
+        risks.append("макро/геополитика давит на риск-активы")
     score = max(0, min(100, score))
     support = h1["support"]
     resistance = h1["resistance"]
     resistance_gap = ((resistance / price) - 1) * 100 if resistance > price else 0
-    pot_low, pot_high = potential_range(
+    pot_low, pot_high, profile = potential_range(
+        asset,
         score,
         change,
         h1["rsi"],
@@ -429,7 +517,10 @@ def analyze_coin(symbol):
         h1["atr_pct"],
         ctx["macro_mod"],
         resistance_gap,
-        h1["continuation"]
+        h1["continuation"],
+        h1["breakout_confirmed"],
+        h1["divergence_score"],
+        volume
     )
     target_low = price * (1 + pot_low / 100)
     target_high = price * (1 + pot_high / 100)
@@ -437,18 +528,24 @@ def analyze_coin(symbol):
     downside = ((price / stop) - 1) * 100 if stop else 0
     if score >= 80:
         verdict = "🟢 сильный сигнал"
-        probability = min(78, 50 + int(score / 4))
+        probability = min(76, 48 + int(score / 4))
     elif score >= 60:
         verdict = "🟡 средний сигнал"
-        probability = min(65, 42 + int(score / 5))
+        probability = min(64, 40 + int(score / 5))
     else:
         verdict = "🔴 слабый сигнал"
-        probability = min(50, 30 + int(score / 6))
+        probability = min(48, 30 + int(score / 6))
+    if h1["volume_x"] < 0.7:
+        probability -= 8
+    if h1["rsi"] > 90:
+        probability -= 12
+    probability = max(20, min(78, probability))
     if pot_high <= 1.5:
-        verdict = "🟡 потенциал ограничен сопротивлением"
-    status, fact = get_signal_status(symbol.replace("-USDT", ""), price, score)
+        verdict = "🟡 потенциал ограничен"
+    status, fact = get_signal_status(asset, price, score)
     return {
-        "symbol": symbol.replace("-USDT", ""),
+        "symbol": asset,
+        "profile": profile,
         "price": price,
         "change": change,
         "volume": volume,
@@ -467,6 +564,7 @@ def analyze_coin(symbol):
         "atr_pct": h1["atr_pct"],
         "ctx": ctx,
         "status": status,
+        "divergence": h1["divergence"],
         "reasons": reasons,
         "risks": risks
     }
@@ -504,6 +602,7 @@ def get_signal():
             f"Рынок: {ctx['state']}\n"
             f"{ctx['btc_status']} | BTC 24ч: {ctx['btc_change']:.2f}%\n"
             f"Fear & Greed: {ctx['fg_value']} ({ctx['fg_label']})\n"
+            f"BTC dominance: {ctx['btc_dominance']:.1f}% — {ctx['btc_dominance_text']}\n"
             f"Геориск: {ctx['geo_label']}"
         )
         if ctx["geo_words"]:
@@ -512,6 +611,7 @@ def get_signal():
         for i, c in enumerate(top, 1):
             text += (
                 f"{i}. {c['symbol']} — {c['verdict']}\n"
+                f"Тип: {c['profile']}\n"
                 f"{c['status']}\n"
                 f"Цена: ${c['price']:.6g}\n"
                 f"24ч: {c['change']:.2f}%\n"
@@ -523,7 +623,8 @@ def get_signal():
                 f"RSI 1h: {c['rsi']:.1f}\n"
                 f"MACD 1h: {c['macd']:.6g}\n"
                 f"ATR 1h: {c['atr_pct']:.2f}%\n"
-                f"Объём 1h: x{c['volume_x']:.1f}\n\n"
+                f"Объём 1h: x{c['volume_x']:.1f}\n"
+                f"Дивергенция: {c['divergence']}\n\n"
                 f"Почему: {', '.join(c['reasons']) if c['reasons'] else 'нет сильных причин'}\n"
                 f"Риски: {', '.join(c['risks']) if c['risks'] else 'умеренные'}\n\n"
             )
@@ -551,6 +652,7 @@ def single_analysis(symbol):
         return "Монета не найдена."
     return (
         f"📊 Анализ {c['symbol']}\n\n"
+        f"Тип: {c['profile']}\n"
         f"{c['ctx']['btc_status']}\n"
         f"Геориск: {c['ctx']['geo_label']}\n"
         f"Цена: ${c['price']:.6g}\n"
@@ -564,7 +666,8 @@ def single_analysis(symbol):
         f"RSI: {c['rsi']:.1f}\n"
         f"MACD: {c['macd']:.6g}\n"
         f"ATR: {c['atr_pct']:.2f}%\n"
-        f"Объём: x{c['volume_x']:.1f}\n\n"
+        f"Объём: x{c['volume_x']:.1f}\n"
+        f"Дивергенция: {c['divergence']}\n\n"
         f"Почему: {', '.join(c['reasons']) if c['reasons'] else 'нет сильных причин'}\n"
         f"Риски: {', '.join(c['risks']) if c['risks'] else 'умеренные'}"
     )
@@ -596,6 +699,7 @@ def market_status():
         f"Рынок: {ctx['state']}\n"
         f"{ctx['btc_status']} | BTC 24ч: {ctx['btc_change']:.2f}%\n"
         f"Fear & Greed: {ctx['fg_value']} ({ctx['fg_label']})\n"
+        f"BTC dominance: {ctx['btc_dominance']:.1f}% — {ctx['btc_dominance_text']}\n"
         f"Геориск: {ctx['geo_label']}\n"
         f"Темы: {', '.join(ctx['geo_words']) if ctx['geo_words'] else 'нет сильных триггеров'}\n\n"
         f"Если геориск высокий или BTC слабый — альт-сигналы использовать осторожно."
@@ -610,7 +714,7 @@ def help_text():
         "/alerts — сильные движения\n"
         "/market — макро и рынок\n"
         "/help — помощь\n\n"
-        "В /signal учитывается: BTC фон, Fear & Greed, геополитика, RSI, MACD, ATR, объём, уровни, continuation и история прошлого сигнала."
+        "В /signal учитывается: BTC фон, Fear & Greed, BTC dominance, геополитика, RSI, MACD, ATR, объём, уровни, breakout, divergence, continuation и история прошлого сигнала."
     )
 def main():
     last_update = None
