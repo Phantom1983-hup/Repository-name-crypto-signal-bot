@@ -15,7 +15,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v2.3 HARD FILTER"
+BOT_VERSION = "v2.4 PUMP FILTER"
 
 CHAT_ID_FILE = "chat_id.txt"
 HISTORY_FILE = "signal_history.json"
@@ -723,8 +723,10 @@ def alex_edge_ultra(symbol):
 
     stop = max(technical_stop, max_allowed_stop)
     downside = percent_change(price, stop)
-
-    if asset in EVENT_ASSETS and chance_5 >= 42:
+    if change_24 >= 25:
+        verdict = "🔴 ПОЗДНИЙ ПАМП"
+        action = "SKIP"
+    elif asset in EVENT_ASSETS and chance_5 >= 42:
         verdict = "📌 СОБЫТИЙНАЯ МОНЕТА"
         action = "WATCH"
     elif d["early_impulse"] and chance_5 >= 58 and high >= 5:
@@ -736,7 +738,7 @@ def alex_edge_ultra(symbol):
     elif chance_5 >= 65 and high >= 5:
         verdict = "🟢 ПОКУПКА / цель +5%"
         action = "BUY"
-    elif chance_5 >= 35 and high >= 4:
+    elif chance_5 >= 35 and high >= 5:
         verdict = "🟡 НАБЛЮДАТЬ"
         action = "WATCH"
     elif (
