@@ -16,6 +16,8 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+BOT_VERSION = "v2.3 HARD FILTER"
+
 CHAT_ID_FILE = "chat_id.txt"
 HISTORY_FILE = "signal_history.json"
 PUMP_FILE = "pump_history.json"
@@ -69,7 +71,7 @@ def keyboard():
             ["/signal", "/top"],
             ["/btc", "/sol"],
             ["/alerts", "/market"],
-            ["/help"]
+            ["/version", "/help"]
         ],
         "resize_keyboard": True
     }
@@ -941,7 +943,7 @@ def get_signal():
         )[:5]
 
         if not buy and not watch and not pumps and not late_pumps:
-            return "Сейчас нет нормальных идей для покупки."
+            return f"🚀 ALEX EDGE ULTRA {BOT_VERSION}\n\nСейчас нет нормальных идей для покупки."
 
         save_signal_history(buy + watch + pumps)
 
@@ -957,7 +959,7 @@ def get_signal():
         ctx = ctx_source["ctx"]
 
         text = (
-            f"🚀 ALEX EDGE ULTRA\n"
+            f"🚀 ALEX EDGE ULTRA {BOT_VERSION}\n"
             f"Рынок: {ctx['state']}\n"
             f"BTC: {ctx['btc_text']} | BTC 24ч: {ctx['btc_change']:.2f}%\n"
             f"Настроение: {ctx['fg_value']} — {ctx['fg_text']}\n"
@@ -1041,7 +1043,7 @@ def get_fast_pumps():
         if not found:
             return None, []
 
-        text = "🔥 ALEX FAST PUMP\n\n"
+        text = f"🔥 ALEX FAST PUMP {BOT_VERSION}\n\n"
 
         for i, c in enumerate(found, 1):
             text += (
@@ -1087,7 +1089,7 @@ def get_top():
             reverse=True
         )[:10]
 
-        text = "📈 Топ KuCoin по объёму:\n\n"
+        text = f"📈 Топ KuCoin по объёму\nВерсия: {BOT_VERSION}\n\n"
 
         for coin in top:
             symbol = coin.get("symbol", "").replace("-USDT", "")
@@ -1104,15 +1106,16 @@ def single_analysis(symbol):
     c = alex_edge_ultra(symbol)
 
     if not c:
-        return "Монета не найдена."
+        return f"Версия: {BOT_VERSION}\nМонета не найдена."
 
-    return format_signal_item(1, c)
+    return f"Версия: {BOT_VERSION}\n\n" + format_signal_item(1, c)
 
 def market_status():
     ctx = market_context()
 
     text = (
-        f"🌍 Обзор рынка\n\n"
+        f"🌍 Обзор рынка\n"
+        f"Версия: {BOT_VERSION}\n\n"
         f"Рынок: {ctx['state']}\n"
         f"BTC: {ctx['btc_text']} | BTC 24ч: {ctx['btc_change']:.2f}%\n"
         f"Настроение: {ctx['fg_value']} — {ctx['fg_text']}\n"
@@ -1131,6 +1134,7 @@ def market_status():
 
 def help_text():
     return (
+        f"Версия бота: {BOT_VERSION}\n\n"
         "✅ Команды:\n\n"
         "/signal — монеты для покупки/наблюдения\n"
         "/top — топ монет по объёму\n"
@@ -1138,6 +1142,7 @@ def help_text():
         "/sol — анализ SOL\n"
         "/alerts — быстрые пампы\n"
         "/market — фон рынка\n"
+        "/version — версия бота\n"
         "/help — помощь\n\n"
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход\n"
@@ -1176,6 +1181,9 @@ def main():
                 elif text == "/help":
                     send_message(chat_id, help_text())
 
+                elif text == "/version":
+                    send_message(chat_id, f"✅ Текущая версия бота: {BOT_VERSION}")
+
                 elif text == "/top":
                     send_message(chat_id, get_top())
 
@@ -1195,7 +1203,7 @@ def main():
                 elif text == "/alerts":
                     send_message(chat_id, "⏳ Проверяю быстрые пампы...")
                     text_alert, _ = get_fast_pumps()
-                    send_message(chat_id, text_alert if text_alert else "Сейчас быстрых памп-сигналов нет.")
+                    send_message(chat_id, text_alert if text_alert else f"Версия: {BOT_VERSION}\nСейчас быстрых памп-сигналов нет.")
 
             saved_chat_id = load_chat_id()
 
