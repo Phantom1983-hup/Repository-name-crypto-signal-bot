@@ -1169,7 +1169,6 @@ def main():
     last_market_key = None
     last_pump_key = None
     
-    ```
     while True:
         try:
             updates = get_updates(last_update)
@@ -1257,7 +1256,6 @@ def main():
         except Exception as e:
             print(e)
             time.sleep(5)
-```
 
 if **name** == "**main**":
 keep_alive()
