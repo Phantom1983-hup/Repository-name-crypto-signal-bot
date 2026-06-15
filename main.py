@@ -724,9 +724,19 @@ def alex_edge_ultra(symbol):
     elif asset in EVENT_ASSETS and chance_5 >= 42:
         verdict = "📌 СОБЫТИЙНАЯ МОНЕТА"
         action = "WATCH"
-    elif is_quality and d["trend_1h"] and d["trend_4h"] and change_24 > 0:
-        verdict = "🟡 НАБЛЮДАТЬ"
-        action = "WATCH"
+    ```python
+elif (
+    is_quality
+    and d["trend_1h"]
+    and d["trend_4h"]
+    and change_24 > 0
+    and chance_5 >= 35
+    and high >= 4
+):
+    verdict = "🟡 НАБЛЮДАТЬ"
+    action = "WATCH"
+```
+
     elif chance_5 >= 50 and high >= 4:
         verdict = "🟡 НАБЛЮДАТЬ"
         action = "WATCH"
