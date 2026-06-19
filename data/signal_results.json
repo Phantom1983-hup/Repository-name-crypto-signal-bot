@@ -29,13 +29,13 @@
       "learning_delta": 0,
       "learning_note": "v11.4 repair: старый raw-сигнал переведён в безопасное наблюдение",
       "time": 1781877694.3746924,
-      "last_seen": 1781878587.5263236,
-      "seen_count": 2,
+      "last_seen": 1781879694.9933,
+      "seen_count": 3,
       "results": {},
-      "last_price": 1698.32,
-      "last_score": 90,
+      "last_price": 1702.79,
+      "last_score": 70,
       "last_action": "ACCUM",
-      "last_verdict": "🟦 СРЕДНЕСРОЧНЫЙ НАБОР"
+      "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ"
     },
     "BTC_1781878587": {
       "asset": "BTC",
@@ -66,11 +66,15 @@
       "learning_delta": 0,
       "learning_note": "v11.5 repair: старый raw-сигнал переведён в безопасное наблюдение",
       "time": 1781878587.5263236,
-      "last_seen": 1781878587.5263236,
-      "seen_count": 1,
-      "results": {}
+      "last_seen": 1781879694.9933,
+      "seen_count": 2,
+      "results": {},
+      "last_price": 63215.9,
+      "last_score": 68,
+      "last_action": "ACCUM",
+      "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ"
     }
   },
   "closed": [],
-  "version": "v11.4 LEARNING AFTER RISK FIX"
+  "version": "v11.5 EXTREME FEAR WORDING FIX"
 }
