@@ -19,7 +19,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v11.8 ADMIN QUICK UPDATE"
+BOT_VERSION = "v11.9 DEPLOY NOTIFY"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -45,6 +45,7 @@ ADMIN_STATE_FILE = data_path("admin_deploy_state.json")
 ADMIN_UPLOAD_FILE = data_path("admin_uploaded_main.py")
 LAST_UPDATE_FILE = data_path("last_update_id.txt")
 SIGNAL_LOCK_FILE = data_path("signal_lock.json")
+DEPLOY_NOTIFY_FILE = data_path("deploy_notify.json")
 SIGNAL_LOCK_TTL = int(os.getenv("SIGNAL_LOCK_TTL", "600"))
 
 # === v11.0 admin auto deploy ===
@@ -452,6 +453,65 @@ def force_clear_signal_lock():
     save_json(SIGNAL_LOCK_FILE, data)
     sync_github_storage_now([SIGNAL_LOCK_FILE, LAST_UPDATE_FILE, CHAT_ID_FILE], max_files=3)
 
+def notify_deploy_started():
+    """
+    v11.9:
+    После Render deploy бот запускается заново.
+    Если версия изменилась — отправляем админу уведомление, что новая версия реально стартовала.
+    """
+    try:
+        chat_id = ADMIN_CHAT_ID or load_chat_id()
+        if not chat_id:
+            return
+
+        data = load_json(DEPLOY_NOTIFY_FILE)
+        if not isinstance(data, dict):
+            data = {}
+
+        previous_version = data.get("version")
+        current_version = BOT_VERSION
+
+        # Не спамим при обычном рестарте той же версии.
+        if previous_version == current_version:
+            return
+
+        commit = (
+            os.getenv("RENDER_GIT_COMMIT")
+            or os.getenv("RENDER_COMMIT")
+            or os.getenv("COMMIT_SHA")
+            or ""
+        )
+        commit_short = commit[:8] if commit else ""
+
+        lines = [
+            "✅ Render запустил новую версию бота",
+            f"Версия: {current_version}",
+        ]
+
+        if previous_version:
+            lines.append(f"Было: {previous_version}")
+
+        if commit_short:
+            lines.append(f"Commit: {commit_short}")
+
+        lines.append("")
+        lines.append("Проверь: /version")
+        lines.append("Если нужно очистить очередь: /flush")
+
+        send_message(chat_id, "\n".join(lines))
+
+        save_json(DEPLOY_NOTIFY_FILE, {
+            "version": current_version,
+            "previous_version": previous_version,
+            "notified_at": time.time(),
+            "commit": commit_short,
+        })
+
+        background_github_sync([DEPLOY_NOTIFY_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
+
+    except Exception as e:
+        print(f"deploy notify error: {e}")
+
 def storage_report():
     lines = [
         f"💾 Хранилище ALEX EDGE",
@@ -469,6 +529,7 @@ def storage_report():
         file_info_line(CHAT_ID_FILE, "chat_id.txt"),
         file_info_line(LAST_UPDATE_FILE, "last_update_id.txt / анти-дубли Telegram"),
         file_info_line(SIGNAL_LOCK_FILE, "signal_lock.json / анти-дубли /signal"),
+        file_info_line(DEPLOY_NOTIFY_FILE, "deploy_notify.json / уведомление о deploy"),
         "",
         "Для Free Render: включи GITHUB_DATA_STORAGE=1 и json будет храниться в GitHub.",
         "Для платного Render Persistent Disk: mount path /var/data и env DATA_DIR=/var/data."
@@ -526,7 +587,8 @@ def admin_help():
         "Можно быстрее: просто отправь main*.py документом от ADMIN_CHAT_ID\n"
         "/admin_cancel — отменить загрузку\n"
         "/rollback — вернуть последний backup из GitHub\n"
-        "/signal_unlock — аварийно снять lock /signal\n\n"
+        "/signal_unlock — аварийно снять lock /signal\n"
+        "После Render deploy бот сам пришлёт уведомление о новой версии\n\n"
         "Нужные ENV на Render:\n"
         "ADMIN_CHAT_ID — твой Telegram chat_id\n"
         "GITHUB_TOKEN — GitHub token с правом Contents write\n"
@@ -6865,7 +6927,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v11.8: админские кнопки, быстрый upload main*.py без команды, полный скан 35 монет сохранён"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v11.9: уведомление админу после успешного Render deploy + быстрый upload main*.py"
     )
 
 
@@ -6877,6 +6939,10 @@ def moscow_now():
 
 def main():
     last_update = load_last_update_id()
+
+    # v11.9: уведомляем админа, когда Render реально запустил новую версию.
+    notify_deploy_started()
+
     last_signal_key = None
     last_market_key = None
     last_pump_key = None
