@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v12.6 ONE BUTTON SIGNAL"
+BOT_VERSION = "v12.7 COMPACT MENU"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1000,7 +1000,6 @@ def weekday_report():
 
 BUTTON_TO_COMMAND = {
     "📊 Сигнал": "/signal",
-    "🧹 Flush": "/flush",
     "🔎 Монета": "/coin",
     "🟠 BTC": "/btc",
     "🟣 SOL": "/sol",
@@ -1009,6 +1008,7 @@ BUTTON_TO_COMMAND = {
     "🌍 Рынок": "/market",
     "⚡ Alerts": "/alerts",
     "📚 Обучение": "/learning",
+    "☰ Ещё": "/more",
     "🏆 Топ": "/top",
     "📈 Топ": "/top",     # старая кнопка, оставлена как alias
     "⚙️ Версия": "/version",
@@ -1017,6 +1017,7 @@ BUTTON_TO_COMMAND = {
     "📅 Дни недели": "/weekday",
     "🛠 Admin": "/admin",
     "⬆️ Обновить": "/admin_update",
+    "🧹 Flush": "/flush",
     "🔓 Unlock": "/signal_unlock",
     "📡 Signal status": "/signal_status",
     "🔄 Sync": "/sync_storage",
@@ -1073,23 +1074,47 @@ def coin_search_prompt():
     )
 
 def keyboard(chat_id=None):
+    """
+    v12.7:
+    Главное меню компактное — только основные кнопки,
+    чтобы клавиатура не занимала пол-экрана телефона.
+    """
     rows = [
         ["📊 Сигнал", "🔎 Монета"],
         ["🟠 BTC", "🟣 SOL"],
         ["🌍 Рынок", "⚡ Alerts"],
-        ["📚 Обучение", "🏆 Топ"],
-        ["⚙️ Версия", "❓ Помощь"]
+        ["📚 Обучение", "☰ Ещё"]
     ]
-
-    # v11.8: админские кнопки показываем только ADMIN_CHAT_ID.
-    if chat_id and is_admin(chat_id):
-        rows.append(["🛠 Admin", "⬆️ Обновить"])
-        rows.append(["🧹 Flush"])
-        rows.append(["🔓 Unlock", "📡 Signal status"])
-        rows.append(["🔄 Sync"])
 
     return {
         "keyboard": rows,
+        "resize_keyboard": True
+    }
+
+def more_keyboard(chat_id=None):
+    rows = [
+        ["🏆 Топ", "⚙️ Версия"],
+        ["❓ Помощь", "📅 Дни недели"],
+    ]
+
+    if chat_id and is_admin(chat_id):
+        rows.append(["🛠 Admin", "💾 Хранилище"])
+
+    rows.append(["⬅️ Назад"])
+
+    return {
+        "keyboard": rows,
+        "resize_keyboard": True
+    }
+
+def admin_keyboard():
+    return {
+        "keyboard": [
+            ["⬆️ Обновить", "🧹 Flush"],
+            ["🔓 Unlock", "📡 Signal status"],
+            ["🔄 Sync", "💾 Хранилище"],
+            ["⬅️ Назад"]
+        ],
         "resize_keyboard": True
     }
 
@@ -7589,7 +7614,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v12.6: одна кнопка 📊 Сигнал снова даёт полный стабильный список 35 монет"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v12.7: компактное меню — внизу только основные кнопки, остальное убрано в ☰ Ещё и 🛠 Admin"
     )
 
 
@@ -7700,7 +7725,7 @@ def main():
                     coin_search_waiting.discard(chat_id)
 
                 if text == "/start":
-                    send_message(chat_id, "✅ Бот работает\nДобавлены GitHub-хранилище, admin-кнопки и быстрый upload main.py.\n\n" + help_text())
+                    send_message(chat_id, "✅ Бот работает\nГлавное меню стало компактнее: внизу только основные кнопки, остальное спрятано в ☰ Ещё и 🛠 Admin.\n\n" + help_text())
 
                 elif text == "/help":
                     send_message(chat_id, help_text())
@@ -7746,8 +7771,22 @@ def main():
                     send_message(chat_id, "⏳ Собираю статистику по дням недели, это может занять 20–40 секунд...")
                     send_message(chat_id, weekday_report())
 
+                elif text == "/more":
+                    send_message(
+                        chat_id,
+                        "📋 Дополнительное меню. Здесь второстепенные команды, чтобы главное меню оставалось компактным.",
+                        reply_markup=more_keyboard(chat_id)
+                    )
+
                 elif text == "/admin":
-                    send_message(chat_id, admin_help())
+                    if is_admin(chat_id):
+                        send_message(
+                            chat_id,
+                            "🛠 Админ-панель. Основное меню специально упрощено, поэтому служебные кнопки вынесены сюда.",
+                            reply_markup=admin_keyboard()
+                        )
+                    else:
+                        send_message(chat_id, admin_help())
 
                 elif text == "/admin_update":
                     send_message(chat_id, admin_start_update(chat_id))
