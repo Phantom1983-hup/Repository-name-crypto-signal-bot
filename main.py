@@ -19,7 +19,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v11.7.1 FULL SCAN FAST CONTEXT"
+BOT_VERSION = "v11.8 ADMIN QUICK UPDATE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -522,7 +522,8 @@ def admin_help():
         "/storage — проверить постоянное хранилище\n"
         "/backup — прислать json-файлы статистики\n"
         "/weekday — статистика по дням недели\n"
-        "/admin_update — начать загрузку нового main.py через Telegram\n"
+        "/admin_update или кнопка ⬆️ Обновить — начать загрузку main.py\n"
+        "Можно быстрее: просто отправь main*.py документом от ADMIN_CHAT_ID\n"
         "/admin_cancel — отменить загрузку\n"
         "/rollback — вернуть последний backup из GitHub\n"
         "/signal_unlock — аварийно снять lock /signal\n\n"
@@ -636,6 +637,7 @@ def admin_start_update(chat_id):
     return (
         "🛠 Режим обновления включён.\n\n"
         "Теперь отправь мне файл Python как документ, лучше с именем main.py.\n"
+        "В v11.8 можно ещё быстрее: админ может просто отправить main*.py без команды /admin_update.\n"
         "Я проверю compile, сделаю backup старого main.py в GitHub, загружу новый файл и вызову Render deploy hook.\n\n"
         "Отмена: /admin_cancel"
     )
@@ -675,12 +677,22 @@ def admin_handle_document(chat_id, msg):
         return "⛔ Нет доступа."
 
     state = load_admin_state()
-    if not state.get("waiting_file"):
-        return None
 
     doc = msg.get("document") or {}
     file_id = doc.get("file_id")
     filename = doc.get("file_name", "main.py")
+
+    # v11.8:
+    # Быстрый режим: админ может просто отправить main*.py документом,
+    # без предварительной команды /admin_update.
+    direct_quick_update = (
+        is_admin(chat_id)
+        and filename.endswith(".py")
+        and filename.lower().startswith("main")
+    )
+
+    if not state.get("waiting_file") and not direct_quick_update:
+        return None
 
     if not file_id:
         return "Не вижу file_id у документа."
@@ -732,7 +744,9 @@ def admin_handle_document(chat_id, msg):
             f"Версия файла: {upload_version}\n"
             f"Backup: {backup_path or 'не создан'}\n"
             f"{deploy_msg}\n\n"
-            "Через 1–3 минуты проверь /version."
+            "Через 1–3 минуты проверь /version.\n\n"
+            "v11.8: в следующий раз можно нажать кнопку ⬆️ Обновить "
+            "или просто отправить main*.py документом."
         )
 
     except Exception as e:
@@ -927,6 +941,10 @@ BUTTON_TO_COMMAND = {
     "❓ Помощь": "/help",
     "💾 Хранилище": "/storage",
     "📅 Дни недели": "/weekday",
+    "🛠 Admin": "/admin",
+    "⬆️ Обновить": "/admin_update",
+    "🔓 Unlock": "/signal_unlock",
+    "🔄 Sync": "/sync_storage",
 }
 
 POPULAR_COINS = [
@@ -979,15 +997,22 @@ def coin_search_prompt():
         "Команду /coin ETH писать больше не обязательно."
     )
 
-def keyboard():
+def keyboard(chat_id=None):
+    rows = [
+        ["📊 Сигнал", "🔎 Монета"],
+        ["🟠 BTC", "🟣 SOL"],
+        ["🌍 Рынок", "⚡ Alerts"],
+        ["📚 Обучение", "🏆 Топ"],
+        ["⚙️ Версия", "❓ Помощь"]
+    ]
+
+    # v11.8: админские кнопки показываем только ADMIN_CHAT_ID.
+    if chat_id and is_admin(chat_id):
+        rows.append(["🛠 Admin", "⬆️ Обновить"])
+        rows.append(["🔓 Unlock", "🔄 Sync"])
+
     return {
-        "keyboard": [
-            ["📊 Сигнал", "🔎 Монета"],
-            ["🟠 BTC", "🟣 SOL"],
-            ["🌍 Рынок", "⚡ Alerts"],
-            ["📚 Обучение", "🏆 Топ"],
-            ["⚙️ Версия", "❓ Помощь"]
-        ],
+        "keyboard": rows,
         "resize_keyboard": True
     }
 
@@ -1024,7 +1049,7 @@ def send_message(chat_id, text, reply_markup=None):
     for part in parts:
         requests.post(
             f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
-            json={"chat_id": chat_id, "text": part, "reply_markup": reply_markup or keyboard()},
+            json={"chat_id": chat_id, "text": part, "reply_markup": reply_markup or keyboard(chat_id)},
             timeout=20
         )
         time.sleep(0.3)
@@ -6840,7 +6865,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v11.7.1: полный скан 35 монет сохранён, ускорение за счёт cache market_context и фонового GitHub sync"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v11.8: админские кнопки, быстрый upload main*.py без команды, полный скан 35 монет сохранён"
     )
 
 
@@ -6947,7 +6972,7 @@ def main():
                     coin_search_waiting.discard(chat_id)
 
                 if text == "/start":
-                    send_message(chat_id, "✅ Бот работает\nДобавлены бесплатное GitHub-хранилище, /backup, /weekday и admin auto deploy.\n\n" + help_text())
+                    send_message(chat_id, "✅ Бот работает\nДобавлены GitHub-хранилище, admin-кнопки и быстрый upload main.py.\n\n" + help_text())
 
                 elif text == "/help":
                     send_message(chat_id, help_text())
