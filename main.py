@@ -1,5 +1,6 @@
 from flask import Flask
 from threading import Thread
+from concurrent.futures import ThreadPoolExecutor, as_completed, TimeoutError as FuturesTimeoutError
 import os, time, json, requests, statistics, re, base64
 from datetime import datetime, timedelta
 from email.utils import parsedate_to_datetime
@@ -19,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v11.9 DEPLOY NOTIFY"
+BOT_VERSION = "v12.0 SIGNAL TIMEBOX FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -73,6 +74,10 @@ MOSCOW_OFFSET_HOURS = 3
 
 REPEAT_PUMP_AFTER = 4 * 60 * 60
 ANALYZE_LIMIT = int(os.getenv("ANALYZE_LIMIT", "35"))
+COIN_ANALYSIS_WORKERS = int(os.getenv("COIN_ANALYSIS_WORKERS", "8"))
+SIGNAL_TIME_BUDGET = int(os.getenv("SIGNAL_TIME_BUDGET", "75"))
+CANDLE_TIMEOUT = int(os.getenv("CANDLE_TIMEOUT", "5"))
+NEWS_TIMEOUT = int(os.getenv("NEWS_TIMEOUT", "4"))
 
 QUALITY_ASSETS = [
     "BTC", "ETH", "SOL", "BNB", "XRP", "ADA", "AVAX", "LINK",
@@ -1139,7 +1144,7 @@ def kucoin_tickers():
 
     data = requests.get(
         "https://api.kucoin.com/api/v1/market/allTickers",
-        timeout=20
+        timeout=8
     ).json()
 
     if data.get("code") != "200000":
@@ -1161,7 +1166,7 @@ def get_candles(symbol, interval="1hour"):
     data = requests.get(
         "https://api.kucoin.com/api/v1/market/candles",
         params={"symbol": symbol, "type": interval},
-        timeout=20
+        timeout=CANDLE_TIMEOUT
     ).json()
 
     if data.get("code") != "200000":
@@ -1268,7 +1273,7 @@ def coin_profile(asset, volume):
 
 def get_fear_greed():
     try:
-        data = requests.get("https://api.alternative.me/fng/", timeout=10).json()
+        data = requests.get("https://api.alternative.me/fng/", timeout=5).json()
         value = int(data["data"][0]["value"])
 
         if value < 25:
@@ -1287,7 +1292,7 @@ def get_fear_greed():
 
 def get_btc_dominance():
     try:
-        data = requests.get("https://api.coingecko.com/api/v3/global", timeout=10).json()
+        data = requests.get("https://api.coingecko.com/api/v3/global", timeout=5).json()
         dom = float(data["data"]["market_cap_percentage"]["btc"])
 
         if dom > 55:
@@ -1309,7 +1314,7 @@ def clamp(value, low, high):
 def moscow_time_label():
     return (datetime.utcnow() + timedelta(hours=MOSCOW_OFFSET_HOURS)).strftime("%H:%M")
 
-def fetch_google_news_items(query, hours=12, max_items=12, timeout=8):
+def fetch_google_news_items(query, hours=12, max_items=12, timeout=NEWS_TIMEOUT):
     """
     Берём свежие заголовки из Google News RSS.
     Без API-ключей, подходит для Render.
@@ -5477,6 +5482,28 @@ def repair_learning_open_records():
         return f"✅ Обучение исправлено: безопасно переписано открытых наблюдений: {fixed}."
     return "✅ Проверил обучение: опасных старых записей не найдено."
 
+def analyze_symbol_for_signal(symbol):
+    """
+    v12.0:
+    Один анализ монеты для /signal.
+    Используется в ThreadPoolExecutor, чтобы один зависший KuCoin candle request
+    не блокировал весь отчёт.
+    """
+    c = alex_edge_ultra(symbol)
+    if not c:
+        return None
+
+    c = v6_apply_single_score_engine(c)
+    c = v84_apply_btc_core_asset_fix(c)
+    c = v87_apply_alt_accum_fix(c)
+    c = v88_apply_red_market_score_cap(c)
+    c = v94_apply_falling_market_no_buy(c)
+    c = v101_apply_danger_market_score_cap(c)
+    c = v106_apply_safe_caution_border_fix(c)
+    c = v115_apply_extreme_fear_wording_fix(c)
+
+    return c
+
 def get_signal():
     try:
         # Защита от UnboundLocalError:
@@ -5517,26 +5544,59 @@ def get_signal():
 
         analyzed = []
 
-        for symbol in selected:
-            try:
-                c = alex_edge_ultra(symbol)
-                if c:
-                    c = v6_apply_single_score_engine(c)
-                    c = v84_apply_btc_core_asset_fix(c)
-                    c = v87_apply_alt_accum_fix(c)
-                    c = v88_apply_red_market_score_cap(c)
-                    c = v94_apply_falling_market_no_buy(c)
-                    c = v101_apply_danger_market_score_cap(c)
-                    c = v106_apply_safe_caution_border_fix(c)
-                    c = v115_apply_extreme_fear_wording_fix(c)
+        # v12.0:
+        # Полный список 35 монет сохраняем, но анализ идёт параллельно и с общим timebox.
+        # Если KuCoin/свечи зависли по отдельной монете — бот не висит бесконечно,
+        # а отдаёт отчёт по тем монетам, которые успел обработать.
+        try:
+            market_context(force_refresh=True)
+        except Exception as e:
+            print(f"market_context pre-cache error: {e}")
 
-                    # v11.4+: обучение записываем только ПОСЛЕ всех risk-cap фиксов.
-                    # Иначе в GitHub мог попасть старый сырой ETH 90/100 "Среднесрок".
-                    c = v83_apply_self_learning(c)
+        started_at = time.time()
+        executor = ThreadPoolExecutor(max_workers=max(1, COIN_ANALYSIS_WORKERS))
+        futures = {
+            executor.submit(analyze_symbol_for_signal, symbol): symbol
+            for symbol in selected
+        }
+
+        try:
+            for future in as_completed(futures, timeout=SIGNAL_TIME_BUDGET):
+                if time.time() - started_at > SIGNAL_TIME_BUDGET:
+                    break
+
+                symbol = futures.get(future, "?")
+
+                try:
+                    c = future.result(timeout=1)
+                except Exception as e:
+                    print(f"coin analysis skipped {symbol}: {e}")
+                    continue
+
+                if c:
                     analyzed.append(c)
-                time.sleep(0.2)
-            except Exception:
-                continue
+
+        except FuturesTimeoutError:
+            print(f"/signal timebox reached: {len(analyzed)}/{len(selected)} coins analyzed")
+
+        finally:
+            for future in futures:
+                if not future.done():
+                    future.cancel()
+
+            executor.shutdown(wait=False, cancel_futures=True)
+
+        # v11.4+: обучение записываем только ПОСЛЕ всех risk-cap фиксов.
+        # v12.0: делаем это в основном потоке, без гонки между worker-потоками.
+        safe_analyzed = []
+        for c in analyzed:
+            try:
+                safe_analyzed.append(v83_apply_self_learning(c))
+            except Exception as e:
+                print(f"learning write skipped {c.get('symbol', '?')}: {e}")
+                safe_analyzed.append(c)
+
+        analyzed = safe_analyzed
 
         # Финальная чистка: если скорректированный score слабый, не показываем как WATCH/PUMP.
         for x in analyzed:
@@ -6927,7 +6987,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v11.9: уведомление админу после успешного Render deploy + быстрый upload main*.py"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v12.0: /signal больше не должен висеть — parallel scan 35 монет + общий timebox"
     )
 
 
@@ -7101,7 +7161,7 @@ def main():
                         send_message(chat_id, lock_msg)
                     else:
                         last_manual_signal_time = time.time()
-                        send_message(chat_id, "⏳ Ищу монеты для покупки, подожди 20–60 секунд...")
+                        send_message(chat_id, "⏳ Ищу монеты для покупки, подожди до 60–90 секунд. Если часть монет тормозит, бот отдаст частичный отчёт.")
                         try:
                             result = get_signal()
                             send_message(chat_id, result)
