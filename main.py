@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v12.9 SIMPLE SERVICE MENU"
+BOT_VERSION = "v13.0 QUEUE RISK CLEANUP"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1171,6 +1171,55 @@ def get_updates(offset=None):
         params=params,
         timeout=40
     ).json()
+
+def get_updates_now(offset=None):
+    """
+    v13.0:
+    Быстрый одноразовый getUpdates без long-poll.
+    Нужен, чтобы после deploy не догонять старые нажатия кнопок.
+    """
+    if not BOT_TOKEN:
+        return {"result": []}
+
+    params = {"timeout": 0, "limit": 100}
+
+    if offset:
+        params["offset"] = offset
+
+    return requests.get(
+        f"https://api.telegram.org/bot{BOT_TOKEN}/getUpdates",
+        params=params,
+        timeout=8
+    ).json()
+
+def discard_pending_updates_on_startup(last_update):
+    """
+    v13.0:
+    После Render deploy в Telegram могут остаться кнопки, нажатые во время перезапуска.
+    Мы молча подтверждаем их offset, чтобы бот не присылал пачкой BTC/SOL/Market/Alerts.
+    """
+    try:
+        updates = get_updates_now(last_update)
+        items = updates.get("result", []) or []
+
+        if not items:
+            return last_update
+
+        max_update = last_update or 0
+        for item in items:
+            try:
+                max_update = max(max_update, int(item.get("update_id", 0)) + 1)
+            except Exception:
+                pass
+
+        if max_update:
+            save_last_update_id(max_update)
+            return max_update
+
+    except Exception as e:
+        print(f"discard_pending_updates_on_startup error: {e}")
+
+    return last_update
 
 def kucoin_tickers():
     now = time.time()
@@ -5842,6 +5891,10 @@ def full_ticker_signal_report():
     except Exception:
         extreme = False
 
+    # v13.0: если заголовок уже extreme-fear, строка риска не должна оставаться "caution".
+    if extreme:
+        risk = "extreme-fear / no-buy"
+
     rows_raw = []
     for t in tickers:
         symbol = t.get("symbol", "")
@@ -5926,7 +5979,7 @@ def full_ticker_signal_report():
     if extreme:
         decision = "Экстремальный страх. BUY запрещены. Вход только после стабилизации BTC."
     else:
-        decision = "BUY не выдаётся в быстром полном режиме; только наблюдение и отбор кандидатов."
+        decision = "Сейчас только наблюдение. Вход только после подтверждения объёма, отката и стабилизации BTC."
 
     lines = [
         f"🚀 ALEX EDGE ULTRA {BOT_VERSION}",
@@ -7615,7 +7668,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v12.9: простое меню — только ежедневные кнопки + одна 🛠 Сервис; лишние кнопки убраны"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.0: меню v12.9 сохранено, добавлен автосброс очереди после deploy и выровнен risk-label"
     )
 
 
@@ -7627,6 +7680,9 @@ def moscow_now():
 
 def main():
     last_update = load_last_update_id()
+
+    # v13.0: при старте после deploy не догоняем старые нажатия кнопок.
+    last_update = discard_pending_updates_on_startup(last_update)
 
     # v11.9: уведомляем админа, когда Render реально запустил новую версию.
     notify_deploy_started()
