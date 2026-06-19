@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v13.5 MARKET ANCHOR WORDING"
+BOT_VERSION = "v13.6 CORE NO-RED NEUTRAL"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -7786,6 +7786,56 @@ def v106_apply_safe_caution_border_fix(c):
 
     return c
 
+
+def v136_apply_core_no_red_neutral(c):
+    """
+    v13.6:
+    BTC/ETH не должны получать 🔴 НЕ ПОКУПАТЬ и 15/100 просто из-за слабого объёма,
+    если рынок не danger и BTC не падает опасно.
+    Это не BUY и не WATCH, а нейтральный "нет сигнала".
+    """
+    if not c:
+        return c
+
+    c = dict(c)
+    symbol = c.get("symbol", "")
+    ctx = c.get("ctx", {}) or {}
+
+    if symbol not in ["BTC", "ETH"]:
+        return c
+
+    verdict = str(c.get("verdict", ""))
+    score = int(c.get("score", 0) or 0)
+    risk_level = ctx.get("risk_level", "")
+    btc_change = float(ctx.get("btc_change", 0) or 0)
+    fg_value = ctx.get("fg_value", 50)
+
+    try:
+        extreme = isinstance(fg_value, (int, float)) and fg_value <= 15 and btc_change < 0
+    except Exception:
+        extreme = False
+
+    # В настоящем опасном рынке красный запрет оставляем.
+    if risk_level == "danger" or extreme or btc_change <= -1.6:
+        return c
+
+    # Если причина только "нет условий / нет объёма", это должен быть нейтральный отказ.
+    if "НЕ ПОКУПАТЬ" in verdict and score <= 25:
+        c["verdict"] = "⚪ НЕТ СИГНАЛА"
+        c["score"] = 30
+        c["_master_score"] = 30
+        c["action"] = "SKIP"
+        c["low"] = max(c.get("low", -2.0), -1.5)
+        c["high"] = min(max(c.get("high", 1.5), 1.5), 1.5)
+        c["_core_no_red_neutral"] = True
+
+        c.setdefault("minus", [])
+        if "нет подтверждения объёмом" not in c["minus"]:
+            c["minus"].append("нет подтверждения объёмом")
+
+    return c
+
+
 def single_analysis(symbol):
     c = alex_edge_ultra(symbol)
 
@@ -7802,6 +7852,7 @@ def single_analysis(symbol):
     c = v101_apply_danger_market_score_cap(c)
     c = v106_apply_safe_caution_border_fix(c)
     c = v115_apply_extreme_fear_wording_fix(c)
+    c = v136_apply_core_no_red_neutral(c)
 
     # v11.4+: learning note/updates только после safety caps.
     c = v83_apply_self_learning(c)
@@ -7876,7 +7927,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.5: BTC/ETH в /signal подписаны как индикаторы рынка, а не кандидаты; исправлено 'строки/строк'"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.6: BTC/ETH при слабом объёме и неопасном рынке получают ⚪ НЕТ СИГНАЛА, а не 🔴 НЕ ПОКУПАТЬ 15/100"
     )
 
 
