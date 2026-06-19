@@ -19,7 +19,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v11.5 EXTREME FEAR WORDING FIX"
+BOT_VERSION = "v11.6 LEARNING FAST + SIGNAL LOCK"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -44,6 +44,8 @@ WEEKDAY_FILE = data_path("weekday_market_stats.json")
 ADMIN_STATE_FILE = data_path("admin_deploy_state.json")
 ADMIN_UPLOAD_FILE = data_path("admin_uploaded_main.py")
 LAST_UPDATE_FILE = data_path("last_update_id.txt")
+SIGNAL_LOCK_FILE = data_path("signal_lock.json")
+SIGNAL_LOCK_TTL = int(os.getenv("SIGNAL_LOCK_TTL", "600"))
 
 # === v11.0 admin auto deploy ===
 # Все секреты хранить только в Render Environment.
@@ -355,6 +357,77 @@ def file_info_line(path, title):
     except Exception as e:
         return f"⚠️ {title}: ошибка {e}"
 
+
+def signal_lock_left():
+    data = load_json(SIGNAL_LOCK_FILE)
+    if not isinstance(data, dict):
+        return 0, {}
+
+    ts = float(data.get("started_at", 0) or 0)
+    if ts <= 0:
+        return 0, data
+
+    left = int(SIGNAL_LOCK_TTL - (time.time() - ts))
+    if left <= 0:
+        return 0, data
+
+    return left, data
+
+def signal_lock_message(left, data=None):
+    minutes = max(1, int((left + 59) // 60))
+    return (
+        "⏳ /signal уже выполняется или недавно был запущен.\n"
+        f"Не нажимай несколько раз подряд. Подожди примерно {minutes} мин."
+    )
+
+def try_start_signal_lock(chat_id, update_id=None):
+    """
+    v11.6:
+    Постоянный lock для /signal.
+    Нужен, чтобы после redeploy или нескольких нажатий Telegram не запускал 5 анализов подряд.
+    """
+    left, data = signal_lock_left()
+    if left > 0:
+        return False, signal_lock_message(left, data)
+
+    data = {
+        "status": "running",
+        "chat_id": str(chat_id),
+        "update_id": str(update_id or ""),
+        "started_at": time.time(),
+        "version": BOT_VERSION,
+    }
+
+    save_json(SIGNAL_LOCK_FILE, data)
+
+    # Для Free Render важно синхронизировать lock сразу, до тяжёлого /signal.
+    sync_github_storage_now([SIGNAL_LOCK_FILE, LAST_UPDATE_FILE, CHAT_ID_FILE], max_files=3)
+
+    return True, ""
+
+def finish_signal_lock(ok=True):
+    data = load_json(SIGNAL_LOCK_FILE)
+    if not isinstance(data, dict):
+        data = {}
+
+    # Не очищаем lock сразу. Оставляем cooldown, чтобы queued /signal не стартовали следом.
+    data["status"] = "cooldown" if ok else "error_cooldown"
+    data["finished_at"] = time.time()
+    data["version"] = BOT_VERSION
+
+    save_json(SIGNAL_LOCK_FILE, data)
+    sync_github_storage_now([SIGNAL_LOCK_FILE, LAST_UPDATE_FILE, CHAT_ID_FILE], max_files=3)
+
+def force_clear_signal_lock():
+    data = {
+        "status": "cleared",
+        "started_at": 0,
+        "finished_at": time.time(),
+        "version": BOT_VERSION,
+    }
+    save_json(SIGNAL_LOCK_FILE, data)
+    sync_github_storage_now([SIGNAL_LOCK_FILE, LAST_UPDATE_FILE, CHAT_ID_FILE], max_files=3)
+
 def storage_report():
     lines = [
         f"💾 Хранилище ALEX EDGE",
@@ -371,6 +444,7 @@ def storage_report():
         file_info_line(WEEKDAY_FILE, "weekday_market_stats.json / дни недели"),
         file_info_line(CHAT_ID_FILE, "chat_id.txt"),
         file_info_line(LAST_UPDATE_FILE, "last_update_id.txt / анти-дубли Telegram"),
+        file_info_line(SIGNAL_LOCK_FILE, "signal_lock.json / анти-дубли /signal"),
         "",
         "Для Free Render: включи GITHUB_DATA_STORAGE=1 и json будет храниться в GitHub.",
         "Для платного Render Persistent Disk: mount path /var/data и env DATA_DIR=/var/data."
@@ -426,7 +500,8 @@ def admin_help():
         "/weekday — статистика по дням недели\n"
         "/admin_update — начать загрузку нового main.py через Telegram\n"
         "/admin_cancel — отменить загрузку\n"
-        "/rollback — вернуть последний backup из GitHub\n\n"
+        "/rollback — вернуть последний backup из GitHub\n"
+        "/signal_unlock — аварийно снять lock /signal\n\n"
         "Нужные ENV на Render:\n"
         "ADMIN_CHAT_ID — твой Telegram chat_id\n"
         "GITHUB_TOKEN — GitHub token с правом Contents write\n"
@@ -3040,9 +3115,14 @@ def learning_open_rows(open_items):
 
     return text
 
-def learning_report():
+def learning_report(sync_github=False):
+    # v11.6:
+    # /learning должен отвечать быстро. GitHub sync может занять 1-2 минуты,
+    # поэтому в обычном /learning не синхронизируем, а только читаем/обновляем локально.
     update_signal_results()
-    sync_github_storage_now([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE])
+
+    if sync_github:
+        sync_github_storage_now([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
 
     data = load_json(RESULTS_FILE)
     if not isinstance(data, dict):
@@ -6706,7 +6786,7 @@ def help_text():
         "⚙️ Версия — текущая версия\n\n"
         "Команды тоже работают:\n"
         "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /top\n"
-        "/storage, /backup, /weekday, /flush, /repair_learning, /admin_update, /rollback\n"
+        "/storage, /backup, /weekday, /flush, /repair_learning, /signal_unlock, /learning_sync, /admin_update, /rollback\n"
         "TON вводить можно: бот автоматически откроет GRAM.\n\n"
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход частями\n"
@@ -6718,7 +6798,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v11.5: extreme fear + BTC в минусе = только наблюдать; ETH/BTC score cap, без среднесрока/первой части"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v11.6: быстрый /learning без подвисания GitHub + persistent signal_lock против дублей /signal"
     )
 
 
@@ -6836,10 +6916,18 @@ def main():
                 elif text == "/flush":
                     if is_admin(chat_id) or not ADMIN_CHAT_ID:
                         save_last_update_id(last_update or 0)
-                        sync_github_storage_now([LAST_UPDATE_FILE, CHAT_ID_FILE])
-                        send_message(chat_id, "✅ Очередь Telegram очищена по текущему offset. Старые нажатия больше не должны повторяться.")
+                        force_clear_signal_lock()
+                        sync_github_storage_now([LAST_UPDATE_FILE, CHAT_ID_FILE, SIGNAL_LOCK_FILE], max_files=3)
+                        send_message(chat_id, "✅ Очередь Telegram очищена, signal_lock сброшен. Старые нажатия больше не должны повторяться.")
                     else:
                         send_message(chat_id, "⛔ /flush доступен только ADMIN_CHAT_ID.")
+
+                elif text == "/signal_unlock":
+                    if is_admin(chat_id) or not ADMIN_CHAT_ID:
+                        force_clear_signal_lock()
+                        send_message(chat_id, "✅ signal_lock очищен. Теперь /signal можно запускать заново.")
+                    else:
+                        send_message(chat_id, "⛔ /signal_unlock доступен только ADMIN_CHAT_ID.")
 
                 elif text == "/storage":
                     send_message(chat_id, storage_report())
@@ -6870,13 +6958,19 @@ def main():
                     send_message(chat_id, get_top())
 
                 elif text == "/signal":
-                    now_ts = time.time()
-                    if now_ts - last_manual_signal_time < 120:
-                        send_message(chat_id, "⏳ /signal уже запущен или недавно выполнялся. Не нажимай несколько раз подряд — дождись отчёта.")
+                    ok, lock_msg = try_start_signal_lock(chat_id, item.get("update_id"))
+                    if not ok:
+                        send_message(chat_id, lock_msg)
                     else:
-                        last_manual_signal_time = now_ts
+                        last_manual_signal_time = time.time()
                         send_message(chat_id, "⏳ Ищу монеты для покупки, подожди 30–90 секунд...")
-                        send_message(chat_id, get_signal())
+                        try:
+                            result = get_signal()
+                            send_message(chat_id, result)
+                            finish_signal_lock(ok=True)
+                        except Exception as e:
+                            finish_signal_lock(ok=False)
+                            send_message(chat_id, f"Ошибка /signal:\n{e}")
 
                 elif text == "/btc":
                     send_message(chat_id, single_analysis("BTC-USDT"))
@@ -6908,8 +7002,12 @@ def main():
                 elif text == "/repair_learning":
                     send_message(chat_id, repair_learning_open_records())
 
+                elif text == "/learning_sync":
+                    send_message(chat_id, "⏳ Синхронизирую обучение с GitHub...")
+                    send_message(chat_id, learning_report(sync_github=True))
+
                 elif text == "/learning":
-                    send_message(chat_id, learning_report())
+                    send_message(chat_id, learning_report(sync_github=False))
 
                 elif text == "/alerts":
                     send_message(chat_id, "⏳ Проверяю быстрые пампы...")
@@ -6934,7 +7032,16 @@ def main():
                     and now_msk.minute < 5
                     and last_signal_key != signal_key
                 ):
-                    send_message(saved_chat_id, get_signal())
+                    left, _lock_data = signal_lock_left()
+                    if left <= 0:
+                        ok, _ = try_start_signal_lock(saved_chat_id, f"auto_{signal_key}")
+                        if ok:
+                            try:
+                                send_message(saved_chat_id, get_signal())
+                                finish_signal_lock(ok=True)
+                            except Exception as e:
+                                finish_signal_lock(ok=False)
+                                print(f"auto /signal error: {e}")
                     last_signal_key = signal_key
 
                 if (
