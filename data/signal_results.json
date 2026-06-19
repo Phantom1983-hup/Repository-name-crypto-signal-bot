@@ -29,10 +29,12 @@
       "learning_delta": 0,
       "learning_note": "v11.4 repair: старый raw-сигнал переведён в безопасное наблюдение",
       "time": 1781877694.3746924,
-      "last_seen": 1781879694.9933,
-      "seen_count": 3,
-      "results": {},
-      "last_price": 1702.79,
+      "last_seen": 1781882375.8655243,
+      "seen_count": 4,
+      "results": {
+        "1h": 0.2
+      },
+      "last_price": 1707.24,
       "last_score": 70,
       "last_action": "ACCUM",
       "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ"
@@ -66,15 +68,17 @@
       "learning_delta": 0,
       "learning_note": "v11.5 repair: старый raw-сигнал переведён в безопасное наблюдение",
       "time": 1781878587.5263236,
-      "last_seen": 1781879694.9933,
-      "seen_count": 2,
-      "results": {},
-      "last_price": 63215.9,
-      "last_score": 68,
+      "last_seen": 1781882375.8655243,
+      "seen_count": 3,
+      "results": {
+        "1h": 0.11
+      },
+      "last_price": 63154.8,
+      "last_score": 55,
       "last_action": "ACCUM",
       "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ"
     }
   },
   "closed": [],
-  "version": "v11.5 EXTREME FEAR WORDING FIX"
+  "version": "v11.7.1 FULL SCAN FAST CONTEXT"
 }
