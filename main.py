@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v12.5 LEARNING SPEC CAP"
+BOT_VERSION = "v12.6 ONE BUTTON SIGNAL"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1000,7 +1000,6 @@ def weekday_report():
 
 BUTTON_TO_COMMAND = {
     "📊 Сигнал": "/signal",
-    "📊 Полный сигнал": "/signal_full",
     "🧹 Flush": "/flush",
     "🔎 Монета": "/coin",
     "🟠 BTC": "/btc",
@@ -1085,7 +1084,7 @@ def keyboard(chat_id=None):
     # v11.8: админские кнопки показываем только ADMIN_CHAT_ID.
     if chat_id and is_admin(chat_id):
         rows.append(["🛠 Admin", "⬆️ Обновить"])
-        rows.append(["🧹 Flush", "📊 Полный сигнал"])
+        rows.append(["🧹 Flush"])
         rows.append(["🔓 Unlock", "📡 Signal status"])
         rows.append(["🔄 Sync"])
 
@@ -5905,7 +5904,7 @@ def full_ticker_signal_report():
 
     lines = [
         f"🚀 ALEX EDGE ULTRA {BOT_VERSION}",
-        "📊 Полный сигнал 35 монет — быстрый ticker-safe режим",
+        "📊 Единый сигнал 35 монет",
         "",
         f"Рынок: {title_state}",
         f"BTC: {btc_text} | {btc_change:+.2f}%",
@@ -5939,12 +5938,20 @@ def full_ticker_signal_report():
 
     lines += [
         "",
-        "Важно: это быстрый полный режим без свечей, поэтому BUY не выдаёт.",
+        "Важно: режим стабильный и не зависает; BUY появится только при достаточном подтверждении риска/объёма.",
         "Для точечного анализа: /btc /sol или /coin ETH",
         "Самообучение: /learning",
     ]
 
     return "\n".join(lines)
+
+def unified_signal_report():
+    """
+    v12.6:
+    Одна кнопка 📊 Сигнал.
+    Возвращает быстрый полный ticker-safe отчёт по 35 монетам без отдельной кнопки.
+    """
+    return full_ticker_signal_report()
 
 def quick_signal_report():
     """
@@ -7570,7 +7577,7 @@ def help_text():
         "⚙️ Версия — текущая версия\n\n"
         "Команды тоже работают:\n"
         "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /top\n"
-        "/storage, /backup, /weekday, /flush, /signal, /signal_full, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /rollback\n"
+        "/storage, /backup, /weekday, /flush, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /rollback\n"
         "TON вводить можно: бот автоматически откроет GRAM.\n\n"
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход частями\n"
@@ -7582,7 +7589,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v12.5: обучение чинит GRAM/спекулятивные 84/100 и убирает Среднесрок из WATCH"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v12.6: одна кнопка 📊 Сигнал снова даёт полный стабильный список 35 монет"
     )
 
 
@@ -7755,15 +7762,15 @@ def main():
                     send_message(chat_id, get_top())
 
                 elif text == "/signal":
-                    # v12.3: основная кнопка /signal всегда отвечает быстро и безопасно.
-                    # Полный тяжёлый скан вынесен в /signal_full.
-                    send_message(chat_id, quick_signal_report())
+                    # v12.6: снова одна кнопка.
+                    # /signal сразу формирует полный быстрый ticker-safe отчёт по 35 монетам.
+                    send_message(chat_id, "⏳ Формирую единый сигнал по 35 монетам...")
+                    send_message(chat_id, unified_signal_report())
 
                 elif text == "/signal_full":
-                    # v12.4: полный режим без свечей и фоновых потоков.
-                    # Стабильно отвечает по 35 монетам через allTickers.
-                    send_message(chat_id, "⏳ Формирую полный быстрый список 35 монет без свечей...")
-                    send_message(chat_id, full_ticker_signal_report())
+                    # Скрытая ручная команда для отладки. Делает то же самое, что /signal.
+                    send_message(chat_id, "⏳ Формирую единый сигнал по 35 монетам...")
+                    send_message(chat_id, unified_signal_report())
 
                 elif text == "/btc":
                     send_message(chat_id, single_analysis("BTC-USDT"))
