@@ -19,7 +19,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v11.6 LEARNING FAST + SIGNAL LOCK"
+BOT_VERSION = "v11.7.1 FULL SCAN FAST CONTEXT"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -71,6 +71,7 @@ PUMP_MINUTES = [0]
 MOSCOW_OFFSET_HOURS = 3
 
 REPEAT_PUMP_AFTER = 4 * 60 * 60
+ANALYZE_LIMIT = int(os.getenv("ANALYZE_LIMIT", "35"))
 
 QUALITY_ASSETS = [
     "BTC", "ETH", "SOL", "BNB", "XRP", "ADA", "AVAX", "LINK",
@@ -90,6 +91,7 @@ EVENT_ASSETS = {
 
 _ticker_cache = {"time": 0, "data": []}
 _news_cache = {"time": 0, "data": None}
+_market_context_cache = {"time": 0, "data": None}
 
 def github_storage_enabled():
     return bool(GITHUB_DATA_STORAGE and GITHUB_TOKEN and GITHUB_REPO and GITHUB_BRANCH)
@@ -206,6 +208,28 @@ def sync_github_storage_now(paths=None, max_files=6):
             print(f"GitHub storage sync error {path}: {e}")
 
     return synced
+
+def background_github_sync(paths=None, max_files=5):
+    """
+    v11.7:
+    GitHub sync не должен задерживать ответ /signal.
+    Синхронизацию запускаем в отдельном потоке после отправки отчёта.
+    """
+    if not github_storage_enabled():
+        return False
+
+    def _run():
+        try:
+            sync_github_storage_now(paths, max_files=max_files)
+        except Exception as e:
+            print(f"background github sync error: {e}")
+
+    try:
+        Thread(target=_run, daemon=True).start()
+        return True
+    except Exception as e:
+        print(f"background sync start error: {e}")
+        return False
 
 def save_chat_id(chat_id):
     text = str(chat_id)
@@ -416,7 +440,7 @@ def finish_signal_lock(ok=True):
     data["version"] = BOT_VERSION
 
     save_json(SIGNAL_LOCK_FILE, data)
-    sync_github_storage_now([SIGNAL_LOCK_FILE, LAST_UPDATE_FILE, CHAT_ID_FILE], max_files=3)
+    background_github_sync([SIGNAL_LOCK_FILE, LAST_UPDATE_FILE, CHAT_ID_FILE], max_files=3)
 
 def force_clear_signal_lock():
     data = {
@@ -2023,7 +2047,20 @@ def btc_filter():
             return "BTC помогает рынку", 6, change
         return "BTC нейтральный", 0, change
 
-def market_context():
+def market_context(force_refresh=False):
+    """
+    v11.7.1:
+    Не пересчитываем рынок для каждой монеты.
+    Один /signal может анализировать 35+ монет, но market_context нужен один раз в 60 секунд.
+    """
+    now_ts = time.time()
+    if (
+        not force_refresh
+        and _market_context_cache.get("data")
+        and now_ts - float(_market_context_cache.get("time", 0) or 0) < 60
+    ):
+        return dict(_market_context_cache["data"])
+
     fg_value, fg_text, fg_mod = get_fear_greed()
     dom, dom_mod, dom_text = get_btc_dominance()
     macro_mod, macro_text = get_news_risk()
@@ -2057,7 +2094,7 @@ def market_context():
     else:
         state = "🟡 рынок нейтральный"
 
-    return {
+    result = {
         "state": state,
         "risk_level": level,
         "fg_value": fg_value,
@@ -2073,6 +2110,11 @@ def market_context():
         "btc_change": btc_change,
         "market_mod": total
     }
+
+    _market_context_cache["time"] = now_ts
+    _market_context_cache["data"] = dict(result)
+
+    return result
 
 def alex_edge_ultra(symbol):
     ticker = get_ticker(symbol)
@@ -5380,7 +5422,7 @@ def get_signal():
             priority = volume / 1_000_000 + max(change, 0) * 2
             candidates.append((symbol, priority))
 
-        selected = [x[0] for x in sorted(candidates, key=lambda x: x[1], reverse=True)[:35]]
+        selected = [x[0] for x in sorted(candidates, key=lambda x: x[1], reverse=True)[:ANALYZE_LIMIT]]
 
         for forced in FORCE_ANALYZE_ASSETS:
             if forced not in selected:
@@ -5644,7 +5686,7 @@ def get_signal():
 
         if not buy and not accum and not watch and not pumps and not aggressive and not speculative and not early_text and not late_pumps:
             plan = action_plan_from_analyzed(analyzed)
-            sync_github_storage_now([RESULTS_FILE, HISTORY_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE])
+            background_github_sync([RESULTS_FILE, HISTORY_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE, SIGNAL_LOCK_FILE], max_files=5)
             return f"🚀 ALEX EDGE ULTRA {BOT_VERSION}\n\nСейчас нет нормальных идей для покупки.\n\n" + plan
 
         save_signal_history(buy + accum + watch + pumps + aggressive + speculative)
@@ -5682,7 +5724,7 @@ def get_signal():
             near_buy=near_buy
         )
 
-        sync_github_storage_now([RESULTS_FILE, HISTORY_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE])
+        background_github_sync([RESULTS_FILE, HISTORY_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE, SIGNAL_LOCK_FILE], max_files=5)
         return result_text
 
     except Exception as e:
@@ -6786,7 +6828,7 @@ def help_text():
         "⚙️ Версия — текущая версия\n\n"
         "Команды тоже работают:\n"
         "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /top\n"
-        "/storage, /backup, /weekday, /flush, /repair_learning, /signal_unlock, /learning_sync, /admin_update, /rollback\n"
+        "/storage, /backup, /weekday, /flush, /repair_learning, /signal_unlock, /learning_sync, /sync_storage, /admin_update, /rollback\n"
         "TON вводить можно: бот автоматически откроет GRAM.\n\n"
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход частями\n"
@@ -6798,7 +6840,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v11.6: быстрый /learning без подвисания GitHub + persistent signal_lock против дублей /signal"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v11.7.1: полный скан 35 монет сохранён, ускорение за счёт cache market_context и фонового GitHub sync"
     )
 
 
@@ -6929,6 +6971,11 @@ def main():
                     else:
                         send_message(chat_id, "⛔ /signal_unlock доступен только ADMIN_CHAT_ID.")
 
+                elif text == "/sync_storage":
+                    send_message(chat_id, "⏳ Синхронизирую dirty-файлы с GitHub...")
+                    n = sync_github_storage_now(max_files=8)
+                    send_message(chat_id, f"✅ GitHub sync завершён. Синхронизировано файлов: {n}")
+
                 elif text == "/storage":
                     send_message(chat_id, storage_report())
 
@@ -6963,7 +7010,7 @@ def main():
                         send_message(chat_id, lock_msg)
                     else:
                         last_manual_signal_time = time.time()
-                        send_message(chat_id, "⏳ Ищу монеты для покупки, подожди 30–90 секунд...")
+                        send_message(chat_id, "⏳ Ищу монеты для покупки, подожди 20–60 секунд...")
                         try:
                             result = get_signal()
                             send_message(chat_id, result)
