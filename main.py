@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v13.3 SELECTIVE SIGNAL LOGIC"
+BOT_VERSION = "v13.4 DCA WEEKDAY RECOMMENDATION"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -954,20 +954,10 @@ def weekday_report():
     sync_github_storage_now([WEEKDAY_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE])
     records = list((data.get("records") or {}).values())
 
-    text = (
-        f"📅 Статистика по дням недели\n"
-        f"Версия: {BOT_VERSION}\n"
-        f"Файл: {WEEKDAY_FILE}\n"
-        f"Новых записей: {added}\n"
-        f"Всего наблюдений: {len(records)}\n\n"
-    )
-
-    for asset in WEEKDAY_ASSETS[:12]:
+    def asset_weekday_stats(asset):
         rows = [r for r in records if r.get("asset") == asset]
-        if not rows:
-            continue
-
         stats = []
+
         for wd in range(7):
             rr = [r for r in rows if int(r.get("weekday", -1)) == wd]
             if not rr:
@@ -981,10 +971,132 @@ def weekday_report():
                 "daily": avg([r.get("daily_change", 0) for r in rr]),
             })
 
+        return stats
+
+    def best_for_asset(asset):
+        stats = asset_weekday_stats(asset)
         if not stats:
+            return None
+        return sorted(stats, key=lambda x: (x["drop"], -x["rebound"]))[0]
+
+    def basket_recommendation(assets):
+        """
+        v13.4:
+        Для DCA нужна не таблица по каждой монете, а один день недели для корзины.
+        Считаем голосование: в какой день чаще выпадает локальный минимум у выбранных активов.
+        Затем смотрим среднюю просадку/отскок по корзине.
+        """
+        best_by_asset = {}
+        votes = {wd: 0 for wd in range(7)}
+        basket_rows = {wd: [] for wd in range(7)}
+
+        for asset in assets:
+            stats = asset_weekday_stats(asset)
+            if not stats:
+                continue
+
+            best = sorted(stats, key=lambda x: (x["drop"], -x["rebound"]))[0]
+            best_by_asset[asset] = best
+            votes[best["wd"]] += 1
+
+            for s in stats:
+                basket_rows[s["wd"]].append(s)
+
+        candidates = []
+        for wd in range(7):
+            rows = basket_rows.get(wd) or []
+            if not rows:
+                continue
+
+            candidates.append({
+                "wd": wd,
+                "votes": votes.get(wd, 0),
+                "assets_n": len(rows),
+                "drop": avg([r["drop"] for r in rows]),
+                "rebound": avg([r["rebound"] for r in rows]),
+                "daily": avg([r["daily"] for r in rows]),
+            })
+
+        if not candidates:
+            return None
+
+        # Приоритет: большинство активов, потом более глубокая средняя просадка, потом отскок.
+        best_day = sorted(candidates, key=lambda x: (-x["votes"], x["drop"], -x["rebound"]))[0]
+        second = sorted(candidates, key=lambda x: (x["drop"], -x["rebound"]))[0]
+
+        return {
+            "best_day": best_day,
+            "best_by_asset": best_by_asset,
+            "deepest_day": second,
+            "candidates": candidates,
+        }
+
+    dca_assets = ["BTC", "ETH", "SOL"]
+    dca = basket_recommendation(dca_assets)
+    all_major = basket_recommendation(WEEKDAY_ASSETS[:12])
+
+    text = (
+        f"📅 Статистика по дням недели\n"
+        f"Версия: {BOT_VERSION}\n"
+        f"Файл: {WEEKDAY_FILE}\n"
+        f"Новых записей: {added}\n"
+        f"Всего наблюдений: {len(records)}\n\n"
+    )
+
+    if dca:
+        best = dca["best_day"]
+        deepest = dca["deepest_day"]
+
+        text += "🎯 Итог для еженедельной DCA-покупки BTC/ETH/SOL\n"
+        text += (
+            f"Рекомендуемый день: {WEEKDAY_NAMES[best['wd']]} "
+            f"(совпадает у {best['votes']} из {len(dca_assets)} активов)\n"
+        )
+        text += (
+            f"Средняя просадка корзины в этот день: {best['drop']:.2f}% | "
+            f"средний отскок: +{best['rebound']:.2f}% | итог дня: {best['daily']:+.2f}%\n"
+        )
+
+        if deepest["wd"] != best["wd"]:
+            text += (
+                f"Альтернатива по самой глубокой средней просадке: "
+                f"{WEEKDAY_NAMES[deepest['wd']]} "
+                f"({deepest['drop']:.2f}%, отскок +{deepest['rebound']:.2f}%).\n"
+            )
+
+        text += "Разбивка по твоей корзине:\n"
+
+        for asset in dca_assets:
+            b = dca["best_by_asset"].get(asset)
+            if b:
+                text += f"• {asset}: {WEEKDAY_NAMES[b['wd']]} — просадка {b['drop']:.2f}%, отскок +{b['rebound']:.2f}%\n"
+
+        if dca["best_day"]["wd"] == 1:
+            text += "Вывод: для одной покупки в неделю логичнее ставить DCA на вторник.\n"
+        else:
+            text += f"Вывод: для одной покупки в неделю логичнее ставить DCA на {WEEKDAY_NAMES[best['wd']]}.\n"
+
+        text += "Если можно разделить покупку: BTC/SOL — по своему лучшему дню, ETH — по своему.\n\n"
+
+    if all_major:
+        best_all = all_major["best_day"]
+        text += "🌐 День локальных минимумов по большинству основных монет\n"
+        text += (
+            f"Большинство сейчас указывает на: {WEEKDAY_NAMES[best_all['wd']]} "
+            f"({best_all['votes']} совпадений среди основных активов).\n"
+        )
+        text += (
+            f"Средняя просадка по рынку в этот день: {best_all['drop']:.2f}% | "
+            f"средний отскок: +{best_all['rebound']:.2f}%\n\n"
+        )
+
+    text += "📌 Детально по монетам:\n\n"
+
+    for asset in WEEKDAY_ASSETS[:12]:
+        best = best_for_asset(asset)
+        if not best:
             continue
 
-        best = sorted(stats, key=lambda x: (x["drop"], -x["rebound"]))[0]
         reliability = "данных мало" if best["n"] < 8 else "можно учитывать осторожно"
 
         text += f"{asset}: вероятный день локальных минимумов — {WEEKDAY_NAMES[best['wd']]} ({reliability})\n"
@@ -992,11 +1104,10 @@ def weekday_report():
 
     text += (
         "Важно: это статистика наблюдений, а не команда покупать. "
-        "Учитывать только вместе с BTC, страхом, объёмом и текущим риском рынка."
+        "Для DCA это помогает выбрать день недели, но учитывать нужно вместе с BTC, страхом, объёмом и текущим риском рынка."
     )
 
     return text
-
 
 BUTTON_TO_COMMAND = {
     "📊 Сигнал": "/signal",
@@ -7746,7 +7857,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.3: /signal разделяет рынок, реальные кандидаты и предупреждения; не каждая строка считается наблюдением"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.4: /weekday добавляет итоговый день для DCA BTC/ETH/SOL и день большинства основных монет"
     )
 
 
