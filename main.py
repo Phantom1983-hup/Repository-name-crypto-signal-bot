@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v13.2 COMPACT SIGNAL LIST"
+BOT_VERSION = "v13.3 SELECTIVE SIGNAL LOGIC"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -5975,9 +5975,11 @@ def full_ticker_signal_report():
 
     selected = selected[:ANALYZE_LIMIT]
 
-    # v13.2:
-    # Сканируем 35 монет, но в отчёте показываем только то, что реально нужно смотреть.
-    # Не заставляем пользователя читать простыню из всех монет.
+    # v13.3:
+    # Сканируем 35 монет, но показываем только:
+    # 1) BTC/ETH как индикаторы рынка;
+    # 2) реальные кандидаты, если рынок позволяет;
+    # 3) 1-2 памповые монеты только как предупреждение "не догонять".
     def _compact_signal_rows(rows):
         by_base = {r["base"]: r for r in rows}
         result = []
@@ -5987,39 +5989,62 @@ def full_ticker_signal_report():
             if r and r not in result:
                 result.append(r)
 
-        # BTC/ETH — якоря рынка, их полезно видеть всегда.
+        # BTC/ETH — не "кандидаты на вход", а состояние рынка.
         add("BTC")
         add("ETH")
 
-        # Основные качественные монеты показываем только если они близко к наблюдению
-        # или заметно просели и могут быть интересны после стабилизации BTC.
-        quality_order = ["SOL", "BNB", "LINK", "SUI", "NEAR", "TAO", "AAVE", "ADA", "AVAX", "INJ", "RENDER"]
+        if extreme:
+            # При extreme-fear не делаем длинный watchlist.
+            # Показываем только рынок + максимум 2 предупреждения о сильных пампах.
+            pumped = [
+                r for r in rows
+                if (not r["is_core"]) and r["change"] >= 20 and r["base"] not in ["USDT", "USDC", "DAI"]
+            ]
+            pumped = sorted(pumped, key=lambda x: x["change"], reverse=True)[:2]
+            for r in pumped:
+                if r not in result:
+                    result.append(r)
+
+            return result[:4]
+
+        # В обычном/осторожном рынке показываем только настоящих кандидатов.
+        quality_order = ["SOL", "LINK", "SUI", "TAO", "NEAR", "AAVE", "BNB", "ADA", "AVAX", "INJ", "RENDER"]
         for base in quality_order:
             r = by_base.get(base)
             if not r:
                 continue
-            if r["score"] >= 51 or r["change"] <= -3.0 or base in ["SOL", "BNB", "LINK"]:
+
+            # Кандидат — это не просто любая монета из списка, а монета с достаточной оценкой
+            # или заметной контролируемой просадкой по качественному активу.
+            if r["score"] >= 58 or (r["is_core"] and -6.0 <= r["change"] <= -3.0 and r["score"] >= 50):
                 add(base)
 
-        # Памповые/спекулятивные монеты показываем отдельно и ограниченно,
-        # только чтобы предупредить "не догонять".
+            if len(result) >= 7:
+                break
+
+        # Памповые/спекулятивные — отдельно и ограниченно, только предупреждение.
         pumped = [
             r for r in rows
-            if (not r["is_core"]) and r["change"] >= 8 and r["base"] not in ["USDT", "USDC", "DAI"]
+            if (not r["is_core"]) and r["change"] >= 12 and r["base"] not in ["USDT", "USDC", "DAI"]
         ]
-        pumped = sorted(pumped, key=lambda x: x["change"], reverse=True)[:3]
+        pumped = sorted(pumped, key=lambda x: x["change"], reverse=True)[:2]
         for r in pumped:
-            if r not in result:
+            if r not in result and len(result) < 9:
                 result.append(r)
 
-        # Если рынок совсем пустой, оставляем хотя бы 2-3 ориентира.
-        if len(result) < 3:
-            for base in ["SOL", "BNB", "LINK"]:
-                add(base)
-
-        return result[:10]
+        return result
 
     display_selected = _compact_signal_rows(selected)
+
+    # Считаем реальные активные кандидаты, чтобы не создавать иллюзию,
+    # что каждая показанная монета "стоит наблюдения".
+    if extreme:
+        active_candidate_count = 0
+    else:
+        active_candidate_count = len([
+            r for r in display_selected
+            if r["base"] not in ["BTC", "ETH"] and not ((not r["is_core"]) and r["change"] >= 12)
+        ])
 
     title_state = "🟡 extreme-fear / только наблюдать" if extreme else ctx.get("state", "unknown")
     if extreme:
@@ -6029,7 +6054,7 @@ def full_ticker_signal_report():
 
     lines = [
         f"🚀 ALEX EDGE ULTRA {BOT_VERSION}",
-        "📊 Короткий сигнал: только важное",
+        "📊 Короткий сигнал: только нужное",
         "",
         f"Рынок: {title_state}",
         f"BTC: {btc_text} | {btc_change:+.2f}%",
@@ -6038,10 +6063,10 @@ def full_ticker_signal_report():
         f"Риск рынка: {risk}",
         f"Решение: {decision}",
         "",
-        f"📊 Срез: просканировано {len(selected)} монет, показано {len(display_selected)} важных",
-        "🟢 BUY: 0 | 🟦 к наблюдению: только отфильтрованные монеты",
+        f"📊 Срез: просканировано {len(selected)} монет, показано {len(display_selected)} строк",
+        f"🟢 BUY: 0 | 🟦 активных кандидатов сейчас: {active_candidate_count}",
         "",
-        "🟦 Что реально смотреть:",
+        "🟦 Что реально важно сейчас:",
     ]
 
     for i, r in enumerate(display_selected, start=1):
@@ -6049,19 +6074,19 @@ def full_ticker_signal_report():
         action = "наблюдать"
         if extreme:
             if base in ["BTC", "ETH"]:
-                action = "без входа сейчас; ждать стабилизацию"
+                action = "индикатор рынка; без входа сейчас"
             elif r["change"] > 8:
-                action = "не догонять; ждать откат + стабилизацию BTC"
+                action = "не догонять; НЕ кандидат сейчас"
             elif r["change"] < -4:
-                action = "только наблюдать; ждать стабилизацию BTC"
+                action = "не кандидат сейчас; ждать разворот BTC"
             else:
-                action = "после стабилизации BTC"
+                action = "не кандидат сейчас; ждать стабилизацию BTC"
         elif r["change"] > 8:
-            action = "не догонять; ждать откат"
+            action = "не догонять; только предупреждение"
         elif r["change"] < -4:
-            action = "наблюдать на стабилизацию"
+            action = "наблюдать только после стабилизации"
         elif r["is_core"] and r["score"] >= 60:
-            action = "наблюдать; нужен объём/подтверждение"
+            action = "кандидат к наблюдению; нужен объём"
 
         lines.append(
             f"{i}. {base} — {r['score']}/100 | {format_usd_price(r['price'])} | 24ч {r['change']:+.2f}%\n"
@@ -6070,7 +6095,7 @@ def full_ticker_signal_report():
 
     lines += [
         "",
-        "Важно: полный рынок просканирован, но слабые/случайные монеты скрыты, чтобы не было простыни.",
+        "Важно: список короткий. Это не все монеты, а только рынок/кандидаты/предупреждения.",
         "Для точечного анализа: /btc /sol или /coin ETH",
         "Самообучение: /learning",
     ]
@@ -7721,7 +7746,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.2: /signal показывает не все 35 монет, а только отфильтрованный короткий список для наблюдения"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.3: /signal разделяет рынок, реальные кандидаты и предупреждения; не каждая строка считается наблюдением"
     )
 
 
