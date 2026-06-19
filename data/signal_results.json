@@ -40,15 +40,15 @@
     "BTC_1781878587": {
       "asset": "BTC",
       "price": 63087.0,
-      "score": 82,
-      "master_score": 82,
+      "score": 68,
+      "master_score": 68,
       "bucket": "80+",
       "chance_5": 18,
       "chance_10": 8,
       "chance_15": 4,
       "action": "ACCUM",
-      "learning_type": "ACCUM",
-      "verdict": "🟦 СРЕДНЕСРОЧНЫЙ НАБОР",
+      "learning_type": "WATCH_SAVED",
+      "verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
       "is_quality": true,
       "profile": "крупный актив",
       "rsi": 51.2,
@@ -60,10 +60,11 @@
       "tags": [
         "btc_down",
         "volume_ok",
-        "core_asset"
+        "core_asset",
+        "repaired_after_risk_fix"
       ],
       "learning_delta": 0,
-      "learning_note": "самообучение: мало истории (0)",
+      "learning_note": "v11.5 repair: старый raw-сигнал переведён в безопасное наблюдение",
       "time": 1781878587.5263236,
       "last_seen": 1781878587.5263236,
       "seen_count": 1,
