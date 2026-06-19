@@ -19,7 +19,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v11.4 LEARNING AFTER RISK FIX"
+BOT_VERSION = "v11.5 EXTREME FEAR WORDING FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1616,6 +1616,8 @@ def compact_market_risk_line(ctx):
         return f"⚠️ Риск рынка: 🔴 опасный — BTC {btc_change:.2f}%, страх {fg_value}"
     if v106_safe_caution(ctx):
         return f"⚠️ Риск рынка: 🟠 safe-caution — BTC {btc_change:.2f}%, страх {fg_value}"
+    if v115_extreme_fear_btc_weak(ctx):
+        return f"⚠️ Риск рынка: 🟡 extreme-fear caution — BTC {btc_change:.2f}%, страх {fg_value}"
     if level == "caution":
         return f"⚠️ Риск рынка: 🟡 осторожно — BTC {btc_change:.2f}%, страх {fg_value}"
     if level == "positive":
@@ -1690,6 +1692,34 @@ def v106_safe_caution(ctx):
         )
     )
 
+def v115_extreme_fear_btc_weak(ctx):
+    """
+    v11.5:
+    Даже если BTC падает всего около -1%, при страхе 14–15 нельзя писать
+    "Среднесрок", "первая малая часть" и ETH/BTC 90/82.
+    Это не danger, но это режим только наблюдения.
+    """
+    if not isinstance(ctx, dict):
+        return False
+
+    fg_value = ctx.get("fg_value", 50)
+    btc_change = ctx.get("btc_change", 0)
+    news_score = ctx.get("macro_mod", ctx.get("geo_mod", 0))
+    btc_text = str(ctx.get("btc_text", ""))
+
+    if market_risk_level(ctx) == "danger":
+        return False
+
+    if v106_safe_caution(ctx):
+        return False
+
+    return (
+        fg_value <= 15
+        and btc_change < 0
+        and news_score <= 3
+        and ("мешает" in btc_text or btc_change < 0)
+    )
+
 def macro_action_hint(ctx):
     level = market_risk_level(ctx)
 
@@ -1698,6 +1728,9 @@ def macro_action_hint(ctx):
 
     if v106_safe_caution(ctx):
         return "Решение: safe-caution. BUY запрещены до стабилизации BTC. BTC/ETH — наблюдать, альты — только после разворота рынка."
+
+    if v115_extreme_fear_btc_weak(ctx):
+        return "Решение: экстремальный страх. BUY запрещены. BTC/ETH — только наблюдать, без первой части."
 
     if level == "caution":
         return "Решение: осторожно. Быстрые входы ограничить, ждать подтверждение объёмом и стабилизацию BTC."
@@ -1940,6 +1973,8 @@ def market_context():
         state = "🔴 рынок рискованный"
     elif v106_safe_caution(temp_ctx):
         state = "🟠 safe-caution / ждать BTC"
+    elif v115_extreme_fear_btc_weak(temp_ctx):
+        state = "🟡 extreme-fear / только наблюдать"
     elif level == "caution":
         state = "🟡 осторожный рынок"
     elif level == "positive":
@@ -4584,6 +4619,12 @@ def compact_reason(c):
     macro_mod = ctx.get("macro_mod", ctx.get("geo_mod", 0))
     btc_change = ctx.get("btc_change", 0)
 
+    if c.get("_extreme_fear_cap"):
+        return "экстремальный страх + BTC в минусе + ждать стабилизацию"
+
+    if c.get("_extreme_fear_alt_cap"):
+        return "после стабилизации BTC + экстремальный страх"
+
     if c.get("_safe_caution_cap"):
         return "страх экстремальный + BTC почти -2% + ждать стабилизацию"
 
@@ -4677,6 +4718,12 @@ def compact_reason(c):
     return "нет условий для входа"
 
 def compact_action(c):
+    if c.get("_extreme_fear_cap"):
+        return "без входа сейчас; ждать стабилизацию"
+
+    if c.get("_extreme_fear_alt_cap"):
+        return "после стабилизации BTC / без входа"
+
     if c.get("_safe_caution_cap"):
         return "без входа сейчас; ждать стабилизацию"
 
@@ -4806,7 +4853,7 @@ def compact_near_buy_text(items):
     ctx = items[0].get("ctx", {}) if items else {}
     if market_risk_level(ctx) == "danger":
         text = "⏳ Кандидаты после разворота рынка:\n"
-    elif v106_safe_caution(ctx):
+    elif v106_safe_caution(ctx) or v115_extreme_fear_btc_weak(ctx):
         text = "⏳ Кандидаты после стабилизации BTC:\n"
     else:
         text = "⏳ Близко к сигналу, но ждём подтверждение:\n"
@@ -4824,7 +4871,7 @@ def compact_near_buy_text(items):
         if not reasons:
             reasons.append("нужно подтверждение")
 
-        if v106_safe_caution(c.get("ctx", {})):
+        if v106_safe_caution(c.get("ctx", {})) or v115_extreme_fear_btc_weak(c.get("ctx", {})):
             if "после стабилизации BTC" not in reasons:
                 reasons.insert(0, "после стабилизации BTC")
             score = min(c.get("_master_score", c.get("score", 0)), 68)
@@ -4851,7 +4898,7 @@ def compact_signal_report(ctx, buy, accum, watch, aggressive, speculative, early
     text += f"{macro_action_hint(ctx)}\n"
 
     text += "\n"
-    accum_label = "🟦 Активы для наблюдения" if (market_risk_level(ctx) == "danger" or v106_safe_caution(ctx)) else "🟦 Среднесрок"
+    accum_label = "🟦 Активы для наблюдения" if (market_risk_level(ctx) == "danger" or v106_safe_caution(ctx) or v115_extreme_fear_btc_weak(ctx)) else "🟦 Среднесрок"
     text += (
         "📊 Срез:\n"
         f"🟢 BUY: {len(buy)} | {accum_label}: {len(accum)} | 🟡 WATCH: {len(watch)}\n\n"
@@ -5090,6 +5137,87 @@ def v94_apply_falling_market_no_buy(c):
     return c
 
 
+def v115_apply_extreme_fear_wording_fix(c):
+    """
+    v11.5:
+    Страх 14–15 + BTC в минусе = без среднесрока и первой части.
+    Режим не обязательно danger, но это строгое наблюдение.
+    """
+    if not c:
+        return c
+
+    c = dict(c)
+    ctx = c.get("ctx", {})
+    symbol = c.get("symbol", "")
+
+    if not v115_extreme_fear_btc_weak(ctx):
+        return c
+
+    if symbol in ["BTC", "ETH"] and c.get("action") in ["BUY", "PUMP", "ACCUM", "WATCH", "SKIP"]:
+        cap = 68 if symbol == "BTC" else 70
+        current = int(c.get("score", 0) or 0)
+        score = min(max(current, 55), cap)
+
+        c["score"] = score
+        c["_master_score"] = score
+        c["_accumulation_score"] = score
+        c["action"] = "ACCUM"
+        c["verdict"] = "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ"
+        c["_extreme_fear_cap"] = True
+        c["_red_market_cap"] = True
+
+        c["chance_5"] = min(max(c.get("chance_5", 0), 8), 22)
+        c["chance_10"] = min(max(c.get("chance_10", 0), 2), 5)
+        c["chance_15"] = min(max(c.get("chance_15", 0), 1), 3)
+
+        c["low"] = min(c.get("low", -2.0), -2.5)
+        c["high"] = min(max(c.get("high", 0), 1.2), 2.5 if symbol == "BTC" else 2.8)
+        c["entry_zone"] = "без входа сейчас: экстремальный страх, ждать стабилизацию BTC и рост объёма"
+
+        c.setdefault("minus", [])
+        for reason in [
+            "экстремальный страх",
+            "BTC в минусе",
+            "первая часть запрещена до стабилизации"
+        ]:
+            if reason not in c["minus"]:
+                c["minus"].append(reason)
+
+    elif symbol not in ["BTC", "ETH"]:
+        if c.get("score", 0) >= 45 or c.get("action") in ["BUY", "PUMP", "WATCH", "ACCUM"]:
+            current = int(c.get("score", 0) or 0)
+            score = min(max(current, 50), 68)
+
+            c["score"] = score
+            c["_master_score"] = score
+            c["action"] = "WATCH"
+            c["verdict"] = "🟡 КАНДИДАТ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
+            c["_extreme_fear_alt_cap"] = True
+            c["_red_market_cap"] = True
+
+            c["chance_5"] = min(max(c.get("chance_5", 0), 8), 20)
+            c["chance_10"] = min(max(c.get("chance_10", 0), 2), 5)
+            c["chance_15"] = min(max(c.get("chance_15", 0), 1), 3)
+
+            c["high"] = min(max(c.get("high", 0), 1.2), 2.5)
+            c["low"] = min(c.get("low", -2.0), -2.8)
+            c["entry_zone"] = "после стабилизации BTC: нужен разворот рынка и подтверждение объёмом"
+
+            c.setdefault("minus", [])
+            for reason in [
+                "после стабилизации BTC",
+                "экстремальный страх",
+                "без входа сейчас"
+            ]:
+                if reason not in c["minus"]:
+                    c["minus"].append(reason)
+
+    price = c.get("price", 0) or 0
+    c["target_low"] = price * (1 + c.get("low", 0) / 100)
+    c["target_high"] = price * (1 + c.get("high", 0) / 100)
+
+    return c
+
 def repair_learning_open_records():
     """
     v11.4:
@@ -5125,7 +5253,7 @@ def repair_learning_open_records():
             rec["action"] = "ACCUM"
             rec["verdict"] = "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ"
             rec["learning_type"] = "WATCH_SAVED"
-            rec["learning_note"] = "v11.4 repair: старый raw-сигнал переведён в безопасное наблюдение"
+            rec["learning_note"] = "v11.5 repair: старый raw-сигнал переведён в безопасное наблюдение"
             rec.setdefault("tags", [])
             if "repaired_after_risk_fix" not in rec["tags"]:
                 rec["tags"].append("repaired_after_risk_fix")
@@ -5191,8 +5319,9 @@ def get_signal():
                     c = v94_apply_falling_market_no_buy(c)
                     c = v101_apply_danger_market_score_cap(c)
                     c = v106_apply_safe_caution_border_fix(c)
+                    c = v115_apply_extreme_fear_wording_fix(c)
 
-                    # v11.4: обучение записываем только ПОСЛЕ всех risk-cap фиксов.
+                    # v11.4+: обучение записываем только ПОСЛЕ всех risk-cap фиксов.
                     # Иначе в GitHub мог попасть старый сырой ETH 90/100 "Среднесрок".
                     c = v83_apply_self_learning(c)
                     analyzed.append(c)
@@ -5979,6 +6108,12 @@ def v82_apply_single_coin_consistency(c):
     return c
 
 def single_coin_action_text(c):
+    if c.get("_extreme_fear_cap"):
+        return "без входа сейчас; ждать стабилизацию BTC"
+
+    if c.get("_extreme_fear_alt_cap"):
+        return "наблюдать, без входа; вернуться после стабилизации BTC"
+
     if c.get("_safe_caution_cap"):
         return "без входа сейчас; ждать стабилизацию BTC"
 
@@ -6078,7 +6213,16 @@ def format_single_coin_report(c):
         f"{single_coin_conditions_text(c)}\n"
     )
 
-    if c.get("_safe_caution_cap"):
+    if c.get("_extreme_fear_cap"):
+        if c.get("symbol") == "BTC":
+            text += "Итог: BTC наблюдать, входа сейчас нет. Страх экстремальный, BTC в минусе — ждать стабилизацию и рост объёма."
+        elif c.get("symbol") == "ETH":
+            text += "Итог: ETH наблюдать, входа сейчас нет. Экстремальный страх — вход только после стабилизации BTC и объёма."
+        else:
+            text += f"Итог: {c.get('symbol')} только после стабилизации BTC. Сейчас без входа."
+    elif c.get("_extreme_fear_alt_cap"):
+        text += f"Итог: {c.get('symbol')} — только кандидат после стабилизации BTC. Сейчас без входа; рынок в экстремальном страхе."
+    elif c.get("_safe_caution_cap"):
         if c.get("symbol") == "BTC":
             text += "Итог: BTC наблюдать, входа сейчас нет. Страх экстремальный, BTC мешает рынку — ждать стабилизацию 3–4 часа и рост объёма."
         elif c.get("symbol") == "ETH":
@@ -6499,8 +6643,9 @@ def single_analysis(symbol):
     c = v100_apply_single_coin_danger_watch_fix(c)
     c = v101_apply_danger_market_score_cap(c)
     c = v106_apply_safe_caution_border_fix(c)
+    c = v115_apply_extreme_fear_wording_fix(c)
 
-    # v11.4: learning note/updates только после safety caps.
+    # v11.4+: learning note/updates только после safety caps.
     c = v83_apply_self_learning(c)
 
     return format_single_coin_report(c)
@@ -6513,6 +6658,8 @@ def market_status():
         status = "🔴 ОПАСНЫЙ РЫНОК"
     elif v106_safe_caution(ctx):
         status = "🟠 SAFE-CAUTION / ЖДАТЬ BTC"
+    elif v115_extreme_fear_btc_weak(ctx):
+        status = "🟡 EXTREME-FEAR / ТОЛЬКО НАБЛЮДАТЬ"
     elif level == "caution":
         status = "🟡 ОСТОРОЖНО"
     elif level == "positive":
@@ -6571,7 +6718,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v11.4: обучение записывается после risk-cap; /repair_learning чистит старые ETH 90/BTC 82 записи"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v11.5: extreme fear + BTC в минусе = только наблюдать; ETH/BTC score cap, без среднесрока/первой части"
     )
 
 
