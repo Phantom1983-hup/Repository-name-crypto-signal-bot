@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v12.0 SIGNAL TIMEBOX FIX"
+BOT_VERSION = "v12.1 BACKGROUND SIGNAL WATCHDOG"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -76,6 +76,7 @@ REPEAT_PUMP_AFTER = 4 * 60 * 60
 ANALYZE_LIMIT = int(os.getenv("ANALYZE_LIMIT", "35"))
 COIN_ANALYSIS_WORKERS = int(os.getenv("COIN_ANALYSIS_WORKERS", "8"))
 SIGNAL_TIME_BUDGET = int(os.getenv("SIGNAL_TIME_BUDGET", "75"))
+SIGNAL_HARD_TIMEOUT = int(os.getenv("SIGNAL_HARD_TIMEOUT", "130"))
 CANDLE_TIMEOUT = int(os.getenv("CANDLE_TIMEOUT", "5"))
 NEWS_TIMEOUT = int(os.getenv("NEWS_TIMEOUT", "4"))
 
@@ -5504,6 +5505,128 @@ def analyze_symbol_for_signal(symbol):
 
     return c
 
+def _safe_price(symbol):
+    try:
+        t = get_ticker(symbol)
+        return float(t.get("last", 0) or 0) if t else 0
+    except Exception:
+        return 0
+
+def emergency_signal_report(reason="полный анализ не завершился вовремя"):
+    """
+    v12.1:
+    Если полный /signal завис из-за внешнего API, бот не молчит.
+    Он отправляет безопасный fallback-отчёт без BUY.
+    """
+    try:
+        ctx = market_context()
+    except Exception:
+        ctx = {
+            "state": "unknown",
+            "risk_level": "unknown",
+            "fg_value": "?",
+            "fg_text": "нет данных",
+            "btc_text": "BTC: данные недоступны",
+            "btc_change": 0,
+            "macro_text": "новости: нет данных",
+            "macro_mod": 0,
+        }
+
+    btc_price = _safe_price("BTC-USDT")
+    eth_price = _safe_price("ETH-USDT")
+    sol_price = _safe_price("SOL-USDT")
+
+    fg = ctx.get("fg_value", "?")
+    btc_change = ctx.get("btc_change", 0)
+    macro_text = ctx.get("macro_text", ctx.get("geo_text", "нет данных"))
+    risk = ctx.get("risk_level", ctx.get("state", "unknown"))
+
+    lines = [
+        f"🚀 ALEX EDGE ULTRA {BOT_VERSION}",
+        "⚠️ Аварийный безопасный отчёт /signal",
+        "",
+        f"Причина: {reason}.",
+        "Полный анализ 35 монет не успел завершиться, поэтому бот НЕ выдаёт BUY.",
+        "",
+        f"Рынок: {ctx.get('state', 'unknown')}",
+        f"BTC: {ctx.get('btc_text', 'нет данных')} | {btc_change:+.2f}%",
+        f"Страх: {fg} — {ctx.get('fg_text', 'нет данных')}",
+        f"Новости: {macro_text}",
+        f"Риск рынка: {risk}",
+        "",
+        "Решение: без входа сейчас. Ждать стабилизацию BTC и нормальный полный отчёт.",
+        "",
+        "🟦 Активы для наблюдения:",
+    ]
+
+    if eth_price:
+        lines.append(f"1. ETH — наблюдать | ${eth_price:,.0f}".replace(",", " "))
+    else:
+        lines.append("1. ETH — наблюдать | цена недоступна")
+
+    if btc_price:
+        lines.append(f"2. BTC — наблюдать | ${btc_price:,.0f}".replace(",", " "))
+    else:
+        lines.append("2. BTC — наблюдать | цена недоступна")
+
+    if sol_price:
+        lines.append(f"3. SOL — только после стабилизации BTC | ${sol_price:,.2f}".replace(",", " "))
+    else:
+        lines.append("3. SOL — только после стабилизации BTC")
+
+    lines += [
+        "",
+        "Что сделать:",
+        "1. /flush",
+        "2. через 1–2 минуты повторить /signal",
+        "3. если повторится — проблема во внешнем API, а не в очереди Telegram",
+    ]
+
+    return "\n".join(lines)
+
+def run_signal_background(chat_id, update_id=None):
+    """
+    v12.1:
+    /signal больше не выполняется в основном Telegram loop.
+    Основной цикл не блокируется, а отчёт отправляется отдельным сообщением.
+    Если полный анализ завис — через SIGNAL_HARD_TIMEOUT отправляем fallback.
+    """
+    def _job():
+        result_box = {"done": False, "text": None, "error": None}
+
+        def _calc():
+            try:
+                result_box["text"] = get_signal()
+            except Exception as e:
+                result_box["error"] = e
+            finally:
+                result_box["done"] = True
+
+        calc_thread = Thread(target=_calc, daemon=True)
+        calc_thread.start()
+        calc_thread.join(timeout=SIGNAL_HARD_TIMEOUT)
+
+        if result_box.get("done") and result_box.get("text"):
+            send_message(chat_id, result_box["text"])
+            finish_signal_lock(ok=True)
+            return
+
+        if result_box.get("done") and result_box.get("error"):
+            finish_signal_lock(ok=False)
+            send_message(chat_id, f"Ошибка /signal:\n{result_box['error']}")
+            return
+
+        # Если get_signal не вернулся даже после hard timeout — не молчим.
+        finish_signal_lock(ok=False)
+        send_message(
+            chat_id,
+            emergency_signal_report(
+                f"полный анализ завис дольше {SIGNAL_HARD_TIMEOUT} секунд"
+            )
+        )
+
+    Thread(target=_job, daemon=True).start()
+
 def get_signal():
     try:
         # Защита от UnboundLocalError:
@@ -6987,7 +7110,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v12.0: /signal больше не должен висеть — parallel scan 35 монет + общий timebox"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v12.1: /signal запускается в фоне + watchdog присылает fallback, если внешний API завис"
     )
 
 
@@ -7161,14 +7284,12 @@ def main():
                         send_message(chat_id, lock_msg)
                     else:
                         last_manual_signal_time = time.time()
-                        send_message(chat_id, "⏳ Ищу монеты для покупки, подожди до 60–90 секунд. Если часть монет тормозит, бот отдаст частичный отчёт.")
-                        try:
-                            result = get_signal()
-                            send_message(chat_id, result)
-                            finish_signal_lock(ok=True)
-                        except Exception as e:
-                            finish_signal_lock(ok=False)
-                            send_message(chat_id, f"Ошибка /signal:\n{e}")
+                        send_message(
+                            chat_id,
+                            "⏳ /signal запущен в фоне. Жди отчёт отдельным сообщением до 60–130 секунд. "
+                            "Если внешний API зависнет, бот пришлёт безопасный аварийный отчёт."
+                        )
+                        run_signal_background(chat_id, item.get("update_id"))
 
                 elif text == "/btc":
                     send_message(chat_id, single_analysis("BTC-USDT"))
@@ -7234,12 +7355,7 @@ def main():
                     if left <= 0:
                         ok, _ = try_start_signal_lock(saved_chat_id, f"auto_{signal_key}")
                         if ok:
-                            try:
-                                send_message(saved_chat_id, get_signal())
-                                finish_signal_lock(ok=True)
-                            except Exception as e:
-                                finish_signal_lock(ok=False)
-                                print(f"auto /signal error: {e}")
+                            run_signal_background(saved_chat_id, f"auto_{signal_key}")
                     last_signal_key = signal_key
 
                 if (
