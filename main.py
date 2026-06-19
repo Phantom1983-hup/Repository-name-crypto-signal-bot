@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v13.6 CORE NO-RED NEUTRAL"
+BOT_VERSION = "v13.7 DUPLICATE TAP GUARD"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1162,6 +1162,43 @@ BACK_BUTTONS = {"⬅️ Назад", "назад", "в меню"}
 def normalize_button_text(text):
     text = (text or "").strip()
     return BUTTON_TO_COMMAND.get(text, text)
+
+def duplicate_command_cooldown(text):
+    """
+    v13.7:
+    Защита от двойного нажатия одной кнопки / повторной доставки Telegram.
+    Возвращает паузу в секундах для одинаковой команды.
+    """
+    if text in ["/signal", "/signal_full"]:
+        return 15
+    if text in ["/btc", "/sol"] or text.lower().startswith("/coin"):
+        return 12
+    if text in ["/alerts", "/market", "/macro", "/weekday", "/stats"]:
+        return 10
+    if text in ["/learning", "/storage", "/service", "/more", "/admin"]:
+        return 6
+    if text in ["/version", "/flush", "/sync_storage", "/signal_status", "/signal_unlock"]:
+        return 4
+    return 5
+
+def should_skip_duplicate_command(chat_id, text, last_command_time):
+    """
+    True — если это та же команда от того же чата слишком быстро.
+    Молча пропускаем, чтобы бот не присылал два одинаковых отчёта подряд.
+    """
+    if not text or not str(text).startswith("/"):
+        return False
+
+    key = f"{chat_id}:{text}"
+    now_ts = time.time()
+    cooldown = duplicate_command_cooldown(text)
+    prev = float(last_command_time.get(key, 0) or 0)
+
+    if now_ts - prev < cooldown:
+        return True
+
+    last_command_time[key] = now_ts
+    return False
 
 def normalize_coin_input(text):
     t = (text or "").strip().upper()
@@ -7927,7 +7964,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.6: BTC/ETH при слабом объёме и неопасном рынке получают ⚪ НЕТ СИГНАЛА, а не 🔴 НЕ ПОКУПАТЬ 15/100"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.7: добавлена защита от двойного нажатия кнопок и повторной доставки одной команды Telegram"
     )
 
 
@@ -7952,6 +7989,7 @@ def main():
     coin_search_waiting = set()
     last_coin_search_prompt_time = {}
     last_coin_analysis_time = {}
+    last_command_time = {}
     last_manual_market_time = 0
     last_manual_signal_time = 0
 
@@ -7984,6 +8022,10 @@ def main():
                     admin_result = admin_handle_document(chat_id, msg)
                     if admin_result:
                         send_message(chat_id, admin_result)
+                    continue
+
+                # v13.7: защита от двойного тапа / повторной доставки одной и той же команды.
+                if should_skip_duplicate_command(chat_id, text, last_command_time):
                     continue
 
                 if raw_text in SEARCH_BUTTONS:
