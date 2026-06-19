@@ -3,15 +3,15 @@
     "ETH_1781877694": {
       "asset": "ETH",
       "price": 1703.81,
-      "score": 90,
-      "master_score": 90,
+      "score": 70,
+      "master_score": 70,
       "bucket": "80+",
       "chance_5": 18,
       "chance_10": 8,
       "chance_15": 4,
       "action": "ACCUM",
-      "learning_type": "ACCUM",
-      "verdict": "🟦 СРЕДНЕСРОЧНЫЙ НАБОР",
+      "learning_type": "WATCH_SAVED",
+      "verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
       "is_quality": true,
       "profile": "крупный актив",
       "rsi": 44.7,
@@ -23,10 +23,11 @@
       "tags": [
         "btc_down",
         "volume_ok",
-        "core_asset"
+        "core_asset",
+        "repaired_after_risk_fix"
       ],
       "learning_delta": 0,
-      "learning_note": "самообучение: мало истории (0)",
+      "learning_note": "v11.4 repair: старый raw-сигнал переведён в безопасное наблюдение",
       "time": 1781877694.3746924,
       "last_seen": 1781877694.3746924,
       "seen_count": 1,
