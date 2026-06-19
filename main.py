@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v13.4 DCA WEEKDAY RECOMMENDATION"
+BOT_VERSION = "v13.5 MARKET ANCHOR WORDING"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -5962,6 +5962,22 @@ def format_usd_price(price):
 
     return f"${price:,.5f}".replace(",", " ")
 
+def ru_rows_word(n):
+    """
+    v13.5:
+    Правильное окончание для строк отчёта:
+    1 строка, 2-4 строки, 5+ строк.
+    """
+    try:
+        n = abs(int(n))
+        if n % 10 == 1 and n % 100 != 11:
+            return "строка"
+        if n % 10 in [2, 3, 4] and n % 100 not in [12, 13, 14]:
+            return "строки"
+    except Exception:
+        pass
+    return "строк"
+
 def full_ticker_signal_report():
     """
     v12.4:
@@ -6174,8 +6190,8 @@ def full_ticker_signal_report():
         f"Риск рынка: {risk}",
         f"Решение: {decision}",
         "",
-        f"📊 Срез: просканировано {len(selected)} монет, показано {len(display_selected)} строк",
-        f"🟢 BUY: 0 | 🟦 активных кандидатов сейчас: {active_candidate_count}",
+        f"📊 Срез: просканировано {len(selected)} монет, показано {len(display_selected)} {ru_rows_word(len(display_selected))}",
+        f"🟢 BUY: 0 | 🟦 активных кандидатов сейчас: {active_candidate_count} (BTC/ETH не считаются кандидатами)",
         "",
         "🟦 Что реально важно сейчас:",
     ]
@@ -6183,10 +6199,13 @@ def full_ticker_signal_report():
     for i, r in enumerate(display_selected, start=1):
         base = r["base"]
         action = "наблюдать"
-        if extreme:
-            if base in ["BTC", "ETH"]:
+        if base in ["BTC", "ETH"]:
+            # BTC/ETH в коротком отчёте — это якоря рынка, а не кандидаты.
+            action = "индикатор рынка; вход только после подтверждения"
+            if extreme:
                 action = "индикатор рынка; без входа сейчас"
-            elif r["change"] > 8:
+        elif extreme:
+            if r["change"] > 8:
                 action = "не догонять; НЕ кандидат сейчас"
             elif r["change"] < -4:
                 action = "не кандидат сейчас; ждать разворот BTC"
@@ -7857,7 +7876,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.4: /weekday добавляет итоговый день для DCA BTC/ETH/SOL и день большинства основных монет"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.5: BTC/ETH в /signal подписаны как индикаторы рынка, а не кандидаты; исправлено 'строки/строк'"
     )
 
 
