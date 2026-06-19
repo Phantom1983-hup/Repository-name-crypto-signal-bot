@@ -1,0 +1,38 @@
+{
+  "open": {
+    "ETH_1781877694": {
+      "asset": "ETH",
+      "price": 1703.81,
+      "score": 90,
+      "master_score": 90,
+      "bucket": "80+",
+      "chance_5": 18,
+      "chance_10": 8,
+      "chance_15": 4,
+      "action": "ACCUM",
+      "learning_type": "ACCUM",
+      "verdict": "🟦 СРЕДНЕСРОЧНЫЙ НАБОР",
+      "is_quality": true,
+      "profile": "крупный актив",
+      "rsi": 44.7,
+      "volume_trend": 1.89,
+      "change_24": -1.75,
+      "btc_change": -1.06,
+      "macro_mod": -2,
+      "market_bucket": "neutral",
+      "tags": [
+        "btc_down",
+        "volume_ok",
+        "core_asset"
+      ],
+      "learning_delta": 0,
+      "learning_note": "самообучение: мало истории (0)",
+      "time": 1781877694.3746924,
+      "last_seen": 1781877694.3746924,
+      "seen_count": 1,
+      "results": {}
+    }
+  },
+  "closed": [],
+  "version": "v11.2 FAST GITHUB STORAGE FIX"
+}
