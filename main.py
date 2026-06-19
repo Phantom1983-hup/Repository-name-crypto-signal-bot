@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v12.4 FULL SIGNAL TICKER SAFE"
+BOT_VERSION = "v12.5 LEARNING SPEC CAP"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -79,6 +79,8 @@ COIN_ANALYSIS_WORKERS = int(os.getenv("COIN_ANALYSIS_WORKERS", "8"))
 SIGNAL_TIME_BUDGET = int(os.getenv("SIGNAL_TIME_BUDGET", "75"))
 SIGNAL_HARD_TIMEOUT = int(os.getenv("SIGNAL_HARD_TIMEOUT", "130"))
 SIGNAL_QUICK_COINS = ["BTC-USDT", "ETH-USDT", "SOL-USDT", "NEAR-USDT", "SUI-USDT", "LINK-USDT"]
+QUALITY_LEARNING_ASSETS = {"BTC", "ETH", "SOL", "BNB", "LINK", "SUI", "NEAR", "TAO", "AAVE", "ADA", "AVAX", "INJ"}
+STABLE_SKIP_ASSETS = {"USDT", "USDC", "DAI", "FDUSD", "TUSD", "USDD", "USDP", "USD1"}
 CANDLE_TIMEOUT = int(os.getenv("CANDLE_TIMEOUT", "5"))
 NEWS_TIMEOUT = int(os.getenv("NEWS_TIMEOUT", "4"))
 
@@ -3216,6 +3218,102 @@ def learning_checkpoint_status(rec, now):
 
     return " | ".join(parts)
 
+def learning_display_action(action, verdict=""):
+    verdict_text = str(verdict or "")
+    if action == "ACCUM" and ("НАБЛЮДАТЬ" in verdict_text or "КАНДИДАТ" in verdict_text or "СПЕКУЛЯТИВ" in verdict_text):
+        return "НАБЛЮДЕНИЕ"
+    if action == "WATCH":
+        return "НАБЛЮДЕНИЕ"
+    if action == "ACCUM":
+        return "НАБЛЮДЕНИЕ / НЕ ВХОД"
+    return action or "н/д"
+
+def normalize_learning_open_records(open_items):
+    """
+    v12.5:
+    Обучение не должно хранить GRAM/LAB/мелкие монеты как сильный среднесрочный набор.
+    Неизвестные/спекулятивные монеты cap 55/100 и только наблюдение.
+    Качественные альты в страхе/сомнительном рынке cap 68/100 и без "Среднесрок".
+    """
+    if not isinstance(open_items, dict):
+        return {}, False, 0
+
+    changed = False
+    fixed = 0
+
+    for key, rec in list(open_items.items()):
+        asset = str(rec.get("asset") or rec.get("symbol") or key).upper()
+        score = int(float(rec.get("score", 0) or 0))
+        master = int(float(rec.get("master_score", score) or score))
+        action = rec.get("action", "")
+        verdict = str(rec.get("verdict", ""))
+
+        if asset in STABLE_SKIP_ASSETS:
+            open_items.pop(key, None)
+            changed = True
+            fixed += 1
+            continue
+
+        unsafe_medium = (
+            "СРЕДНЕСРОЧ" in verdict
+            or "первая" in str(rec).lower()
+            or action in ["BUY", "PUMP"]
+            or score >= 75
+        )
+
+        # BTC/ETH после старых версий: не показываем как набор.
+        if asset in ["BTC", "ETH"] and unsafe_medium:
+            cap = 68 if asset == "BTC" else 70
+            rec["score"] = min(score, cap)
+            rec["master_score"] = min(master, cap)
+            rec["action"] = "WATCH"
+            rec["verdict"] = "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ"
+            rec["learning_type"] = "WATCH"
+            rec["learning_note"] = "v12.5 repair: крупный актив переведён в наблюдение"
+            rec.setdefault("tags", [])
+            if "v12_5_learning_repair" not in rec["tags"]:
+                rec["tags"].append("v12_5_learning_repair")
+            open_items[key] = rec
+            changed = True
+            fixed += 1
+            continue
+
+        # Качественные альты: TAO/SOL/NEAR и т.п. — только кандидат после стабилизации, не "Среднесрок".
+        if asset in QUALITY_LEARNING_ASSETS and asset not in ["BTC", "ETH"]:
+            if unsafe_medium or score > 68 or "СРЕДНЕСРОЧ" in verdict:
+                rec["score"] = min(score, 68)
+                rec["master_score"] = min(master, 68)
+                rec["action"] = "WATCH"
+                rec["verdict"] = "🟡 КАНДИДАТ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
+                rec["learning_type"] = "WATCH"
+                rec["learning_note"] = "v12.5 repair: качественный альт оставлен только как наблюдение"
+                rec.setdefault("tags", [])
+                if "v12_5_quality_alt_cap" not in rec["tags"]:
+                    rec["tags"].append("v12_5_quality_alt_cap")
+                open_items[key] = rec
+                changed = True
+                fixed += 1
+            continue
+
+        # Неизвестные/спекулятивные монеты: GRAM/LAB/мелкие монеты не должны быть 84/100.
+        if asset not in QUALITY_LEARNING_ASSETS:
+            if unsafe_medium or score > 55 or "СРЕДНЕСРОЧ" in verdict:
+                rec["score"] = min(score, 55)
+                rec["master_score"] = min(master, 55)
+                rec["action"] = "WATCH"
+                rec["verdict"] = "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ"
+                rec["learning_type"] = "WATCH"
+                rec["learning_note"] = "v12.5 repair: неизвестная/спекулятивная монета ограничена до 55/100"
+                rec.setdefault("tags", [])
+                for tag in ["speculative", "v12_5_speculative_cap"]:
+                    if tag not in rec["tags"]:
+                        rec["tags"].append(tag)
+                open_items[key] = rec
+                changed = True
+                fixed += 1
+
+    return open_items, changed, fixed
+
 def learning_open_rows(open_items):
     if not isinstance(open_items, dict) or not open_items:
         return "Открытых наблюдений нет.\n"
@@ -3243,10 +3341,11 @@ def learning_open_rows(open_items):
         action = rec.get("action", "н/д")
         score = rec.get("score", "н/д")
         verdict = rec.get("verdict", "н/д")
+        action_label = learning_display_action(action, verdict)
         seen_count = int(rec.get("seen_count", 1) or 1)
 
         text += (
-            f"• {asset}: {action}, score {score}/100\n"
+            f"• {asset}: {action_label}, score {score}/100\n"
             f"  статус: {verdict}\n"
             f"  {price_line}\n"
             f"  прошло: {learning_age_text(age)} | закрытие через: {learning_age_text(close_left)} | встречалось: {seen_count} раз\n"
@@ -3275,6 +3374,13 @@ def learning_report(sync_github=False):
             "Истории пока нет.\n"
             "Возможная причина: файл истории ещё не создан или сбросился после деплоя Render."
         )
+
+    open_items = data.get("open", {})
+    open_items, normalized, fixed_count = normalize_learning_open_records(open_items)
+    if normalized:
+        data["open"] = open_items
+        save_json(RESULTS_FILE, data)
+        background_github_sync([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
 
     closed = data.get("closed", [])
     open_items = data.get("open", {})
@@ -5443,9 +5549,9 @@ def v115_apply_extreme_fear_wording_fix(c):
 
 def repair_learning_open_records():
     """
-    v11.4:
-    Чистит уже записанные старые открытые наблюдения, если они попали в обучение
-    до safety-cap фиксов: ETH 90/100, BTC 82/100, Среднесрок, первая часть и т.п.
+    v12.5:
+    Чистит открытые наблюдения: GRAM/LAB/мелкие монеты не могут быть 84/100
+    и "Среднесрочный набор"; качественные альты не должны выглядеть как вход в страхе.
     """
     data = load_json(RESULTS_FILE)
     if not isinstance(data, dict):
@@ -5455,41 +5561,16 @@ def repair_learning_open_records():
     if not isinstance(open_items, dict) or not open_items:
         return "Открытых наблюдений нет."
 
-    fixed = 0
-
-    for key, rec in list(open_items.items()):
-        asset = rec.get("asset") or rec.get("symbol") or key
-        action = rec.get("action", "")
-        score = int(rec.get("score", 0) or 0)
-        verdict = str(rec.get("verdict", ""))
-
-        unsafe_text = (
-            "СРЕДНЕСРОЧНЫЙ" in verdict
-            or "первая" in str(rec).lower()
-            or score >= 80
-        )
-
-        if asset in ["BTC", "ETH"] and action == "ACCUM" and unsafe_text:
-            cap = 68 if asset == "BTC" else 70
-            rec["score"] = min(score, cap)
-            rec["master_score"] = min(int(rec.get("master_score", score) or score), cap)
-            rec["action"] = "ACCUM"
-            rec["verdict"] = "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ"
-            rec["learning_type"] = "WATCH_SAVED"
-            rec["learning_note"] = "v11.5 repair: старый raw-сигнал переведён в безопасное наблюдение"
-            rec.setdefault("tags", [])
-            if "repaired_after_risk_fix" not in rec["tags"]:
-                rec["tags"].append("repaired_after_risk_fix")
-            open_items[key] = rec
-            fixed += 1
-
+    open_items, changed, fixed = normalize_learning_open_records(open_items)
     data["open"] = open_items
-    save_json(RESULTS_FILE, data)
-    sync_github_storage_now([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE])
 
-    if fixed:
+    if changed:
+        save_json(RESULTS_FILE, data)
+        sync_github_storage_now([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE])
         return f"✅ Обучение исправлено: безопасно переписано открытых наблюдений: {fixed}."
-    return "✅ Проверил обучение: опасных старых записей не найдено."
+
+    return "✅ Проверил обучение: опасных записей GRAM/TAO/спекулятивных монет не найдено."
+
 
 def analyze_symbol_for_signal(symbol):
     """
@@ -5754,7 +5835,10 @@ def full_ticker_signal_report():
         if volume < 1_000_000 or price <= 0:
             continue
 
-        is_core = base in ["BTC", "ETH", "SOL", "BNB", "LINK", "SUI", "NEAR", "TAO", "AAVE", "ADA", "AVAX", "INJ"]
+        if base in STABLE_SKIP_ASSETS:
+            continue
+
+        is_core = base in QUALITY_LEARNING_ASSETS
         quality_bonus = 10 if is_core else 0
 
         # Тикерный скоринг: быстрый, но без свечей. Поэтому BUY не выдаём.
@@ -5771,6 +5855,8 @@ def full_ticker_signal_report():
                 score = min(score, 55)
         else:
             score = min(max(score, 20), 72)
+            if not is_core:
+                score = min(score, 55)
 
         score = int(round(score))
 
@@ -7496,7 +7582,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v12.4: /signal_full больше не висит — быстрый полный ticker-safe список 35 монет"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v12.5: обучение чинит GRAM/спекулятивные 84/100 и убирает Среднесрок из WATCH"
     )
 
 
