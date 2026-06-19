@@ -29,11 +29,47 @@
       "learning_delta": 0,
       "learning_note": "v11.4 repair: старый raw-сигнал переведён в безопасное наблюдение",
       "time": 1781877694.3746924,
-      "last_seen": 1781877694.3746924,
+      "last_seen": 1781878587.5263236,
+      "seen_count": 2,
+      "results": {},
+      "last_price": 1698.32,
+      "last_score": 90,
+      "last_action": "ACCUM",
+      "last_verdict": "🟦 СРЕДНЕСРОЧНЫЙ НАБОР"
+    },
+    "BTC_1781878587": {
+      "asset": "BTC",
+      "price": 63087.0,
+      "score": 82,
+      "master_score": 82,
+      "bucket": "80+",
+      "chance_5": 18,
+      "chance_10": 8,
+      "chance_15": 4,
+      "action": "ACCUM",
+      "learning_type": "ACCUM",
+      "verdict": "🟦 СРЕДНЕСРОЧНЫЙ НАБОР",
+      "is_quality": true,
+      "profile": "крупный актив",
+      "rsi": 51.2,
+      "volume_trend": 1.43,
+      "change_24": -1.05,
+      "btc_change": -1.05,
+      "macro_mod": -2,
+      "market_bucket": "neutral",
+      "tags": [
+        "btc_down",
+        "volume_ok",
+        "core_asset"
+      ],
+      "learning_delta": 0,
+      "learning_note": "самообучение: мало истории (0)",
+      "time": 1781878587.5263236,
+      "last_seen": 1781878587.5263236,
       "seen_count": 1,
       "results": {}
     }
   },
   "closed": [],
-  "version": "v11.2 FAST GITHUB STORAGE FIX"
+  "version": "v11.4 LEARNING AFTER RISK FIX"
 }
