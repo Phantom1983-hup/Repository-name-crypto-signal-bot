@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v13.7 DUPLICATE TAP GUARD"
+BOT_VERSION = "v13.8 MANUAL ONLY NO AUTO SPAM"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -71,6 +71,14 @@ _GITHUB_LAST_SYNC = {}
 SIGNAL_HOURS = [9, 15, 21]
 MARKET_HOUR = 9
 PUMP_MINUTES = [0]
+
+# v13.8:
+# Автоматические сообщения по расписанию выключены по умолчанию.
+# Причина: утренний auto-scheduler запускал старый background /signal и мог присылать
+# дубли/устаревший отчёт с BUY по спекулятивным монетам.
+# Ручные кнопки 📊 Сигнал / 🌍 Рынок / ⚡ Alerts продолжают работать.
+AUTO_REPORTS_ENABLED = (os.getenv("AUTO_REPORTS_ENABLED") or "").strip().lower() in ["1", "true", "yes", "on"]
+
 MOSCOW_OFFSET_HOURS = 3
 
 REPEAT_PUMP_AFTER = 4 * 60 * 60
@@ -7964,7 +7972,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.7: добавлена защита от двойного нажатия кнопок и повторной доставки одной команды Telegram"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.8: автоматические утренние/часовые отчёты выключены; ручные кнопки работают, дубли auto-scheduler устранены"
     )
 
 
@@ -8208,7 +8216,12 @@ def main():
 
             saved_chat_id = load_chat_id()
 
-            if saved_chat_id:
+            # v13.8:
+            # Автоматический scheduler отключён по умолчанию.
+            # Он больше не запускает старый run_signal_background и не шлёт утренние дубли.
+            # Если когда-нибудь понадобится вернуть авто-отчёты, включить env:
+            # AUTO_REPORTS_ENABLED=1. Даже тогда /signal должен использовать только unified_signal_report().
+            if saved_chat_id and AUTO_REPORTS_ENABLED:
                 now_msk = moscow_now()
 
                 signal_key = now_msk.strftime("%Y-%m-%d %H")
@@ -8220,11 +8233,7 @@ def main():
                     and now_msk.minute < 5
                     and last_signal_key != signal_key
                 ):
-                    left, _lock_data = signal_lock_left()
-                    if left <= 0:
-                        ok, _ = try_start_signal_lock(saved_chat_id, f"auto_{signal_key}")
-                        if ok:
-                            run_signal_background(saved_chat_id, f"auto_{signal_key}")
+                    send_message(saved_chat_id, unified_signal_report())
                     last_signal_key = signal_key
 
                 if (
