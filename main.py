@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v13.8 MANUAL ONLY NO AUTO SPAM"
+BOT_VERSION = "v13.9 SERVICE DEDUPE HARD FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1206,6 +1206,21 @@ def should_skip_duplicate_command(chat_id, text, last_command_time):
         return True
 
     last_command_time[key] = now_ts
+    return False
+
+def should_skip_service_message(chat_id, last_service_time):
+    """
+    v13.9:
+    Дополнительная жёсткая защита именно для кнопки 🛠 Сервис.
+    Даже если Telegram/Render отдаст кнопку два раза подряд, второе сервисное меню не отправляем.
+    """
+    now_ts = time.time()
+    prev = float(last_service_time.get(chat_id, 0) or 0)
+
+    if now_ts - prev < 12:
+        return True
+
+    last_service_time[chat_id] = now_ts
     return False
 
 def normalize_coin_input(text):
@@ -7972,7 +7987,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.8: автоматические утренние/часовые отчёты выключены; ручные кнопки работают, дубли auto-scheduler устранены"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.9: добавлена жёсткая защита от дубля кнопки 🛠 Сервис; /flush чистит локальные дубли"
     )
 
 
@@ -7998,6 +8013,7 @@ def main():
     last_coin_search_prompt_time = {}
     last_coin_analysis_time = {}
     last_command_time = {}
+    last_service_time = {}
     last_manual_market_time = 0
     last_manual_signal_time = 0
 
@@ -8103,8 +8119,10 @@ def main():
                     if is_admin(chat_id) or not ADMIN_CHAT_ID:
                         save_last_update_id(last_update or 0)
                         force_clear_signal_lock()
+                        last_command_time.clear()
+                        last_service_time.clear()
                         sync_github_storage_now([LAST_UPDATE_FILE, CHAT_ID_FILE, SIGNAL_LOCK_FILE], max_files=3)
-                        send_message(chat_id, "✅ Очередь Telegram очищена, signal_lock сброшен. Старые нажатия больше не должны повторяться.")
+                        send_message(chat_id, "✅ Очередь Telegram очищена, дубли кнопок и signal_lock сброшены.")
                     else:
                         send_message(chat_id, "⛔ /flush доступен только ADMIN_CHAT_ID.")
 
@@ -8138,10 +8156,12 @@ def main():
                     send_message(chat_id, weekday_report())
 
                 elif text in ["/service", "/more", "/admin"]:
+                    if should_skip_service_message(chat_id, last_service_time):
+                        continue
+
                     send_message(
                         chat_id,
-                        "🛠 Сервис: здесь только редкие служебные действия. "
-                        "Обновление файла теперь без кнопки — просто отправь main*.py документом.",
+                        "🛠 Сервис: редкие служебные действия.",
                         reply_markup=service_keyboard(chat_id)
                     )
 
