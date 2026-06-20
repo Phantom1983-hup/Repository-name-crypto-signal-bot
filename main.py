@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v13.12 ASYMMETRIC 24H FORECAST"
+BOT_VERSION = "v13.13 SINGLE COIN ASYMMETRIC FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -7547,7 +7547,8 @@ def format_single_coin_report(c):
         f"BTC: {ctx.get('btc_text', 'н/д')} | {ctx.get('btc_change', 0):.2f}%\n\n"
         f"Действие: {single_coin_action_text(c)}\n"
         f"Причина: {compact_reason(c)}\n\n"
-        f"Сценарий 24ч: {c.get('low', 0)}%…{c.get('high', 0)}%\n"
+        f"Сценарий 24ч: {c.get('low', 0)}%…{c.get('high', 0)}%"
+        f"{(' — ' + c.get('_forecast_note')) if c.get('_forecast_note') else ''}\n"
         f"Диапазон 24ч: ${c.get('target_low', 0):.6g}…${c.get('target_high', 0):.6g}\n\n"
         f"{single_coin_conditions_text(c)}\n"
     )
@@ -8017,6 +8018,137 @@ def v136_apply_core_no_red_neutral(c):
     return c
 
 
+def v1313_apply_single_asymmetric_forecast(c):
+    """
+    v13.13:
+    Приводит подробный /btc /sol /coin к той же асимметричной логике,
+    что и короткий /signal.
+    До этого общий /signal уже показывал "-2.5…+0.9 новости давят",
+    а /btc мог оставаться старым "-1.5…+1.5".
+    """
+    if not c:
+        return c
+
+    c = dict(c)
+    ctx = c.get("ctx", {}) or {}
+    symbol = c.get("symbol", "")
+    price = float(c.get("price", 0) or 0)
+    change = float(c.get("change_24", 0) or 0)
+    score = int(c.get("score", 0) or 0)
+    is_quality = bool(c.get("is_quality"))
+
+    if price <= 0:
+        return c
+
+    try:
+        macro_mod = int(ctx.get("macro_mod", ctx.get("geo_mod", 0)) or 0)
+    except Exception:
+        macro_mod = 0
+
+    try:
+        fear_num = int(ctx.get("fg_value", 50) or 50)
+    except Exception:
+        fear_num = 50
+
+    try:
+        btc_change = float(ctx.get("btc_change", 0) or 0)
+    except Exception:
+        btc_change = 0
+
+    risk_level = ctx.get("risk_level", ctx.get("state", ""))
+    weak_fear = fear_num <= 25
+    bad_news = macro_mod <= -5
+    very_bad_news = macro_mod <= -8
+    good_news = macro_mod >= 6
+    btc_strong = btc_change >= 1.5
+    btc_weak = btc_change <= -0.7
+    extreme = (
+        risk_level == "danger"
+        or (fear_num <= 15 and btc_change < 0)
+        or btc_weak
+    )
+
+    note = ""
+
+    if extreme:
+        if symbol in ["BTC", "ETH"]:
+            low, high, note = -3.5, 0.8, "риск рынка"
+        elif (not is_quality) and change >= 12:
+            low, high, note = -16.0, 1.5, "риск отката"
+        else:
+            low, high, note = -5.0, 1.0, "ждать стабилизацию BTC"
+
+    elif (not is_quality) and change >= 50:
+        low, high, note = -18.0, 2.0, "поздний памп"
+    elif (not is_quality) and change >= 20:
+        low, high, note = -12.0, 2.5, "риск отката"
+    elif (not is_quality) and change >= 12:
+        low, high, note = -8.0, 2.0, "не догонять"
+
+    elif symbol in ["BTC", "ETH"]:
+        if very_bad_news:
+            low, high, note = -2.5, 0.9, "новости давят"
+        elif bad_news:
+            low, high, note = -2.0, 1.0, "фон осторожный"
+        elif weak_fear and btc_strong:
+            low, high, note = -2.0, 1.2, "рост ограничен страхом"
+        elif good_news and btc_strong:
+            low, high, note = -1.0, 2.2, ""
+        elif change >= 1.0:
+            low, high, note = -1.4, 1.7, ""
+        elif change <= -1.0:
+            low, high, note = -2.4, 1.1, ""
+        else:
+            low, high, note = -1.2, 1.4, ""
+
+    elif is_quality and change >= 5:
+        low, high, note = -4.5, 1.3, "перегрето, ждать откат"
+    elif is_quality and change >= 3:
+        low, high, note = -3.5, 1.6, "ждать откат"
+    elif is_quality and change >= 2:
+        if bad_news or weak_fear:
+            low, high, note = -3.0, 1.4, "осторожно"
+        else:
+            low, high, note = -2.0, 2.2, ""
+    elif is_quality and score >= 62:
+        if good_news and not weak_fear:
+            low, high, note = -1.2, 3.4, ""
+        elif bad_news:
+            low, high, note = -2.8, 1.5, "новости давят"
+        else:
+            low, high, note = -1.8, 2.6, ""
+    elif is_quality and score >= 58:
+        if bad_news:
+            low, high, note = -2.7, 1.2, "новости давят"
+        else:
+            low, high, note = -1.8, 2.2, ""
+    elif is_quality and -6.0 <= change <= -3.0:
+        if bad_news or weak_fear:
+            low, high, note = -3.5, 2.0, "только после стабилизации"
+        else:
+            low, high, note = -2.0, 4.0, "возможен отскок"
+    elif change <= -4:
+        low, high, note = -3.5, 2.0, "нужен разворот"
+    else:
+        low, high, note = -1.5, 1.8, ""
+
+    # Если монета в SKIP / нет сигнала, не даём чрезмерно оптимистичный верх.
+    if c.get("action") == "SKIP":
+        high = min(high, 1.5 if symbol not in ["BTC", "ETH"] else high)
+
+    low = round(float(low), 1)
+    high = round(float(high), 1)
+
+    c["low"] = low
+    c["high"] = high
+    c["target_low"] = price * (1 + low / 100)
+    c["target_high"] = price * (1 + high / 100)
+    if note:
+        c["_forecast_note"] = note
+
+    return c
+
+
 def single_analysis(symbol):
     c = alex_edge_ultra(symbol)
 
@@ -8034,6 +8166,7 @@ def single_analysis(symbol):
     c = v106_apply_safe_caution_border_fix(c)
     c = v115_apply_extreme_fear_wording_fix(c)
     c = v136_apply_core_no_red_neutral(c)
+    c = v1313_apply_single_asymmetric_forecast(c)
 
     # v11.4+: learning note/updates только после safety caps.
     c = v83_apply_self_learning(c)
@@ -8108,7 +8241,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.12: 24ч прогноз стал асимметричным и учитывает страх, BTC, новости, перегрев и поздний памп"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.13: подробные /btc /sol /coin тоже используют асимметричный 24ч прогноз как общий /signal"
     )
 
 
