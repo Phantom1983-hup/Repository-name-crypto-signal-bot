@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v13.9 SERVICE DEDUPE HARD FIX"
+BOT_VERSION = "v13.10 SHORT 24H FORECAST"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -6223,6 +6223,51 @@ def full_ticker_signal_report():
 
     display_selected = _compact_signal_rows(selected)
 
+    def _compact_24h_forecast(r):
+        """
+        v13.10:
+        Возвращаем короткий прогноз 24ч в общий /signal.
+        Это не BUY и не обещание роста, а сценарий для наблюдения.
+        Детальный расчёт остаётся в /coin, /btc, /sol.
+        """
+        base = r.get("base", "")
+        change = float(r.get("change", 0) or 0)
+        score = int(r.get("score", 0) or 0)
+        is_core = bool(r.get("is_core"))
+
+        if extreme:
+            if base in ["BTC", "ETH"]:
+                return "-3.0%…+1.0%"
+            if (not is_core) and change >= 12:
+                return "-12.0%…+2.0% риск отката"
+            return "-4.0%…+1.5%"
+
+        if base in ["BTC", "ETH"]:
+            if change >= 1.0:
+                return "-1.5%…+2.0%"
+            if change <= -1.0:
+                return "-2.0%…+1.5%"
+            return "-1.5%…+1.5%"
+
+        # Поздний памп: прогноз не должен выглядеть как ростовой сигнал.
+        if (not is_core) and change >= 12:
+            return "-12.0%…+3.0% риск отката"
+        if change >= 8:
+            return "-8.0%…+2.0% не догонять"
+
+        # Качественный актив на росте без полноценного подтверждения.
+        if is_core and change >= 3:
+            return "-3.0%…+2.0% ждать откат"
+        if is_core and score >= 60:
+            return "-2.0%…+3.0%"
+        if is_core and score >= 58:
+            return "-2.0%…+2.5%"
+
+        if change <= -4:
+            return "-3.0%…+4.0% только после стабилизации"
+
+        return "-2.0%…+2.0%"
+
     # Считаем реальные активные кандидаты, чтобы не создавать иллюзию,
     # что каждая показанная монета "стоит наблюдения".
     if extreme:
@@ -6251,7 +6296,7 @@ def full_ticker_signal_report():
         f"Решение: {decision}",
         "",
         f"📊 Срез: просканировано {len(selected)} монет, показано {len(display_selected)} {ru_rows_word(len(display_selected))}",
-        f"🟢 BUY: 0 | 🟦 активных кандидатов сейчас: {active_candidate_count} (BTC/ETH не считаются кандидатами)",
+        f"🟢 BUY: 0 | 🟦 активов к наблюдению сейчас: {active_candidate_count} (BTC/ETH не считаются)",
         "",
         "🟦 Что реально важно сейчас:",
     ]
@@ -6280,12 +6325,14 @@ def full_ticker_signal_report():
 
         lines.append(
             f"{i}. {base} — {r['score']}/100 | {format_usd_price(r['price'])} | 24ч {r['change']:+.2f}%\n"
-            f"   {action}"
+            f"   {action}\n"
+            f"   прогноз 24ч: {_compact_24h_forecast(r)}"
         )
 
     lines += [
         "",
-        "Важно: список короткий. Это не все монеты, а только рынок/кандидаты/предупреждения.",
+        "Важно: список короткий. Прогноз 24ч — сценарий, а не обещание роста.",
+        "Это не все монеты, а только рынок/наблюдение/предупреждения.",
         "Для точечного анализа: /btc /sol или /coin ETH",
         "Самообучение: /learning",
     ]
@@ -7987,7 +8034,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.9: добавлена жёсткая защита от дубля кнопки 🛠 Сервис; /flush чистит локальные дубли"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.10: в короткий /signal возвращён прогноз 24ч по каждой показанной монете; BUY-логика не менялась"
     )
 
 
