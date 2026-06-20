@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v13.11 GEO NEWS CONFLICT FIX"
+BOT_VERSION = "v13.12 ASYMMETRIC 24H FORECAST"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -6247,48 +6247,100 @@ def full_ticker_signal_report():
 
     def _compact_24h_forecast(r):
         """
-        v13.10:
-        Возвращаем короткий прогноз 24ч в общий /signal.
-        Это не BUY и не обещание роста, а сценарий для наблюдения.
-        Детальный расчёт остаётся в /coin, /btc, /sol.
+        v13.12:
+        Асимметричный 24ч-сценарий.
+        Прогноз больше не рисуется одинаковым "-2…+2" для всех.
+        Он учитывает:
+        • режим страха;
+        • BTC как якорь рынка;
+        • свежий новостной фон;
+        • рост/перегрев самой монеты;
+        • качество актива;
+        • поздний памп.
         """
         base = r.get("base", "")
         change = float(r.get("change", 0) or 0)
         score = int(r.get("score", 0) or 0)
         is_core = bool(r.get("is_core"))
 
-        if extreme:
+        try:
+            macro_mod = int(ctx.get("macro_mod", 0) or 0)
+        except Exception:
+            macro_mod = 0
+
+        try:
+            fear_num = int(fg_value)
+        except Exception:
+            fear_num = 50
+
+        weak_fear = fear_num <= 25
+        bad_news = macro_mod < 0
+        good_news = macro_mod >= 6
+        btc_strong = btc_change >= 1.5
+        btc_weak = btc_change <= -0.7
+
+        # Опасный режим: верх ограничен, низ шире.
+        if extreme or btc_weak:
             if base in ["BTC", "ETH"]:
-                return "-3.0%…+1.0%"
+                return "-3.5%…+0.8% риск рынка"
             if (not is_core) and change >= 12:
-                return "-12.0%…+2.0% риск отката"
-            return "-4.0%…+1.5%"
+                return "-16.0%…+1.5% риск отката"
+            return "-5.0%…+1.0% ждать стабилизацию BTC"
 
-        if base in ["BTC", "ETH"]:
-            if change >= 1.0:
-                return "-1.5%…+2.0%"
-            if change <= -1.0:
-                return "-2.0%…+1.5%"
-            return "-1.5%…+1.5%"
-
-        # Поздний памп: прогноз не должен выглядеть как ростовой сигнал.
+        # Поздний памп / спекулятивный актив: главный сценарий — откат, а не рост.
+        if (not is_core) and change >= 50:
+            return "-18.0%…+2.0% поздний памп"
+        if (not is_core) and change >= 20:
+            return "-12.0%…+2.5% риск отката"
         if (not is_core) and change >= 12:
-            return "-12.0%…+3.0% риск отката"
-        if change >= 8:
             return "-8.0%…+2.0% не догонять"
 
-        # Качественный актив на росте без полноценного подтверждения.
+        # BTC/ETH — якорь рынка, в страхе потенциал роста ограничен.
+        if base in ["BTC", "ETH"]:
+            if bad_news:
+                return "-2.5%…+0.9% новости давят"
+            if weak_fear and btc_strong:
+                return "-2.0%…+1.2% рост ограничен страхом"
+            if good_news and btc_strong:
+                return "-1.0%…+2.2%"
+            if change >= 1.0:
+                return "-1.4%…+1.7%"
+            if change <= -1.0:
+                return "-2.4%…+1.1%"
+            return "-1.2%…+1.4%"
+
+        # Качественный актив уже вырос: лучше ждать откат, риск вниз шире.
+        if is_core and change >= 5:
+            return "-4.5%…+1.3% перегрето, ждать откат"
         if is_core and change >= 3:
-            return "-3.0%…+2.0% ждать откат"
-        if is_core and score >= 60:
-            return "-2.0%…+3.0%"
+            return "-3.5%…+1.6% ждать откат"
+        if is_core and change >= 2:
+            if bad_news or weak_fear:
+                return "-3.0%…+1.4% осторожно"
+            return "-2.0%…+2.2%"
+
+        # Качественный актив с умеренным score и без перегрева.
+        if is_core and score >= 62:
+            if good_news and not weak_fear:
+                return "-1.2%…+3.4%"
+            if bad_news:
+                return "-2.8%…+1.5%"
+            return "-1.8%…+2.6%"
         if is_core and score >= 58:
-            return "-2.0%…+2.5%"
+            if bad_news:
+                return "-2.7%…+1.2%"
+            return "-1.8%…+2.2%"
+
+        # Просадка качественного актива — возможен отскок, но только после стабилизации BTC.
+        if is_core and -6.0 <= change <= -3.0:
+            if bad_news or weak_fear:
+                return "-3.5%…+2.0% только после стабилизации"
+            return "-2.0%…+4.0% возможен отскок"
 
         if change <= -4:
-            return "-3.0%…+4.0% только после стабилизации"
+            return "-3.5%…+2.0% нужен разворот"
 
-        return "-2.0%…+2.0%"
+        return "-1.5%…+1.8%"
 
     # Считаем реальные активные кандидаты, чтобы не создавать иллюзию,
     # что каждая показанная монета "стоит наблюдения".
@@ -6353,7 +6405,7 @@ def full_ticker_signal_report():
 
     lines += [
         "",
-        "Важно: список короткий. Прогноз 24ч — сценарий, а не обещание роста.",
+        "Важно: список короткий. Прогноз 24ч — асимметричный сценарий, а не обещание роста.",
         "Это не все монеты, а только рынок/наблюдение/предупреждения.",
         "Для точечного анализа: /btc /sol или /coin ETH",
         "Самообучение: /learning",
@@ -8056,7 +8108,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.11: исправлена оценка геополитических новостей — заголовки со strikes/kill/dead не становятся зелёными из-за слова ceasefire"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.12: 24ч прогноз стал асимметричным и учитывает страх, BTC, новости, перегрев и поздний памп"
     )
 
 
