@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v13.13 SINGLE COIN ASYMMETRIC FIX"
+BOT_VERSION = "v13.14 QUALITY ALT SCORE FLOOR"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -7530,6 +7530,14 @@ def single_coin_conditions_text(c):
         text += f"• {x}\n"
     return text
 
+def format_signed_pct_value(v):
+    try:
+        v = float(v)
+    except Exception:
+        v = 0.0
+    return f"{v:+.1f}%"
+
+
 def format_single_coin_report(c):
     ctx = c.get("ctx", {})
 
@@ -7540,14 +7548,15 @@ def format_single_coin_report(c):
         f"Цена: {compact_price(c.get('price'))}\n"
         f"24ч: {c.get('change_24', 0):.2f}%\n"
         f"RSI: {c.get('rsi', 'н/д')} | объём: x{c.get('volume_trend', 'н/д')}\n"
-        f"Оценка: {c.get('score', 0)}/100\n"
+        f"Оценка входа: {c.get('score', 0)}/100\n"
+        f"{('ℹ️ score снижен за плохой момент входа, не за качество актива\n') if c.get('_quality_alt_score_floor') else ''}"
         f"📚 {c.get('_learning_note', 'самообучение: история накапливается')}\n\n"
         f"{macro_mode_text(ctx)} ({ctx.get('macro_mod', 0):+d})\n"
         f"{compact_market_risk_line(ctx)}\n"
         f"BTC: {ctx.get('btc_text', 'н/д')} | {ctx.get('btc_change', 0):.2f}%\n\n"
         f"Действие: {single_coin_action_text(c)}\n"
         f"Причина: {compact_reason(c)}\n\n"
-        f"Сценарий 24ч: {c.get('low', 0)}%…{c.get('high', 0)}%"
+        f"Сценарий 24ч: {format_signed_pct_value(c.get('low', 0))}…{format_signed_pct_value(c.get('high', 0))}"
         f"{(' — ' + c.get('_forecast_note')) if c.get('_forecast_note') else ''}\n"
         f"Диапазон 24ч: ${c.get('target_low', 0):.6g}…${c.get('target_high', 0):.6g}\n\n"
         f"{single_coin_conditions_text(c)}\n"
@@ -8018,6 +8027,43 @@ def v136_apply_core_no_red_neutral(c):
     return c
 
 
+def v1314_apply_quality_alt_score_floor(c):
+    """
+    v13.14:
+    Качественный альт (SOL/LINK/TAO/NEAR/AAVE и т.п.) не должен получать 0/100,
+    если решение "НЕ ПОКУПАТЬ" вызвано перегревом/слабым объёмом/плохими новостями.
+    0/100 визуально звучит как "монета мусор", хотя правильно: "момент входа плохой".
+    BUY-логику не смягчаем: вход всё равно запрещён.
+    """
+    if not c:
+        return c
+
+    c = dict(c)
+    symbol = c.get("symbol", "")
+    is_quality = bool(c.get("is_quality")) or symbol in QUALITY_LEARNING_ASSETS
+    score = int(c.get("score", 0) or 0)
+    verdict = str(c.get("verdict", ""))
+
+    if not is_quality:
+        return c
+
+    if symbol in ["BTC", "ETH"]:
+        return c
+
+    if score <= 10 and ("НЕ ПОКУПАТЬ" in verdict or c.get("action") == "SKIP"):
+        c["score"] = 20
+        c["_master_score"] = max(int(c.get("_master_score", 0) or 0), 20)
+        c["_quality_alt_score_floor"] = True
+        c["action"] = "SKIP"
+
+        # Не меняем запрет на вход, только делаем причину понятнее.
+        c.setdefault("minus", [])
+        if "плохой момент входа, а не плохой актив" not in c["minus"]:
+            c["minus"].append("плохой момент входа, а не плохой актив")
+
+    return c
+
+
 def v1313_apply_single_asymmetric_forecast(c):
     """
     v13.13:
@@ -8166,6 +8212,7 @@ def single_analysis(symbol):
     c = v106_apply_safe_caution_border_fix(c)
     c = v115_apply_extreme_fear_wording_fix(c)
     c = v136_apply_core_no_red_neutral(c)
+    c = v1314_apply_quality_alt_score_floor(c)
     c = v1313_apply_single_asymmetric_forecast(c)
 
     # v11.4+: learning note/updates только после safety caps.
@@ -8241,7 +8288,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.13: подробные /btc /sol /coin тоже используют асимметричный 24ч прогноз как общий /signal"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.14: качественные альты больше не получают 0/100 за плохой момент входа; прогноз в /coin показывает +/-"
     )
 
 
