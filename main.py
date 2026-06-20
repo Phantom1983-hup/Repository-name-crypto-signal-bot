@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v13.10 SHORT 24H FORECAST"
+BOT_VERSION = "v13.11 GEO NEWS CONFLICT FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1869,7 +1869,19 @@ def macro_geopolitics_score_live():
         "tanker": 4,
         "sanctions": 3,
         "threat": 3,
-        "evacuate": 4
+        "evacuate": 4,
+        "kill": 6,
+        "kills": 6,
+        "killed": 6,
+        "dead": 5,
+        "death": 5,
+        "airstrike": 5,
+        "airstrikes": 5,
+        "despite ceasefire": 8,
+        "despite reported ceasefire": 8,
+        "ceasefire violation": 8,
+        "violates ceasefire": 8,
+        "violate ceasefire": 8
     }
 
     positive_words = {
@@ -1887,14 +1899,24 @@ def macro_geopolitics_score_live():
     positive_override = [
         "end war", "end the war", "end iran war", "sign deal", "signed deal",
         "peace deal", "reopen hormuz", "reopens hormuz", "reopen the strait",
-        "ceasefire", "de-escalation", "deescalation", "stop fighting",
+        # v13.11: одно слово "ceasefire" больше НЕ является override.
+        # Иначе заголовок вида "strikes kill despite ceasefire" ошибочно становился зелёным.
+        "agree ceasefire", "agreed ceasefire", "ceasefire agreed",
+        "ceasefire deal", "ceasefire agreement", "ceasefire talks",
+        "de-escalation", "deescalation", "stop fighting",
         "halt strikes", "resume talks", "diplomatic breakthrough"
     ]
 
     risk_override = [
         "new strikes", "missile strike", "missile strikes", "oil tanker hit",
         "closes hormuz", "close hormuz", "blockade hormuz", "attack on",
-        "retaliatory strike", "war expands", "escalates"
+        "retaliatory strike", "war expands", "escalates",
+        "strikes kill", "strike kills", "strikes killed", "strike killed",
+        "kills civilians", "kill civilians", "killed civilians",
+        "kill eight", "kills eight", "killed eight",
+        "despite ceasefire", "despite reported ceasefire",
+        "ceasefire violation", "violates ceasefire", "violate ceasefire",
+        "war returns", "us strikes", "u.s. strikes"
     ]
 
     mod, raw, pos, risk = news_category_score(
@@ -8034,7 +8056,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.10: в короткий /signal возвращён прогноз 24ч по каждой показанной монете; BUY-логика не менялась"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.11: исправлена оценка геополитических новостей — заголовки со strikes/kill/dead не становятся зелёными из-за слова ceasefire"
     )
 
 
