@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v16.0 ALERTS INSTANT SAFE MODE"
+BOT_VERSION = "v16.1 SINGLE WATCH + FROZEN RESULTS FILE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -41,6 +41,7 @@ CHAT_ID_FILE = data_path("chat_id.txt")
 HISTORY_FILE = data_path("signal_history.json")
 PUMP_FILE = data_path("pump_history.json")
 RESULTS_FILE = data_path("signal_results.json")
+FROZEN_RESULTS_FILE = data_path("frozen_learning_results.json")
 WEEKDAY_FILE = data_path("weekday_market_stats.json")
 ADMIN_STATE_FILE = data_path("admin_deploy_state.json")
 ADMIN_UPLOAD_FILE = data_path("admin_uploaded_main.py")
@@ -554,6 +555,7 @@ def storage_report():
         f"GitHub data path: {GITHUB_REPO}/{GITHUB_DATA_DIR}/*.json" if github_storage_enabled() else "GitHub data path: не используется",
         "",
         file_info_line(RESULTS_FILE, "signal_results.json / обучение"),
+        file_info_line(FROZEN_RESULTS_FILE, "frozen_learning_results.json / заморозка 48ч"),
         file_info_line(HISTORY_FILE, "signal_history.json / история сигналов"),
         file_info_line(PUMP_FILE, "pump_history.json / alerts"),
         file_info_line(WEEKDAY_FILE, "weekday_market_stats.json / дни недели"),
@@ -592,6 +594,7 @@ def send_document(chat_id, file_path, caption=""):
 def send_backup_files(chat_id):
     files = [
         (RESULTS_FILE, "📚 backup learning"),
+        (FROZEN_RESULTS_FILE, "🧊 backup frozen 48h results"),
         (HISTORY_FILE, "📊 backup signal history"),
         (PUMP_FILE, "⚡ backup alerts"),
         (WEEKDAY_FILE, "📅 backup weekday stats"),
@@ -3275,12 +3278,57 @@ def learning_success_threshold(action):
         return 2.0
     return 3.0
 
+def closed_learning_key(rec):
+    """v16.1: stable key for immutable closed 48h snapshot."""
+    if not isinstance(rec, dict):
+        return "unknown"
+    asset = str(rec.get("asset", "?")).upper()
+    try:
+        ts = int(float(rec.get("time", 0) or 0))
+    except Exception:
+        ts = 0
+    try:
+        price = round(float(rec.get("price", 0) or 0), 8)
+    except Exception:
+        price = 0
+    return f"{asset}:{ts}:{price}"
+
+
+def load_frozen_results_store():
+    data = load_json(FROZEN_RESULTS_FILE)
+    if not isinstance(data, dict):
+        data = {}
+    data.setdefault("records", {})
+    return data
+
+
+def save_frozen_results_store(data, sync_now=False):
+    if not isinstance(data, dict):
+        data = {"records": {}}
+    data.setdefault("records", {})
+    save_json(FROZEN_RESULTS_FILE, data)
+    if sync_now:
+        sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+
+
 def learning_results_for_eval(rec):
-    """v15.4: закрытые результаты должны быть frozen и не должны плавать после 48ч.
-    Для закрытых записей используем frozen_results, если они есть.
+    """v16.1: for closed records prefer external immutable frozen file.
+    This prevents old 48h results from floating after redeploy/GitHub cache refresh.
     """
     if not isinstance(rec, dict):
         return {}
+
+    try:
+        store = load_frozen_results_store()
+        key = closed_learning_key(rec)
+        frozen_rec = (store.get("records") or {}).get(key)
+        if isinstance(frozen_rec, dict):
+            frozen = frozen_rec.get("results")
+            if isinstance(frozen, dict) and frozen:
+                return frozen
+    except Exception:
+        pass
+
     frozen = rec.get("frozen_results")
     if isinstance(frozen, dict) and frozen:
         return frozen
@@ -3288,42 +3336,80 @@ def learning_results_for_eval(rec):
     return results if isinstance(results, dict) else {}
 
 
-def freeze_closed_learning_record(rec):
-    """v15.4: один раз замораживает checkpoints закрытой записи.
-    Существующие закрытые записи фиксируются на первом запуске v15.4.
-    Новые записи фиксируются при закрытии 48ч.
+def freeze_closed_learning_record(rec, frozen_store=None):
+    """v16.1: one-time immutable closed result snapshot.
+    The source of truth is frozen_learning_results.json, not recalculated current prices.
     """
     if not isinstance(rec, dict):
         return rec, False
-    changed = False
 
-    results = rec.get("results")
+    changed = False
+    key = closed_learning_key(rec)
+
+    if frozen_store is None:
+        frozen_store = load_frozen_results_store()
+    frozen_store.setdefault("records", {})
+    store_records = frozen_store["records"]
+
+    existing = store_records.get(key)
+
+    if isinstance(existing, dict) and isinstance(existing.get("results"), dict) and existing.get("results"):
+        # External frozen file wins. Do not overwrite it with live recalculation.
+        frozen_results = dict(existing.get("results") or {})
+        frozen_details = existing.get("result_details") if isinstance(existing.get("result_details"), dict) else {}
+        frozen_outcome = existing.get("outcome") or rec.get("frozen_outcome") or rec.get("outcome")
+
+        if rec.get("frozen_results") != frozen_results:
+            rec["frozen_results"] = dict(frozen_results)
+            changed = True
+        if rec.get("results") != frozen_results:
+            rec["results"] = dict(frozen_results)
+            changed = True
+        if frozen_details and rec.get("frozen_result_details") != frozen_details:
+            try:
+                rec["frozen_result_details"] = json.loads(json.dumps(frozen_details))
+            except Exception:
+                rec["frozen_result_details"] = dict(frozen_details)
+            changed = True
+        if frozen_outcome:
+            if rec.get("outcome") != frozen_outcome:
+                rec["outcome"] = frozen_outcome
+                changed = True
+            if rec.get("frozen_outcome") != frozen_outcome:
+                rec["frozen_outcome"] = frozen_outcome
+                changed = True
+        if not rec.get("frozen_at"):
+            rec["frozen_at"] = existing.get("frozen_at", float(rec.get("closed_time", time.time()) or time.time()))
+            changed = True
+        return rec, changed
+
+    # First time seeing this closed record: freeze current stored checkpoints.
+    results = rec.get("frozen_results") if isinstance(rec.get("frozen_results"), dict) and rec.get("frozen_results") else rec.get("results")
     if not isinstance(results, dict):
         results = {}
 
-    if not isinstance(rec.get("frozen_results"), dict) or not rec.get("frozen_results"):
+    if rec.get("frozen_results") != results:
         rec["frozen_results"] = dict(results)
         changed = True
+    if rec.get("results") != results:
+        rec["results"] = dict(results)
+        changed = True
 
-    details = rec.get("result_details")
-    if isinstance(details, dict) and (not isinstance(rec.get("frozen_result_details"), dict) or not rec.get("frozen_result_details")):
+    details = rec.get("frozen_result_details") if isinstance(rec.get("frozen_result_details"), dict) and rec.get("frozen_result_details") else rec.get("result_details")
+    if not isinstance(details, dict):
+        details = {}
+    if details and rec.get("frozen_result_details") != details:
         try:
             rec["frozen_result_details"] = json.loads(json.dumps(details))
         except Exception:
             rec["frozen_result_details"] = dict(details)
         changed = True
 
-    # Для совместимости отображения и старых функций держим results равным frozen_results.
-    frozen = rec.get("frozen_results")
-    if isinstance(frozen, dict) and rec.get("results") != frozen:
-        rec["results"] = dict(frozen)
-        changed = True
-
     if not rec.get("frozen_at"):
         rec["frozen_at"] = float(rec.get("closed_time", time.time()) or time.time())
         changed = True
 
-    # outcome тоже фиксируем по frozen results.
+    # outcome computed from the frozen results now stored in rec.
     fixed_outcome = classify_learning_result(rec)
     if rec.get("outcome") != fixed_outcome:
         rec["outcome"] = fixed_outcome
@@ -3332,6 +3418,21 @@ def freeze_closed_learning_record(rec):
         rec["frozen_outcome"] = fixed_outcome
         changed = True
 
+    store_records[key] = {
+        "asset": str(rec.get("asset", "?")),
+        "time": float(rec.get("time", 0) or 0),
+        "price": rec.get("price", 0),
+        "score": rec.get("score", 0),
+        "action": rec.get("action", "WATCH"),
+        "verdict": rec.get("verdict", ""),
+        "results": dict(rec.get("frozen_results", {}) or {}),
+        "result_details": rec.get("frozen_result_details", {}) if isinstance(rec.get("frozen_result_details"), dict) else {},
+        "outcome": rec.get("frozen_outcome", rec.get("outcome")),
+        "frozen_at": rec.get("frozen_at", time.time()),
+        "version": BOT_VERSION,
+    }
+    changed = True
+
     return rec, changed
 
 
@@ -3339,20 +3440,19 @@ def normalize_closed_learning_records(closed_items):
     if not isinstance(closed_items, list):
         return [], False
     changed = False
+    frozen_store = load_frozen_results_store()
     new_items = []
     for rec in closed_items:
-        rec, ch = freeze_closed_learning_record(rec)
+        rec, ch = freeze_closed_learning_record(rec, frozen_store=frozen_store)
         changed = changed or ch
         new_items.append(rec)
+    if changed:
+        save_frozen_results_store(frozen_store, sync_now=True)
     return new_items, changed
 
 
 def persist_closed_learning_freeze(sync_now=False):
-    """v15.7: закрытые 48ч результаты должны переживать быстрый redeploy.
-    v15.4 замораживала локально, но при частых обновлениях Render мог стартовать из старого GitHub JSON
-    до фоновой синхронизации. Поэтому для closed/frozen делаем явное сохранение и, при необходимости,
-    синхронную отправку RESULTS_FILE в GitHub перед deploy или после /learning.
-    """
+    """v16.1: persist immutable closed 48h results to a separate file."""
     try:
         data = load_json(RESULTS_FILE)
         if not isinstance(data, dict):
@@ -3366,19 +3466,18 @@ def persist_closed_learning_freeze(sync_now=False):
         data["closed"] = closed
         data.setdefault("version", BOT_VERSION)
 
-        # Даже если changed=False, при sync_now=True всё равно пробуем отправить файл,
-        # чтобы после deploy не поднялась старая копия без frozen_results.
         if changed or sync_now:
             save_json(RESULTS_FILE, data)
             if sync_now:
-                sync_github_storage_now([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
+                sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
             return changed, len(closed)
 
+        if sync_now:
+            sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
         return False, len(closed)
     except Exception as e:
         print(f"persist closed learning freeze error: {e}")
         return False, 0
-
 
 def classify_learning_result(rec):
     results = learning_results_for_eval(rec)
@@ -4111,7 +4210,7 @@ def learning_report(sync_github=False):
     update_signal_results()
 
     if sync_github:
-        sync_github_storage_now([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
+        sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
 
     data = load_json(RESULTS_FILE)
     if not isinstance(data, dict):
@@ -4136,7 +4235,7 @@ def learning_report(sync_github=False):
         save_json(RESULTS_FILE, data)
         # v15.7: closed 48ч результаты нельзя терять при быстром redeploy.
         # Поэтому frozen closed сразу синхронизируем в GitHub, а не только фоном.
-        sync_github_storage_now([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
+        sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
     open_items = data.get("open", {})
 
     total = len(closed)
@@ -5739,6 +5838,9 @@ def compact_reason(c):
 
     if c.get("_danger_alt_cap"):
         return "после разворота рынка + нужна стабилизация BTC"
+
+    if c.get("_bad_news_quality_alt_watch"):
+        return "опасные новости, BTC держится, но вход не подтверждён"
 
     if c.get("_quality_alt_danger_watch"):
         parts = ["BTC падает", "рынок опасный"]
@@ -8036,6 +8138,9 @@ def single_coin_action_text(c):
     if c.get("_quality_alt_danger_watch"):
         return "наблюдать, без входа; ждать стабилизацию BTC"
 
+    if c.get("_bad_news_quality_alt_watch"):
+        return "наблюдать, без входа; опасные новости"
+
     if c.get("_bad_alt_entry_cap"):
         return "наблюдать, без входа; фон против альтов"
 
@@ -8125,6 +8230,7 @@ def format_single_coin_report(c):
         f"Оценка входа: {c.get('score', 0)}/100\n"
         f"{('ℹ️ score снижен за плохой момент входа, не за качество актива\n') if c.get('_quality_alt_score_floor') else ''}"
         f"{('ℹ️ score снижен за плохой фон/BTC, не за качество актива\n') if c.get('_bad_alt_entry_cap') else ''}"
+        f"{('ℹ️ это наблюдение из-за опасных новостей, не вход\n') if c.get('_bad_news_quality_alt_watch') else ''}"
         f"📚 {c.get('_learning_note', 'самообучение: история накапливается')}\n\n"
         f"{macro_mode_text(ctx)} ({ctx.get('macro_mod', 0):+d})\n"
         f"{compact_market_risk_line(ctx)}\n"
@@ -8937,6 +9043,96 @@ def v155_apply_single_watch_score_consistency(c):
 
     return c
 
+
+def v161_apply_bad_news_quality_alt_watch(c):
+    """v16.1:
+    Quality alts with dangerous news and BTC still positive should be WATCH, not red 20/100 SKIP.
+    This keeps the entry forbidden, but avoids saying the asset is bad.
+    """
+    if not c:
+        return c
+
+    c = dict(c)
+    symbol = c.get("symbol", "")
+    if symbol in ["BTC", "ETH"]:
+        return c
+
+    ctx = c.get("ctx", {}) or {}
+    group = v6_quality_group(c)
+    is_quality = bool(c.get("is_quality")) or symbol in QUALITY_LEARNING_ASSETS
+    if not (group in ["quality", "core", "liquid"] or is_quality):
+        return c
+
+    try:
+        macro_mod = int(ctx.get("macro_mod", ctx.get("geo_mod", 0)) or 0)
+    except Exception:
+        macro_mod = 0
+    try:
+        btc_change = float(ctx.get("btc_change", 0) or 0)
+    except Exception:
+        btc_change = 0.0
+    try:
+        fg_value = int(ctx.get("fg_value", 50) or 50)
+    except Exception:
+        fg_value = 50
+
+    action = c.get("action")
+    verdict = str(c.get("verdict", ""))
+    score = int(c.get("score", 0) or 0)
+    rsi_value = float(c.get("rsi", 50) or 50)
+    vol = float(c.get("volume_trend", 1) or 1)
+    change_24 = float(c.get("change_24", 0) or 0)
+
+    bad_news_but_btc_holds = (
+        macro_mod <= -12
+        and fg_value <= 25
+        and btc_change >= 0
+        and change_24 < 5.0
+        and rsi_value < 76
+    )
+
+    if not bad_news_but_btc_holds:
+        return c
+
+    # Only repair cases where single report became too red/low while /signal shows watch.
+    if action == "SKIP" or "НЕ ПОКУПАТЬ" in verdict or score <= 35:
+        watch_score = 55
+        if vol >= 1.3 and btc_change >= 0.5:
+            watch_score = 58
+        if rsi_value >= 68:
+            watch_score = min(watch_score, 55)
+
+        c["score"] = max(score, watch_score)
+        c["_master_score"] = max(int(c.get("_master_score", 0) or 0), c["score"])
+        c["action"] = "WATCH"
+        c["verdict"] = "🟡 НАБЛЮДАТЬ / ОПАСНЫЕ НОВОСТИ"
+        c["_bad_news_quality_alt_watch"] = True
+        c["_bad_alt_entry_cap"] = True
+        c["chance_5"] = min(max(c.get("chance_5", 0), 15), 28)
+        c["chance_10"] = min(max(c.get("chance_10", 0), 3), 6)
+        c["chance_15"] = min(max(c.get("chance_15", 0), 1), 3)
+
+        low = -2.8
+        high = 1.5
+        c["low"] = low
+        c["high"] = high
+        price = float(c.get("price", 0) or 0)
+        c["target_low"] = price * (1 + low / 100)
+        c["target_high"] = price * (1 + high / 100)
+        c["_forecast_note"] = "новости давят"
+        c["entry_zone"] = "без входа: опасные новости, ждать удержание цены/объёма 1–2 свечи и улучшение фона"
+
+        c.setdefault("minus", [])
+        for reason in [
+            "опасные новости против альтов",
+            "BTC держится, но фон не даёт вход",
+            "это наблюдение, не готовый вход"
+        ]:
+            if reason not in c["minus"]:
+                c["minus"].append(reason)
+
+    return c
+
 def single_analysis(symbol):
     c = alex_edge_ultra(symbol)
 
@@ -8957,6 +9153,7 @@ def single_analysis(symbol):
     c = v1314_apply_quality_alt_score_floor(c)
     c = v1313_apply_single_asymmetric_forecast(c)
     c = v153_apply_quality_alt_entry_cap(c)
+    c = v161_apply_bad_news_quality_alt_watch(c)
     c = v155_apply_single_watch_score_consistency(c)
 
     # v11.4+: learning note/updates только после safety caps.
