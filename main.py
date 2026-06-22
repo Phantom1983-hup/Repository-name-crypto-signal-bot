@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v15.0 FAST QUALITY LEARNING ENGINE"
+BOT_VERSION = "v15.1 FAST LEARNING SNAPSHOT FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -3222,6 +3222,84 @@ def v87_cleanup_open_learning_duplicates(open_items):
     return cleaned, changed
 
 
+
+def learning_price_points(rec):
+    """v15.1: безопасно получаем историю коротких price snapshots для честных fast-checkpoints."""
+    pts = rec.get("price_points", [])
+    if not isinstance(pts, list):
+        pts = []
+    clean = []
+    for pt in pts:
+        try:
+            t = float(pt.get("time", 0) or 0)
+            price = float(pt.get("price", 0) or 0)
+            if t > 0 and price > 0:
+                clean.append({"time": t, "price": price})
+        except Exception:
+            continue
+    clean.sort(key=lambda x: x["time"])
+    return clean[-500:]
+
+
+def append_learning_price_point(rec, price, now=None, min_gap_seconds=60):
+    """v15.1: сохраняет короткую историю цен, но не раздувает файл каждую секунду."""
+    try:
+        price = float(price or 0)
+    except Exception:
+        price = 0
+    if price <= 0:
+        return rec
+    if now is None:
+        now = time.time()
+
+    pts = learning_price_points(rec)
+    if pts:
+        last = pts[-1]
+        try:
+            last_time = float(last.get("time", 0) or 0)
+            last_price = float(last.get("price", 0) or 0)
+        except Exception:
+            last_time = 0
+            last_price = 0
+        # Не пишем дубль чаще 1 минуты, если цена почти не изменилась.
+        if now - last_time < min_gap_seconds and abs(percent_change(last_price, price)) < 0.05:
+            rec["price_points"] = pts
+            return rec
+
+    pts.append({"time": float(now), "price": round(price, 8)})
+    rec["price_points"] = pts[-500:]
+    return rec
+
+
+def checkpoint_price_from_points(rec, target_ts, current_price, now):
+    """v15.1: для 15м/30м/1ч берём цену около момента checkpoint, а не текущую цену спустя час.
+    Если точной точки нет, используем ближайшую после target_ts; если её нет — текущую цену с пометкой late_estimate.
+    """
+    pts = learning_price_points(rec)
+    if pts:
+        after = [pt for pt in pts if float(pt.get("time", 0) or 0) >= target_ts]
+        if after:
+            chosen = min(after, key=lambda pt: abs(float(pt.get("time", 0) or 0) - target_ts))
+            return float(chosen["price"]), float(chosen["time"]), "snapshot"
+        before = [pt for pt in pts if float(pt.get("time", 0) or 0) < target_ts]
+        if before:
+            chosen = max(before, key=lambda pt: float(pt.get("time", 0) or 0))
+            # Если ближайшая точка до checkpoint совсем рядом, её можно использовать как приближение.
+            if target_ts - float(chosen.get("time", 0) or 0) <= 5 * 60:
+                return float(chosen["price"]), float(chosen["time"]), "near_snapshot"
+    return float(current_price), float(now), "late_estimate"
+
+
+def should_count_learning_seen(existing_rec, now, min_gap_seconds=15 * 60):
+    """v15.1: seen_count — это не число внутренних пересчётов, а редкие повторные появления в сигналах."""
+    try:
+        last_counted = float(existing_rec.get("last_seen_counted", existing_rec.get("time", 0)) or 0)
+    except Exception:
+        last_counted = 0
+    if last_counted <= 0:
+        return True
+    return (float(now) - last_counted) >= min_gap_seconds
+
 def update_signal_results():
     """
     v8.3 SELF LEARNING JOURNAL:
@@ -3261,18 +3339,29 @@ def update_signal_results():
         if current_price <= 0:
             continue
 
+        # v15.1: собираем короткую историю цен для честных fast-checkpoints.
+        rec = append_learning_price_point(rec, current_price, now=now, min_gap_seconds=60)
+
         results = rec.setdefault("results", {})
         result_details = rec.setdefault("result_details", {})
 
         for _label, name, seconds in learning_checkpoints():
-            # v15.0 freeze/snapshot: checkpoint фиксируется один раз и не плавает дальше.
+            # v15.1 freeze/snapshot: checkpoint фиксируется один раз и не плавает дальше.
+            # Для 15м/30м/1ч стараемся брать цену около фактического времени checkpoint,
+            # а не текущую цену на момент позднего вызова /learning.
             if age >= seconds and name not in results:
-                pct = round(percent_change(start_price, current_price), 2)
+                target_ts = start_time + seconds
+                checkpoint_price, checkpoint_time, checkpoint_source = checkpoint_price_from_points(
+                    rec, target_ts, current_price, now
+                )
+                pct = round(percent_change(start_price, checkpoint_price), 2)
                 results[name] = pct
                 result_details[name] = {
-                    "checkpoint_time": now,
-                    "checkpoint_price": round(current_price, 8),
-                    "checkpoint_pct": pct
+                    "checkpoint_time": checkpoint_time,
+                    "target_time": target_ts,
+                    "checkpoint_price": round(checkpoint_price, 8),
+                    "checkpoint_pct": pct,
+                    "source": checkpoint_source
                 }
                 changed = True
 
@@ -3878,12 +3967,20 @@ def save_signal_history(items):
                 break
 
         if existing_rec:
+            current_price_for_seen = round(float(c.get("price", 0) or 0), 8)
             existing_rec["last_seen"] = now
-            existing_rec["last_price"] = round(float(c.get("price", 0) or 0), 8)
+            existing_rec["last_price"] = current_price_for_seen
             existing_rec["last_score"] = c.get("score", 0)
             existing_rec["last_action"] = c.get("action")
             existing_rec["last_verdict"] = c.get("verdict")
-            existing_rec["seen_count"] = int(existing_rec.get("seen_count", 1) or 1) + 1
+
+            # v15.1: price snapshots нужны для честных 15м/30м/1ч checkpoints.
+            existing_rec = append_learning_price_point(existing_rec, current_price_for_seen, now=now, min_gap_seconds=60)
+
+            # v15.1: seen_count не должен расти от каждого внутреннего пересчёта/фонового скана.
+            if should_count_learning_seen(existing_rec, now, min_gap_seconds=15 * 60):
+                existing_rec["seen_count"] = int(existing_rec.get("seen_count", 1) or 1) + 1
+                existing_rec["last_seen_counted"] = now
 
             # Если старая версия успела записать сигнал слишком оптимистично,
             # переписываем открытое наблюдение в безопасный режим, чтобы не портить обучение.
@@ -3934,8 +4031,10 @@ def save_signal_history(items):
             "learning_note": c.get("_learning_note", ""),
             "time": now,
             "last_seen": now,
+            "last_seen_counted": now,
             "seen_count": 1,
-            "results": {}
+            "results": {},
+            "price_points": [{"time": now, "price": round(float(c.get("price", 0) or 0), 8)}]
         }
 
         open_items[signal_key(c["symbol"], now)] = rec
@@ -8500,7 +8599,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v15.0: fast-learning 15м/30м/1ч/3ч/6ч/12ч/24ч/48ч, подробные закрытые результаты, косметические UX-правки"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v15.1: fast-learning 15м/30м/1ч/3ч/6ч/12ч/24ч/48ч, честные snapshot-checkpoints, seen_count без раздувания"
     )
 
 
