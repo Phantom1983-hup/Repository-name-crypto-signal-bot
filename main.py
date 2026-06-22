@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v15.1 FAST LEARNING SNAPSHOT FIX"
+BOT_VERSION = "v15.2 FAST LEARNING SEEN COUNT FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -3290,8 +3290,10 @@ def checkpoint_price_from_points(rec, target_ts, current_price, now):
     return float(current_price), float(now), "late_estimate"
 
 
-def should_count_learning_seen(existing_rec, now, min_gap_seconds=15 * 60):
-    """v15.1: seen_count — это не число внутренних пересчётов, а редкие повторные появления в сигналах."""
+def should_count_learning_seen(existing_rec, now, min_gap_seconds=60 * 60):
+    """v15.2: seen_count — это редкое повторное появление в настоящем /signal, а не внутренние пересчёты.
+    Минимальный шаг увеличен до 1 часа, чтобы fast-learning/background не раздувал счётчик десятками.
+    """
     try:
         last_counted = float(existing_rec.get("last_seen_counted", existing_rec.get("time", 0)) or 0)
     except Exception:
@@ -3299,6 +3301,45 @@ def should_count_learning_seen(existing_rec, now, min_gap_seconds=15 * 60):
     if last_counted <= 0:
         return True
     return (float(now) - last_counted) >= min_gap_seconds
+
+
+def learning_seen_count_cap(rec, now=None):
+    """v15.2 hard cap: старые/фоновые пересчёты могли раздуть seen_count (например 50+ за час).
+    Для честного обучения показываем не больше одного counted-появления в час жизни наблюдения.
+    """
+    if now is None:
+        now = time.time()
+    try:
+        start_time = float(rec.get("time", 0) or 0)
+    except Exception:
+        start_time = 0
+    if start_time <= 0:
+        return 1
+    age = max(0, float(now) - start_time)
+    # 0-59 минут = 1, 1-2 часа = 2 и т.д.; максимум ограничен, чтобы отчёт не выглядел раздутым.
+    return max(1, min(24, int(age // 3600) + 1))
+
+
+def normalize_learning_seen_count(rec, now=None):
+    """v15.2: чинит уже раздутые открытые наблюдения и не даёт счётчику расти нереалистично."""
+    if now is None:
+        now = time.time()
+    changed = False
+    try:
+        seen = int(float(rec.get("seen_count", 1) or 1))
+    except Exception:
+        seen = 1
+    cap = learning_seen_count_cap(rec, now)
+    if seen < 1:
+        rec["seen_count"] = 1
+        changed = True
+    elif seen > cap:
+        rec["seen_count"] = cap
+        rec["seen_count_note"] = "v15.2: раздутый счётчик встречаемости ограничен по возрасту наблюдения"
+        # После нормализации не увеличиваем снова сразу на этом же цикле.
+        rec["last_seen_counted"] = float(now)
+        changed = True
+    return rec, changed
 
 def update_signal_results():
     """
@@ -3699,7 +3740,15 @@ def normalize_learning_open_records(open_items):
     changed = False
     fixed = 0
 
+    now_norm = time.time()
+
     for key, rec in list(open_items.items()):
+        rec, seen_changed = normalize_learning_seen_count(rec, now=now_norm)
+        if seen_changed:
+            open_items[key] = rec
+            changed = True
+            fixed += 1
+
         asset = str(rec.get("asset") or rec.get("symbol") or key).upper()
         score = int(float(rec.get("score", 0) or 0))
         master = int(float(rec.get("master_score", score) or score))
@@ -3977,9 +4026,11 @@ def save_signal_history(items):
             # v15.1: price snapshots нужны для честных 15м/30м/1ч checkpoints.
             existing_rec = append_learning_price_point(existing_rec, current_price_for_seen, now=now, min_gap_seconds=60)
 
-            # v15.1: seen_count не должен расти от каждого внутреннего пересчёта/фонового скана.
-            if should_count_learning_seen(existing_rec, now, min_gap_seconds=15 * 60):
-                existing_rec["seen_count"] = int(existing_rec.get("seen_count", 1) or 1) + 1
+            # v15.2: seen_count не должен расти от каждого внутреннего пересчёта/фонового скана.
+            existing_rec, _seen_fixed = normalize_learning_seen_count(existing_rec, now=now)
+            if should_count_learning_seen(existing_rec, now, min_gap_seconds=60 * 60):
+                cap = learning_seen_count_cap(existing_rec, now=now)
+                existing_rec["seen_count"] = min(cap, int(existing_rec.get("seen_count", 1) or 1) + 1)
                 existing_rec["last_seen_counted"] = now
 
             # Если старая версия успела записать сигнал слишком оптимистично,
@@ -8599,7 +8650,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v15.1: fast-learning 15м/30м/1ч/3ч/6ч/12ч/24ч/48ч, честные snapshot-checkpoints, seen_count без раздувания"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v15.2: fast-learning 15м/30м/1ч/3ч/6ч/12ч/24ч/48ч, snapshot-checkpoints, жёсткая защита seen_count от раздувания"
     )
 
 
