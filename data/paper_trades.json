@@ -564,9 +564,28 @@
       "last_price": 0.002945,
       "last_price_time": 1782153933.472817,
       "last_pct": 4.06
+    },
+    "NEAR:VIRTUAL_WATCH_ENTRY_TEST:495042": {
+      "id": "NEAR:VIRTUAL_WATCH_ENTRY_TEST:495042",
+      "asset": "NEAR",
+      "entry_time": 1782154193.8136606,
+      "entry_price": 2.1191,
+      "score": 50,
+      "master_score": 50,
+      "source_action": "WATCH",
+      "virtual_type": "VIRTUAL_WATCH_ENTRY_TEST",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "is_quality": true,
+      "change_24": -3.12,
+      "btc_change": 0.49,
+      "macro_mod": -15,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [],
-  "last_created_at": 1782153009.9890547,
+  "last_created_at": 1782154193.8136606,
   "last_update_at": 1782153934.1127546
 }
