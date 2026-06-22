@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v15.2 FAST LEARNING SEEN COUNT FIX"
+BOT_VERSION = "v15.3 QUALITY ALT ENTRY CAP"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -7811,6 +7811,9 @@ def single_coin_action_text(c):
     if c.get("_quality_alt_danger_watch"):
         return "наблюдать, без входа; ждать стабилизацию BTC"
 
+    if c.get("_bad_alt_entry_cap"):
+        return "наблюдать, без входа; фон против альтов"
+
     if c.get("_falling_market_no_buy"):
         return "ждать стабилизацию, быстрый вход запрещён, не ловить нож"
 
@@ -7896,6 +7899,7 @@ def format_single_coin_report(c):
         f"RSI: {c.get('rsi', 'н/д')} | объём: x{c.get('volume_trend', 'н/д')}\n"
         f"Оценка входа: {c.get('score', 0)}/100\n"
         f"{('ℹ️ score снижен за плохой момент входа, не за качество актива\n') if c.get('_quality_alt_score_floor') else ''}"
+        f"{('ℹ️ score снижен за плохой фон/BTC, не за качество актива\n') if c.get('_bad_alt_entry_cap') else ''}"
         f"📚 {c.get('_learning_note', 'самообучение: история накапливается')}\n\n"
         f"{macro_mode_text(ctx)} ({ctx.get('macro_mod', 0):+d})\n"
         f"{compact_market_risk_line(ctx)}\n"
@@ -8555,6 +8559,77 @@ def v1313_apply_single_asymmetric_forecast(c):
     return c
 
 
+
+def v153_apply_quality_alt_entry_cap(c):
+    """
+    v15.3 QUALITY ALT ENTRY CAP:
+    Если качественный альт (SOL/LINK/TAO/NEAR/AAVE и т.п.) находится в плохом фоне
+    (опасные/негативные новости + BTC в минусе + страх), не показываем высокую
+    "Оценку входа" 60+ рядом с текстом "вход только после подтверждения".
+    Это не ухудшает качество актива, а снижает именно качество текущей точки входа.
+    """
+    if not c:
+        return c
+
+    c = dict(c)
+    symbol = c.get("symbol", "")
+    if symbol in ["BTC", "ETH"]:
+        return c
+
+    ctx = c.get("ctx", {}) or {}
+    macro_mod = ctx.get("macro_mod", ctx.get("geo_mod", 0))
+    btc_change = ctx.get("btc_change", 0)
+    fg_value = ctx.get("fg_value", 50)
+    volume = c.get("volume_trend", 1) or 1
+    rsi = c.get("rsi", 50) or 50
+    change_24 = c.get("change_24", 0) or 0
+    group = v6_quality_group(c)
+
+    bad_alt_env = (
+        group in ["quality", "core", "liquid"]
+        and c.get("action") in ["WATCH", "SKIP"]
+        and (
+            (macro_mod <= -12 and btc_change < 0)
+            or (macro_mod <= -8 and btc_change < 0 and fg_value <= 25)
+        )
+    )
+
+    if not bad_alt_env:
+        return c
+
+    # В плохом фоне это не вход, а наблюдение. Score не должен выглядеть почти как сигнал.
+    cap = 55
+    if volume < 1.1:
+        cap = min(cap, 52)
+    if rsi >= 62 or change_24 < 0:
+        cap = min(cap, 50)
+
+    old_score = int(c.get("score", 0) or 0)
+    if old_score > cap:
+        c["score"] = cap
+        c["_master_score"] = min(int(c.get("_master_score", old_score) or old_score), cap)
+        c["_bad_alt_entry_cap"] = True
+
+    c["action"] = "WATCH"
+    c["verdict"] = "🟡 НАБЛЮДАТЬ / ФОН ПРОТИВ АЛЬТОВ"
+
+    c.setdefault("minus", [])
+    if "плохой фон для альтов + BTC слабеет" not in c["minus"]:
+        c["minus"].append("плохой фон для альтов + BTC слабеет")
+
+    # Прогноз тоже должен оставаться асимметричным, а не мягким/симметричным.
+    price = c.get("price", 0) or 0
+    low = min(float(c.get("low", -1.5) or -1.5), -2.7)
+    high = min(float(c.get("high", 1.5) or 1.5), 1.2)
+    c["low"] = round(low, 1)
+    c["high"] = round(high, 1)
+    c["target_low"] = price * (1 + c["low"] / 100)
+    c["target_high"] = price * (1 + c["high"] / 100)
+    c["_forecast_note"] = "BTC слабый, фон против альтов"
+    c["entry_zone"] = "без входа; ждать стабилизацию BTC, улучшение фона и подтверждение объёмом"
+
+    return c
+
 def single_analysis(symbol):
     c = alex_edge_ultra(symbol)
 
@@ -8574,6 +8649,7 @@ def single_analysis(symbol):
     c = v136_apply_core_no_red_neutral(c)
     c = v1314_apply_quality_alt_score_floor(c)
     c = v1313_apply_single_asymmetric_forecast(c)
+    c = v153_apply_quality_alt_entry_cap(c)
 
     # v11.4+: learning note/updates только после safety caps.
     c = v83_apply_self_learning(c)
