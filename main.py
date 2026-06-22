@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v17.0 FAST SELF LEARNING CORE"
+BOT_VERSION = "v17.1 PAPER TRADING ENGINE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -44,6 +44,7 @@ RESULTS_FILE = data_path("signal_results.json")
 FROZEN_RESULTS_FILE = data_path("frozen_learning_results.json")
 WEEKDAY_FILE = data_path("weekday_market_stats.json")
 BACKTEST_FILE = data_path("historical_backtest_stats.json")
+PAPER_TRADES_FILE = data_path("paper_trades.json")
 ADMIN_STATE_FILE = data_path("admin_deploy_state.json")
 ADMIN_UPLOAD_FILE = data_path("admin_uploaded_main.py")
 ADMIN_UPLOAD_LOCK_FILE = data_path("admin_upload_lock.json")
@@ -597,6 +598,7 @@ def send_backup_files(chat_id):
     files = [
         (RESULTS_FILE, "📚 backup learning"),
         (FROZEN_RESULTS_FILE, "🧊 backup frozen 48h results"),
+        (PAPER_TRADES_FILE, "🧪 backup paper trades"),
         (HISTORY_FILE, "📊 backup signal history"),
         (PUMP_FILE, "⚡ backup alerts"),
         (WEEKDAY_FILE, "📅 backup weekday stats"),
@@ -4087,6 +4089,315 @@ def learn_fast_report(start=False):
     return f"🧠 Ускоренное обучение\nВерсия: {BOT_VERSION}\n{backtest_file_summary()}"
 
 
+# === v17.1 paper trading / виртуальные сделки ===
+_PAPER_BG_LOCK = Lock()
+
+
+def paper_store():
+    data = load_json(PAPER_TRADES_FILE)
+    if not isinstance(data, dict):
+        data = {}
+    data.setdefault("version", BOT_VERSION)
+    data.setdefault("open", {})
+    data.setdefault("closed", [])
+    return data
+
+
+def save_paper_store(data, sync=False):
+    if not isinstance(data, dict):
+        return
+    data["version"] = BOT_VERSION
+    save_json(PAPER_TRADES_FILE, data)
+    if sync:
+        background_github_sync([PAPER_TRADES_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
+    else:
+        mark_github_dirty(PAPER_TRADES_FILE)
+
+
+def paper_trade_key(asset, virtual_type, entry_ts):
+    return f"{str(asset).upper()}:{virtual_type}:{int(float(entry_ts or 0) // 3600)}"
+
+
+def paper_virtual_type(c):
+    asset = str(c.get("symbol", "")).upper()
+    action = str(c.get("action", "WATCH") or "WATCH").upper()
+    change24 = float(c.get("change_24", c.get("change", 0)) or 0)
+    is_quality = bool(c.get("is_quality")) or asset in QUALITY_LEARNING_ASSETS
+    if (not is_quality) and change24 >= 12:
+        return "AVOID_PUMP_TEST"
+    if action == "BUY":
+        return "VIRTUAL_BUY_TEST"
+    if action in ["ACCUM", "WATCH"]:
+        return "VIRTUAL_WATCH_ENTRY_TEST"
+    return "VIRTUAL_OBSERVE_TEST"
+
+
+def paper_open_from_signal_items(items, max_new=20):
+    """Создаёт виртуальные сделки из текущих сигналов.
+    Реальных покупок нет: это paper trading для ускоренного обучения.
+    """
+    data = paper_store()
+    open_trades = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    now = time.time()
+    created = 0
+
+    # Один открытый paper-тест на монету, чтобы не раздувать историю от частых кнопок.
+    already_assets = {str(t.get("asset", "")).upper() for t in open_trades.values() if isinstance(t, dict)}
+
+    for c in items or []:
+        try:
+            asset = str(c.get("symbol", "")).upper()
+            if not asset or asset in STABLE_SKIP_ASSETS:
+                continue
+            if asset in already_assets:
+                continue
+            price = float(c.get("price", 0) or 0)
+            if price <= 0:
+                continue
+            score = int(float(c.get("score", 0) or 0))
+            change24 = float(c.get("change_24", c.get("change", 0)) or 0)
+            is_quality = bool(c.get("is_quality")) or asset in QUALITY_LEARNING_ASSETS
+
+            # Берём только информативные случаи: качественные наблюдения или пампы, которые запрещаем догонять.
+            if is_quality:
+                if score < 50 and str(c.get("action", "")) != "BUY":
+                    continue
+            else:
+                if change24 < 10:
+                    continue
+
+            vtype = paper_virtual_type(c)
+            key = paper_trade_key(asset, vtype, now)
+            if key in open_trades:
+                continue
+
+            ctx = c.get("ctx", {}) if isinstance(c.get("ctx", {}), dict) else {}
+            open_trades[key] = {
+                "id": key,
+                "asset": asset,
+                "entry_time": now,
+                "entry_price": round(price, 10),
+                "score": score,
+                "master_score": c.get("_master_score", score),
+                "source_action": c.get("action", "WATCH"),
+                "virtual_type": vtype,
+                "verdict": c.get("verdict", ""),
+                "is_quality": bool(is_quality),
+                "change_24": round(change24, 3),
+                "btc_change": round(float(ctx.get("btc_change", 0) or 0), 3),
+                "macro_mod": ctx.get("macro_mod", ctx.get("geo_mod", 0)),
+                "results": {},
+                "result_details": {},
+                "status": "open",
+                "note": "paper trading only: реальные сделки и автопокупки выключены",
+            }
+            already_assets.add(asset)
+            created += 1
+            if created >= max_new:
+                break
+        except Exception as e:
+            print(f"paper open error: {e}")
+            continue
+
+    if created:
+        data["open"] = open_trades
+        data["last_created_at"] = now
+        save_paper_store(data, sync=False)
+    return created
+
+
+def _paper_learning_rec_by_asset():
+    data = load_json(RESULTS_FILE)
+    out = {}
+    if not isinstance(data, dict):
+        return out
+    open_items = data.get("open", {})
+    if not isinstance(open_items, dict):
+        return out
+    for rec in open_items.values():
+        if not isinstance(rec, dict):
+            continue
+        asset = str(rec.get("asset", "")).upper()
+        if asset:
+            out[asset] = rec
+    return out
+
+
+def paper_outcome(trade):
+    res = trade.get("results", {}) if isinstance(trade.get("results", {}), dict) else {}
+    vtype = str(trade.get("virtual_type", ""))
+    r48 = res.get("48h")
+    r24 = res.get("24h")
+    value = r48 if isinstance(r48, (int, float)) else r24
+    if not isinstance(value, (int, float)):
+        return "open"
+    if vtype == "AVOID_PUMP_TEST":
+        if value <= -3:
+            return "avoid_saved"
+        if value >= 5:
+            return "avoid_missed"
+        return "avoid_neutral"
+    if value >= 2.5:
+        return "paper_win"
+    if value <= -3:
+        return "paper_loss"
+    return "paper_neutral"
+
+
+def paper_update_from_cache(close_after_seconds=48 * 3600):
+    """Быстро обновляет paper trades по локальному learning-cache.
+    Не ждёт сеть, поэтому /paper и /learning не должны зависать.
+    """
+    data = paper_store()
+    open_trades = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    if not open_trades:
+        return False, 0, 0
+
+    now = time.time()
+    rec_by_asset = _paper_learning_rec_by_asset()
+    changed = False
+    updated = 0
+    closed_n = 0
+
+    for key, trade in list(open_trades.items()):
+        if not isinstance(trade, dict):
+            open_trades.pop(key, None)
+            changed = True
+            continue
+        asset = str(trade.get("asset", "")).upper()
+        entry_price = float(trade.get("entry_price", 0) or 0)
+        entry_time = float(trade.get("entry_time", 0) or 0)
+        if not asset or entry_price <= 0 or entry_time <= 0:
+            open_trades.pop(key, None)
+            changed = True
+            continue
+
+        rec = rec_by_asset.get(asset)
+        current_price, price_ts, source = (None, 0, "none")
+        if rec:
+            current_price, price_ts, source = learning_cached_price_for_report(rec)
+        try:
+            current_price = float(current_price or 0)
+            price_ts = float(price_ts or 0)
+        except Exception:
+            current_price, price_ts = 0, 0
+        if current_price <= 0 or price_ts <= 0:
+            continue
+
+        age = max(0, now - entry_time)
+        results = trade.setdefault("results", {})
+        details = trade.setdefault("result_details", {})
+        for label, name, seconds in learning_checkpoints():
+            if age >= seconds and name not in results:
+                pct = round(percent_change(entry_price, current_price), 2)
+                results[name] = pct
+                details[name] = {
+                    "checkpoint_time": price_ts,
+                    "checkpoint_price": round(current_price, 10),
+                    "source": f"learning_cache:{source}",
+                }
+                changed = True
+                updated += 1
+        trade["last_price"] = round(current_price, 10)
+        trade["last_price_time"] = price_ts
+        trade["last_pct"] = round(percent_change(entry_price, current_price), 2)
+
+        if age >= close_after_seconds and "48h" in results:
+            trade["status"] = "closed"
+            trade["closed_time"] = now
+            trade["outcome"] = paper_outcome(trade)
+            closed.append(trade)
+            open_trades.pop(key, None)
+            changed = True
+            closed_n += 1
+        else:
+            open_trades[key] = trade
+
+    if len(closed) > 1000:
+        closed = closed[-1000:]
+    if changed:
+        data["open"] = open_trades
+        data["closed"] = closed
+        data["last_update_at"] = now
+        save_paper_store(data, sync=False)
+    return changed, updated, closed_n
+
+
+def paper_summary_line():
+    data = paper_store()
+    open_n = len(data.get("open", {}) or {})
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    if not open_n and not closed:
+        return "Виртуальные сделки: пока нет"
+    wins = sum(1 for t in closed if paper_outcome(t) == "paper_win")
+    losses = sum(1 for t in closed if paper_outcome(t) == "paper_loss")
+    saved = sum(1 for t in closed if paper_outcome(t) == "avoid_saved")
+    missed = sum(1 for t in closed if paper_outcome(t) == "avoid_missed")
+    return f"Виртуальные сделки: открыто {open_n} | закрыто {len(closed)} | ✅ {wins} | 🔴 {losses} | 🛡 {saved} | ⚠️ {missed}"
+
+
+def paper_report():
+    paper_update_from_cache()
+    data = paper_store()
+    open_trades = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    text = (
+        f"🧪 Paper trading ALEX EDGE\n"
+        f"Версия: {BOT_VERSION}\n\n"
+        "Режим: виртуальные сделки без реальных денег. Автопокупки выключены.\n"
+        f"{paper_summary_line()}\n\n"
+    )
+    if open_trades:
+        text += "🔎 Открытые виртуальные сделки:\n"
+        for t in list(open_trades.values())[:8]:
+            asset = t.get("asset", "?")
+            typ = t.get("virtual_type", "?")
+            entry = float(t.get("entry_price", 0) or 0)
+            last = float(t.get("last_price", 0) or 0)
+            pct = t.get("last_pct")
+            age = learning_age_text(max(0, time.time() - float(t.get("entry_time", 0) or 0)))
+            if isinstance(pct, (int, float)) and last > 0:
+                text += f"• {asset}: {typ} | ${entry:.6g} → ${last:.6g} ({pct:+.2f}%) | прошло {age}\n"
+            else:
+                text += f"• {asset}: {typ} | вход ${entry:.6g} | прошло {age}\n"
+        if len(open_trades) > 8:
+            text += f"…ещё открытых: {len(open_trades) - 8}\n"
+        text += "\n"
+    if closed:
+        text += "📊 Последние закрытые paper-сделки:\n"
+        for t in closed[-5:]:
+            out = paper_outcome(t)
+            r48 = (t.get("results", {}) or {}).get("48h")
+            text += f"• {t.get('asset','?')}: {out} | 48ч {r48:+.2f}%\n" if isinstance(r48, (int, float)) else f"• {t.get('asset','?')}: {out}\n"
+    else:
+        text += "Закрытых paper-сделок пока нет. Первые итоги будут после 24–48ч.\n"
+    return text
+
+
+def background_paper_update(reason="paper"):
+    def _run():
+        acquired = False
+        try:
+            acquired = _PAPER_BG_LOCK.acquire(False)
+            if not acquired:
+                return
+            paper_update_from_cache()
+            background_github_sync([PAPER_TRADES_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
+        except Exception as e:
+            print(f"background paper update error {reason}: {e}")
+        finally:
+            if acquired:
+                try:
+                    _PAPER_BG_LOCK.release()
+                except Exception:
+                    pass
+    try:
+        Thread(target=_run, daemon=True).start()
+    except Exception as e:
+        print(f"paper background start error: {e}")
+
+
 def backtest_learning_adjustment(c):
     """Мягкий исторический fallback, пока реальных закрытых 48ч наблюдений мало."""
     try:
@@ -4669,6 +4980,7 @@ def learning_report(sync_github=False):
         f"Статус: обучение работает, данные копятся.\n"
         f"Режим отчёта: быстрый кэш; наступившие checkpoints фиксируются из кэша, тяжёлое обновление идёт фоном.\n"
         f"Ускорение: {backtest_file_summary()}\n"
+        f"Paper trading: {paper_summary_line()}\n"
         f"Открытых наблюдений: {len(open_items)}\n"
         f"Закрытых 48ч результатов: {total}\n\n"
     )
@@ -4861,6 +5173,14 @@ def save_signal_history(items):
 
     save_json(HISTORY_FILE, h)
     save_json(RESULTS_FILE, results)
+
+    # v17.1: каждый /signal параллельно открывает виртуальные paper-тесты.
+    # Это ускоряет самообучение без реальных сделок.
+    try:
+        paper_open_from_signal_items(items, max_new=20)
+        background_paper_update("signal_history")
+    except Exception as e:
+        print(f"paper from signal error: {e}")
 
 def human_final(c):
     if c.get("_falling_knife"):
@@ -9639,7 +9959,7 @@ def help_text():
         "⚙️ Версия — текущая версия\n\n"
         "Команды тоже работают:\n"
         "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /top\n"
-        "/storage, /backup, /weekday, /learn_fast, /flush, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /rollback\n"
+        "/storage, /backup, /weekday, /learn_fast, /paper, /flush, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /rollback\n"
         "TON вводить можно: бот автоматически откроет GRAM.\n\n"
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход частями\n"
@@ -9966,6 +10286,9 @@ def main():
 
                 elif text in ["/learn_fast", "/backtest", "/learning_fast"]:
                     send_message(chat_id, learn_fast_report(start=True))
+
+                elif text in ["/paper", "/paper_trading", "/virtual"]:
+                    send_message(chat_id, paper_report())
 
                 elif text == "/alerts":
                     send_message(chat_id, "⏳ Проверяю быстрые пампы...")
