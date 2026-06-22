@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v17.1 PAPER TRADING ENGINE"
+BOT_VERSION = "v17.2 PAPER REPORT VISIBILITY FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1257,6 +1257,7 @@ BUTTON_TO_COMMAND = {
     "🌍 Рынок": "/market",
     "⚡ Alerts": "/alerts",
     "📚 Обучение": "/learning",
+    "🧪 Paper": "/paper",
 
     # v12.9: одна служебная кнопка вместо россыпи админ-кнопок.
     "🛠 Сервис": "/service",
@@ -1313,7 +1314,7 @@ def duplicate_command_cooldown(text):
         return 12
     if text in ["/alerts", "/market", "/macro", "/weekday", "/stats"]:
         return 10
-    if text in ["/learning", "/storage", "/service", "/more", "/admin"]:
+    if text in ["/learning", "/storage", "/service", "/more", "/admin", "/paper", "/paper_trading", "/virtual"]:
         return 6
     if text in ["/version", "/flush", "/sync_storage", "/signal_status", "/signal_unlock"]:
         return 4
@@ -1401,6 +1402,7 @@ def service_keyboard(chat_id=None):
     rows = [
         ["🧹 Очистить", "💾 Хранилище"],
         ["📅 Дни недели", "⚙️ Версия"],
+        ["🧪 Paper"],
     ]
 
     if chat_id and is_admin(chat_id):
@@ -4337,41 +4339,98 @@ def paper_summary_line():
     return f"Виртуальные сделки: открыто {open_n} | закрыто {len(closed)} | ✅ {wins} | 🔴 {losses} | 🛡 {saved} | ⚠️ {missed}"
 
 
+def _paper_safe_float(value, default=0.0):
+    try:
+        if value is None:
+            return default
+        return float(value)
+    except Exception:
+        return default
+
+
 def paper_report():
-    paper_update_from_cache()
-    data = paper_store()
-    open_trades = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
-    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    """Быстрый и устойчивый отчёт по виртуальным сделкам.
+    v17.2: /paper не должен молча пропадать даже при битой записи в paper_trades.json.
+    """
+    update_note = ""
+    try:
+        paper_update_from_cache()
+    except Exception as e:
+        update_note = f"⚠️ Быстрое обновление paper-кэша не выполнено: {str(e)[:120]}\n"
+
+    try:
+        data = paper_store()
+    except Exception as e:
+        return (
+            f"🧪 Paper trading ALEX EDGE\n"
+            f"Версия: {BOT_VERSION}\n\n"
+            "Режим: виртуальные сделки без реальных денег. Автопокупки выключены.\n"
+            f"⚠️ Не смог прочитать paper_trades.json: {str(e)[:160]}\n"
+        )
+
+    raw_open = data.get("open", {}) if isinstance(data, dict) else {}
+    open_trades = raw_open if isinstance(raw_open, dict) else {}
+    raw_closed = data.get("closed", []) if isinstance(data, dict) else []
+    closed = raw_closed if isinstance(raw_closed, list) else []
+
+    try:
+        summary = paper_summary_line()
+    except Exception:
+        summary = f"Виртуальные сделки: открыто {len(open_trades)} | закрыто {len(closed)}"
+
     text = (
         f"🧪 Paper trading ALEX EDGE\n"
         f"Версия: {BOT_VERSION}\n\n"
         "Режим: виртуальные сделки без реальных денег. Автопокупки выключены.\n"
-        f"{paper_summary_line()}\n\n"
+        "Цель: проверить, что было бы при виртуальном входе/пропуске сигнала, без риска для денег.\n"
+        f"{update_note}"
+        f"{summary}\n\n"
     )
+
     if open_trades:
         text += "🔎 Открытые виртуальные сделки:\n"
-        for t in list(open_trades.values())[:8]:
-            asset = t.get("asset", "?")
-            typ = t.get("virtual_type", "?")
-            entry = float(t.get("entry_price", 0) or 0)
-            last = float(t.get("last_price", 0) or 0)
+        shown = 0
+        for t in list(open_trades.values())[:10]:
+            if not isinstance(t, dict):
+                continue
+            asset = str(t.get("asset", "?")).upper()
+            typ = str(t.get("virtual_type", "?")).replace("_", " ")
+            entry = _paper_safe_float(t.get("entry_price"), 0)
+            last = _paper_safe_float(t.get("last_price"), 0)
             pct = t.get("last_pct")
-            age = learning_age_text(max(0, time.time() - float(t.get("entry_time", 0) or 0)))
+            age_seconds = max(0, time.time() - _paper_safe_float(t.get("entry_time"), time.time()))
+            try:
+                age = learning_age_text(age_seconds)
+            except Exception:
+                age = f"{int(age_seconds // 60)}м"
             if isinstance(pct, (int, float)) and last > 0:
                 text += f"• {asset}: {typ} | ${entry:.6g} → ${last:.6g} ({pct:+.2f}%) | прошло {age}\n"
+            elif last > 0:
+                lpct = percent_change(entry, last) if entry > 0 else 0
+                text += f"• {asset}: {typ} | ${entry:.6g} → ${last:.6g} ({lpct:+.2f}%) | прошло {age}\n"
             else:
                 text += f"• {asset}: {typ} | вход ${entry:.6g} | прошло {age}\n"
-        if len(open_trades) > 8:
-            text += f"…ещё открытых: {len(open_trades) - 8}\n"
+            shown += 1
+        if len(open_trades) > shown:
+            text += f"…ещё открытых: {len(open_trades) - shown}\n"
         text += "\n"
+    else:
+        text += "Открытых paper-сделок пока нет. Нажми /signal, чтобы бот создал виртуальные проверки.\n\n"
+
     if closed:
         text += "📊 Последние закрытые paper-сделки:\n"
-        for t in closed[-5:]:
+        for t in closed[-7:]:
+            if not isinstance(t, dict):
+                continue
             out = paper_outcome(t)
             r48 = (t.get("results", {}) or {}).get("48h")
-            text += f"• {t.get('asset','?')}: {out} | 48ч {r48:+.2f}%\n" if isinstance(r48, (int, float)) else f"• {t.get('asset','?')}: {out}\n"
+            if isinstance(r48, (int, float)):
+                text += f"• {t.get('asset','?')}: {out} | 48ч {r48:+.2f}%\n"
+            else:
+                text += f"• {t.get('asset','?')}: {out}\n"
     else:
         text += "Закрытых paper-сделок пока нет. Первые итоги будут после 24–48ч.\n"
+
     return text
 
 
@@ -10288,7 +10347,17 @@ def main():
                     send_message(chat_id, learn_fast_report(start=True))
 
                 elif text in ["/paper", "/paper_trading", "/virtual"]:
-                    send_message(chat_id, paper_report())
+                    send_message(chat_id, "⏳ Формирую отчёт по виртуальным сделкам...")
+                    try:
+                        send_message(chat_id, paper_report())
+                    except Exception as e:
+                        send_message(
+                            chat_id,
+                            f"🧪 Paper trading ALEX EDGE\n"
+                            f"Версия: {BOT_VERSION}\n\n"
+                            f"⚠️ Отчёт /paper не сформировался: {str(e)[:180]}\n"
+                            "Виртуальные сделки не трогают реальные деньги. Проверь /learning — там есть краткая строка paper trading."
+                        )
 
                 elif text == "/alerts":
                     send_message(chat_id, "⏳ Проверяю быстрые пампы...")
@@ -10358,3 +10427,8 @@ if __name__ == "__main__":
 # 2. BTC after +4% day with falling volume is capped.
 # 3. +10/+15 probabilities reduced when expected upside is tiny.
 # 4. Improves consistency between score, probabilities and verdict.
+
+
+# === v17.2 PAPER REPORT VISIBILITY FIX ===
+# /paper now sends an immediate status message and a robust report/fallback.
+# Service menu includes Paper button. Paper report cannot silently disappear on malformed cache records.
