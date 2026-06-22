@@ -792,9 +792,47 @@
       "last_price": 0.016054,
       "last_price_time": 1782161394.5556703,
       "last_pct": -0.43
+    },
+    "SOL:VIRTUAL_WATCH_ENTRY_TEST:495045": {
+      "id": "SOL:VIRTUAL_WATCH_ENTRY_TEST:495045",
+      "asset": "SOL",
+      "entry_time": 1782162661.5335565,
+      "entry_price": 72.81,
+      "score": 57,
+      "master_score": 57,
+      "source_action": "WATCH",
+      "virtual_type": "VIRTUAL_WATCH_ENTRY_TEST",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "is_quality": true,
+      "change_24": 0.3,
+      "btc_change": 1.28,
+      "macro_mod": -15,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
+    },
+    "ADA:VIRTUAL_WATCH_ENTRY_TEST:495045": {
+      "id": "ADA:VIRTUAL_WATCH_ENTRY_TEST:495045",
+      "asset": "ADA",
+      "entry_time": 1782162661.5335565,
+      "entry_price": 0.159,
+      "score": 56,
+      "master_score": 56,
+      "source_action": "WATCH",
+      "virtual_type": "VIRTUAL_WATCH_ENTRY_TEST",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "is_quality": true,
+      "change_24": 0.06,
+      "btc_change": 1.28,
+      "macro_mod": -15,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [],
-  "last_created_at": 1782158629.95345,
+  "last_created_at": 1782162661.5335565,
   "last_update_at": 1782162262.4219725
 }
