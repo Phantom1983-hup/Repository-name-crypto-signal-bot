@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v15.3 QUALITY ALT ENTRY CAP"
+BOT_VERSION = "v15.4 CLOSED RESULT FREEZE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -3148,8 +3148,80 @@ def learning_success_threshold(action):
         return 2.0
     return 3.0
 
+def learning_results_for_eval(rec):
+    """v15.4: закрытые результаты должны быть frozen и не должны плавать после 48ч.
+    Для закрытых записей используем frozen_results, если они есть.
+    """
+    if not isinstance(rec, dict):
+        return {}
+    frozen = rec.get("frozen_results")
+    if isinstance(frozen, dict) and frozen:
+        return frozen
+    results = rec.get("results")
+    return results if isinstance(results, dict) else {}
+
+
+def freeze_closed_learning_record(rec):
+    """v15.4: один раз замораживает checkpoints закрытой записи.
+    Существующие закрытые записи фиксируются на первом запуске v15.4.
+    Новые записи фиксируются при закрытии 48ч.
+    """
+    if not isinstance(rec, dict):
+        return rec, False
+    changed = False
+
+    results = rec.get("results")
+    if not isinstance(results, dict):
+        results = {}
+
+    if not isinstance(rec.get("frozen_results"), dict) or not rec.get("frozen_results"):
+        rec["frozen_results"] = dict(results)
+        changed = True
+
+    details = rec.get("result_details")
+    if isinstance(details, dict) and (not isinstance(rec.get("frozen_result_details"), dict) or not rec.get("frozen_result_details")):
+        try:
+            rec["frozen_result_details"] = json.loads(json.dumps(details))
+        except Exception:
+            rec["frozen_result_details"] = dict(details)
+        changed = True
+
+    # Для совместимости отображения и старых функций держим results равным frozen_results.
+    frozen = rec.get("frozen_results")
+    if isinstance(frozen, dict) and rec.get("results") != frozen:
+        rec["results"] = dict(frozen)
+        changed = True
+
+    if not rec.get("frozen_at"):
+        rec["frozen_at"] = float(rec.get("closed_time", time.time()) or time.time())
+        changed = True
+
+    # outcome тоже фиксируем по frozen results.
+    fixed_outcome = classify_learning_result(rec)
+    if rec.get("outcome") != fixed_outcome:
+        rec["outcome"] = fixed_outcome
+        changed = True
+    if rec.get("frozen_outcome") != fixed_outcome:
+        rec["frozen_outcome"] = fixed_outcome
+        changed = True
+
+    return rec, changed
+
+
+def normalize_closed_learning_records(closed_items):
+    if not isinstance(closed_items, list):
+        return [], False
+    changed = False
+    new_items = []
+    for rec in closed_items:
+        rec, ch = freeze_closed_learning_record(rec)
+        changed = changed or ch
+        new_items.append(rec)
+    return new_items, changed
+
+
 def classify_learning_result(rec):
-    results = rec.get("results", {})
+    results = learning_results_for_eval(rec)
     action = rec.get("action", "SKIP")
 
     r24 = results.get("24h")
@@ -3409,7 +3481,15 @@ def update_signal_results():
         # Закрываем только после 48 часов.
         if age >= 48 * 3600 and "48h" in results:
             rec["closed_time"] = now
+            # v15.4: фиксируем checkpoints закрытой записи один раз.
+            rec["frozen_results"] = dict(results)
+            try:
+                rec["frozen_result_details"] = json.loads(json.dumps(result_details))
+            except Exception:
+                rec["frozen_result_details"] = dict(result_details)
+            rec["frozen_at"] = float(now)
             rec["outcome"] = classify_learning_result(rec)
+            rec["frozen_outcome"] = rec["outcome"]
             closed_items.append(rec)
             open_items.pop(key, None)
             changed = True
@@ -3635,7 +3715,7 @@ def closed_learning_detail_rows(closed, limit=8):
     text = "\n🔍 Детально по закрытым 48ч:\n"
     for rec in rows:
         asset = str(rec.get("asset", "?")).upper()
-        results = rec.get("results", {}) if isinstance(rec.get("results", {}), dict) else {}
+        results = learning_results_for_eval(rec)
         r48 = results.get("48h")
         r24 = results.get("24h")
         r6 = results.get("6h")
@@ -3890,6 +3970,11 @@ def learning_report(sync_github=False):
         background_github_sync([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
 
     closed = data.get("closed", [])
+    closed, closed_normalized = normalize_closed_learning_records(closed)
+    if closed_normalized:
+        data["closed"] = closed
+        save_json(RESULTS_FILE, data)
+        background_github_sync([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
     open_items = data.get("open", {})
 
     total = len(closed)
