@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v15.9 ALERTS TIMEBOX FIX"
+BOT_VERSION = "v16.0 ALERTS INSTANT SAFE MODE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -7684,274 +7684,160 @@ def diagnostics_alert(symbol):
 
 def get_fast_pumps():
     """
-    v15.9 ALERTS TIMEBOX FIX:
-    /alerts больше не должен висеть минутами.
-    Ограничения:
-    - анализируем не 70, а ограниченный список монет;
-    - диагностика только 15m + 1h;
-    - параллельный ThreadPool;
-    - общий timebox ALERTS_TIME_BUDGET секунд;
-    - если часть монет зависла, отдаём то, что успели, либо безопасный пустой статус.
+    v16.0 ALERTS INSTANT SAFE MODE:
+    /alerts больше не делает свечные запросы и не вызывает market_context/news.
+    Причина: KuCoin candles/news могут зависать, а команда Alerts должна отвечать быстро.
+    Теперь используется только один быстрый allTickers-запрос KuCoin + локальный кэш рынка, если он уже есть.
+    Это менее глубокая проверка, но надёжная: лучше быстрый безопасный статус, чем 4 минуты ожидания.
     """
     try:
-        found = []
-        watchlist = []
-        oversold_watch = []
+        # Никаких market_context(), diagnostics(), get_candles(), news RSS внутри /alerts.
+        # Только allTickers, который уже используется по всему боту и имеет короткий timeout.
+        tickers = kucoin_tickers()
 
-        ctx = market_context()
-        macro_mod = ctx.get("macro_mod", ctx.get("geo_mod", 0))
-        btc_change = ctx.get("btc_change", 0)
-        market_danger = market_risk_level(ctx) == "danger" or btc_change < 0
+        # Берём контекст только из локального кэша, без сетевых запросов.
+        cached_ctx = _market_context_cache.get("data") if isinstance(_market_context_cache, dict) else None
+        ctx = dict(cached_ctx) if isinstance(cached_ctx, dict) else {}
+        macro_mod = int(ctx.get("macro_mod", 0) or 0)
 
-        pairs_all = [
-            t for t in kucoin_tickers()
-            if t.get("symbol", "").endswith("-USDT")
-            and float(t.get("volValue", 0) or 0) >= 1_000_000
-        ]
-
-        preferred = ["BTC", "ETH", "SOL", "LINK", "SUI", "TAO", "AAVE", "BNB", "NEAR", "AVAX", "INJ", "ADA", "XRP", "DOT", "SEI"]
-        selected = []
-        used = set()
-
-        by_base = {t.get("symbol", "").replace("-USDT", ""): t for t in pairs_all}
-        for base in preferred:
-            t = by_base.get(base)
-            if t and t.get("symbol") not in used:
-                selected.append(t)
-                used.add(t.get("symbol"))
-
-        ranked = sorted(
-            pairs_all,
-            key=lambda t: (
-                1 if alert_kind(t.get("symbol", "").replace("-USDT", "")) == "quality" else 0,
-                float(t.get("volValue", 0) or 0),
-                abs(float(t.get("changeRate", 0) or 0))
-            ),
-            reverse=True
-        )
-
-        for t in ranked:
-            if len(selected) >= ALERTS_ANALYZE_LIMIT:
+        btc_change = 0.0
+        for t in tickers:
+            if t.get("symbol") == "BTC-USDT":
+                try:
+                    btc_change = float(t.get("changeRate", 0) or 0) * 100
+                except Exception:
+                    btc_change = 0.0
                 break
-            if t.get("symbol") not in used:
-                selected.append(t)
-                used.add(t.get("symbol"))
 
-        def analyze_alert_ticker(t):
+        market_danger = btc_change < 0 or macro_mod <= -8
+
+        rows = []
+        for t in tickers:
             symbol = t.get("symbol", "")
+            if not symbol.endswith("-USDT"):
+                continue
             asset = symbol.replace("-USDT", "")
+            if asset in STABLE_SKIP_ASSETS:
+                continue
             try:
                 price = float(t.get("last", 0) or 0)
                 change_24 = float(t.get("changeRate", 0) or 0) * 100
                 volume_usd = float(t.get("volValue", 0) or 0)
-
-                if price <= 0 or volume_usd < 1_000_000:
-                    return None
-
-                # Совсем поздние пампы не шлём как alert; они всё равно видны в /signal как "не догонять".
-                if change_24 > 30:
-                    return None
-
-                d = diagnostics_alert(symbol)
-                fast_move = float(d.get("move_15", 0) or 0)
-                vol_power = float(d.get("vol_1h", 0) or 0)
-                rsi_value = float(d.get("rsi", 50) or 50)
-
-                if rsi_value >= 88:
-                    return None
-
-                kind = alert_kind(asset)
-
-                if kind == "quality":
-                    impulse = (
-                        (fast_move >= 0.75 and vol_power >= 1.20)
-                        or (fast_move >= 0.45 and vol_power >= 1.70)
-                        or (fast_move >= 1.20 and vol_power >= 1.00)
-                    )
-                else:
-                    impulse = (
-                        (fast_move >= 2.0 and vol_power >= 1.5)
-                        or (fast_move >= 3.0 and vol_power >= 1.2)
-                    )
-
-                score = 45
-
-                if fast_move >= 3:
-                    score += 22
-                elif fast_move >= 2:
-                    score += 16
-                elif fast_move >= 1.2:
-                    score += 10
-                elif fast_move >= 0.75:
-                    score += 6
-                elif fast_move >= 0.45:
-                    score += 4
-                elif fast_move > 0:
-                    score += 2
-
-                if vol_power >= 2.5:
-                    score += 18
-                elif vol_power >= 1.8:
-                    score += 13
-                elif vol_power >= 1.3:
-                    score += 8
-                elif vol_power >= 1.0:
-                    score += 5
-                elif vol_power < 0.8:
-                    score -= 10
-
-                if 0 <= change_24 <= 10:
-                    score += 8
-                elif change_24 > 18:
-                    score -= 12
-                elif change_24 < -6:
-                    score -= 5
-
-                if kind == "quality":
-                    score += 10
-                else:
-                    score -= 8
-
-                if macro_mod <= -8 and kind == "speculative":
-                    score -= 8
-
-                score = cap_alert_score(asset, score, macro_mod=macro_mod, btc_change=btc_change)
-                score = max(0, min(100, int(score)))
-
-                item = {
-                    "symbol": asset,
-                    "kind": kind,
-                    "alert_type": "quality" if kind == "quality" else "speculative",
-                    "price": price,
-                    "change_24": change_24,
-                    "fast_move": fast_move,
-                    "vol_power": vol_power,
-                    "rsi": round(rsi_value, 1),
-                    "score": score,
-                    "market_danger": market_danger,
-                    "manual_only": False
-                }
-
-                if impulse:
-                    return item
-
-                if kind == "quality":
-                    min_vol = 0.95 if market_danger else 0.80
-                    min_move = 0.25 if market_danger else 0.15
-                    watch_score = min(max(score, 45), 62 if market_danger else 65)
-
-                    if (
-                        fast_move >= min_move
-                        and vol_power >= min_vol
-                        and watch_score >= 50
-                        and rsi_value < 78
-                    ):
-                        item["score"] = watch_score
-                        item["alert_type"] = "watch"
-                        item["manual_only"] = True
-                        return item
-
-                    if (
-                        rsi_value <= 35
-                        and change_24 <= -2
-                        and vol_power >= 0.80
-                        and fast_move >= -0.35
-                        and watch_score >= 48
-                    ):
-                        item["score"] = min(watch_score, 58)
-                        item["alert_type"] = "oversold"
-                        item["manual_only"] = True
-                        return item
-
-                return None
-
             except Exception:
-                return None
+                continue
+            if price <= 0 or volume_usd < 1_000_000:
+                continue
+            kind = alert_kind(asset)
+            score = 40
+            if kind == "quality":
+                score += 12
+            else:
+                score -= 6
 
-        started_at = time.time()
-        futures = []
-        executor = ThreadPoolExecutor(max_workers=max(1, ALERTS_WORKERS))
+            # 24ч движение — это не fast 15м, поэтому не выдаём BUY.
+            if 0.5 <= change_24 <= 4:
+                score += 12
+            elif 4 < change_24 <= 8:
+                score += 8
+            elif 8 < change_24 <= 18:
+                score -= 2
+            elif change_24 > 18:
+                score -= 10
+            elif -4 <= change_24 < 0.5:
+                score += 2
+            else:
+                score -= 6
 
-        try:
-            futures = [executor.submit(analyze_alert_ticker, t) for t in selected]
+            if volume_usd >= 80_000_000:
+                score += 10
+            elif volume_usd >= 30_000_000:
+                score += 7
+            elif volume_usd >= 10_000_000:
+                score += 4
 
-            for future in as_completed(futures, timeout=ALERTS_TIME_BUDGET):
-                if time.time() - started_at > ALERTS_TIME_BUDGET:
-                    break
-                try:
-                    item = future.result(timeout=1)
-                except Exception:
-                    item = None
+            if market_danger and kind == "speculative":
+                score -= 10
+            if market_danger and kind == "quality":
+                score -= 3
 
-                if not item:
-                    continue
+            score = cap_alert_score(asset, score, macro_mod=macro_mod, btc_change=btc_change)
+            score = max(0, min(100, int(score)))
 
-                if item.get("alert_type") in ["quality", "speculative"]:
-                    found.append(item)
-                elif item.get("alert_type") == "watch":
-                    watchlist.append(item)
-                elif item.get("alert_type") == "oversold":
-                    oversold_watch.append(item)
+            rows.append({
+                "symbol": asset,
+                "kind": kind,
+                "price": price,
+                "change_24": change_24,
+                "volume_usd": volume_usd,
+                "score": score,
+                "market_danger": market_danger,
+            })
 
-        except FuturesTimeoutError:
-            print(f"/alerts timebox reached: {len(found) + len(watchlist) + len(oversold_watch)}/{len(selected)} items")
-        finally:
-            for future in futures:
-                if not future.done():
-                    future.cancel()
-            executor.shutdown(wait=False, cancel_futures=True)
-
-        found = sorted(
-            found,
-            key=lambda x: (
-                1 if x.get("kind") == "quality" else 0,
-                x.get("score", 0),
-                x.get("vol_power", 0),
-                x.get("fast_move", 0)
-            ),
+        # Качественные активы для наблюдения: без входа, только если есть умеренное движение/объём.
+        quality_watch = sorted(
+            [r for r in rows if r["kind"] == "quality" and r["score"] >= 50 and -4 <= r["change_24"] <= 8],
+            key=lambda x: (x["score"], x["volume_usd"], x["change_24"]),
             reverse=True
-        )[:5]
+        )[:4]
 
-        if found:
-            return format_fast_alert(found), found
-
-        watchlist = sorted(
-            watchlist,
-            key=lambda x: (
-                x.get("vol_power", 0),
-                x.get("fast_move", 0),
-                x.get("score", 0)
-            ),
+        # Спекулятивные пампы — только предупреждение, не догонять.
+        speculative_pumps = sorted(
+            [r for r in rows if r["kind"] == "speculative" and r["change_24"] >= 12],
+            key=lambda x: (x["change_24"], x["volume_usd"]),
             reverse=True
-        )[:3]
+        )[:4]
 
-        oversold_watch = sorted(
-            oversold_watch,
-            key=lambda x: (
-                x.get("vol_power", 0),
-                -x.get("rsi", 50),
-                x.get("score", 0)
-            ),
-            reverse=True
-        )[:2]
+        if not quality_watch and not speculative_pumps:
+            text = (
+                f"⚡ ALEX FAST ALERT {BOT_VERSION}\n\n"
+                "Сильных быстрых импульсов сейчас нет.\n"
+                "Режим: быстрый безопасный alerts без свечей, чтобы команда не зависала.\n\n"
+                f"BTC 24ч: {btc_change:+.2f}%\n"
+                "Что ждать: качественный актив, умеренный рост, высокий объём и подтверждение в /signal или /coin.\n"
+                "Главное правило: резкую зелёную свечу не догонять."
+            )
+            return text, []
 
-        manual_items = watchlist + oversold_watch
+        text = f"⚡ ALEX FAST ALERT {BOT_VERSION}\n\n"
+        text += "Режим: мгновенная безопасная проверка без свечных запросов.\n"
+        text += "Это не команда покупать, а фильтр: что наблюдать и какие пампы не догонять.\n\n"
+        text += f"BTC 24ч: {btc_change:+.2f}%\n"
+        if market_danger:
+            text += "Фон: осторожный — входы только после подтверждения.\n\n"
+        else:
+            text += "Фон: без явного аварийного сигнала по BTC.\n\n"
 
-        if manual_items:
-            text = format_fast_alert(manual_items)
-            if text:
-                text = text.replace(
-                    "Быстрые импульсы по рынку.",
-                    "Сильных быстрых импульсов нет. Ниже — только качественные наблюдения."
+        if quality_watch:
+            text += "🟡 Качественные активы к наблюдению / не вход:\n"
+            for i, r in enumerate(quality_watch, 1):
+                action = "наблюдать; вход только после подтверждения в /coin"
+                if market_danger:
+                    action = "без входа сейчас; ждать стабилизацию BTC/фона"
+                text += (
+                    f"{i}. {r['symbol']} — {r['score']}/100 | {format_usd_price(r['price'])}\n"
+                    f"24ч: {r['change_24']:+.2f}% | объём ${r['volume_usd']/1_000_000:.1f}M\n"
+                    f"Действие: {action}.\n\n"
                 )
-            return text, manual_items
 
-        empty = alerts_empty_status(ctx)
-        empty += f"\n\n⏱ Проверка ограничена по времени: до {ALERTS_TIME_BUDGET} сек, монет в быстром скане: {len(selected)}."
-        return empty, []
+        if speculative_pumps:
+            text += "🟣 Спекулятивные пампы / не догонять:\n"
+            for i, r in enumerate(speculative_pumps, 1):
+                text += (
+                    f"{i}. {r['symbol']} — {r['score']}/100 | {format_usd_price(r['price'])}\n"
+                    f"24ч: {r['change_24']:+.2f}% | объём ${r['volume_usd']/1_000_000:.1f}M\n"
+                    "Действие: не догонять; только предупреждение, ждать откат.\n\n"
+                )
+
+        text += "⚠️ Для точного входа используй /coin SOL или /signal."
+        return text, quality_watch + speculative_pumps
 
     except Exception as e:
-        return f"⚡ ALEX FAST ALERT {BOT_VERSION}\n\nОшибка проверки alerts: {e}", []
+        # Даже при ошибке отвечаем сразу безопасно, а не зависаем.
+        return (
+            f"⚡ ALEX FAST ALERT {BOT_VERSION}\n\n"
+            f"Быстрый alerts не смог получить данные: {e}\n\n"
+            "BUY запрещены. Ничего не догонять. Повтори /alerts через 1–2 минуты или смотри /signal."
+        ), []
 
 def should_send_pump(items):
     """
