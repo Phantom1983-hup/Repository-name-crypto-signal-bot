@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v13.14 QUALITY ALT SCORE FLOOR"
+BOT_VERSION = "v15.0 FAST QUALITY LEARNING ENGINE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -78,6 +78,14 @@ PUMP_MINUTES = [0]
 # дубли/устаревший отчёт с BUY по спекулятивным монетам.
 # Ручные кнопки 📊 Сигнал / 🌍 Рынок / ⚡ Alerts продолжают работать.
 AUTO_REPORTS_ENABLED = (os.getenv("AUTO_REPORTS_ENABLED") or "").strip().lower() in ["1", "true", "yes", "on"]
+
+# === v15.0 fast learning ===
+# 48ч остаётся финальной проверкой, но бот копит короткие checkpoints,
+# чтобы обучение не простаивало по 2 суток.
+FAST_LEARNING_BACKGROUND_ENABLED = (os.getenv("FAST_LEARNING_BACKGROUND_ENABLED") or "1").strip().lower() in ["1", "true", "yes", "on"]
+FAST_LEARNING_BACKGROUND_INTERVAL = int(os.getenv("FAST_LEARNING_BACKGROUND_INTERVAL", "10800"))  # 3 часа
+_fast_learning_background_last = 0
+
 
 MOSCOW_OFFSET_HOURS = 3
 
@@ -1043,12 +1051,25 @@ def weekday_report():
     dca = basket_recommendation(dca_assets)
     all_major = basket_recommendation(WEEKDAY_ASSETS[:12])
 
+    # v15.0: делаем отчёт понятнее — показываем период статистики и защиту от дублей.
+    dates = sorted([str(r.get("date")) for r in records if r.get("date")])
+    period_line = f"Период статистики: {dates[0]} — {dates[-1]}\n" if dates else "Период статистики: данных пока нет\n"
+    per_asset_counts = {}
+    for r in records:
+        a = r.get("asset")
+        if a:
+            per_asset_counts[a] = per_asset_counts.get(a, 0) + 1
+    avg_per_asset = int(round(avg(list(per_asset_counts.values())))) if per_asset_counts else 0
+
     text = (
         f"📅 Статистика по дням недели\n"
         f"Версия: {BOT_VERSION}\n"
         f"Файл: {WEEKDAY_FILE}\n"
-        f"Новых записей: {added}\n"
-        f"Всего наблюдений: {len(records)}\n\n"
+        f"{period_line}"
+        f"Новых записей за запуск: {added}\n"
+        f"Всего наблюдений: {len(records)}\n"
+        f"Монет в статистике: {len(per_asset_counts)} | записей на монету в среднем: {avg_per_asset}\n"
+        f"Дубли не добавляются: ключ = монета + дата закрытой дневной свечи.\n\n"
     )
 
     if dca:
@@ -2202,6 +2223,8 @@ def macro_action_hint(ctx):
         return "Решение: экстремальный страх. BUY запрещены. BTC/ETH — только наблюдать, без первой части."
 
     if level == "caution":
+        if ctx.get("macro_mod", ctx.get("geo_mod", 0)) <= -15 and ctx.get("btc_change", 0) >= 0:
+            return "Решение: повышенная осторожность. BUY запрещены до улучшения новостей и подтверждения BTC/объёма."
         return "Решение: осторожно. Быстрые входы ограничить, ждать подтверждение объёмом и стабилизацию BTC."
 
     if level == "positive":
@@ -2218,33 +2241,38 @@ def compact_news_line(ctx):
     crypto = "нет свежих данных"
 
     for line in text.splitlines():
-        if "ФРС:" in line:
-            if "🔴" in line:
+        clean = line.lower()
+        if "фрс:" in clean:
+            if "🔴" in line or "дав" in clean or "негатив" in clean or "ужесточ" in clean or "hike" in clean:
                 fed = "давит"
-            elif "🟢" in line:
+            elif "🟢" in line or "лучше" in clean or "помог" in clean or "cut" in clean:
                 fed = "помогает"
             else:
                 fed = "нейтрально"
 
-        if "Геополитика:" in line:
-            if "🔴" in line:
+        if "геополитика:" in clean:
+            if "🔴" in line or "эскалац" in clean or "war" in clean or "strike" in clean or "kill" in clean:
                 geo = "давит"
-            elif "🟢" in line:
+            elif "🟢" in line or "деэскала" in clean or "ceasefire" in clean:
                 geo = "улучшилась"
+            elif "свежих новостей не найдено" in clean:
+                geo = "нет свежих данных"
             else:
                 geo = "смешанно"
 
-        if "Крипто-новости:" in line:
+        if "крипто-новости:" in clean:
             if "🔴" in line:
                 crypto = "негатив"
             elif "🟢" in line:
                 crypto = "позитив"
-            elif "свежих новостей не найдено" in line:
+            elif "свежих новостей не найдено" in clean:
                 crypto = "нет свежих данных"
             else:
                 crypto = "нейтрально"
 
-    if score <= -8:
+    if score <= -15:
+        label = "опасно"
+    elif score <= -6:
         label = "негатив"
     elif score >= 6:
         label = "позитив"
@@ -2457,6 +2485,8 @@ def market_context(force_refresh=False):
         state = "🟠 safe-caution / ждать BTC"
     elif v115_extreme_fear_btc_weak(temp_ctx):
         state = "🟡 extreme-fear / только наблюдать"
+    elif level == "caution" and macro_mod <= -15 and btc_change >= 0:
+        state = "🟠 повышенная осторожность — опасные новости, BTC пока держится"
     elif level == "caution":
         state = "🟡 осторожный рынок"
     elif level == "positive":
@@ -3232,17 +3262,18 @@ def update_signal_results():
             continue
 
         results = rec.setdefault("results", {})
+        result_details = rec.setdefault("result_details", {})
 
-        checkpoints = [
-            ("1h", 3600),
-            ("6h", 6 * 3600),
-            ("24h", 24 * 3600),
-            ("48h", 48 * 3600),
-        ]
-
-        for name, seconds in checkpoints:
+        for _label, name, seconds in learning_checkpoints():
+            # v15.0 freeze/snapshot: checkpoint фиксируется один раз и не плавает дальше.
             if age >= seconds and name not in results:
-                results[name] = round(percent_change(start_price, current_price), 2)
+                pct = round(percent_change(start_price, current_price), 2)
+                results[name] = pct
+                result_details[name] = {
+                    "checkpoint_time": now,
+                    "checkpoint_price": round(current_price, 8),
+                    "checkpoint_pct": pct
+                }
                 changed = True
 
         # Закрываем только после 48 часов.
@@ -3433,6 +3464,82 @@ def learning_price_now(asset):
     except Exception:
         return None
 
+def learning_checkpoints():
+    # v15.0: быстрые точки обучения. 48ч — финальная, остальные дают раннюю статистику.
+    return [
+        ("15м", "15m", 15 * 60),
+        ("30м", "30m", 30 * 60),
+        ("1ч", "1h", 3600),
+        ("3ч", "3h", 3 * 3600),
+        ("6ч", "6h", 6 * 3600),
+        ("12ч", "12h", 12 * 3600),
+        ("24ч", "24h", 24 * 3600),
+        ("48ч", "48h", 48 * 3600),
+    ]
+
+def learning_outcome_text(outcome, rec=None):
+    if outcome == "success":
+        return "✅ сработало"
+    if outcome == "bad":
+        return "🔴 ошибся"
+    if outcome == "watch_saved":
+        return "🛡 WATCH спас от падения"
+    if outcome == "missed_move":
+        if rec and str(rec.get("asset", "")).upper() not in QUALITY_LEARNING_ASSETS:
+            return "⚠️ спекулятивный рост, не приравнивать к качественному BUY"
+        return "⚠️ WATCH пропустил рост"
+    if outcome == "neutral":
+        return "🟡 нейтрально"
+    return "⏳ открыто"
+
+def closed_learning_detail_rows(closed, limit=8):
+    if not closed:
+        return ""
+
+    rows = sorted(
+        closed[-limit:],
+        key=lambda r: float(r.get("closed_time", r.get("time", 0)) or 0),
+        reverse=True
+    )
+
+    text = "\n🔍 Детально по закрытым 48ч:\n"
+    for rec in rows:
+        asset = str(rec.get("asset", "?")).upper()
+        results = rec.get("results", {}) if isinstance(rec.get("results", {}), dict) else {}
+        r48 = results.get("48h")
+        r24 = results.get("24h")
+        r6 = results.get("6h")
+        start_price = rec.get("price", 0)
+        score = rec.get("score", "н/д")
+        action = learning_display_action(rec.get("action", "WATCH"), rec.get("verdict", ""))
+        outcome = classify_learning_result(rec)
+
+        parts = []
+        if isinstance(r6, (int, float)):
+            parts.append(f"6ч {r6:+.2f}%")
+        if isinstance(r24, (int, float)):
+            parts.append(f"24ч {r24:+.2f}%")
+        if isinstance(r48, (int, float)):
+            parts.append(f"48ч {r48:+.2f}%")
+
+        detail = " | ".join(parts) if parts else "нет checkpoints"
+        text += (
+            f"• {asset}: {learning_outcome_text(outcome, rec)} | "
+            f"старт ${float(start_price or 0):.6g} | score {score}/100 | {action}\n"
+            f"  {detail}\n"
+        )
+
+        if outcome == "neutral" and asset in ["BTC", "ETH"]:
+            text += "  вывод: умеренный плюс по наблюдению допустим, но это не был BUY-сигнал.\n"
+        elif outcome == "missed_move" and asset in QUALITY_LEARNING_ASSETS:
+            text += "  вывод: качественный актив вырос — в будущем можно раньше переводить сильный WATCH в приоритетное наблюдение.\n"
+        elif outcome == "missed_move":
+            text += "  вывод: рост был спекулятивный; не усиливать BUY так же, как по качественным активам.\n"
+        elif outcome == "watch_saved":
+            text += "  вывод: осторожность была полезной, памп/риск подтвердился.\n"
+
+    return text
+
 def learning_result_icon(value, action):
     if not isinstance(value, (int, float)):
         return "⏳"
@@ -3465,12 +3572,7 @@ def learning_checkpoint_status(rec, now):
     start_time = float(rec.get("time", 0) or 0)
     action = rec.get("action", "SKIP")
 
-    checkpoints = [
-        ("1ч", "1h", 3600),
-        ("6ч", "6h", 6 * 3600),
-        ("24ч", "24h", 24 * 3600),
-        ("48ч", "48h", 48 * 3600),
-    ]
+    checkpoints = learning_checkpoints()
 
     parts = []
     age = max(0, now - start_time)
@@ -3487,7 +3589,7 @@ def learning_checkpoint_status(rec, now):
 
 def learning_display_action(action, verdict=""):
     verdict_text = str(verdict or "")
-    if action == "ACCUM" and ("НАБЛЮДАТЬ" in verdict_text or "КАНДИДАТ" in verdict_text or "СПЕКУЛЯТИВ" in verdict_text):
+    if action == "ACCUM" and ("НАБЛЮДАТЬ" in verdict_text or ("КАНДИДАТ" in verdict_text or "АКТИВ К НАБЛЮДЕНИЮ" in verdict_text) or "СПЕКУЛЯТИВ" in verdict_text):
         return "НАБЛЮДЕНИЕ"
     if action == "WATCH":
         return "НАБЛЮДЕНИЕ"
@@ -3551,7 +3653,7 @@ def normalize_learning_open_records(open_items):
                 rec["score"] = min(score, 68)
                 rec["master_score"] = min(master, 68)
                 rec["action"] = "WATCH"
-                rec["verdict"] = "🟡 КАНДИДАТ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
+                rec["verdict"] = "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
                 rec["learning_type"] = "WATCH"
                 rec["learning_note"] = "v12.5 repair: качественный альт оставлен только как наблюдение"
                 rec.setdefault("tags", [])
@@ -3675,8 +3777,8 @@ def learning_report(sync_github=False):
     if total == 0:
         text += (
             "Итог пока: закрытых 48ч результатов нет, поэтому бот ещё не меняет веса по статистике.\n"
-            "Он уже проверяет открытые наблюдения через 1ч / 6ч / 24ч / 48ч.\n"
-            "Если после деплоя Render история стала пустой — файл signal_results.json мог сброситься."
+            "Fast-learning уже проверяет наблюдения через 15м / 30м / 1ч / 3ч / 6ч / 12ч / 24ч / 48ч.\n"
+            "48ч остаётся финальной оценкой качества прогноза."
         )
         return text
 
@@ -3707,8 +3809,10 @@ def learning_report(sync_github=False):
         f"🟡 Нейтрально: {neutral}\n"
         f"🔴 Ошиблись: {bad}\n"
         f"🛡 WATCH спас от падения: {watch_saved}\n"
-        f"⚠️ WATCH пропустил рост: {missed}\n\n"
+        f"⚠️ WATCH пропустил рост: {missed}\n"
     )
+
+    text += closed_learning_detail_rows(closed, limit=8) + "\n"
 
     if ranked:
         text += "Лучше по истории:\n"
@@ -5400,10 +5504,10 @@ def compact_learning_text():
             success = outcomes.count("success")
             bad = outcomes.count("bad")
             watch_saved = outcomes.count("watch_saved")
-            return f"📚 Самообучение: открытых {len(open_items)} | закрытых {len(closed)} | ✅ {success} | 🔴 {bad} | 🛡 {watch_saved}\n"
+            return f"📚 Самообучение: открытых {len(open_items)} | закрытых {len(closed)} | ✅ {success} | 🔴 {bad} | 🛡 {watch_saved} | fast 15м–48ч\n"
 
         if isinstance(open_items, dict) and len(open_items):
-            return f"📚 Самообучение: открытых наблюдений {len(open_items)}, ждём 24/48ч результаты\n"
+            return f"📚 Самообучение: открытых наблюдений {len(open_items)}, fast-checkpoints 15м–48ч\n"
 
     return "📚 Самообучение: история накапливается\n"
 
@@ -5787,7 +5891,7 @@ def v115_apply_extreme_fear_wording_fix(c):
             c["score"] = score
             c["_master_score"] = score
             c["action"] = "WATCH"
-            c["verdict"] = "🟡 КАНДИДАТ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
+            c["verdict"] = "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
             c["_extreme_fear_alt_cap"] = True
             c["_red_market_cap"] = True
 
@@ -6060,6 +6164,86 @@ def ru_rows_word(n):
         pass
     return "строк"
 
+def v15_prepare_ticker_learning_items(rows, display_rows, ctx):
+    """
+    v15.0: чтобы обучение не простаивало 48ч по нескольким монетам,
+    каждый /signal создаёт дополнительные теневые наблюдения по важным активам.
+    Они не являются сигналами на вход и не спамят Telegram.
+    """
+    result = []
+    seen = set()
+
+    def add_from_row(r, action="WATCH", verdict=None, mode="shadow"):
+        base = r.get("base")
+        if not base or base in seen or base in STABLE_SKIP_ASSETS:
+            return
+        seen.add(base)
+        score = int(r.get("score", 0) or 0)
+        is_core = bool(r.get("is_core"))
+        change = float(r.get("change", 0) or 0)
+        if verdict is None:
+            if base in ["BTC", "ETH"]:
+                verdict = "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ"
+            elif (not is_core) and change >= 12:
+                verdict = "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ"
+                action = "WATCH"
+            elif is_core:
+                verdict = "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
+            else:
+                verdict = "🟡 ТЕНЕВОЕ НАБЛЮДЕНИЕ / НЕ ВХОД"
+
+        result.append({
+            "symbol": base,
+            "price": float(r.get("price", 0) or 0),
+            "score": score,
+            "_master_score": score,
+            "chance_5": 0,
+            "chance_10": 0,
+            "chance_15": 0,
+            "action": action,
+            "verdict": verdict,
+            "is_quality": is_core,
+            "profile": "крупный актив" if base in ["BTC", "ETH"] else ("качественный альт" if is_core else "спекулятивный альт"),
+            "rsi": 50,
+            "volume_trend": 1.0,
+            "change_24": round(change, 2),
+            "ctx": ctx,
+            "_learning_delta": 0,
+            "_learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
+            "_learning_mode": mode,
+        })
+
+    # Всегда учим рынок: BTC/ETH.
+    for base in ["BTC", "ETH"]:
+        for r in rows:
+            if r.get("base") == base:
+                add_from_row(r, mode="core")
+                break
+
+    # Учим то, что реально показали пользователю.
+    for r in display_rows:
+        add_from_row(r, mode="display")
+
+    # Учим 3–5 качественных активов с заметным движением/score, даже если они не попали в короткий список.
+    quality = sorted(
+        [r for r in rows if r.get("is_core") and r.get("base") not in seen and r.get("score", 0) >= 56],
+        key=lambda x: (x.get("score", 0), abs(float(x.get("change", 0) or 0))),
+        reverse=True
+    )[:5]
+    for r in quality:
+        add_from_row(r, mode="quality_shadow")
+
+    # Учим пампы отдельно: это нужно для анти-догоняй логики.
+    pumps = sorted(
+        [r for r in rows if (not r.get("is_core")) and r.get("base") not in seen and float(r.get("change", 0) or 0) >= 12],
+        key=lambda x: float(x.get("change", 0) or 0),
+        reverse=True
+    )[:4]
+    for r in pumps:
+        add_from_row(r, action="WATCH", verdict="🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ", mode="pump_shadow")
+
+    return result[:12]
+
 def full_ticker_signal_report():
     """
     v12.4:
@@ -6245,6 +6429,12 @@ def full_ticker_signal_report():
 
     display_selected = _compact_signal_rows(selected)
 
+    # v15.0: создаём fast-learning / shadow-наблюдения без спама в Telegram.
+    try:
+        save_signal_history(v15_prepare_ticker_learning_items(selected, display_selected, ctx))
+    except Exception as e:
+        print(f"v15 fast learning save skipped: {e}")
+
     def _compact_24h_forecast(r):
         """
         v13.12:
@@ -6394,8 +6584,11 @@ def full_ticker_signal_report():
             action = "не догонять; только предупреждение"
         elif r["change"] < -4:
             action = "наблюдать только после стабилизации"
+        elif r["is_core"] and r["change"] >= 4.5:
+            action = "перегретый актив к наблюдению / без входа"
+            r["score"] = min(r.get("score", 0), 65)
         elif r["is_core"] and r["score"] >= 60:
-            action = "кандидат к наблюдению; нужен объём"
+            action = "актив к наблюдению; нужен объём"
 
         lines.append(
             f"{i}. {base} — {r['score']}/100 | {format_usd_price(r['price'])} | 24ч {r['change']:+.2f}%\n"
@@ -7514,8 +7707,11 @@ def single_coin_conditions_text(c):
 
     if symbol not in ["BTC", "ETH"] and btc_change < 0:
         items.append("BTC должен перестать падать")
-    if c.get("volume_trend", 1) < 1.1:
+    vol = c.get("volume_trend", 1)
+    if vol < 1.1:
         items.append("нужен объём выше x1.1")
+    elif vol >= 1.3:
+        items.append("объём появился, нужно удержание цены/объёма 1–2 свечи")
     if c.get("rsi", 50) < 35:
         if symbol == "BTC":
             items.append("нужна остановка падения после перепроданности")
@@ -7523,7 +7719,7 @@ def single_coin_conditions_text(c):
             items.append("нужен разворот RSI, а не просто перепроданность")
 
     if not items:
-        items.append("нужно подтверждение движением цены и объёмом")
+        items.append("нужно подтверждение ценой и удержанием объёма")
 
     text = "Что нужно для улучшения:\n"
     for x in items[:4]:
@@ -7950,7 +8146,7 @@ def v106_apply_safe_caution_border_fix(c):
             c["score"] = score
             c["_master_score"] = score
             c["action"] = "WATCH"
-            c["verdict"] = "🟡 КАНДИДАТ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
+            c["verdict"] = "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
             c["_safe_caution_alt_cap"] = True
             c["_red_market_cap"] = True
 
@@ -8050,7 +8246,7 @@ def v1314_apply_quality_alt_score_floor(c):
     if symbol in ["BTC", "ETH"]:
         return c
 
-    if score <= 10 and ("НЕ ПОКУПАТЬ" in verdict or c.get("action") == "SKIP"):
+    if score <= 20 and ("НЕ ПОКУПАТЬ" in verdict or c.get("action") == "SKIP"):
         c["score"] = 20
         c["_master_score"] = max(int(c.get("_master_score", 0) or 0), 20)
         c["_quality_alt_score_floor"] = True
@@ -8115,6 +8311,20 @@ def v1313_apply_single_asymmetric_forecast(c):
     )
 
     note = ""
+
+    # v15.0: single coin forecast не должен откатываться к симметричному -1.5…+1.5
+    # при плохом фоне, слабом BTC/страхе или слабом объёме.
+    if (symbol not in ["BTC", "ETH"] and is_quality and (bad_news or weak_fear or btc_change < 0) and c.get("volume_trend", 1) < 1.1):
+        if change >= 3 or c.get("rsi", 50) >= 65:
+            low, high, note = -3.5, 1.5, "ждать откат"
+        else:
+            low, high, note = -2.7, 1.2, "BTC слабый, фон осторожный"
+        c["low"] = low
+        c["high"] = high
+        c["target_low"] = price * (1 + low / 100)
+        c["target_high"] = price * (1 + high / 100)
+        c["_forecast_note"] = note
+        return c
 
     if extreme:
         if symbol in ["BTC", "ETH"]:
@@ -8230,6 +8440,8 @@ def market_status():
         status = "🟠 SAFE-CAUTION / ЖДАТЬ BTC"
     elif v115_extreme_fear_btc_weak(ctx):
         status = "🟡 EXTREME-FEAR / ТОЛЬКО НАБЛЮДАТЬ"
+    elif level == "caution" and ctx.get("macro_mod", ctx.get("geo_mod", 0)) <= -15 and ctx.get("btc_change", 0) >= 0:
+        status = "🟠 ПОВЫШЕННАЯ ОСТОРОЖНОСТЬ"
     elif level == "caution":
         status = "🟡 ОСТОРОЖНО"
     elif level == "positive":
@@ -8288,7 +8500,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v13.14: качественные альты больше не получают 0/100 за плохой момент входа; прогноз в /coin показывает +/-"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v15.0: fast-learning 15м/30м/1ч/3ч/6ч/12ч/24ч/48ч, подробные закрытые результаты, косметические UX-правки"
     )
 
 
@@ -8297,6 +8509,27 @@ def coin_analyze_wait_text(coin):
 
 def moscow_now():
     return datetime.utcnow() + timedelta(hours=MOSCOW_OFFSET_HOURS)
+
+def run_fast_learning_background_scan():
+    """v15.0: фоновый сбор обучения без Telegram-спама."""
+    global _fast_learning_background_last
+    if not FAST_LEARNING_BACKGROUND_ENABLED:
+        return
+    now_ts = time.time()
+    if now_ts - float(_fast_learning_background_last or 0) < FAST_LEARNING_BACKGROUND_INTERVAL:
+        return
+    _fast_learning_background_last = now_ts
+
+    def _run():
+        try:
+            # full_ticker_signal_report сам сохраняет fast-learning наблюдения.
+            full_ticker_signal_report()
+            background_github_sync([RESULTS_FILE, HISTORY_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+            print("v15 fast-learning background scan completed")
+        except Exception as e:
+            print(f"v15 fast-learning background scan error: {e}")
+
+    Thread(target=_run, daemon=True).start()
 
 def main():
     last_update = load_last_update_id()
@@ -8577,6 +8810,7 @@ def main():
 
                     last_pump_key = pump_key
 
+            run_fast_learning_background_scan()
             time.sleep(2)
 
         except Exception as e:
