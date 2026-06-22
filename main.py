@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v15.5 SINGLE WATCH SCORE CONSISTENCY"
+BOT_VERSION = "v15.6 ADMIN UPLOAD PRIORITY FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1384,6 +1384,27 @@ def get_updates_now(offset=None):
         timeout=8
     ).json()
 
+def is_admin_main_py_document_update(item):
+    """
+    v15.6:
+    Приоритетная проверка админского файла main*.py в очереди Telegram.
+    Нужна, чтобы обновление бота не терялось за тяжёлыми /signal, /alerts, /learning.
+    """
+    try:
+        msg = item.get("message", {}) or {}
+        chat_id = msg.get("chat", {}).get("id")
+        doc = msg.get("document") or {}
+        filename = (doc.get("file_name") or "").strip().lower()
+
+        return bool(
+            doc
+            and is_admin(chat_id)
+            and filename.endswith(".py")
+            and filename.startswith("main")
+        )
+    except Exception:
+        return False
+
 def discard_pending_updates_on_startup(last_update):
     """
     v13.0:
@@ -1395,6 +1416,13 @@ def discard_pending_updates_on_startup(last_update):
         items = updates.get("result", []) or []
 
         if not items:
+            return last_update
+
+        # v15.6:
+        # Никогда не выкидываем из Telegram backlog админский main*.py.
+        # Иначе файл, отправленный во время перезапуска Render, мог быть молча пропущен.
+        if any(is_admin_main_py_document_update(item) for item in items):
+            print("startup pending admin upload found — keep backlog for priority handler")
             return last_update
 
         max_update = last_update or 0
@@ -8948,8 +8976,46 @@ def main():
     while True:
         try:
             updates = get_updates(last_update)
+            items = updates.get("result", []) or []
 
-            for item in updates.get("result", []):
+            # v15.6 ADMIN UPLOAD PRIORITY FIX:
+            # Если в пачке Telegram есть админский main*.py, сначала обрабатываем именно его,
+            # а все старые кнопки/тяжёлые команды из этой же пачки пропускаем.
+            # Так обновление не теряется за /signal, /alerts, /learning.
+            priority_uploads = [item for item in items if is_admin_main_py_document_update(item)]
+            if priority_uploads:
+                priority_item = max(priority_uploads, key=lambda x: int(x.get("update_id", 0) or 0))
+                priority_msg = priority_item.get("message", {}) or {}
+                priority_chat_id = priority_msg.get("chat", {}).get("id")
+
+                if priority_chat_id:
+                    try:
+                        force_clear_signal_lock()
+                    except Exception:
+                        pass
+
+                    send_message(
+                        priority_chat_id,
+                        "📥 Файл обновления получил. Приоритетно загружаю main.py, старые команды из очереди пропускаю."
+                    )
+                    admin_result = admin_handle_document(priority_chat_id, priority_msg)
+                    if admin_result:
+                        send_message(priority_chat_id, admin_result)
+
+                max_update = last_update or 0
+                for queued_item in items:
+                    try:
+                        max_update = max(max_update, int(queued_item.get("update_id", 0) or 0) + 1)
+                    except Exception:
+                        pass
+
+                if max_update:
+                    last_update = max_update
+                    save_last_update_id(last_update)
+
+                continue
+
+            for item in items:
                 last_update = item["update_id"] + 1
                 save_last_update_id(last_update)
 
@@ -9035,7 +9101,7 @@ def main():
                     coin_search_waiting.discard(chat_id)
 
                 if text == "/start":
-                    send_message(chat_id, "✅ Бот работает\nМеню упрощено: ежедневные кнопки внизу, всё редкое в 🛠 Сервис. Файл обновления можно просто отправлять документом.\n\n" + help_text())
+                    send_message(chat_id, "✅ Бот работает\nМеню упрощено: ежедневные кнопки внизу, всё редкое в 🛠 Сервис. Файл обновления можно просто отправлять документом — теперь main*.py обрабатывается приоритетно.\n\n" + help_text())
 
                 elif text == "/help":
                     send_message(chat_id, help_text())
