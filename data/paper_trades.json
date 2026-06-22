@@ -481,9 +481,28 @@
       "result_details": {},
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены"
+    },
+    "RE:AVOID_PUMP_TEST:495042": {
+      "id": "RE:AVOID_PUMP_TEST:495042",
+      "asset": "RE",
+      "entry_time": 1782151420.2782876,
+      "entry_price": 0.96612,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 13.56,
+      "btc_change": 1.04,
+      "macro_mod": -15,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [],
-  "last_created_at": 1782151141.8495753,
+  "last_created_at": 1782151420.2782876,
   "last_update_at": 1782150487.4635656
 }
