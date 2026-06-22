@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v15.6 ADMIN UPLOAD PRIORITY FIX"
+BOT_VERSION = "v15.7 LEARNING FREEZE PERSIST FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -790,6 +790,14 @@ def admin_handle_document(chat_id, msg):
         return "⛔ Нужен Python-файл .py"
 
     try:
+        # v15.7: перед заменой кода принудительно фиксируем и отправляем learning JSON в GitHub.
+        # Иначе при быстром deploy Render может подняться из старой копии без frozen_results,
+        # и закрытые 48ч проценты снова начнут плавать.
+        try:
+            persist_closed_learning_freeze(sync_now=True)
+        except Exception as _freeze_e:
+            print(f"predeploy learning freeze sync error: {_freeze_e}")
+
         telegram_download_file(file_id, ADMIN_UPLOAD_FILE)
 
         uploaded_text = python_compile_file(ADMIN_UPLOAD_FILE)
@@ -3248,6 +3256,39 @@ def normalize_closed_learning_records(closed_items):
     return new_items, changed
 
 
+def persist_closed_learning_freeze(sync_now=False):
+    """v15.7: закрытые 48ч результаты должны переживать быстрый redeploy.
+    v15.4 замораживала локально, но при частых обновлениях Render мог стартовать из старого GitHub JSON
+    до фоновой синхронизации. Поэтому для closed/frozen делаем явное сохранение и, при необходимости,
+    синхронную отправку RESULTS_FILE в GitHub перед deploy или после /learning.
+    """
+    try:
+        data = load_json(RESULTS_FILE)
+        if not isinstance(data, dict):
+            return False, 0
+
+        closed = data.get("closed", [])
+        if not isinstance(closed, list) or not closed:
+            return False, 0
+
+        closed, changed = normalize_closed_learning_records(closed)
+        data["closed"] = closed
+        data.setdefault("version", BOT_VERSION)
+
+        # Даже если changed=False, при sync_now=True всё равно пробуем отправить файл,
+        # чтобы после deploy не поднялась старая копия без frozen_results.
+        if changed or sync_now:
+            save_json(RESULTS_FILE, data)
+            if sync_now:
+                sync_github_storage_now([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
+            return changed, len(closed)
+
+        return False, len(closed)
+    except Exception as e:
+        print(f"persist closed learning freeze error: {e}")
+        return False, 0
+
+
 def classify_learning_result(rec):
     results = learning_results_for_eval(rec)
     action = rec.get("action", "SKIP")
@@ -4002,7 +4043,9 @@ def learning_report(sync_github=False):
     if closed_normalized:
         data["closed"] = closed
         save_json(RESULTS_FILE, data)
-        background_github_sync([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
+        # v15.7: closed 48ч результаты нельзя терять при быстром redeploy.
+        # Поэтому frozen closed сразу синхронизируем в GitHub, а не только фоном.
+        sync_github_storage_now([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
     open_items = data.get("open", {})
 
     total = len(closed)
