@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v15.4 CLOSED RESULT FREEZE"
+BOT_VERSION = "v15.5 SINGLE WATCH SCORE CONSISTENCY"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -8715,6 +8715,88 @@ def v153_apply_quality_alt_entry_cap(c):
 
     return c
 
+
+def v155_apply_single_watch_score_consistency(c):
+    """
+    v15.5 SINGLE WATCH SCORE CONSISTENCY:
+    В подробных /btc /sol /coin нельзя показывать "Оценка входа" 75-85/100,
+    если итоговое действие всё равно "наблюдать / вход только после подтверждения".
+    Высокий технический импульс может быть хорошим признаком, но при страхе/смешанном фоне
+    это не готовая точка входа. Поэтому капаем именно отображаемую оценку входа,
+    не ухудшая качество самого актива.
+    """
+    if not c:
+        return c
+
+    c = dict(c)
+    action = c.get("action")
+    symbol = c.get("symbol", "")
+    score = int(c.get("score", 0) or 0)
+
+    if action != "WATCH" or score < 70:
+        return c
+
+    ctx = c.get("ctx", {}) or {}
+    try:
+        macro_mod = int(ctx.get("macro_mod", ctx.get("geo_mod", 0)) or 0)
+    except Exception:
+        macro_mod = 0
+    try:
+        fg_value = int(ctx.get("fg_value", 50) or 50)
+    except Exception:
+        fg_value = 50
+    try:
+        btc_change = float(ctx.get("btc_change", 0) or 0)
+    except Exception:
+        btc_change = 0.0
+
+    risk_level = str(ctx.get("risk_level", ""))
+    verdict = str(c.get("verdict", ""))
+    group = v6_quality_group(c)
+    is_quality = bool(c.get("is_quality"))
+    vol_power = float(c.get("vol_power", c.get("volume_trend", 1)) or 1)
+
+    # Если это не BUY, а фон всё ещё осторожный, высокая оценка входа вводит в заблуждение.
+    caution_env = (
+        fg_value <= 25
+        or macro_mod < 0
+        or risk_level in ["caution", "danger"]
+        or btc_change < 0.5
+    )
+
+    if not caution_env:
+        return c
+
+    if symbol in ["BTC", "ETH"]:
+        cap = 58
+    elif group in ["quality", "core", "liquid"] or is_quality:
+        # Если BTC уже помогает и объём высокий — оставляем хороший watch-score,
+        # но не 80+, потому что это ещё не вход, а подтверждение нужно 1-2 свечи.
+        if btc_change >= 0.5 and vol_power >= 1.5 and macro_mod >= -4:
+            cap = 65
+        else:
+            cap = 58
+    else:
+        cap = 55
+
+    if score > cap:
+        c["score"] = cap
+        c["_master_score"] = min(int(c.get("_master_score", score) or score), cap)
+        c["_single_watch_score_cap"] = True
+        c.setdefault("minus", [])
+        note = "оценка входа снижена: это наблюдение, не готовый вход"
+        if note not in c["minus"]:
+            c["minus"].append(note)
+
+    # Подчищаем формулировку, чтобы 65/100 не выглядело как почти BUY.
+    if "ПОКУП" not in verdict:
+        if symbol not in ["BTC", "ETH"] and (group in ["quality", "core", "liquid"] or is_quality):
+            c["verdict"] = "🟡 НАБЛЮДАТЬ / ЖДАТЬ ПОДТВЕРЖДЕНИЕ"
+        else:
+            c["verdict"] = "🟡 НАБЛЮДАТЬ"
+
+    return c
+
 def single_analysis(symbol):
     c = alex_edge_ultra(symbol)
 
@@ -8735,6 +8817,7 @@ def single_analysis(symbol):
     c = v1314_apply_quality_alt_score_floor(c)
     c = v1313_apply_single_asymmetric_forecast(c)
     c = v153_apply_quality_alt_entry_cap(c)
+    c = v155_apply_single_watch_score_consistency(c)
 
     # v11.4+: learning note/updates только после safety caps.
     c = v83_apply_self_learning(c)
