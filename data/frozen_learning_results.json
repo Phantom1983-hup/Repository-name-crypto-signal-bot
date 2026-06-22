@@ -1,0 +1,336 @@
+{
+  "records": {
+    "ETH:1781877694:1703.81": {
+      "asset": "ETH",
+      "time": 1781877694.3746924,
+      "price": 1703.81,
+      "score": 70,
+      "action": "ACCUM",
+      "verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
+      "results": {
+        "1h": 0.2,
+        "6h": 1.32,
+        "15m": 2.71,
+        "30m": 2.71,
+        "3h": 2.71,
+        "12h": 2.71,
+        "24h": 2.71,
+        "48h": 2.71
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782123447.0872624,
+          "target_time": 1781878594.3746924,
+          "checkpoint_price": 1750.05,
+          "checkpoint_pct": 2.71,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782123447.0872624,
+          "target_time": 1781879494.3746924,
+          "checkpoint_price": 1750.05,
+          "checkpoint_pct": 2.71,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782123447.0872624,
+          "target_time": 1781888494.3746924,
+          "checkpoint_price": 1750.05,
+          "checkpoint_pct": 2.71,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782123447.0872624,
+          "target_time": 1781920894.3746924,
+          "checkpoint_price": 1750.05,
+          "checkpoint_pct": 2.71,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782123447.0872624,
+          "target_time": 1781964094.3746924,
+          "checkpoint_price": 1750.05,
+          "checkpoint_pct": 2.71,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782123447.0872624,
+          "target_time": 1782050494.3746924,
+          "checkpoint_price": 1750.05,
+          "checkpoint_pct": 2.71,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782134352.53597,
+      "version": "v16.1 SINGLE WATCH + FROZEN RESULTS FILE"
+    },
+    "BTC:1781878587:63087.0": {
+      "asset": "BTC",
+      "time": 1781878587.5263236,
+      "price": 63087.0,
+      "score": 68,
+      "action": "ACCUM",
+      "verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
+      "results": {
+        "1h": 0.11,
+        "6h": 0.94,
+        "15m": 1.79,
+        "30m": 1.79,
+        "3h": 1.79,
+        "12h": 1.79,
+        "24h": 1.79,
+        "48h": 1.79
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782123447.0872624,
+          "target_time": 1781879487.5263236,
+          "checkpoint_price": 64214.9,
+          "checkpoint_pct": 1.79,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782123447.0872624,
+          "target_time": 1781880387.5263236,
+          "checkpoint_price": 64214.9,
+          "checkpoint_pct": 1.79,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782123447.0872624,
+          "target_time": 1781889387.5263236,
+          "checkpoint_price": 64214.9,
+          "checkpoint_pct": 1.79,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782123447.0872624,
+          "target_time": 1781921787.5263236,
+          "checkpoint_price": 64214.9,
+          "checkpoint_pct": 1.79,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782123447.0872624,
+          "target_time": 1781964987.5263236,
+          "checkpoint_price": 64214.9,
+          "checkpoint_pct": 1.79,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782123447.0872624,
+          "target_time": 1782051387.5263236,
+          "checkpoint_price": 64214.9,
+          "checkpoint_pct": 1.79,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782134352.53597,
+      "version": "v16.1 SINGLE WATCH + FROZEN RESULTS FILE"
+    },
+    "GRAM:1781892063:1.592": {
+      "asset": "GRAM",
+      "time": 1781892063.4712665,
+      "price": 1.592,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "1h": -1.07,
+        "6h": -0.06,
+        "15m": 5.28,
+        "30m": 5.28,
+        "3h": 5.28,
+        "12h": 5.28,
+        "24h": 5.28,
+        "48h": 5.28
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782134352.53597,
+          "target_time": 1781892963.4712665,
+          "checkpoint_price": 1.676,
+          "checkpoint_pct": 5.28,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782134352.53597,
+          "target_time": 1781893863.4712665,
+          "checkpoint_price": 1.676,
+          "checkpoint_pct": 5.28,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782134352.53597,
+          "target_time": 1781902863.4712665,
+          "checkpoint_price": 1.676,
+          "checkpoint_pct": 5.28,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782134352.53597,
+          "target_time": 1781935263.4712665,
+          "checkpoint_price": 1.676,
+          "checkpoint_pct": 5.28,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782134352.53597,
+          "target_time": 1781978463.4712665,
+          "checkpoint_price": 1.676,
+          "checkpoint_pct": 5.28,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782134352.53597,
+          "target_time": 1782064863.4712665,
+          "checkpoint_price": 1.676,
+          "checkpoint_pct": 5.28,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "missed_move",
+      "frozen_at": 1782134352.53597,
+      "version": "v16.1 SINGLE WATCH + FROZEN RESULTS FILE"
+    },
+    "TAO:1781892063:226.29": {
+      "asset": "TAO",
+      "time": 1781892063.4712665,
+      "price": 226.29,
+      "score": 68,
+      "action": "WATCH",
+      "verdict": "🟡 КАНДИДАТ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "results": {
+        "1h": -0.47,
+        "6h": 3.16,
+        "15m": 3.39,
+        "30m": 3.39,
+        "3h": 3.39,
+        "12h": 3.39,
+        "24h": 3.39,
+        "48h": 3.39
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782125938.3578384,
+          "target_time": 1781892963.4712665,
+          "checkpoint_price": 233.95,
+          "checkpoint_pct": 3.39,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782125938.3578384,
+          "target_time": 1781893863.4712665,
+          "checkpoint_price": 233.95,
+          "checkpoint_pct": 3.39,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782125938.3578384,
+          "target_time": 1781902863.4712665,
+          "checkpoint_price": 233.95,
+          "checkpoint_pct": 3.39,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782125938.3578384,
+          "target_time": 1781935263.4712665,
+          "checkpoint_price": 233.95,
+          "checkpoint_pct": 3.39,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782125938.3578384,
+          "target_time": 1781978463.4712665,
+          "checkpoint_price": 233.95,
+          "checkpoint_pct": 3.39,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782125938.3578384,
+          "target_time": 1782064863.4712665,
+          "checkpoint_price": 233.95,
+          "checkpoint_pct": 3.39,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782134352.53597,
+      "version": "v16.1 SINGLE WATCH + FROZEN RESULTS FILE"
+    },
+    "ZEREBRO:1781935272:0.04577": {
+      "asset": "ZEREBRO",
+      "time": 1781935272.6974788,
+      "price": 0.04577,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "1h": -6.86,
+        "15m": -18.86,
+        "30m": -18.86,
+        "3h": -18.86,
+        "6h": -18.86,
+        "12h": -18.86,
+        "24h": -18.86,
+        "48h": -18.86
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782134352.53597,
+          "target_time": 1781936172.6974788,
+          "checkpoint_price": 0.03714,
+          "checkpoint_pct": -18.86,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782134352.53597,
+          "target_time": 1781937072.6974788,
+          "checkpoint_price": 0.03714,
+          "checkpoint_pct": -18.86,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782134352.53597,
+          "target_time": 1781946072.6974788,
+          "checkpoint_price": 0.03714,
+          "checkpoint_pct": -18.86,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782134352.53597,
+          "target_time": 1781956872.6974788,
+          "checkpoint_price": 0.03714,
+          "checkpoint_pct": -18.86,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782134352.53597,
+          "target_time": 1781978472.6974788,
+          "checkpoint_price": 0.03714,
+          "checkpoint_pct": -18.86,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782134352.53597,
+          "target_time": 1782021672.6974788,
+          "checkpoint_price": 0.03714,
+          "checkpoint_pct": -18.86,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782134352.53597,
+          "target_time": 1782108072.6974788,
+          "checkpoint_price": 0.03714,
+          "checkpoint_pct": -18.86,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "watch_saved",
+      "frozen_at": 1782134352.53597,
+      "version": "v16.1 SINGLE WATCH + FROZEN RESULTS FILE"
+    }
+  }
+}
