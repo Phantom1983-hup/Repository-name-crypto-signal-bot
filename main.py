@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v16.2 LEARNING INSTANT CACHE"
+BOT_VERSION = "v16.4 LOCAL UPLOAD LOCK FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -564,7 +564,7 @@ def storage_report():
         file_info_line(SIGNAL_LOCK_FILE, "signal_lock.json / анти-дубли /signal"),
         file_info_line(DEPLOY_NOTIFY_FILE, "deploy_notify.json / уведомление о deploy"),
         file_info_line(SIGNAL_JOB_FILE, "signal_job.json / статус фонового /signal"),
-        file_info_line(ADMIN_UPLOAD_LOCK_FILE, "admin_upload_lock.json / защита загрузки main.py"),
+        file_info_line(ADMIN_UPLOAD_LOCK_FILE, "admin_upload_lock.json / локальная защита загрузки main.py"),
         "",
         "Для Free Render: включи GITHUB_DATA_STORAGE=1 и json будет храниться в GitHub.",
         "Для платного Render Persistent Disk: mount path /var/data и env DATA_DIR=/var/data."
@@ -738,11 +738,13 @@ def python_compile_file(path):
     compile(txt, path, "exec")
     return txt
 
-def admin_upload_lock_left(ttl=240):
+def admin_upload_lock_left(ttl=120):
     """
-    v15.8:
-    Защита от двойной обработки одного и того же main*.py.
-    Telegram может доставить документ повторно, а GitHub при параллельном PUT даёт 409 sha conflict.
+    v16.4:
+    Локальная защита от двойной обработки main*.py.
+    ВАЖНО: этот lock НЕ синхронизируется в GitHub.
+    В v15.8-v16.3 синхронизация admin_upload_lock.json могла создавать лишний commit,
+    запускать Render redeploy раньше загрузки main.py и обрывать обновление.
     """
     data = load_json(ADMIN_UPLOAD_LOCK_FILE)
     if not isinstance(data, dict):
@@ -758,6 +760,13 @@ def admin_upload_lock_left(ttl=240):
 
     return left, data
 
+def clear_admin_upload_lock():
+    try:
+        if os.path.exists(ADMIN_UPLOAD_LOCK_FILE):
+            os.remove(ADMIN_UPLOAD_LOCK_FILE)
+    except Exception as e:
+        print(f"clear admin upload lock error: {e}")
+
 def acquire_admin_upload_lock(chat_id, filename):
     left, data = admin_upload_lock_left()
     if left > 0:
@@ -771,11 +780,7 @@ def acquire_admin_upload_lock(chat_id, filename):
         "version": BOT_VERSION,
     }
     save_json(ADMIN_UPLOAD_LOCK_FILE, data)
-    # Важно синхронизировать сразу, чтобы при быстром redeploy не было второй параллельной попытки.
-    try:
-        sync_github_storage_now([ADMIN_UPLOAD_LOCK_FILE, LAST_UPDATE_FILE, CHAT_ID_FILE], max_files=3)
-    except Exception as e:
-        print(f"admin upload lock sync error: {e}")
+    # v16.4: не отправляем lock в GitHub, чтобы не провоцировать Render redeploy до замены main.py.
     return True, 0
 
 def release_admin_upload_lock(status="done", error=""):
@@ -787,10 +792,7 @@ def release_admin_upload_lock(status="done", error=""):
     data["error"] = str(error or "")
     data["version"] = BOT_VERSION
     save_json(ADMIN_UPLOAD_LOCK_FILE, data)
-    try:
-        background_github_sync([ADMIN_UPLOAD_LOCK_FILE, LAST_UPDATE_FILE, CHAT_ID_FILE], max_files=3)
-    except Exception:
-        pass
+    # v16.4: не синхронизируем lock в GitHub.
 
 def admin_start_update(chat_id):
     if not is_admin(chat_id):
@@ -885,7 +887,7 @@ def admin_handle_document(chat_id, msg):
         # Иначе при быстром deploy Render может подняться из старой копии без frozen_results,
         # и закрытые 48ч проценты снова начнут плавать.
         try:
-            persist_closed_learning_freeze(sync_now=True)
+            persist_closed_learning_freeze(sync_now=False)
         except Exception as _freeze_e:
             print(f"predeploy learning freeze sync error: {_freeze_e}")
 
@@ -4009,6 +4011,87 @@ def learning_cached_price_for_report(rec):
         pass
     return None, 0, "none"
 
+def freeze_due_learning_checkpoints_from_cache(max_snapshot_age_seconds=3 * 3600):
+    """v16.3: быстрый /learning не ходит в KuCoin, но если checkpoint уже наступил,
+    фиксируем его из последнего локального price_points/cache.
+    Это убирает ситуацию "6ч: ждём 0м" без возврата зависаний.
+    """
+    data = load_json(RESULTS_FILE)
+    if not isinstance(data, dict):
+        return False
+    open_items = data.get("open", {})
+    if not isinstance(open_items, dict) or not open_items:
+        return False
+
+    now = time.time()
+    changed = False
+
+    for key, rec in list(open_items.items()):
+        if not isinstance(rec, dict):
+            continue
+        try:
+            start_price = float(rec.get("price", 0) or 0)
+            start_time = float(rec.get("time", 0) or 0)
+        except Exception:
+            continue
+        if start_price <= 0 or start_time <= 0:
+            continue
+
+        age = now - start_time
+        if age <= 0:
+            continue
+
+        current_price, price_ts, price_source = learning_cached_price_for_report(rec)
+        try:
+            current_price = float(current_price or 0)
+            price_ts = float(price_ts or 0)
+        except Exception:
+            current_price = 0
+            price_ts = 0
+        if current_price <= 0 or price_ts <= 0:
+            continue
+        # Если кэш совсем старый, не фиксируем новый checkpoint по нему.
+        # Но старые checkpoints не трогаем.
+        if now - price_ts > max_snapshot_age_seconds:
+            continue
+
+        results = rec.setdefault("results", {})
+        if not isinstance(results, dict):
+            results = {}
+            rec["results"] = results
+        result_details = rec.setdefault("result_details", {})
+        if not isinstance(result_details, dict):
+            result_details = {}
+            rec["result_details"] = result_details
+
+        for _label, name, seconds in learning_checkpoints():
+            if age >= seconds and name not in results:
+                target_ts = start_time + seconds
+                checkpoint_price, checkpoint_time, checkpoint_source = checkpoint_price_from_points(
+                    rec, target_ts, current_price, price_ts
+                )
+                pct = round(percent_change(start_price, checkpoint_price), 2)
+                results[name] = pct
+                result_details[name] = {
+                    "checkpoint_time": float(checkpoint_time),
+                    "target_time": float(target_ts),
+                    "checkpoint_price": round(float(checkpoint_price), 8),
+                    "checkpoint_pct": pct,
+                    "source": f"cache_due_{checkpoint_source}",
+                    "cache_price_time": float(price_ts),
+                    "cache_price_source": str(price_source),
+                }
+                changed = True
+
+        open_items[key] = rec
+
+    if changed:
+        data["open"] = open_items
+        data.setdefault("version", BOT_VERSION)
+        save_json(RESULTS_FILE, data)
+        background_github_sync([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
+    return changed
+
 def learning_checkpoints():
     # v15.0: быстрые точки обучения. 48ч — финальная, остальные дают раннюю статистику.
     return [
@@ -4128,7 +4211,10 @@ def learning_checkpoint_status(rec, now):
             parts.append(f"{label}: {learning_result_icon(value, action)} {value:+.2f}%")
         else:
             left = max(0, seconds - age)
-            parts.append(f"{label}: ждём {learning_age_text(left)}")
+            if left <= 0:
+                parts.append(f"{label}: ожидает кэш/фон")
+            else:
+                parts.append(f"{label}: ждём {learning_age_text(left)}")
 
     return " | ".join(parts)
 
@@ -4305,6 +4391,13 @@ def learning_report(sync_github=False):
             "Возможная причина: файл истории ещё не создан или сбросился после деплоя Render."
         )
 
+    # v16.3: если 6ч/12ч/24ч уже наступили, фиксируем checkpoint из локального кэша
+    # без сетевых запросов. Это быстро и убирает "ждём 0м".
+    if freeze_due_learning_checkpoints_from_cache():
+        data = load_json(RESULTS_FILE)
+        if not isinstance(data, dict):
+            data = {}
+
     open_items = data.get("open", {})
     open_items, normalized, fixed_count = normalize_learning_open_records(open_items)
     if normalized:
@@ -4336,7 +4429,7 @@ def learning_report(sync_github=False):
         f"📚 Самообучение ALEX EDGE\n"
         f"Версия: {BOT_VERSION}\n\n"
         f"Статус: обучение работает, данные копятся.\n"
-        f"Режим отчёта: быстрый кэш; тяжёлое обновление checkpoints идёт фоном.\n"
+        f"Режим отчёта: быстрый кэш; наступившие checkpoints фиксируются из кэша, тяжёлое обновление идёт фоном.\n"
         f"Открытых наблюдений: {len(open_items)}\n"
         f"Закрытых 48ч результатов: {total}\n\n"
     )
@@ -9516,10 +9609,11 @@ def main():
                     if is_admin(chat_id) or not ADMIN_CHAT_ID:
                         save_last_update_id(last_update or 0)
                         force_clear_signal_lock()
+                        clear_admin_upload_lock()
                         last_command_time.clear()
                         last_service_time.clear()
                         sync_github_storage_now([LAST_UPDATE_FILE, CHAT_ID_FILE, SIGNAL_LOCK_FILE], max_files=3)
-                        send_message(chat_id, "✅ Очередь Telegram очищена, дубли кнопок и signal_lock сброшены.")
+                        send_message(chat_id, "✅ Очередь Telegram очищена, дубли кнопок, signal_lock и upload_lock сброшены.")
                     else:
                         send_message(chat_id, "⛔ /flush доступен только ADMIN_CHAT_ID.")
 
@@ -9533,6 +9627,13 @@ def main():
                         send_message(chat_id, "✅ signal_lock очищен. Теперь /signal можно запускать заново.")
                     else:
                         send_message(chat_id, "⛔ /signal_unlock доступен только ADMIN_CHAT_ID.")
+
+                elif text in ["/upload_unlock", "/admin_upload_unlock"]:
+                    if is_admin(chat_id) or not ADMIN_CHAT_ID:
+                        clear_admin_upload_lock()
+                        send_message(chat_id, "✅ upload_lock очищен. Теперь можно отправить main.py заново.")
+                    else:
+                        send_message(chat_id, "⛔ /upload_unlock доступен только ADMIN_CHAT_ID.")
 
                 elif text == "/sync_storage":
                     send_message(chat_id, "⏳ Синхронизирую dirty-файлы с GitHub...")
