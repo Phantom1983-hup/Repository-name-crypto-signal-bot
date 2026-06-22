@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v15.8 GITHUB CONFLICT UPLOAD LOCK"
+BOT_VERSION = "v15.9 ALERTS TIMEBOX FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -100,6 +100,10 @@ QUALITY_LEARNING_ASSETS = {"BTC", "ETH", "SOL", "BNB", "LINK", "SUI", "NEAR", "T
 STABLE_SKIP_ASSETS = {"USDT", "USDC", "DAI", "FDUSD", "TUSD", "USDD", "USDP", "USD1"}
 CANDLE_TIMEOUT = int(os.getenv("CANDLE_TIMEOUT", "5"))
 NEWS_TIMEOUT = int(os.getenv("NEWS_TIMEOUT", "4"))
+ALERTS_ANALYZE_LIMIT = int(os.getenv("ALERTS_ANALYZE_LIMIT", "28"))
+ALERTS_WORKERS = int(os.getenv("ALERTS_WORKERS", "8"))
+ALERTS_TIME_BUDGET = int(os.getenv("ALERTS_TIME_BUDGET", "35"))
+ALERTS_CANDLE_TIMEOUT = int(os.getenv("ALERTS_CANDLE_TIMEOUT", "3"))
 
 QUALITY_ASSETS = [
     "BTC", "ETH", "SOL", "BNB", "XRP", "ADA", "AVAX", "LINK",
@@ -7631,12 +7635,63 @@ def alerts_empty_status(ctx):
         "Что ждать: положительный 15м импульс, объём хотя бы x0.8–1.0, стабилизацию BTC и RSI без перегрева."
     )
 
+
+def get_candles_alert(symbol, interval="1hour"):
+    """
+    v15.9: лёгкие свечи только для /alerts.
+    Старый /alerts вызывал полноценный diagnostics() по 70 монетам,
+    а diagnostics делает 15m/1h/4h candle requests. При задержке KuCoin команда
+    могла висеть 3–5 минут. Для alerts достаточно 15m и 1h с коротким timeout.
+    """
+    data = requests.get(
+        "https://api.kucoin.com/api/v1/market/candles",
+        params={"symbol": symbol, "type": interval},
+        timeout=ALERTS_CANDLE_TIMEOUT
+    ).json()
+
+    if data.get("code") != "200000":
+        raise Exception(data)
+
+    candles = sorted(data.get("data", []), key=lambda x: int(x[0]))
+
+    return {
+        "close": [float(c[2]) for c in candles],
+        "volume": [float(c[5]) for c in candles],
+    }
+
+
+def diagnostics_alert(symbol):
+    """
+    v15.9: быстрая диагностика для /alerts без 4h свечей.
+    Возвращает только то, что реально нужно alerts: 15м импульс, 1ч объём, RSI.
+    """
+    c15 = get_candles_alert(symbol, "15min")
+    c1h = get_candles_alert(symbol, "1hour")
+
+    close15 = c15.get("close", [])
+    close1h = c1h.get("close", [])
+    vol1h = c1h.get("volume", [])
+
+    if len(close15) < 6 or len(close1h) < 16 or len(vol1h) < 8:
+        raise Exception("not enough alert candles")
+
+    return {
+        "move_15": percent_change(close15[-5], close15[-1]),
+        "vol_1h": volume_power(vol1h),
+        "rsi": rsi(close1h),
+    }
+
+
 def get_fast_pumps():
     """
-    v10.5 ALERTS QUALITY FILTER:
-    - /alerts не молчит, но fallback больше не показывает слабый мусор;
-    - ближайшие наблюдения требуют положительный 15м импульс и объём не ниже x0.8–1.0;
-    - отрицательный 15м допускается только в отдельном блоке перепроданности, без входа.
+    v15.9 ALERTS TIMEBOX FIX:
+    /alerts больше не должен висеть минутами.
+    Ограничения:
+    - анализируем не 70, а ограниченный список монет;
+    - диагностика только 15m + 1h;
+    - параллельный ThreadPool;
+    - общий timebox ALERTS_TIME_BUDGET секунд;
+    - если часть монет зависла, отдаём то, что успели, либо безопасный пустой статус.
     """
     try:
         found = []
@@ -7648,54 +7703,65 @@ def get_fast_pumps():
         btc_change = ctx.get("btc_change", 0)
         market_danger = market_risk_level(ctx) == "danger" or btc_change < 0
 
-        pairs = [
+        pairs_all = [
             t for t in kucoin_tickers()
             if t.get("symbol", "").endswith("-USDT")
             and float(t.get("volValue", 0) or 0) >= 1_000_000
         ]
 
-        pairs = sorted(
-            pairs,
+        preferred = ["BTC", "ETH", "SOL", "LINK", "SUI", "TAO", "AAVE", "BNB", "NEAR", "AVAX", "INJ", "ADA", "XRP", "DOT", "SEI"]
+        selected = []
+        used = set()
+
+        by_base = {t.get("symbol", "").replace("-USDT", ""): t for t in pairs_all}
+        for base in preferred:
+            t = by_base.get(base)
+            if t and t.get("symbol") not in used:
+                selected.append(t)
+                used.add(t.get("symbol"))
+
+        ranked = sorted(
+            pairs_all,
             key=lambda t: (
                 1 if alert_kind(t.get("symbol", "").replace("-USDT", "")) == "quality" else 0,
                 float(t.get("volValue", 0) or 0),
                 abs(float(t.get("changeRate", 0) or 0))
             ),
             reverse=True
-        )[:70]
+        )
 
-        for t in pairs:
+        for t in ranked:
+            if len(selected) >= ALERTS_ANALYZE_LIMIT:
+                break
+            if t.get("symbol") not in used:
+                selected.append(t)
+                used.add(t.get("symbol"))
+
+        def analyze_alert_ticker(t):
             symbol = t.get("symbol", "")
             asset = symbol.replace("-USDT", "")
-
             try:
-                ticker = get_ticker(symbol)
-                if not ticker:
-                    continue
-
-                price = float(ticker.get("last", 0) or 0)
-                change_24 = float(ticker.get("changeRate", 0) or 0) * 100
-                volume_usd = float(ticker.get("volValue", 0) or 0)
+                price = float(t.get("last", 0) or 0)
+                change_24 = float(t.get("changeRate", 0) or 0) * 100
+                volume_usd = float(t.get("volValue", 0) or 0)
 
                 if price <= 0 or volume_usd < 1_000_000:
-                    continue
+                    return None
 
-                # Совсем поздние пампы не шлём.
+                # Совсем поздние пампы не шлём как alert; они всё равно видны в /signal как "не догонять".
                 if change_24 > 30:
-                    continue
+                    return None
 
-                d = diagnostics(symbol)
-
+                d = diagnostics_alert(symbol)
                 fast_move = float(d.get("move_15", 0) or 0)
                 vol_power = float(d.get("vol_1h", 0) or 0)
                 rsi_value = float(d.get("rsi", 50) or 50)
 
                 if rsi_value >= 88:
-                    continue
+                    return None
 
                 kind = alert_kind(asset)
 
-                # Реальный импульс: для quality мягче, но объём всё равно нужен.
                 if kind == "quality":
                     impulse = (
                         (fast_move >= 0.75 and vol_power >= 1.20)
@@ -7767,13 +7833,11 @@ def get_fast_pumps():
                 }
 
                 if impulse:
-                    found.append(item)
+                    return item
 
-                elif kind == "quality":
-                    # Ближайшие наблюдения: только положительный 15м и нормальный объём.
+                if kind == "quality":
                     min_vol = 0.95 if market_danger else 0.80
                     min_move = 0.25 if market_danger else 0.15
-
                     watch_score = min(max(score, 45), 62 if market_danger else 65)
 
                     if (
@@ -7782,38 +7846,68 @@ def get_fast_pumps():
                         and watch_score >= 50
                         and rsi_value < 78
                     ):
-                        w = dict(item)
-                        w["score"] = watch_score
-                        w["alert_type"] = "watch"
-                        w["manual_only"] = True
-                        watchlist.append(w)
+                        item["score"] = watch_score
+                        item["alert_type"] = "watch"
+                        item["manual_only"] = True
+                        return item
 
-                    # Отрицательный 15м не называем импульсом. Только отдельная перепроданность.
-                    elif (
+                    if (
                         rsi_value <= 35
                         and change_24 <= -2
                         and vol_power >= 0.80
                         and fast_move >= -0.35
                         and watch_score >= 48
                     ):
-                        w = dict(item)
-                        w["score"] = min(watch_score, 58)
-                        w["alert_type"] = "oversold"
-                        w["manual_only"] = True
-                        oversold_watch.append(w)
+                        item["score"] = min(watch_score, 58)
+                        item["alert_type"] = "oversold"
+                        item["manual_only"] = True
+                        return item
 
-                time.sleep(0.05)
+                return None
 
             except Exception:
-                continue
+                return None
+
+        started_at = time.time()
+        futures = []
+        executor = ThreadPoolExecutor(max_workers=max(1, ALERTS_WORKERS))
+
+        try:
+            futures = [executor.submit(analyze_alert_ticker, t) for t in selected]
+
+            for future in as_completed(futures, timeout=ALERTS_TIME_BUDGET):
+                if time.time() - started_at > ALERTS_TIME_BUDGET:
+                    break
+                try:
+                    item = future.result(timeout=1)
+                except Exception:
+                    item = None
+
+                if not item:
+                    continue
+
+                if item.get("alert_type") in ["quality", "speculative"]:
+                    found.append(item)
+                elif item.get("alert_type") == "watch":
+                    watchlist.append(item)
+                elif item.get("alert_type") == "oversold":
+                    oversold_watch.append(item)
+
+        except FuturesTimeoutError:
+            print(f"/alerts timebox reached: {len(found) + len(watchlist) + len(oversold_watch)}/{len(selected)} items")
+        finally:
+            for future in futures:
+                if not future.done():
+                    future.cancel()
+            executor.shutdown(wait=False, cancel_futures=True)
 
         found = sorted(
             found,
             key=lambda x: (
                 1 if x.get("kind") == "quality" else 0,
-                x["score"],
-                x["vol_power"],
-                x["fast_move"]
+                x.get("score", 0),
+                x.get("vol_power", 0),
+                x.get("fast_move", 0)
             ),
             reverse=True
         )[:5]
@@ -7852,7 +7946,9 @@ def get_fast_pumps():
                 )
             return text, manual_items
 
-        return alerts_empty_status(ctx), []
+        empty = alerts_empty_status(ctx)
+        empty += f"\n\n⏱ Проверка ограничена по времени: до {ALERTS_TIME_BUDGET} сек, монет в быстром скане: {len(selected)}."
+        return empty, []
 
     except Exception as e:
         return f"⚡ ALEX FAST ALERT {BOT_VERSION}\n\nОшибка проверки alerts: {e}", []
