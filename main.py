@@ -1,5 +1,5 @@
 from flask import Flask
-from threading import Thread
+from threading import Thread, Lock
 from concurrent.futures import ThreadPoolExecutor, as_completed, TimeoutError as FuturesTimeoutError
 import os, time, json, requests, statistics, re, base64
 from datetime import datetime, timedelta
@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v16.1 SINGLE WATCH + FROZEN RESULTS FILE"
+BOT_VERSION = "v16.2 LEARNING INSTANT CACHE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -3436,7 +3436,7 @@ def freeze_closed_learning_record(rec, frozen_store=None):
     return rec, changed
 
 
-def normalize_closed_learning_records(closed_items):
+def normalize_closed_learning_records(closed_items, sync_now=False):
     if not isinstance(closed_items, list):
         return [], False
     changed = False
@@ -3447,7 +3447,7 @@ def normalize_closed_learning_records(closed_items):
         changed = changed or ch
         new_items.append(rec)
     if changed:
-        save_frozen_results_store(frozen_store, sync_now=True)
+        save_frozen_results_store(frozen_store, sync_now=sync_now)
     return new_items, changed
 
 
@@ -3462,7 +3462,7 @@ def persist_closed_learning_freeze(sync_now=False):
         if not isinstance(closed, list) or not closed:
             return False, 0
 
-        closed, changed = normalize_closed_learning_records(closed)
+        closed, changed = normalize_closed_learning_records(closed, sync_now=sync_now)
         data["closed"] = closed
         data.setdefault("version", BOT_VERSION)
 
@@ -3671,6 +3671,56 @@ def normalize_learning_seen_count(rec, now=None):
         rec["last_seen_counted"] = float(now)
         changed = True
     return rec, changed
+
+
+_LEARNING_BG_LOCK = Lock()
+_LEARNING_BG_LAST_START = 0
+
+def background_learning_update(reason="learning"):
+    """v16.2: /learning не должен ждать KuCoin/GitHub.
+    Тяжёлое обновление checkpoints запускается фоном и не блокирует ответ пользователю.
+    """
+    global _LEARNING_BG_LAST_START
+    now_ts = time.time()
+    if now_ts - float(_LEARNING_BG_LAST_START or 0) < 45:
+        return False
+    _LEARNING_BG_LAST_START = now_ts
+
+    def _run():
+        acquired = False
+        try:
+            acquired = _LEARNING_BG_LOCK.acquire(False)
+            if not acquired:
+                return
+            update_signal_results()
+            # Отдельная frozen-база тоже обновляется фоном, без блокировки Telegram.
+            try:
+                data = load_json(RESULTS_FILE)
+                if isinstance(data, dict):
+                    closed = data.get("closed", [])
+                    if isinstance(closed, list) and closed:
+                        closed2, ch = normalize_closed_learning_records(closed, sync_now=False)
+                        if ch:
+                            data["closed"] = closed2
+                            save_json(RESULTS_FILE, data)
+                background_github_sync([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+            except Exception as e:
+                print(f"background learning freeze error: {e}")
+        except Exception as e:
+            print(f"background learning update error: {e}")
+        finally:
+            if acquired:
+                try:
+                    _LEARNING_BG_LOCK.release()
+                except Exception:
+                    pass
+
+    try:
+        Thread(target=_run, daemon=True).start()
+        return True
+    except Exception as e:
+        print(f"background learning update start error: {e}")
+        return False
 
 def update_signal_results():
     """
@@ -3933,6 +3983,32 @@ def learning_price_now(asset):
     except Exception:
         return None
 
+
+def learning_cached_price_for_report(rec):
+    """v16.2: быстрый /learning не ходит в сеть за текущей ценой.
+    Берём последний сохранённый snapshot из price_points. Если его нет — стартовую цену.
+    """
+    try:
+        pts = learning_price_points(rec)
+        if pts:
+            last = pts[-1]
+            return float(last.get("price", 0) or 0), float(last.get("time", 0) or 0), "snapshot"
+    except Exception:
+        pass
+    try:
+        price = float(rec.get("last_price", 0) or rec.get("current_price", 0) or 0)
+        if price > 0:
+            return price, float(rec.get("last_price_time", 0) or 0), "cached"
+    except Exception:
+        pass
+    try:
+        start_price = float(rec.get("price", 0) or 0)
+        if start_price > 0:
+            return start_price, float(rec.get("time", 0) or 0), "start"
+    except Exception:
+        pass
+    return None, 0, "none"
+
 def learning_checkpoints():
     # v15.0: быстрые точки обучения. 48ч — финальная, остальные дают раннюю статистику.
     return [
@@ -4174,15 +4250,22 @@ def learning_open_rows(open_items):
     for rec in rows[:6]:
         asset = rec.get("asset", "?")
         start_price = float(rec.get("price", 0) or 0)
-        current_price = learning_price_now(asset)
+        current_price, price_ts, price_source = learning_cached_price_for_report(rec)
         age = now - float(rec.get("time", 0) or 0)
         close_left = max(0, 48 * 3600 - age)
 
         if current_price and start_price > 0:
             now_pct = percent_change(start_price, current_price)
-            price_line = f"цена: ${start_price:.6g} → ${current_price:.6g} ({now_pct:+.2f}%)"
+            if price_source in ["snapshot", "cached"] and price_ts:
+                stale_min = max(0, int((now - float(price_ts)) // 60))
+                price_note = f"снимок {stale_min}м назад"
+            elif price_source == "start":
+                price_note = "стартовая цена, ждём фоновое обновление"
+            else:
+                price_note = "кэш"
+            price_line = f"цена: ${start_price:.6g} → ${current_price:.6g} ({now_pct:+.2f}%) | {price_note}"
         else:
-            price_line = f"цена записи: ${start_price:.6g}, текущую цену не удалось получить"
+            price_line = f"цена записи: ${start_price:.6g}, кэш цены пуст"
 
         action = rec.get("action", "н/д")
         score = rec.get("score", "н/д")
@@ -4204,13 +4287,14 @@ def learning_open_rows(open_items):
     return text
 
 def learning_report(sync_github=False):
-    # v11.6:
-    # /learning должен отвечать быстро. GitHub sync может занять 1-2 минуты,
-    # поэтому в обычном /learning не синхронизируем, а только читаем/обновляем локально.
-    update_signal_results()
-
+    # v16.2:
+    # /learning должен отвечать мгновенно. Не ждём KuCoin и GitHub в пользовательском ответе.
+    # Обычный /learning читает локальный кэш, а обновление checkpoints запускает фоном.
     if sync_github:
+        update_signal_results()
         sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+    else:
+        background_learning_update("manual_learning")
 
     data = load_json(RESULTS_FILE)
     if not isinstance(data, dict):
@@ -4229,13 +4313,15 @@ def learning_report(sync_github=False):
         background_github_sync([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
 
     closed = data.get("closed", [])
-    closed, closed_normalized = normalize_closed_learning_records(closed)
+    closed, closed_normalized = normalize_closed_learning_records(closed, sync_now=sync_github)
     if closed_normalized:
         data["closed"] = closed
         save_json(RESULTS_FILE, data)
-        # v15.7: closed 48ч результаты нельзя терять при быстром redeploy.
-        # Поэтому frozen closed сразу синхронизируем в GitHub, а не только фоном.
-        sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+        # v16.2: обычный /learning не ждёт GitHub. Синхронизация только фоном.
+        if sync_github:
+            sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+        else:
+            background_github_sync([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
     open_items = data.get("open", {})
 
     total = len(closed)
@@ -4250,6 +4336,7 @@ def learning_report(sync_github=False):
         f"📚 Самообучение ALEX EDGE\n"
         f"Версия: {BOT_VERSION}\n\n"
         f"Статус: обучение работает, данные копятся.\n"
+        f"Режим отчёта: быстрый кэш; тяжёлое обновление checkpoints идёт фоном.\n"
         f"Открытых наблюдений: {len(open_items)}\n"
         f"Закрытых 48ч результатов: {total}\n\n"
     )
