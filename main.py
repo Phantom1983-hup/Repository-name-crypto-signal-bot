@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v16.4 LOCAL UPLOAD LOCK FIX"
+BOT_VERSION = "v17.0 FAST SELF LEARNING CORE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -43,6 +43,7 @@ PUMP_FILE = data_path("pump_history.json")
 RESULTS_FILE = data_path("signal_results.json")
 FROZEN_RESULTS_FILE = data_path("frozen_learning_results.json")
 WEEKDAY_FILE = data_path("weekday_market_stats.json")
+BACKTEST_FILE = data_path("historical_backtest_stats.json")
 ADMIN_STATE_FILE = data_path("admin_deploy_state.json")
 ADMIN_UPLOAD_FILE = data_path("admin_uploaded_main.py")
 ADMIN_UPLOAD_LOCK_FILE = data_path("admin_upload_lock.json")
@@ -85,7 +86,7 @@ AUTO_REPORTS_ENABLED = (os.getenv("AUTO_REPORTS_ENABLED") or "").strip().lower()
 # 48ч остаётся финальной проверкой, но бот копит короткие checkpoints,
 # чтобы обучение не простаивало по 2 суток.
 FAST_LEARNING_BACKGROUND_ENABLED = (os.getenv("FAST_LEARNING_BACKGROUND_ENABLED") or "1").strip().lower() in ["1", "true", "yes", "on"]
-FAST_LEARNING_BACKGROUND_INTERVAL = int(os.getenv("FAST_LEARNING_BACKGROUND_INTERVAL", "10800"))  # 3 часа
+FAST_LEARNING_BACKGROUND_INTERVAL = int(os.getenv("FAST_LEARNING_BACKGROUND_INTERVAL", "3600"))  # v17.0: 1 час, чтобы обучение не простаивало
 _fast_learning_background_last = 0
 
 
@@ -559,6 +560,7 @@ def storage_report():
         file_info_line(HISTORY_FILE, "signal_history.json / история сигналов"),
         file_info_line(PUMP_FILE, "pump_history.json / alerts"),
         file_info_line(WEEKDAY_FILE, "weekday_market_stats.json / дни недели"),
+        file_info_line(BACKTEST_FILE, "historical_backtest_stats.json / быстрый исторический backtest"),
         file_info_line(CHAT_ID_FILE, "chat_id.txt"),
         file_info_line(LAST_UPDATE_FILE, "last_update_id.txt / анти-дубли Telegram"),
         file_info_line(SIGNAL_LOCK_FILE, "signal_lock.json / анти-дубли /signal"),
@@ -598,6 +600,7 @@ def send_backup_files(chat_id):
         (HISTORY_FILE, "📊 backup signal history"),
         (PUMP_FILE, "⚡ backup alerts"),
         (WEEKDAY_FILE, "📅 backup weekday stats"),
+        (BACKTEST_FILE, "🧠 backup historical backtest"),
     ]
 
     sent = 0
@@ -3894,6 +3897,238 @@ def learning_sample_for(c):
 
     return sample[-80:]
 
+# === v17.0 fast self-learning / historical bootstrap ===
+_BACKTEST_BG_LOCK = Lock()
+_BACKTEST_BG_LAST_START = 0
+
+BACKTEST_ASSETS = ["BTC", "ETH", "SOL", "SUI", "LINK", "TAO", "NEAR", "AAVE", "BNB", "ADA", "AVAX", "INJ"]
+
+
+def backtest_file_summary():
+    data = load_json(BACKTEST_FILE)
+    if not isinstance(data, dict) or not data.get("assets"):
+        return "исторический backtest ещё не собран"
+    try:
+        updated = data.get("updated_at_msk") or data.get("updated_at", "?")
+        assets_n = len(data.get("assets", {}) or {})
+        samples = int(data.get("total_samples", 0) or 0)
+        return f"исторический backtest: {assets_n} монет, {samples} проверок, обновлено {updated}"
+    except Exception:
+        return "исторический backtest есть, но сводка недоступна"
+
+
+def fetch_daily_candles_for_backtest(asset, limit=120):
+    """v17.0: отдельный быстрый загрузчик дневных свечей для backtest, не влияет на /weekday."""
+    symbol = f"{asset}-USDT"
+    try:
+        data = requests.get(
+            "https://api.kucoin.com/api/v1/market/candles",
+            params={"symbol": symbol, "type": "1day"},
+            timeout=8,
+        ).json()
+        if data.get("code") != "200000":
+            return []
+        candles = sorted(data.get("data", []), key=lambda x: int(x[0]))[-limit:]
+        out = []
+        for c in candles:
+            try:
+                ts = int(c[0])
+                out.append({
+                    "ts": ts,
+                    "date": datetime.utcfromtimestamp(ts).strftime("%Y-%m-%d"),
+                    "weekday": datetime.utcfromtimestamp(ts).weekday(),
+                    "open": float(c[1]),
+                    "close": float(c[2]),
+                    "high": float(c[3]),
+                    "low": float(c[4]),
+                })
+            except Exception:
+                continue
+        return out
+    except Exception as e:
+        print(f"backtest daily candles error {asset}: {e}")
+        return []
+
+
+def _avg(vals, default=0.0):
+    vals = [float(x) for x in vals if isinstance(x, (int, float))]
+    if not vals:
+        return default
+    return round(sum(vals) / len(vals), 3)
+
+
+def run_historical_backtest_update(days=90, assets=None):
+    """v17.0: быстрый исторический bootstrap.
+    Не создаёт реальные BUY-сигналы и не включает автоторговлю.
+    Собирает дневные сценарии 24/48ч и даёт самообучению ранний ориентир.
+    """
+    if assets is None:
+        assets = BACKTEST_ASSETS
+    now = time.time()
+    result = {
+        "version": BOT_VERSION,
+        "updated_at": datetime.utcnow().isoformat(),
+        "updated_at_msk": moscow_now().strftime("%Y-%m-%d %H:%M"),
+        "days": int(days),
+        "assets": {},
+        "total_samples": 0,
+        "note": "Исторический дневной backtest: быстрый ориентир для весов, не торговая гарантия.",
+    }
+
+    for asset in assets:
+        candles = fetch_daily_candles_for_backtest(asset, limit=max(30, int(days) + 5))
+        # Нужны минимум 3 свечи: старт + 24ч + 48ч.
+        if len(candles) < 10:
+            continue
+
+        samples = []
+        # Последние 2 свечи не используем как 48ч финал.
+        for i in range(0, max(0, len(candles) - 2)):
+            c0, c1, c2 = candles[i], candles[i + 1], candles[i + 2]
+            start = float(c0.get("open", 0) or 0)
+            if start <= 0:
+                continue
+            try:
+                pct24 = percent_change(start, float(c1.get("close", 0) or 0))
+                pct48 = percent_change(start, float(c2.get("close", 0) or 0))
+                low48 = min(float(c1.get("low", start) or start), float(c2.get("low", start) or start))
+                high48 = max(float(c1.get("high", start) or start), float(c2.get("high", start) or start))
+                dd48 = percent_change(start, low48)
+                runup48 = percent_change(start, high48)
+                samples.append({
+                    "weekday": int(c0.get("weekday", 0)),
+                    "24h": round(pct24, 3),
+                    "48h": round(pct48, 3),
+                    "drawdown48": round(dd48, 3),
+                    "runup48": round(runup48, 3),
+                })
+            except Exception:
+                continue
+
+        if not samples:
+            continue
+
+        by_wd = {}
+        for wd in range(7):
+            rr = [x for x in samples if x.get("weekday") == wd]
+            if not rr:
+                continue
+            by_wd[str(wd)] = {
+                "n": len(rr),
+                "avg_48h": _avg([x.get("48h") for x in rr]),
+                "avg_drawdown48": _avg([x.get("drawdown48") for x in rr]),
+                "avg_runup48": _avg([x.get("runup48") for x in rr]),
+            }
+
+        good48 = sum(1 for x in samples if x.get("48h", 0) >= 1.5)
+        bad48 = sum(1 for x in samples if x.get("48h", 0) <= -2.5)
+        strong_dd = sum(1 for x in samples if x.get("drawdown48", 0) <= -5)
+        result["assets"][asset] = {
+            "n": len(samples),
+            "avg_24h": _avg([x.get("24h") for x in samples]),
+            "avg_48h": _avg([x.get("48h") for x in samples]),
+            "avg_drawdown48": _avg([x.get("drawdown48") for x in samples]),
+            "avg_runup48": _avg([x.get("runup48") for x in samples]),
+            "good48_rate": round(good48 / len(samples), 3),
+            "bad48_rate": round(bad48 / len(samples), 3),
+            "strong_drawdown_rate": round(strong_dd / len(samples), 3),
+            "weekday": by_wd,
+        }
+        result["total_samples"] += len(samples)
+
+    save_json(BACKTEST_FILE, result)
+    background_github_sync([BACKTEST_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
+    return result
+
+
+def maybe_run_backtest_background(force=False):
+    """v17.0: запускает исторический bootstrap в фоне, не блокируя Telegram."""
+    global _BACKTEST_BG_LAST_START
+    now_ts = time.time()
+    if (not force) and now_ts - float(_BACKTEST_BG_LAST_START or 0) < 12 * 3600:
+        return False
+    _BACKTEST_BG_LAST_START = now_ts
+
+    def _run():
+        acquired = False
+        try:
+            acquired = _BACKTEST_BG_LOCK.acquire(False)
+            if not acquired:
+                return
+            run_historical_backtest_update(days=90)
+        except Exception as e:
+            print(f"historical backtest background error: {e}")
+        finally:
+            if acquired:
+                try:
+                    _BACKTEST_BG_LOCK.release()
+                except Exception:
+                    pass
+
+    try:
+        Thread(target=_run, daemon=True).start()
+        return True
+    except Exception as e:
+        print(f"historical backtest start error: {e}")
+        return False
+
+
+def learn_fast_report(start=False):
+    if start:
+        started = maybe_run_backtest_background(force=True)
+        if started:
+            return (
+                f"🧠 Ускоренное обучение запущено\n"
+                f"Версия: {BOT_VERSION}\n\n"
+                "Бот в фоне собирает исторический дневной backtest по BTC/ETH/SOL/SUI/LINK/TAO/NEAR/AAVE/BNB/ADA/AVAX/INJ.\n"
+                "Это не включает автопокупки. Результат появится в /learning через 1–3 минуты."
+            )
+        return f"Версия: {BOT_VERSION}\nBacktest уже запущен или недавно запускался. Сводка: {backtest_file_summary()}"
+    return f"🧠 Ускоренное обучение\nВерсия: {BOT_VERSION}\n{backtest_file_summary()}"
+
+
+def backtest_learning_adjustment(c):
+    """Мягкий исторический fallback, пока реальных закрытых 48ч наблюдений мало."""
+    try:
+        data = load_json(BACKTEST_FILE)
+        assets = data.get("assets", {}) if isinstance(data, dict) else {}
+        asset = str(c.get("symbol", "")).upper()
+        stats = assets.get(asset)
+        if not isinstance(stats, dict):
+            return 0, "исторический backtest ещё не собран"
+
+        n = int(stats.get("n", 0) or 0)
+        if n < 30:
+            return 0, f"исторический backtest: мало данных ({n})"
+
+        avg48 = float(stats.get("avg_48h", 0) or 0)
+        bad_rate = float(stats.get("bad48_rate", 0) or 0)
+        good_rate = float(stats.get("good48_rate", 0) or 0)
+        dd_rate = float(stats.get("strong_drawdown_rate", 0) or 0)
+        is_quality = bool(c.get("is_quality")) or asset in QUALITY_LEARNING_ASSETS
+        change24 = float(c.get("change_24", c.get("change", 0)) or 0)
+
+        # Неизвестные/спекулятивные пампы: исторический слой усиливает осторожность.
+        if (not is_quality) and change24 >= 12:
+            return -3, f"исторический backtest: пампы часто откатываются, усиливаю осторожность ({n})"
+
+        # Качественный актив, но история по 48ч плохая/просадочная — лёгкий cap вниз.
+        if is_quality and (bad_rate >= 0.42 or dd_rate >= 0.45 or avg48 <= -0.7):
+            return -2, f"исторический backtest: у похожего режима слабый 48ч профиль ({n})"
+
+        # Качественный актив с устойчивым профилем — только маленький плюс и не в плохом рынке.
+        ctx = c.get("ctx", {}) if isinstance(c.get("ctx", {}), dict) else {}
+        macro = float(ctx.get("macro_mod", ctx.get("geo_mod", 0)) or 0)
+        btc_ch = float(ctx.get("btc_change", 0) or 0)
+        if is_quality and good_rate >= 0.45 and avg48 >= 0.5 and macro >= -4 and btc_ch >= 0:
+            return +1, f"исторический backtest: умеренно положительный 48ч профиль ({n})"
+
+        return 0, f"исторический backtest: нейтральный профиль ({n})"
+    except Exception as e:
+        print(f"backtest learning adjustment error: {e}")
+        return 0, "исторический backtest недоступен"
+
+
 def v83_learning_adjustment(c):
     """
     Простое самообучение без опасного автотрейдинга:
@@ -3903,7 +4138,10 @@ def v83_learning_adjustment(c):
     sample = learning_sample_for(c)
 
     if len(sample) < 10:
-        return 0, f"самообучение: мало истории ({len(sample)})"
+        hist_delta, hist_note = backtest_learning_adjustment(c)
+        if hist_delta:
+            return hist_delta, f"самообучение: мало live-истории ({len(sample)}); {hist_note}"
+        return 0, f"самообучение: мало live-истории ({len(sample)}); {hist_note}"
 
     outcomes = [classify_learning_result(x) for x in sample]
 
@@ -4430,6 +4668,7 @@ def learning_report(sync_github=False):
         f"Версия: {BOT_VERSION}\n\n"
         f"Статус: обучение работает, данные копятся.\n"
         f"Режим отчёта: быстрый кэш; наступившие checkpoints фиксируются из кэша, тяжёлое обновление идёт фоном.\n"
+        f"Ускорение: {backtest_file_summary()}\n"
         f"Открытых наблюдений: {len(open_items)}\n"
         f"Закрытых 48ч результатов: {total}\n\n"
     )
@@ -6908,7 +7147,7 @@ def v15_prepare_ticker_learning_items(rows, display_rows, ctx):
         [r for r in rows if r.get("is_core") and r.get("base") not in seen and r.get("score", 0) >= 56],
         key=lambda x: (x.get("score", 0), abs(float(x.get("change", 0) or 0))),
         reverse=True
-    )[:5]
+    )[:8]
     for r in quality:
         add_from_row(r, mode="quality_shadow")
 
@@ -6917,11 +7156,12 @@ def v15_prepare_ticker_learning_items(rows, display_rows, ctx):
         [r for r in rows if (not r.get("is_core")) and r.get("base") not in seen and float(r.get("change", 0) or 0) >= 12],
         key=lambda x: float(x.get("change", 0) or 0),
         reverse=True
-    )[:4]
+    )[:6]
     for r in pumps:
         add_from_row(r, action="WATCH", verdict="🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ", mode="pump_shadow")
 
-    return result[:12]
+    # v17.0: больше теневых наблюдений за запуск, но всё ещё без дублей: максимум одно открытое наблюдение на монету.
+    return result[:20]
 
 def full_ticker_signal_report():
     """
@@ -9399,7 +9639,7 @@ def help_text():
         "⚙️ Версия — текущая версия\n\n"
         "Команды тоже работают:\n"
         "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /top\n"
-        "/storage, /backup, /weekday, /flush, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /rollback\n"
+        "/storage, /backup, /weekday, /learn_fast, /flush, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /rollback\n"
         "TON вводить можно: бот автоматически откроет GRAM.\n\n"
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход частями\n"
@@ -9435,7 +9675,8 @@ def run_fast_learning_background_scan():
         try:
             # full_ticker_signal_report сам сохраняет fast-learning наблюдения.
             full_ticker_signal_report()
-            background_github_sync([RESULTS_FILE, HISTORY_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+            maybe_run_backtest_background(force=False)
+            background_github_sync([RESULTS_FILE, HISTORY_FILE, BACKTEST_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=5)
             print("v15 fast-learning background scan completed")
         except Exception as e:
             print(f"v15 fast-learning background scan error: {e}")
@@ -9722,6 +9963,9 @@ def main():
 
                 elif text == "/learning":
                     send_message(chat_id, learning_report(sync_github=False))
+
+                elif text in ["/learn_fast", "/backtest", "/learning_fast"]:
+                    send_message(chat_id, learn_fast_report(start=True))
 
                 elif text == "/alerts":
                     send_message(chat_id, "⏳ Проверяю быстрые пампы...")
