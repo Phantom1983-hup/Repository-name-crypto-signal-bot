@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v15.7 LEARNING FREEZE PERSIST FIX"
+BOT_VERSION = "v15.8 GITHUB CONFLICT UPLOAD LOCK"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -44,6 +44,7 @@ RESULTS_FILE = data_path("signal_results.json")
 WEEKDAY_FILE = data_path("weekday_market_stats.json")
 ADMIN_STATE_FILE = data_path("admin_deploy_state.json")
 ADMIN_UPLOAD_FILE = data_path("admin_uploaded_main.py")
+ADMIN_UPLOAD_LOCK_FILE = data_path("admin_upload_lock.json")
 LAST_UPDATE_FILE = data_path("last_update_id.txt")
 SIGNAL_LOCK_FILE = data_path("signal_lock.json")
 DEPLOY_NOTIFY_FILE = data_path("deploy_notify.json")
@@ -557,6 +558,7 @@ def storage_report():
         file_info_line(SIGNAL_LOCK_FILE, "signal_lock.json / анти-дубли /signal"),
         file_info_line(DEPLOY_NOTIFY_FILE, "deploy_notify.json / уведомление о deploy"),
         file_info_line(SIGNAL_JOB_FILE, "signal_job.json / статус фонового /signal"),
+        file_info_line(ADMIN_UPLOAD_LOCK_FILE, "admin_upload_lock.json / защита загрузки main.py"),
         "",
         "Для Free Render: включи GITHUB_DATA_STORAGE=1 и json будет храниться в GitHub.",
         "Для платного Render Persistent Disk: mount path /var/data и env DATA_DIR=/var/data."
@@ -669,26 +671,50 @@ def github_get_file(path=None):
     return r.json()
 
 def github_put_file(path, content_bytes, message, sha=None):
-    payload = {
-        "message": message,
-        "content": base64.b64encode(content_bytes).decode("ascii"),
-        "branch": GITHUB_BRANCH
-    }
+    """
+    v15.8:
+    GitHub Contents API требует актуальный sha файла.
+    Если два admin upload или background sync почти одновременно меняют main.py,
+    GitHub возвращает 409: expected old sha, file already at new sha.
+    В этом случае берём свежий sha и повторяем PUT.
+    """
+    last_error = None
 
-    if sha:
-        payload["sha"] = sha
+    for attempt in range(3):
+        payload = {
+            "message": message,
+            "content": base64.b64encode(content_bytes).decode("ascii"),
+            "branch": GITHUB_BRANCH
+        }
 
-    r = requests.put(
-        github_contents_url(path),
-        headers=github_headers(),
-        json=payload,
-        timeout=40
-    )
+        if sha:
+            payload["sha"] = sha
 
-    if r.status_code >= 300:
-        raise Exception(f"GitHub PUT error {r.status_code}: {r.text[:800]}")
+        r = requests.put(
+            github_contents_url(path),
+            headers=github_headers(),
+            json=payload,
+            timeout=40
+        )
 
-    return r.json()
+        if r.status_code < 300:
+            return r.json()
+
+        last_error = f"GitHub PUT error {r.status_code}: {r.text[:800]}"
+
+        if r.status_code == 409:
+            try:
+                fresh = github_get_file(path)
+                sha = fresh.get("sha") if fresh else None
+                time.sleep(1 + attempt)
+                continue
+            except Exception as e:
+                last_error = f"GitHub PUT 409 retry failed: {e}"
+                break
+
+        break
+
+    raise Exception(last_error or "GitHub PUT failed")
 
 def trigger_render_deploy():
     if not RENDER_DEPLOY_HOOK_URL:
@@ -704,6 +730,60 @@ def python_compile_file(path):
     txt = open(path, "r", encoding="utf-8", errors="ignore").read()
     compile(txt, path, "exec")
     return txt
+
+def admin_upload_lock_left(ttl=240):
+    """
+    v15.8:
+    Защита от двойной обработки одного и того же main*.py.
+    Telegram может доставить документ повторно, а GitHub при параллельном PUT даёт 409 sha conflict.
+    """
+    data = load_json(ADMIN_UPLOAD_LOCK_FILE)
+    if not isinstance(data, dict):
+        return 0, {}
+
+    if data.get("status") != "running":
+        return 0, data
+
+    started = float(data.get("started_at", 0) or 0)
+    left = int(ttl - (time.time() - started))
+    if left <= 0:
+        return 0, data
+
+    return left, data
+
+def acquire_admin_upload_lock(chat_id, filename):
+    left, data = admin_upload_lock_left()
+    if left > 0:
+        return False, left
+
+    data = {
+        "status": "running",
+        "chat_id": str(chat_id),
+        "filename": str(filename or ""),
+        "started_at": time.time(),
+        "version": BOT_VERSION,
+    }
+    save_json(ADMIN_UPLOAD_LOCK_FILE, data)
+    # Важно синхронизировать сразу, чтобы при быстром redeploy не было второй параллельной попытки.
+    try:
+        sync_github_storage_now([ADMIN_UPLOAD_LOCK_FILE, LAST_UPDATE_FILE, CHAT_ID_FILE], max_files=3)
+    except Exception as e:
+        print(f"admin upload lock sync error: {e}")
+    return True, 0
+
+def release_admin_upload_lock(status="done", error=""):
+    data = load_json(ADMIN_UPLOAD_LOCK_FILE)
+    if not isinstance(data, dict):
+        data = {}
+    data["status"] = status
+    data["finished_at"] = time.time()
+    data["error"] = str(error or "")
+    data["version"] = BOT_VERSION
+    save_json(ADMIN_UPLOAD_LOCK_FILE, data)
+    try:
+        background_github_sync([ADMIN_UPLOAD_LOCK_FILE, LAST_UPDATE_FILE, CHAT_ID_FILE], max_files=3)
+    except Exception:
+        pass
 
 def admin_start_update(chat_id):
     if not is_admin(chat_id):
@@ -789,6 +869,10 @@ def admin_handle_document(chat_id, msg):
     if not filename.endswith(".py"):
         return "⛔ Нужен Python-файл .py"
 
+    locked, left = acquire_admin_upload_lock(chat_id, filename)
+    if not locked:
+        return f"⏳ Обновление уже обрабатывается. Подожди примерно {max(1, left)} сек и проверь /version."
+
     try:
         # v15.7: перед заменой кода принудительно фиксируем и отправляем learning JSON в GitHub.
         # Иначе при быстром deploy Render может подняться из старой копии без frozen_results,
@@ -836,6 +920,8 @@ def admin_handle_document(chat_id, msg):
             "last_deploy_at": time.time()
         })
 
+        release_admin_upload_lock("done")
+
         return (
             f"✅ Новый main.py отправлен в GitHub.\n"
             f"Версия файла: {upload_version}\n"
@@ -847,6 +933,7 @@ def admin_handle_document(chat_id, msg):
         )
 
     except Exception as e:
+        release_admin_upload_lock("error", str(e))
         return f"⛔ Обновление остановлено: {e}"
 
 def admin_rollback(chat_id):
@@ -9037,13 +9124,20 @@ def main():
                     except Exception:
                         pass
 
-                    send_message(
-                        priority_chat_id,
-                        "📥 Файл обновления получил. Приоритетно загружаю main.py, старые команды из очереди пропускаю."
-                    )
-                    admin_result = admin_handle_document(priority_chat_id, priority_msg)
-                    if admin_result:
-                        send_message(priority_chat_id, admin_result)
+                    left, _lock_data = admin_upload_lock_left()
+                    if left > 0:
+                        send_message(
+                            priority_chat_id,
+                            f"⏳ Файл обновления уже обрабатывается. Второй дубль не запускаю. Подожди примерно {max(1, left)} сек и проверь /version."
+                        )
+                    else:
+                        send_message(
+                            priority_chat_id,
+                            "📥 Файл обновления получил. Приоритетно загружаю main.py, старые команды из очереди пропускаю."
+                        )
+                        admin_result = admin_handle_document(priority_chat_id, priority_msg)
+                        if admin_result:
+                            send_message(priority_chat_id, admin_result)
 
                 max_update = last_update or 0
                 for queued_item in items:
