@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v17.2 PAPER REPORT VISIBILITY FIX"
+BOT_VERSION = "v17.3 BTC DROP WORDING GUARD"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -2380,30 +2380,40 @@ def compact_news_line(ctx):
     crypto = "нет свежих данных"
 
     for line in text.splitlines():
-        clean = line.lower()
+        clean = line.lower().strip()
+        # Берём только агрегированные строки компонентов, а не headline-строки.
+        # Иначе заголовок с фразой "end war" мог перебить зелёную геополитику.
+        is_component = (
+            clean.startswith("🔴 фрс:") or clean.startswith("🟡 фрс:") or clean.startswith("🟢 фрс:")
+            or clean.startswith("🔴 геополитика:") or clean.startswith("🟡 геополитика:") or clean.startswith("🟢 геополитика:")
+            or clean.startswith("🔴 крипто-новости:") or clean.startswith("🟡 крипто-новости:") or clean.startswith("🟢 крипто-новости:")
+        )
+        if not is_component:
+            continue
+
         if "фрс:" in clean:
-            if "🔴" in line or "дав" in clean or "негатив" in clean or "ужесточ" in clean or "hike" in clean:
-                fed = "давит"
-            elif "🟢" in line or "лучше" in clean or "помог" in clean or "cut" in clean:
+            if "🟢" in line or "лучше" in clean or "помог" in clean or "cut" in clean:
                 fed = "помогает"
+            elif "🔴" in line or "дав" in clean or "негатив" in clean or "ужесточ" in clean or "hike" in clean:
+                fed = "давит"
             else:
                 fed = "нейтрально"
 
         if "геополитика:" in clean:
-            if "🔴" in line or "эскалац" in clean or "war" in clean or "strike" in clean or "kill" in clean:
-                geo = "давит"
-            elif "🟢" in line or "деэскала" in clean or "ceasefire" in clean:
+            if "🟢" in line or "деэскала" in clean or "ceasefire" in clean or "спокой" in clean:
                 geo = "улучшилась"
+            elif "🔴" in line or "эскалац" in clean or "strike" in clean or "kill" in clean:
+                geo = "давит"
             elif "свежих новостей не найдено" in clean:
                 geo = "нет свежих данных"
             else:
                 geo = "смешанно"
 
         if "крипто-новости:" in clean:
-            if "🔴" in line:
-                crypto = "негатив"
-            elif "🟢" in line:
+            if "🟢" in line:
                 crypto = "позитив"
+            elif "🔴" in line:
+                crypto = "негатив"
             elif "свежих новостей не найдено" in clean:
                 crypto = "нет свежих данных"
             else:
@@ -6653,6 +6663,9 @@ def compact_reason(c):
             return "BTC падает >3%, RSI/объём могут быть капитуляцией"
         return "рынок падает, быстрый вход запрещён"
 
+    if c.get("_btc_drop_wording_guard"):
+        return "BTC падает около -2%, перепроданность без стабилизации не является входом"
+
     if c.get("_btc_core_watch"):
         return "сильная перепроданность, ждать стабилизацию"
 
@@ -7215,6 +7228,89 @@ def v115_apply_extreme_fear_wording_fix(c):
 
     return c
 
+
+def v173_apply_btc_drop_wording_guard(c):
+    """
+    v17.3:
+    Если BTC уже падает примерно на -2% при страхе рынка, нельзя в single-отчёте писать
+    "СРЕДНЕСРОЧНЫЙ НАБОР", "наблюдать набор", "первая часть" или "BTC интересен".
+    Это не запрет наблюдения за BTC, а защита wording: только ждать стабилизацию.
+    """
+    if not c:
+        return c
+
+    c = dict(c)
+    symbol = c.get("symbol", "")
+    ctx = c.get("ctx", {}) or {}
+    btc_change = float(ctx.get("btc_change", c.get("change_24", 0)) or 0)
+    fg_value = float(ctx.get("fg_value", 50) or 50)
+    rsi_value = float(c.get("rsi", 50) or 50)
+    macro_mod = int(ctx.get("macro_mod", ctx.get("geo_mod", 0)) or 0)
+
+    # Основной кейс из теста: BTC около -2%, страх высокий, RSI перепродан.
+    btc_drop_guard = (
+        symbol == "BTC"
+        and btc_change <= -1.8
+        and fg_value <= 30
+        and rsi_value <= 35
+    )
+
+    # ETH как рыночный якорь тоже не должен выглядеть как идея набора, если BTC тянет вниз.
+    eth_drop_guard = (
+        symbol == "ETH"
+        and btc_change <= -1.8
+        and fg_value <= 30
+        and c.get("change_24", 0) <= -1.0
+    )
+
+    if not (btc_drop_guard or eth_drop_guard):
+        return c
+
+    cap = 62 if symbol == "BTC" else 60
+    floor = 55 if symbol == "BTC" else 52
+    if btc_change <= -2.3 or macro_mod <= -6:
+        cap = min(cap, 60)
+
+    current = int(c.get("score", 0) or 0)
+    score = min(max(current, floor), cap)
+
+    c["score"] = score
+    c["_master_score"] = score
+    c["_accumulation_score"] = score
+    c["action"] = "WATCH"
+    c["verdict"] = "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ BTC" if symbol == "BTC" else "🟡 НАБЛЮДАТЬ / ЖДАТЬ BTC"
+    c["_btc_drop_wording_guard"] = True
+    c["_red_market_cap"] = True
+
+    c["chance_5"] = min(max(c.get("chance_5", 0), 8), 18)
+    c["chance_10"] = min(max(c.get("chance_10", 0), 1), 4)
+    c["chance_15"] = min(max(c.get("chance_15", 0), 0), 2)
+
+    low = -3.5 if symbol == "BTC" else -4.0
+    high = 0.8 if symbol == "BTC" else 0.9
+    c["low"] = min(c.get("low", -2.0), low)
+    c["high"] = min(max(c.get("high", 0), 0.5), high)
+
+    c["entry_zone"] = "без входа сейчас: ждать остановку падения BTC, стабилизацию 3–4 часа и подтверждение объёма"
+    c.setdefault("minus", [])
+    for reason in [
+        "BTC падает около -2% и мешает рынку",
+        "перепроданность сама по себе не является входом",
+        "без входа сейчас: ждать стабилизацию BTC"
+    ]:
+        if reason not in c["minus"]:
+            c["minus"].append(reason)
+
+    # Чистим опасные старые формулировки, если они где-то уже успели сформироваться.
+    if "entry_zone" in c:
+        c["entry_zone"] = str(c["entry_zone"]).replace("первая часть", "вход").replace("наблюдать набор", "наблюдать стабилизацию")
+
+    price = float(c.get("price", 0) or 0)
+    c["target_low"] = price * (1 + float(c.get("low", 0) or 0) / 100)
+    c["target_high"] = price * (1 + float(c.get("high", 0) or 0) / 100)
+
+    return c
+
 def repair_learning_open_records():
     """
     v12.5:
@@ -7259,6 +7355,7 @@ def analyze_symbol_for_signal(symbol):
     c = v101_apply_danger_market_score_cap(c)
     c = v106_apply_safe_caution_border_fix(c)
     c = v115_apply_extreme_fear_wording_fix(c)
+    c = v173_apply_btc_drop_wording_guard(c)
 
     return c
 
@@ -8946,6 +9043,9 @@ def single_coin_action_text(c):
     if c.get("_falling_market_no_buy"):
         return "ждать стабилизацию, быстрый вход запрещён, не ловить нож"
 
+    if c.get("_btc_drop_wording_guard"):
+        return "наблюдать, без входа; ждать остановку падения BTC"
+
     if c.get("_btc_core_watch"):
         return "наблюдать, ждать стабилизацию, не ловить нож"
 
@@ -9076,6 +9176,11 @@ def format_single_coin_report(c):
             text += "Итог: быстрый BUY запрещён. Перепроданность есть, но рынок падает — ждать стабилизацию и не ловить нож."
         else:
             text += "Итог: рынок падает, по альтам сейчас только наблюдение. Вход после стабилизации BTC."
+    elif c.get("_btc_drop_wording_guard"):
+        if c.get("symbol") == "BTC":
+            text += "Итог: BTC только наблюдать. Входа сейчас нет: сначала остановка падения, стабилизация 3–4 часа и подтверждение объёмом."
+        else:
+            text += "Итог: входа сейчас нет. Ждать стабилизацию BTC и подтверждение объёмом."
     elif c.get("_btc_core_watch"):
         text += "Итог: BTC перепродан, но покупать сразу рано. Ждать стабилизацию и не ловить нож."
     elif c.get("action") == "WATCH":
@@ -9954,6 +10059,7 @@ def single_analysis(symbol):
     c = v153_apply_quality_alt_entry_cap(c)
     c = v161_apply_bad_news_quality_alt_watch(c)
     c = v155_apply_single_watch_score_consistency(c)
+    c = v173_apply_btc_drop_wording_guard(c)
 
     # v11.4+: learning note/updates только после safety caps.
     c = v83_apply_self_learning(c)
@@ -10429,6 +10535,6 @@ if __name__ == "__main__":
 # 4. Improves consistency between score, probabilities and verdict.
 
 
-# === v17.2 PAPER REPORT VISIBILITY FIX ===
-# /paper now sends an immediate status message and a robust report/fallback.
-# Service menu includes Paper button. Paper report cannot silently disappear on malformed cache records.
+# === v17.3 BTC DROP WORDING GUARD ===
+# BTC около -2% + страх: single BTC не пишет СРЕДНЕСРОЧНЫЙ НАБОР / первая часть.
+# Market news summary не путает деэскалацию с давлением из headline-строк.
