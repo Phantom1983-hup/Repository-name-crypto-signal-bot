@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v17.5 LEARNING DATA GUARD"
+BOT_VERSION = "v17.6.1 POST TEST FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -575,6 +575,9 @@ def save_json(path, data):
             existing = _raw_load_json_file(path)
             _update_results_backup(existing, data)
             data, guard_changed = repair_learning_data_from_backup_and_frozen(data)
+            if isinstance(data, dict) and isinstance(data.get("open"), dict):
+                data["open"], dedupe_changed = v87_cleanup_open_learning_duplicates(data.get("open", {}))
+                guard_changed = bool(guard_changed or dedupe_changed)
             if guard_changed:
                 mark_github_dirty(RESULTS_BACKUP_FILE)
     except Exception as e:
@@ -621,8 +624,8 @@ def signal_lock_left():
 def signal_lock_message(left, data=None):
     minutes = max(1, int((left + 59) // 60))
     return (
-        "⏳ /signal уже выполняется или недавно был запущен.\n"
-        f"Не нажимай несколько раз подряд. Подожди примерно {minutes} мин."
+        "⏳ Уже выполняется тяжёлый анализ или Telegram догоняет очередь.\n"
+        f"Команда не потерялась: дождись текущего отчёта. Если очередь зависла — /flush. Примерно {minutes} мин."
     )
 
 def try_start_signal_lock(chat_id, update_id=None):
@@ -1529,16 +1532,22 @@ def should_skip_duplicate_command(chat_id, text, last_command_time):
 
 def should_skip_service_message(chat_id, last_service_time):
     """
-    v13.9:
-    Дополнительная жёсткая защита именно для кнопки 🛠 Сервис.
-    Даже если Telegram/Render отдаст кнопку два раза подряд, второе сервисное меню не отправляем.
+    v17.6.1:
+    Жёсткая защита именно для кнопки 🛠 Сервис.
+    Telegram иногда присылает одно нажатие дважды или разными alias (/service, /more, /admin).
+    Держим общий cooldown по chat_id, чтобы не отправлять два одинаковых сервисных меню.
     """
     now_ts = time.time()
-    prev = float(last_service_time.get(chat_id, 0) or 0)
+    key = str(chat_id)
+    try:
+        prev = float(last_service_time.get(key, last_service_time.get(chat_id, 0)) or 0)
+    except Exception:
+        prev = 0
 
-    if now_ts - prev < 12:
+    if now_ts - prev < 20:
         return True
 
+    last_service_time[key] = now_ts
     last_service_time[chat_id] = now_ts
     return False
 
@@ -3740,8 +3749,10 @@ def classify_learning_result(rec):
 
 def v87_cleanup_open_learning_duplicates(open_items):
     """
+    v17.6.1:
     Одна монета = одно открытое наблюдение до закрытия 48ч.
-    Если старые версии уже создали дубли, оставляем самую раннюю запись.
+    Если частые кнопки/фоновые сканы создали дубли, оставляем самую раннюю запись,
+    но не теряем факт повторного появления: переносим seen_count/last_seen/last_price.
     """
     if not isinstance(open_items, dict):
         return {}, False
@@ -3749,20 +3760,66 @@ def v87_cleanup_open_learning_duplicates(open_items):
     by_asset = {}
     changed = False
 
-    # Сортируем по времени: первая запись по монете остаётся, остальные удаляются.
-    rows = sorted(
-        list(open_items.items()),
-        key=lambda kv: float(kv[1].get("time", 0) or 0)
-    )
+    def norm_asset(rec, fallback=""):
+        asset = str((rec or {}).get("asset") or (rec or {}).get("symbol") or fallback or "").upper()
+        asset = asset.replace("-USDT", "").strip()
+        return asset
+
+    def safe_time(rec):
+        try:
+            return float((rec or {}).get("time", 0) or 0)
+        except Exception:
+            return 0.0
+
+    # Сортируем по времени: первая запись по монете остаётся, остальные сливаются в неё.
+    rows = sorted(list(open_items.items()), key=lambda kv: safe_time(kv[1]))
 
     cleaned = {}
     for key, rec in rows:
-        asset = rec.get("asset")
+        if not isinstance(rec, dict):
+            changed = True
+            continue
+
+        asset = norm_asset(rec, key)
         if not asset:
             cleaned[key] = rec
             continue
 
+        rec["asset"] = asset
+
         if asset in by_asset:
+            keep_key = by_asset[asset]
+            keep = cleaned.get(keep_key, {})
+            try:
+                keep_seen = int(float(keep.get("seen_count", 1) or 1))
+            except Exception:
+                keep_seen = 1
+            try:
+                drop_seen = int(float(rec.get("seen_count", 1) or 1))
+            except Exception:
+                drop_seen = 1
+            keep["seen_count"] = max(1, min(learning_seen_count_cap(keep), keep_seen + drop_seen))
+
+            # last_seen/last_price берём из более свежей записи, если она есть.
+            try:
+                if float(rec.get("last_seen", 0) or 0) >= float(keep.get("last_seen", 0) or 0):
+                    for fld in ["last_seen", "last_price", "last_score", "last_action", "last_verdict"]:
+                        if fld in rec:
+                            keep[fld] = rec.get(fld)
+            except Exception:
+                pass
+
+            # price_points объединяем, чтобы checkpoints не потеряли снимки.
+            try:
+                pts = learning_price_points(keep) + learning_price_points(rec)
+                uniq = {}
+                for pt in pts:
+                    uniq[float(pt.get("time", 0) or 0)] = pt
+                keep["price_points"] = [uniq[k] for k in sorted(uniq.keys())][-500:]
+            except Exception:
+                pass
+
+            cleaned[keep_key] = keep
             changed = True
             continue
 
@@ -4594,7 +4651,8 @@ def paper_report():
         "Режим: виртуальные сделки без реальных денег. Автопокупки выключены.\n"
         "Цель: проверить, что было бы при виртуальном входе/пропуске сигнала, без риска для денег.\n"
         f"{update_note}"
-        f"{summary}\n\n"
+        f"{summary}\n"
+        "📌 AVOID PUMP TEST: это не оценка упущенной прибыли. Он проверяет риск догонять резкий памп без отката; финальный вывод делается по 24–48ч и по просадке после пампа.\n\n"
     )
 
     if open_trades:
@@ -8791,7 +8849,7 @@ def format_fast_alert(items):
             else:
                 action = "наблюдать; вход только после отката/подтверждения"
             text += (
-                f"{i}. {c['symbol']} — {c.get('score', 0)}/100\n"
+                f"{i}. {c['symbol']} — fast alert score {c.get('score', 0)}/100\n"
                 f"15м: {c['fast_move']:+.2f}% | объём x{c['vol_power']:.1f}\n"
                 f"Цена: ${c['price']:.6g} | 24ч: {c['change_24']:.2f}% | RSI {c.get('rsi', 'н/д')}\n"
                 f"Действие: {action}. Риск: {risk}.\n\n"
@@ -8801,7 +8859,7 @@ def format_fast_alert(items):
         text += "🟡 Ближайшие качественные наблюдения / не вход:\n"
         for i, c in enumerate(watch[:3], 1):
             text += (
-                f"{i}. {c['symbol']} — {c.get('score', 0)}/100\n"
+                f"{i}. {c['symbol']} — fast alert score {c.get('score', 0)}/100\n"
                 f"15м: {c['fast_move']:+.2f}% | объём x{c['vol_power']:.1f}\n"
                 f"Цена: ${c['price']:.6g} | 24ч: {c['change_24']:.2f}% | RSI {c.get('rsi', 'н/д')}\n"
                 "Действие: без входа сейчас; ждать стабилизацию BTC, рост объёма и откат/подтверждение.\n\n"
@@ -8811,7 +8869,7 @@ def format_fast_alert(items):
         text += "🔵 Перепроданность / без входа:\n"
         for i, c in enumerate(oversold[:2], 1):
             text += (
-                f"{i}. {c['symbol']} — {c.get('score', 0)}/100\n"
+                f"{i}. {c['symbol']} — fast alert score {c.get('score', 0)}/100\n"
                 f"15м: {c['fast_move']:+.2f}% | объём x{c['vol_power']:.1f}\n"
                 f"Цена: ${c['price']:.6g} | 24ч: {c['change_24']:.2f}% | RSI {c.get('rsi', 'н/д')}\n"
                 "Действие: не вход; ждать остановку падения, стабилизацию BTC и разворот RSI.\n\n"
@@ -8821,7 +8879,7 @@ def format_fast_alert(items):
         text += "🟣 Спекулятивный импульс:\n"
         for i, c in enumerate(speculative[:3], 1):
             text += (
-                f"{i}. {c['symbol']} — {c.get('score', 0)}/100\n"
+                f"{i}. {c['symbol']} — fast alert score {c.get('score', 0)}/100\n"
                 f"15м: {c['fast_move']:+.2f}% | объём x{c['vol_power']:.1f}\n"
                 f"Цена: ${c['price']:.6g} | 24ч: {c['change_24']:.2f}%\n"
                 "Действие: не догонять. Только наблюдать. Вход рассматривать не раньше отката и повторного подтверждения. Риск высокий.\n\n"
@@ -8914,7 +8972,18 @@ def get_fast_pumps():
                     btc_change = 0.0
                 break
 
-        market_danger = btc_change < 0 or macro_mod <= -8
+        try:
+            fg_value = int(ctx.get("fg_value", 50) or 50)
+        except Exception:
+            fg_value = 50
+        cached_risk = str(ctx.get("risk_level", "") or "").lower()
+        market_danger = (
+            cached_risk == "danger"
+            or btc_change <= -2.3
+            or (btc_change <= -1.5 and macro_mod <= -8)
+            or (btc_change <= -1.0 and fg_value <= 20 and macro_mod <= -5)
+        )
+        market_caution = market_danger or btc_change < 0 or macro_mod <= -8
 
         rows = []
         for t in tickers:
@@ -8998,6 +9067,7 @@ def get_fast_pumps():
                 "Сильных быстрых импульсов сейчас нет.\n"
                 "Режим: быстрый безопасный alerts без свечей, чтобы команда не зависала.\n\n"
                 f"BTC 24ч: {btc_change:+.2f}%\n"
+                f"{('Фон: 🔴 опасный — BUY запрещены, только наблюдение до стабилизации BTC.' if market_danger else ('Фон: 🟠 осторожный — вход только после подтверждения и отката.' if market_caution else 'Фон: без явного аварийного сигнала по BTC.'))}\n"
                 "Что ждать: качественный актив, умеренный рост, высокий объём и подтверждение в /signal или /coin.\n"
                 "Главное правило: резкую зелёную свечу не догонять."
             )
@@ -9008,7 +9078,9 @@ def get_fast_pumps():
         text += "Это не команда покупать, а фильтр: что наблюдать и какие пампы не догонять.\n\n"
         text += f"BTC 24ч: {btc_change:+.2f}%\n"
         if market_danger:
-            text += "Фон: осторожный — входы только после подтверждения.\n\n"
+            text += "Фон: 🔴 опасный — BUY запрещены, только наблюдение до стабилизации BTC.\n\n"
+        elif market_caution:
+            text += "Фон: 🟠 осторожный — вход только после подтверждения и отката.\n\n"
         else:
             text += "Фон: без явного аварийного сигнала по BTC.\n\n"
 
@@ -9019,7 +9091,7 @@ def get_fast_pumps():
                 if market_danger:
                     action = "без входа сейчас; ждать стабилизацию BTC/фона"
                 text += (
-                    f"{i}. {r['symbol']} — {r['score']}/100 | {format_usd_price(r['price'])}\n"
+                    f"{i}. {r['symbol']} — fast alert score {r['score']}/100 | {format_usd_price(r['price'])}\n"
                     f"24ч: {r['change_24']:+.2f}% | объём ${r['volume_usd']/1_000_000:.1f}M\n"
                     f"Действие: {action}.\n\n"
                 )
@@ -9028,7 +9100,7 @@ def get_fast_pumps():
             text += "🟣 Спекулятивные пампы / не догонять:\n"
             for i, r in enumerate(speculative_pumps, 1):
                 text += (
-                    f"{i}. {r['symbol']} — {r['score']}/100 | {format_usd_price(r['price'])}\n"
+                    f"{i}. {r['symbol']} — fast alert score {r['score']}/100 | {format_usd_price(r['price'])}\n"
                     f"24ч: {r['change_24']:+.2f}% | объём ${r['volume_usd']/1_000_000:.1f}M\n"
                     "Действие: не догонять; только предупреждение, ждать откат.\n\n"
                 )
@@ -9357,7 +9429,7 @@ def format_single_coin_report(c):
         else:
             text += f"Итог: {c.get('symbol')} только после стабилизации BTC. Сейчас без входа."
     elif c.get("_extreme_fear_alt_cap"):
-        text += f"Итог: {c.get('symbol')} — только кандидат после стабилизации BTC. Сейчас без входа; рынок в экстремальном страхе."
+        text += f"Итог: {c.get('symbol')} — только актив к наблюдению после стабилизации BTC. Сейчас без входа; рынок в экстремальном страхе."
     elif c.get("_safe_caution_cap"):
         if c.get("symbol") == "BTC":
             text += "Итог: BTC наблюдать, входа сейчас нет. Страх экстремальный, BTC мешает рынку — ждать стабилизацию 3–4 часа и рост объёма."
@@ -9366,7 +9438,7 @@ def format_single_coin_report(c):
         else:
             text += f"Итог: {c.get('symbol')} только после стабилизации BTC. Сейчас без входа."
     elif c.get("_safe_caution_alt_cap"):
-        text += f"Итог: {c.get('symbol')} — только кандидат после стабилизации BTC. Сейчас без входа; нужен разворот рынка."
+        text += f"Итог: {c.get('symbol')} — только актив к наблюдению после стабилизации BTC. Сейчас без входа; нужен разворот рынка."
     elif c.get("_danger_market_cap"):
         if c.get("symbol") == "BTC":
             text += "Итог: BTC наблюдать, входа сейчас нет. Вернуться после стабилизации 3–4 часа, роста объёма и прекращения падения."
@@ -9375,7 +9447,7 @@ def format_single_coin_report(c):
         else:
             text += f"Итог: {c.get('symbol')} только после разворота рынка. Сейчас без входа."
     elif c.get("_danger_alt_cap"):
-        text += f"Итог: {c.get('symbol')} — только кандидат после разворота рынка. Сейчас без входа; нужна стабилизация BTC."
+        text += f"Итог: {c.get('symbol')} — только актив к наблюдению после разворота рынка. Сейчас без входа; нужна стабилизация BTC."
     elif c.get("_quality_alt_danger_watch"):
         text += f"Итог: {c.get('symbol')} — качественный актив, но рынок опасный. Сейчас без входа; вернуться после стабилизации BTC, роста объёма и разворота RSI."
     elif c.get("_falling_market_no_buy"):
@@ -9656,7 +9728,7 @@ def v101_apply_danger_market_score_cap(c):
             c["score"] = score
             c["_master_score"] = score
             c["action"] = "WATCH"
-            c["verdict"] = "🟡 КАНДИДАТ ПОСЛЕ РАЗВОРОТА РЫНКА"
+            c["verdict"] = "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ РАЗВОРОТА РЫНКА"
             c["_danger_alt_cap"] = True
             c["_red_market_cap"] = True
 
@@ -10343,7 +10415,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v15.2: fast-learning 15м/30м/1ч/3ч/6ч/12ч/24ч/48ч, snapshot-checkpoints, жёсткая защита seen_count от раздувания"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v17.6.1: fast-learning 15м/30м/1ч/3ч/6ч/12ч/24ч/48ч, snapshot-checkpoints, защита seen_count/дублей, alerts danger wording"
     )
 
 
