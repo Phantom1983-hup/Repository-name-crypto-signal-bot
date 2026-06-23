@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v17.8.1 MAIN REPORT BUTTON"
+BOT_VERSION = "v17.8.5 NO REPORT BUTTON"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -46,7 +46,6 @@ FROZEN_RESULTS_FILE = data_path("frozen_learning_results.json")
 WEEKDAY_FILE = data_path("weekday_market_stats.json")
 BACKTEST_FILE = data_path("historical_backtest_stats.json")
 PAPER_TRADES_FILE = data_path("paper_trades.json")
-CHATGPT_REPORT_FILE = data_path("alex_edge_chatgpt_report.txt")
 ADMIN_STATE_FILE = data_path("admin_deploy_state.json")
 ADMIN_UPLOAD_FILE = data_path("admin_uploaded_main.py")
 ADMIN_UPLOAD_LOCK_FILE = data_path("admin_upload_lock.json")
@@ -808,81 +807,6 @@ def send_backup_files(chat_id):
     else:
         send_message(chat_id, f"✅ Backup отправлен: файлов {sent}")
 
-
-def _safe_report_block(title, producer):
-    """Собрать один блок отчёта так, чтобы сбой одного раздела не ломал общий .txt."""
-    try:
-        body = producer()
-        if body is None:
-            body = ""
-        body = str(body).strip()
-        if not body:
-            body = "Раздел сформировался пустым."
-    except Exception as e:
-        body = f"⚠️ Ошибка формирования раздела: {str(e)[:300]}"
-
-    return f"\n\n===== {title} =====\n\n{body}\n"
-
-
-def build_chatgpt_report_text():
-    """
-    v17.8: единый отчёт для быстрой отправки в ChatGPT.
-    Это лучше, чем копировать 8 Telegram-сообщений вручную: бот сам собирает основные отчёты в один txt.
-    """
-    now = moscow_now().strftime("%Y-%m-%d %H:%M:%S МСК")
-    parts = [
-        "ALEX EDGE ULTRA — ОТЧЁТ ДЛЯ CHATGPT",
-        f"Версия: {BOT_VERSION}",
-        f"Сформировано: {now}",
-        "",
-        "Состав отчёта: /version, /paper, /signal, /learning, /alerts, /market, /btc, /sol, /coin ETH.",
-        "Назначение: быстро переслать один файл в ChatGPT для аудита после деплоя/теста.",
-        "",
-    ]
-
-    parts.append(_safe_report_block("/version", lambda: f"✅ Текущая версия бота: {BOT_VERSION}\n📦 Пул команд: включён\n🧾 Единый отчёт для ChatGPT: включён\n🧾 Кнопка отчёта: на главном экране"))
-    parts.append(_safe_report_block("/paper", paper_report))
-    parts.append(_safe_report_block("/signal", unified_signal_report))
-    parts.append(_safe_report_block("/learning", lambda: learning_report(sync_github=False)))
-    parts.append(_safe_report_block("/alerts", lambda: get_fast_pumps()[0] or f"Версия: {BOT_VERSION}\nСейчас быстрых импульсов нет."))
-    parts.append(_safe_report_block("/market", market_status))
-    parts.append(_safe_report_block("/btc", lambda: single_analysis("BTC-USDT")))
-    parts.append(_safe_report_block("/sol", lambda: single_analysis("SOL-USDT")))
-    parts.append(_safe_report_block("/coin ETH", lambda: single_analysis("ETH-USDT")))
-
-    parts.append("\n\n===== КОНЕЦ ОТЧЁТА =====\n")
-    return "".join(parts)
-
-
-def send_chatgpt_report(chat_id):
-    """Сформировать txt и отправить документом."""
-    try:
-        background_learning_update("chatgpt_report_v17_8_1")
-        background_paper_update("chatgpt_report_v17_8_1")
-    except Exception:
-        pass
-
-    text = build_chatgpt_report_text()
-    try:
-        with open(CHATGPT_REPORT_FILE, "w", encoding="utf-8") as f:
-            f.write(text)
-    except Exception as e:
-        send_message(chat_id, f"⚠️ Не смог сохранить txt-отчёт: {e}\n\nПоказываю краткий отчёт сообщениями.")
-        send_message(chat_id, text[:12000])
-        return False
-
-    caption = (
-        "🧾 Единый отчёт для ChatGPT\n"
-        f"Версия: {BOT_VERSION}\n"
-        "Файл можно сразу переслать/загрузить в ChatGPT вместо копирования 8 сообщений."
-    )
-    ok = send_document(chat_id, CHATGPT_REPORT_FILE, caption)
-    if ok:
-        send_message(chat_id, "✅ Отчёт собран в один .txt файл. Его можно сразу отправить в ChatGPT.")
-    else:
-        send_message(chat_id, "⚠️ Не удалось отправить файл. Попробуй /chatgpt_report ещё раз или проверь BOT_TOKEN/Telegram.")
-    return ok
-
 def admin_help():
     return (
         f"🛠 Admin deploy\n"
@@ -1525,8 +1449,6 @@ BUTTON_TO_COMMAND = {
     "⚡ Alerts": "/alerts",
     "📚 Обучение": "/learning",
     "🧪 Paper": "/paper",
-    "🧾 Отчёт": "/chatgpt_report",
-    "🧾 Отчёт ChatGPT": "/chatgpt_report",
 
     # v12.9: одна служебная кнопка вместо россыпи админ-кнопок.
     "🛠 Сервис": "/service",
@@ -1585,8 +1507,6 @@ def duplicate_command_cooldown(text):
         return 10
     if text in ["/learning", "/storage", "/service", "/more", "/admin", "/paper", "/paper_trading", "/virtual"]:
         return 6
-    if text in ["/chatgpt_report", "/report", "/testpack", "/export"]:
-        return 20
     if text in ["/version", "/flush", "/sync_storage", "/signal_status", "/signal_unlock"]:
         return 4
     return 5
@@ -1665,12 +1585,6 @@ COMMAND_POOL_ALIASES = {
     "пейпер": "/paper",
     "виртуальные сделки": "/paper",
     "🧪 paper": "/paper",
-    "отчёт": "/chatgpt_report",
-    "отчет": "/chatgpt_report",
-    "report": "/chatgpt_report",
-    "chatgpt report": "/chatgpt_report",
-    "🧾 отчёт": "/chatgpt_report",
-    "🧾 отчет": "/chatgpt_report",
     "обучение": "/learning",
     "learning": "/learning",
     "📚 обучение": "/learning",
@@ -1814,7 +1728,7 @@ def command_pool_ack_text(total):
     return (
         f"📦 Пул команд принят: {total}. Выполняю по очереди.\n"
         "Команды не теряются: сначала будет первый отчёт, затем следующий.\n"
-        "Версия обработчика: v17.8."
+        f"Версия обработчика: {BOT_VERSION}."
     )
 
 def coin_search_prompt():
@@ -1827,17 +1741,16 @@ def coin_search_prompt():
 
 def keyboard(chat_id=None):
     """
-    v17.8.1:
-    Главное меню для ежедневного тестирования.
-    🧾 Отчёт вынесен на главный экран, чтобы быстро отправлять результаты в ChatGPT.
-    Редкие служебные действия остаются в 🛠 Сервис.
+    v17.8.5:
+    Главное меню без кнопки отчёта.
+    Для ускорения тестов Paper вынесен на главный экран, а редкое осталось в 🛠 Сервис.
     """
     return {
         "keyboard": [
             ["📊 Сигнал", "🔎 Монета"],
             ["🟠 BTC", "🟣 SOL"],
             ["🌍 Рынок", "⚡ Alerts"],
-            ["📚 Обучение", "🧾 Отчёт"],
+            ["📚 Обучение", "🧪 Paper"],
             ["🛠 Сервис"],
         ],
         "resize_keyboard": True
@@ -10682,12 +10595,12 @@ def help_text():
         "🌍 Рынок — внешний фон\n"
         "⚡ Alerts — ручная проверка быстрых импульсов\n"
         "📚 Обучение — результаты самообучения\n"
-        "🧾 Отчёт — собрать ключевые проверки в один .txt для ChatGPT\n"
+        "🧪 Paper — виртуальные сделки без реальных денег\n"
         "🏆 Топ — топ монет по объёму\n"
         "⚙️ Версия — текущая версия\n\n"
         "Команды тоже работают:\n"
-        "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /chatgpt_report, /top\n"
-        "📦 Можно отправить пул команд одним сообщением, каждая с новой строки: /paper, /signal, /learning, /alerts. Бот выполнит их по очереди.\n🧾 /chatgpt_report или главная кнопка “🧾 Отчёт” — собрать Paper/Signal/Learning/Alerts/Market/BTC/SOL/ETH в один .txt файл для отправки в ChatGPT.\n"
+        "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /top\n"
+        "📦 Можно отправить пул команд одним сообщением, каждая с новой строки: /paper, /signal, /learning, /alerts. Бот выполнит их по очереди.\n"
         "/storage, /backup, /weekday, /learn_fast, /paper, /flush, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /rollback\n"
         "TON вводить можно: бот автоматически откроет GRAM.\n\n"
         "Статусы:\n"
@@ -10700,7 +10613,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v17.8.1: command pool работает, единый .txt отчёт для ChatGPT вынесен на главный экран, доп. cleanup дублей обучения, danger-wording для single coin forecast, fast-learning 15м/30м/1ч/3ч/6ч/12ч/24ч/48ч, background scan каждые 30м"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v17.8.5: кнопка отчёта убрана, command pool работает, Paper на главном экране, доп. cleanup дублей обучения, danger-wording для single coin forecast, fast-learning 15м/30м/1ч/3ч/6ч/12ч/24ч/48ч, background scan каждые 30м"
     )
 
 
@@ -10922,7 +10835,12 @@ def main():
                     send_message(chat_id, help_text())
 
                 elif text == "/version":
-                    send_message(chat_id, f"✅ Текущая версия бота: {BOT_VERSION}\n📦 Пул команд: включён\n🧾 Единый отчёт для ChatGPT: включён\n🧾 Кнопка отчёта: на главном экране")
+                    send_message(chat_id, (
+                        f"✅ Текущая версия бота: {BOT_VERSION}\n"
+                        "📦 Пул команд: включён\n"
+                        "🧾 Кнопка отчёта: убрана\n"
+                        "🧪 Paper: на главном экране"
+                    ))
 
                 elif text == "/flush":
                     if is_admin(chat_id) or not ADMIN_CHAT_ID:
@@ -10961,10 +10879,6 @@ def main():
 
                 elif text == "/storage":
                     send_message(chat_id, storage_report())
-
-                elif text in ["/chatgpt_report", "/report", "/testpack", "/export"]:
-                    send_message(chat_id, "⏳ Собираю единый .txt отчёт для ChatGPT: Paper, Signal, Learning, Alerts, Market, BTC, SOL, ETH...")
-                    send_chatgpt_report(chat_id)
 
                 elif text == "/backup":
                     if is_admin(chat_id):
