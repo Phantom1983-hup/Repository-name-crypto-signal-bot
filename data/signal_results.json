@@ -32,7 +32,8 @@
       "last_seen_counted": 1782234515.557986,
       "seen_count": 1,
       "results": {
-        "15m": 0.26
+        "15m": 0.26,
+        "30m": 0.26
       },
       "price_points": [
         {
@@ -125,6 +126,13 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782235733.3674166,
           "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782236316.2745714,
+          "target_time": 1782236315.557986,
+          "checkpoint_price": 62608.9,
+          "checkpoint_pct": 0.26,
+          "source": "snapshot"
         }
       }
     },
@@ -160,7 +168,8 @@
       "last_seen_counted": 1782234515.557986,
       "seen_count": 1,
       "results": {
-        "15m": 0.24
+        "15m": 0.24,
+        "30m": 0.27
       },
       "price_points": [
         {
@@ -249,6 +258,13 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782235733.3674166,
           "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782236398.2373009,
+          "target_time": 1782236315.557986,
+          "checkpoint_price": 1662.22,
+          "checkpoint_pct": 0.27,
+          "source": "snapshot"
         }
       }
     },
@@ -284,7 +300,8 @@
       "last_seen_counted": 1782234515.557986,
       "seen_count": 1,
       "results": {
-        "15m": -0.0
+        "15m": -0.0,
+        "30m": -1.44
       },
       "price_points": [
         {
@@ -393,6 +410,13 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782235758.6590822,
           "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782236316.2745714,
+          "target_time": 1782236315.557986,
+          "checkpoint_price": 0.362,
+          "checkpoint_pct": -1.44,
+          "source": "snapshot"
         }
       }
     },
@@ -428,7 +452,8 @@
       "last_seen_counted": 1782234515.557986,
       "seen_count": 1,
       "results": {
-        "15m": 0.56
+        "15m": 0.56,
+        "30m": 1.97
       },
       "price_points": [
         {
@@ -537,6 +562,13 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782235758.6590822,
           "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782236316.2745714,
+          "target_time": 1782236315.557986,
+          "checkpoint_price": 0.0363,
+          "checkpoint_pct": 1.97,
+          "source": "snapshot"
         }
       }
     },
@@ -572,7 +604,8 @@
       "last_seen_counted": 1782234515.557986,
       "seen_count": 1,
       "results": {
-        "15m": -0.33
+        "15m": -0.33,
+        "30m": 0.97
       },
       "price_points": [
         {
@@ -669,6 +702,13 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782235733.3674166,
           "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782236398.2373009,
+          "target_time": 1782236315.557986,
+          "checkpoint_price": 22.7508,
+          "checkpoint_pct": 0.97,
+          "source": "snapshot"
         }
       }
     },
@@ -703,7 +743,8 @@
       "last_seen_counted": 1782234810.0918171,
       "seen_count": 1,
       "results": {
-        "15m": 1.38
+        "15m": 1.38,
+        "30m": 2.39
       },
       "price_points": [
         {
@@ -788,6 +829,13 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782235758.6590822,
           "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782236677.293354,
+          "target_time": 1782236610.0918171,
+          "checkpoint_price": 1.9715,
+          "checkpoint_pct": 2.39,
+          "source": "snapshot"
         }
       }
     },
@@ -821,7 +869,9 @@
       "last_seen": 1782236784.487664,
       "last_seen_counted": 1782235183.1167781,
       "seen_count": 1,
-      "results": {},
+      "results": {
+        "15m": 0.49
+      },
       "price_points": [
         {
           "time": 1782235183.1167781,
@@ -872,7 +922,15 @@
       "last_score": 56,
       "last_action": "WATCH",
       "last_verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
-      "result_details": {}
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782236125.3602319,
+          "target_time": 1782236083.1167781,
+          "checkpoint_price": 6.344,
+          "checkpoint_pct": 0.49,
+          "source": "snapshot"
+        }
+      }
     },
     "FOLKS_1782235452": {
       "asset": "FOLKS",
@@ -904,7 +962,9 @@
       "last_seen": 1782236125.3602319,
       "last_seen_counted": 1782235452.1372519,
       "seen_count": 1,
-      "results": {},
+      "results": {
+        "15m": -1.66
+      },
       "price_points": [
         {
           "time": 1782235452.1372519,
@@ -917,13 +977,25 @@
         {
           "time": 1782236125.3602319,
           "price": 2.6121
+        },
+        {
+          "time": 1782236789.3207908,
+          "price": 2.5592
         }
       ],
       "last_price": 2.6121,
       "last_score": 55,
       "last_action": "WATCH",
       "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
-      "result_details": {}
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782236789.3207908,
+          "target_time": 1782236352.1372519,
+          "checkpoint_price": 2.5592,
+          "checkpoint_pct": -1.66,
+          "source": "snapshot"
+        }
+      }
     }
   },
   "closed": [],
