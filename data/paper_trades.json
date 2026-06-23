@@ -63,9 +63,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 62444.6,
-      "last_price_time": 1782242968.7427158,
-      "last_pct": -3.28
+      "last_price": 62459.4,
+      "last_price_time": 1782248292.4136941,
+      "last_pct": -3.26
     },
     "ETH:VIRTUAL_WATCH_ENTRY_TEST:495040": {
       "id": "ETH:VIRTUAL_WATCH_ENTRY_TEST:495040",
@@ -129,9 +129,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 1661.46,
-      "last_price_time": 1782242968.7427158,
-      "last_pct": -4.3
+      "last_price": 1663.65,
+      "last_price_time": 1782248292.4136941,
+      "last_pct": -4.17
     },
     "SUI:VIRTUAL_WATCH_ENTRY_TEST:495040": {
       "id": "SUI:VIRTUAL_WATCH_ENTRY_TEST:495040",
@@ -315,9 +315,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.32805,
-      "last_price_time": 1782242968.7427158,
-      "last_pct": 21.1
+      "last_price": 0.33266,
+      "last_price_time": 1782248292.4136941,
+      "last_pct": 22.8
     },
     "SYN:AVOID_PUMP_TEST:495040": {
       "id": "SYN:AVOID_PUMP_TEST:495040",
@@ -381,9 +381,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.2969,
-      "last_price_time": 1782242349.5837417,
-      "last_pct": 9.32
+      "last_price": 0.3067,
+      "last_price_time": 1782244803.4448364,
+      "last_pct": 12.92
     },
     "BNB:VIRTUAL_WATCH_ENTRY_TEST:495040": {
       "id": "BNB:VIRTUAL_WATCH_ENTRY_TEST:495040",
@@ -507,9 +507,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 6.348,
-      "last_price_time": 1782242968.7427158,
-      "last_pct": 0.86
+      "last_price": 6.415,
+      "last_price_time": 1782248292.4136941,
+      "last_pct": 1.92
     },
     "LINK:VIRTUAL_WATCH_ENTRY_TEST:495040": {
       "id": "LINK:VIRTUAL_WATCH_ENTRY_TEST:495040",
@@ -1287,9 +1287,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 23.3263,
-      "last_price_time": 1782242968.7427158,
-      "last_pct": 6.69
+      "last_price": 23.5357,
+      "last_price_time": 1782248292.4136941,
+      "last_pct": 7.65
     },
     "UMXM:AVOID_PUMP_TEST:495049": {
       "id": "UMXM:AVOID_PUMP_TEST:495049",
@@ -1429,7 +1429,8 @@
         "15m": 3.01,
         "30m": 1.64,
         "1h": -5.46,
-        "3h": -1.64
+        "3h": -1.64,
+        "6h": 1.37
       },
       "result_details": {
         "15m": {
@@ -1451,13 +1452,18 @@
           "checkpoint_time": 1782237459.8281293,
           "checkpoint_price": 0.036,
           "source": "learning_cache:snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782248292.4136941,
+          "checkpoint_price": 0.0371,
+          "source": "learning_cache:snapshot"
         }
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.0374,
-      "last_price_time": 1782242968.7427158,
-      "last_pct": 2.19
+      "last_price": 0.0371,
+      "last_price_time": 1782248292.4136941,
+      "last_pct": 1.37
     },
     "BEAT:AVOID_PUMP_TEST:495063": {
       "id": "BEAT:AVOID_PUMP_TEST:495063",
@@ -1503,9 +1509,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 2.1929,
-      "last_price_time": 1782242968.7427158,
-      "last_pct": 14.37
+      "last_price": 2.4379,
+      "last_price_time": 1782248292.4136941,
+      "last_pct": 27.15
     },
     "POPCAT:AVOID_PUMP_TEST:495064": {
       "id": "POPCAT:AVOID_PUMP_TEST:495064",
@@ -1551,12 +1557,12 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.05134,
-      "last_price_time": 1782242968.7427158,
-      "last_pct": -1.67
+      "last_price": 0.05141,
+      "last_price_time": 1782248292.4136941,
+      "last_pct": -1.53
     }
   },
   "closed": [],
   "last_created_at": 1782232021.5247328,
-  "last_update_at": 1782242969.1544468
+  "last_update_at": 1782248292.8577545
 }
