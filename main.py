@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v17.6.1 POST TEST FIX"
+BOT_VERSION = "v17.7.1 COMMAND POOL HOTFIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -88,7 +88,7 @@ AUTO_REPORTS_ENABLED = (os.getenv("AUTO_REPORTS_ENABLED") or "").strip().lower()
 # 48ч остаётся финальной проверкой, но бот копит короткие checkpoints,
 # чтобы обучение не простаивало по 2 суток.
 FAST_LEARNING_BACKGROUND_ENABLED = (os.getenv("FAST_LEARNING_BACKGROUND_ENABLED") or "1").strip().lower() in ["1", "true", "yes", "on"]
-FAST_LEARNING_BACKGROUND_INTERVAL = int(os.getenv("FAST_LEARNING_BACKGROUND_INTERVAL", "3600"))  # v17.0: 1 час, чтобы обучение не простаивало
+FAST_LEARNING_BACKGROUND_INTERVAL = int(os.getenv("FAST_LEARNING_BACKGROUND_INTERVAL", "1800"))  # v17.6.2: 30 минут, чтобы fast-learning быстрее ловил 15м/30м/1ч checkpoints
 _fast_learning_background_last = 0
 
 
@@ -1570,6 +1570,166 @@ def normalize_coin_input(text):
 def resolve_coin_symbol(text):
     coin = normalize_coin_input(text)
     return COIN_ALIASES.get(coin, coin)
+
+# === v17.7.1 command pool / batch commands HOTFIX ===
+# Пользователь может отправить одним сообщением несколько команд строками:
+# /paper
+# /signal
+# /learning
+# Бот разложит их на очередь и выполнит по порядку.
+COMMAND_POOL_ALIASES = {
+    "signal": "/signal",
+    "сигнал": "/signal",
+    "📊 сигнал": "/signal",
+    "paper": "/paper",
+    "пейпер": "/paper",
+    "виртуальные сделки": "/paper",
+    "🧪 paper": "/paper",
+    "обучение": "/learning",
+    "learning": "/learning",
+    "📚 обучение": "/learning",
+    "alerts": "/alerts",
+    "алерты": "/alerts",
+    "⚡ alerts": "/alerts",
+    "рынок": "/market",
+    "market": "/market",
+    "🌍 рынок": "/market",
+    "btc": "/btc",
+    "биткоин": "/btc",
+    "🟠 btc": "/btc",
+    "sol": "/sol",
+    "solana": "/sol",
+    "🟣 sol": "/sol",
+    "weekday": "/weekday",
+    "дни недели": "/weekday",
+    "📅 дни недели": "/weekday",
+    "storage": "/storage",
+    "хранилище": "/storage",
+    "service": "/service",
+    "сервис": "/service",
+    "🛠 сервис": "/service",
+}
+
+def _strip_pool_line_prefix(line):
+    line = (line or "").strip()
+    # Убираем нумерацию/буллеты: "1) /paper", "- /signal", "• BTC".
+    line = re.sub(r"^[\s\-–—•*]+", "", line)
+    line = re.sub(r"^\d+[\.\)]\s*", "", line)
+    return line.strip()
+
+def command_pool_line_to_command(line):
+    raw = _strip_pool_line_prefix(line)
+    if not raw:
+        return None
+
+    normalized = normalize_button_text(raw).strip()
+    low = normalized.lower().strip()
+
+    if low in COMMAND_POOL_ALIASES:
+        return COMMAND_POOL_ALIASES[low]
+
+    # Команда с аргументом: /coin ETH.
+    if low.startswith("/coin"):
+        parts = normalized.split()
+        if len(parts) >= 2:
+            coin = resolve_coin_symbol(parts[1])
+            if coin:
+                return f"/coin {coin}"
+        return "/coin"
+
+    if normalized.startswith("/"):
+        # Оставляем только первую команду + один аргумент, чтобы мусор после команды не ломал обработчик.
+        # v17.7.1: Telegram иногда присылает команды как /paper@BotName — отрезаем @BotName.
+        parts = normalized.split()
+        base_cmd = parts[0].lower().split("@", 1)[0]
+        if len(parts) >= 2 and base_cmd == "/coin":
+            return f"/coin {resolve_coin_symbol(parts[1])}"
+        return base_cmd
+
+    # Отдельная строка с тикером тоже работает как команда анализа монеты.
+    coin = resolve_coin_symbol(raw)
+    if coin in POPULAR_COINS:
+        if coin == "BTC":
+            return "/btc"
+        if coin == "SOL":
+            return "/sol"
+        return f"/coin {coin}"
+
+    return None
+
+def parse_command_pool(raw_text):
+    """
+    Возвращает список команд, если одно сообщение похоже на пул команд.
+    Безопасность: пул включается только когда найдено минимум 2 понятные команды.
+    Обычный текст пользователя не превращаем в команды.
+    """
+    raw = (raw_text or "").strip()
+    if not raw or len(raw) > 1500:
+        return []
+
+    candidates = []
+
+    if "\n" in raw or ";" in raw or "," in raw:
+        candidates = [x.strip() for x in re.split(r"[\n;,]+", raw) if x.strip()]
+    else:
+        # Поддержка строки вида: /paper /signal /learning /alerts
+        slash_matches = re.findall(r"/coin\s+[A-Za-z0-9$_\.\-]+|/[A-Za-z_]+", raw, flags=re.IGNORECASE)
+        if len(slash_matches) >= 2:
+            candidates = slash_matches
+        else:
+            # Поддержка короткой строки: paper signal learning alerts
+            tokens = raw.split()
+            if 2 <= len(tokens) <= 12:
+                candidates = tokens
+
+    commands = []
+    for c in candidates:
+        cmd = command_pool_line_to_command(c)
+        if cmd:
+            commands.append(cmd)
+
+    if len(commands) < 2:
+        return []
+
+    # Ограничение, чтобы случайный текст не запускал огромную очередь.
+    return commands[:12]
+
+def expand_command_pool_updates(items):
+    """
+    Превращает одно Telegram-сообщение с пулом команд в несколько виртуальных updates.
+    Существующий обработчик ниже выполняет их последовательно, как будто пользователь нажал кнопки по очереди.
+    """
+    expanded = []
+    for item in items:
+        try:
+            msg = item.get("message", {}) or {}
+            raw = (msg.get("text", "") or "").strip()
+            commands = parse_command_pool(raw)
+        except Exception:
+            commands = []
+
+        if not commands:
+            expanded.append(item)
+            continue
+
+        for idx, cmd in enumerate(commands, start=1):
+            clone = json.loads(json.dumps(item))
+            clone_msg = clone.setdefault("message", {})
+            clone_msg["text"] = cmd
+            clone_msg["_command_pool"] = True
+            clone_msg["_pool_index"] = idx
+            clone_msg["_pool_total"] = len(commands)
+            clone_msg["_pool_original_text"] = raw[:500]
+            expanded.append(clone)
+
+    return expanded
+
+def command_pool_ack_text(total):
+    return (
+        f"📦 Пул команд принят: {total}. Выполняю по очереди.\n"
+        "Команды не теряются: сначала будет первый отчёт, затем следующий.\n"
+        "Версия обработчика: v17.7.1."
+    )
 
 def coin_search_prompt():
     return (
@@ -4652,7 +4812,7 @@ def paper_report():
         "Цель: проверить, что было бы при виртуальном входе/пропуске сигнала, без риска для денег.\n"
         f"{update_note}"
         f"{summary}\n"
-        "📌 AVOID PUMP TEST: это не оценка упущенной прибыли. Он проверяет риск догонять резкий памп без отката; финальный вывод делается по 24–48ч и по просадке после пампа.\n\n"
+        "📌 AVOID PUMP TEST: это не оценка упущенной прибыли. Он проверяет риск догонять резкий памп без отката; 24ч checkpoint учитывается как ранняя проверка, финальное закрытие и основной вывод — после 48ч.\n\n"
     )
 
     if open_trades:
@@ -4697,7 +4857,20 @@ def paper_report():
             else:
                 text += f"• {t.get('asset','?')}: {out}\n"
     else:
-        text += "Закрытых paper-сделок пока нет. Первые итоги будут после 24–48ч.\n"
+        has_24h_open = False
+        try:
+            now_ts = time.time()
+            for _t in open_trades.values():
+                if isinstance(_t, dict) and now_ts - _paper_safe_float(_t.get("entry_time"), now_ts) >= 24 * 3600:
+                    has_24h_open = True
+                    break
+        except Exception:
+            has_24h_open = False
+
+        if has_24h_open:
+            text += "Закрытых paper-сделок пока нет. 24ч чекпоинты уже учитываются; финальное закрытие сделок и основной вывод будут после 48ч.\n"
+        else:
+            text += "Закрытых paper-сделок пока нет. Ранние чекпоинты копятся по ходу сделки; финальное закрытие и основной вывод будут после 48ч.\n"
 
     return text
 
@@ -4850,6 +5023,20 @@ def learning_age_text(seconds):
         return f"{hours}ч"
 
     return f"{hours}ч {minutes}м"
+
+def russian_raz_word(n):
+    """Правильное склонение для строки seen_count: 1 раз, 2 раза, 5 раз."""
+    try:
+        n = abs(int(n))
+    except Exception:
+        n = 0
+    if n % 100 in [11, 12, 13, 14]:
+        return "раз"
+    if n % 10 == 1:
+        return "раз"
+    if n % 10 in [2, 3, 4]:
+        return "раза"
+    return "раз"
 
 def learning_price_now(asset):
     try:
@@ -5239,7 +5426,7 @@ def learning_open_rows(open_items):
             f"• {asset}: {action_label}, score {score}/100\n"
             f"  статус: {verdict}\n"
             f"  {price_line}\n"
-            f"  прошло: {learning_age_text(age)} | закрытие через: {learning_age_text(close_left)} | встречалось: {seen_count} раз\n"
+            f"  прошло: {learning_age_text(age)} | закрытие через: {learning_age_text(close_left)} | встречалось: {seen_count} {russian_raz_word(seen_count)}\n"
             f"  проверки: {learning_checkpoint_status(rec, now)}\n"
         )
 
@@ -10403,6 +10590,7 @@ def help_text():
         "⚙️ Версия — текущая версия\n\n"
         "Команды тоже работают:\n"
         "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /top\n"
+        "📦 Можно отправить пул команд одним сообщением, каждая с новой строки: /paper, /signal, /learning, /alerts. Бот выполнит их по очереди.\n"
         "/storage, /backup, /weekday, /learn_fast, /paper, /flush, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /rollback\n"
         "TON вводить можно: бот автоматически откроет GRAM.\n\n"
         "Статусы:\n"
@@ -10415,7 +10603,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v17.6.1: fast-learning 15м/30м/1ч/3ч/6ч/12ч/24ч/48ч, snapshot-checkpoints, защита seen_count/дублей, alerts danger wording"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v17.7.1: command pool hotfix очередью + fast-learning 15м/30м/1ч/3ч/6ч/12ч/24ч/48ч, background scan каждые 30м, service-routing fix, защита seen_count/дублей"
     )
 
 
@@ -10464,6 +10652,8 @@ def main():
     last_coin_analysis_time = {}
     last_command_time = {}
     last_service_time = {}
+    # v17.7.1: защита от старого service-callback рядом с тяжёлыми командами.
+    last_non_service_command_time = {}
     last_manual_market_time = 0
     last_manual_signal_time = 0
 
@@ -10516,6 +10706,27 @@ def main():
 
                 continue
 
+            # v17.7 COMMAND POOL:
+            # Одно текстовое сообщение может содержать сразу несколько команд.
+            # Раскладываем его в виртуальные updates, чтобы ниже сработала обычная проверенная логика.
+            items = expand_command_pool_updates(items)
+
+            # v17.6.2 SERVICE ROUTING FIX:
+            # Если Telegram/Render прислал пачку быстрых нажатий, не даём старой кнопке 🛠 Сервис
+            # всплывать перед Paper/Signal/Learning. Сервисное меню показываем только когда последняя
+            # команда чата в текущей пачке действительно /service.
+            batch_latest_command_by_chat = {}
+            for _batch_item in items:
+                try:
+                    _msg = _batch_item.get("message", {}) or {}
+                    _chat = _msg.get("chat", {}).get("id")
+                    _raw = (_msg.get("text", "") or "").strip()
+                    _cmd = normalize_button_text(_raw)
+                    if _chat and _cmd:
+                        batch_latest_command_by_chat[_chat] = _cmd
+                except Exception:
+                    pass
+
             for item in items:
                 last_update = item["update_id"] + 1
                 save_last_update_id(last_update)
@@ -10537,6 +10748,9 @@ def main():
 
                 save_chat_id(chat_id)
 
+                if msg.get("_command_pool") and int(msg.get("_pool_index", 0) or 0) == 1:
+                    send_message(chat_id, command_pool_ack_text(int(msg.get("_pool_total", 0) or 0)))
+
                 if msg.get("document"):
                     admin_result = admin_handle_document(chat_id, msg)
                     if admin_result:
@@ -10544,7 +10758,7 @@ def main():
                     continue
 
                 # v13.7: защита от двойного тапа / повторной доставки одной и той же команды.
-                if should_skip_duplicate_command(chat_id, text, last_command_time):
+                if not msg.get("_command_pool") and should_skip_duplicate_command(chat_id, text, last_command_time):
                     continue
 
                 if raw_text in SEARCH_BUTTONS:
@@ -10601,6 +10815,9 @@ def main():
                 if text.startswith("/") and chat_id in coin_search_waiting:
                     coin_search_waiting.discard(chat_id)
 
+                if text.startswith("/") and text not in ["/service", "/more", "/admin"]:
+                    last_non_service_command_time[chat_id] = time.time()
+
                 if text == "/start":
                     send_message(chat_id, "✅ Бот работает\nМеню упрощено: ежедневные кнопки внизу, всё редкое в 🛠 Сервис. Файл обновления можно просто отправлять документом — теперь main*.py обрабатывается приоритетно.\n\n" + help_text())
 
@@ -10608,7 +10825,7 @@ def main():
                     send_message(chat_id, help_text())
 
                 elif text == "/version":
-                    send_message(chat_id, f"✅ Текущая версия бота: {BOT_VERSION}")
+                    send_message(chat_id, f"✅ Текущая версия бота: {BOT_VERSION}\n📦 Пул команд: включён")
 
                 elif text == "/flush":
                     if is_admin(chat_id) or not ADMIN_CHAT_ID:
@@ -10659,6 +10876,19 @@ def main():
                     send_message(chat_id, weekday_report())
 
                 elif text in ["/service", "/more", "/admin"]:
+                    if not msg.get("_command_pool"):
+                        latest_cmd = batch_latest_command_by_chat.get(chat_id)
+                        if latest_cmd not in ["/service", "/more", "/admin"]:
+                            # В той же пачке уже есть более новая команда пользователя (/paper, /signal, /learning и т.п.).
+                            # Не показываем устаревшее сервисное меню перед нужным отчётом.
+                            continue
+
+                        # v17.7.1: если сразу перед service была тяжёлая команда, это часто старый callback/эхо Telegram.
+                        # Не даём ему всплывать перед Paper/Signal/Learning/Alerts.
+                        prev_non_service = float(last_non_service_command_time.get(chat_id, 0) or 0)
+                        if prev_non_service and time.time() - prev_non_service < 4:
+                            continue
+
                     if should_skip_service_message(chat_id, last_service_time):
                         continue
 
@@ -10685,11 +10915,15 @@ def main():
                     # /signal сразу формирует полный быстрый ticker-safe отчёт по 35 монетам.
                     send_message(chat_id, "⏳ Формирую единый сигнал по 35 монетам...")
                     send_message(chat_id, unified_signal_report())
+                    background_learning_update("manual_signal_v17_6_2")
+                    background_paper_update("manual_signal_v17_6_2")
 
                 elif text == "/signal_full":
                     # Скрытая ручная команда для отладки. Делает то же самое, что /signal.
                     send_message(chat_id, "⏳ Формирую единый сигнал по 35 монетам...")
                     send_message(chat_id, unified_signal_report())
+                    background_learning_update("manual_signal_full_v17_6_2")
+                    background_paper_update("manual_signal_full_v17_6_2")
 
                 elif text == "/btc":
                     send_message(chat_id, single_analysis("BTC-USDT"))
@@ -10733,6 +10967,7 @@ def main():
 
                 elif text in ["/paper", "/paper_trading", "/virtual"]:
                     send_message(chat_id, "⏳ Формирую отчёт по виртуальным сделкам...")
+                    background_learning_update("manual_paper_v17_6_2")
                     try:
                         send_message(chat_id, paper_report())
                     except Exception as e:
@@ -10747,6 +10982,7 @@ def main():
                 elif text == "/alerts":
                     send_message(chat_id, "⏳ Проверяю быстрые пампы...")
                     text_alert, _ = get_fast_pumps()
+                    background_learning_update("manual_alerts_v17_6_2")
 
                     if text_alert:
                         send_message(chat_id, text_alert)
