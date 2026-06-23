@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v17.4 HARD RISK THRESHOLD"
+BOT_VERSION = "v17.5 LEARNING DATA GUARD"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -41,6 +41,7 @@ CHAT_ID_FILE = data_path("chat_id.txt")
 HISTORY_FILE = data_path("signal_history.json")
 PUMP_FILE = data_path("pump_history.json")
 RESULTS_FILE = data_path("signal_results.json")
+RESULTS_BACKUP_FILE = data_path("signal_results_backup.json")
 FROZEN_RESULTS_FILE = data_path("frozen_learning_results.json")
 WEEKDAY_FILE = data_path("weekday_market_stats.json")
 BACKTEST_FILE = data_path("historical_backtest_stats.json")
@@ -393,7 +394,192 @@ def load_json(path):
 
     return {}
 
+def _raw_load_json_file(path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+            return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+def _results_counts(data):
+    if not isinstance(data, dict):
+        return 0, 0
+    open_items = data.get("open", {})
+    closed_items = data.get("closed", [])
+    open_n = len(open_items) if isinstance(open_items, dict) else 0
+    closed_n = len(closed_items) if isinstance(closed_items, list) else 0
+    return open_n, closed_n
+
+def _closed_identity(rec):
+    if not isinstance(rec, dict):
+        return None
+    asset = str(rec.get("asset", "?")).upper()
+    try:
+        ts = int(float(rec.get("time", 0) or 0))
+    except Exception:
+        ts = 0
+    try:
+        price = round(float(rec.get("price", 0) or 0), 8)
+    except Exception:
+        price = 0
+    return f"{asset}:{ts}:{price}"
+
+def _merge_closed_records(*lists):
+    merged = []
+    seen = set()
+    for items in lists:
+        if not isinstance(items, list):
+            continue
+        for rec in items:
+            if not isinstance(rec, dict):
+                continue
+            key = _closed_identity(rec) or str(id(rec))
+            if key in seen:
+                continue
+            seen.add(key)
+            merged.append(rec)
+    return merged[-800:]
+
+def _closed_from_frozen_store_data(store):
+    out = []
+    try:
+        records = store.get("records", {}) if isinstance(store, dict) else {}
+        if not isinstance(records, dict):
+            return []
+        for key, fr in records.items():
+            if not isinstance(fr, dict):
+                continue
+            results = fr.get("results") if isinstance(fr.get("results"), dict) else {}
+            if not results:
+                continue
+            rec = {
+                "asset": str(fr.get("asset", "?")),
+                "time": float(fr.get("time", 0) or 0),
+                "price": fr.get("price", 0),
+                "score": fr.get("score", 0),
+                "master_score": fr.get("score", 0),
+                "action": fr.get("action", "WATCH"),
+                "verdict": fr.get("verdict", ""),
+                "results": dict(results),
+                "frozen_results": dict(results),
+                "result_details": fr.get("result_details", {}) if isinstance(fr.get("result_details"), dict) else {},
+                "frozen_result_details": fr.get("result_details", {}) if isinstance(fr.get("result_details"), dict) else {},
+                "outcome": fr.get("outcome"),
+                "frozen_outcome": fr.get("outcome"),
+                "frozen_at": fr.get("frozen_at", time.time()),
+                "closed_time": fr.get("frozen_at", time.time()),
+                "learning_restored_from": "frozen_learning_results",
+            }
+            out.append(rec)
+    except Exception as e:
+        print(f"frozen store restore error: {e}")
+    return out
+
+def _open_identity(rec):
+    if not isinstance(rec, dict):
+        return None
+    asset = str(rec.get("asset", "?")).upper()
+    try:
+        ts = int(float(rec.get("time", 0) or 0))
+    except Exception:
+        ts = 0
+    return f"{asset}:{ts}"
+
+def _merge_open_records(preferred, backup, closed):
+    if not isinstance(preferred, dict):
+        preferred = {}
+    if not isinstance(backup, dict):
+        backup = {}
+    closed_ids = set(_closed_identity(r) for r in closed if isinstance(r, dict))
+    closed_asset_times = set()
+    for r in closed:
+        if isinstance(r, dict):
+            closed_asset_times.add(_open_identity(r))
+    merged = dict(preferred)
+    now_ts = time.time()
+    for key, rec in backup.items():
+        if not isinstance(rec, dict):
+            continue
+        rid = _open_identity(rec)
+        if rid in closed_asset_times:
+            continue
+        try:
+            age = now_ts - float(rec.get("time", 0) or 0)
+        except Exception:
+            age = 0
+        # Не оживляем очень старые открытые записи, но защищаем текущие 48ч наблюдения.
+        if age > 60 * 3600:
+            continue
+        asset = str(rec.get("asset", "")).upper()
+        duplicate_asset = any(str(x.get("asset", "")).upper() == asset for x in merged.values() if isinstance(x, dict))
+        if duplicate_asset:
+            continue
+        merged[key] = rec
+    return merged
+
+def repair_learning_data_from_backup_and_frozen(data):
+    """v17.5: never let a short /signal write erase learning history.
+    Restores closed 48h from frozen_learning_results.json and protects open observations
+    from accidental collapse after redeploy/GitHub cache races.
+    """
+    if not isinstance(data, dict):
+        data = {}
+    changed = False
+
+    backup = _raw_load_json_file(RESULTS_BACKUP_FILE)
+    frozen_store = _raw_load_json_file(FROZEN_RESULTS_FILE)
+
+    data_open = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    data_closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    backup_open = backup.get("open", {}) if isinstance(backup.get("open", {}), dict) else {}
+    backup_closed = backup.get("closed", []) if isinstance(backup.get("closed", []), list) else []
+    frozen_closed = _closed_from_frozen_store_data(frozen_store)
+
+    merged_closed = _merge_closed_records(data_closed, backup_closed, frozen_closed)
+    if len(merged_closed) > len(data_closed):
+        data["closed"] = merged_closed
+        changed = True
+
+    merged_open = _merge_open_records(data_open, backup_open, data.get("closed", []))
+    if len(merged_open) > len(data_open):
+        data["open"] = merged_open
+        changed = True
+
+    data.setdefault("open", data_open)
+    data.setdefault("closed", data_closed)
+    data["version"] = BOT_VERSION
+    if changed:
+        data["learning_guard_note"] = "v17.5 restored/protected learning data from backup/frozen store"
+        data["learning_guard_time"] = time.time()
+    return data, changed
+
+def _update_results_backup(existing, candidate):
+    try:
+        ex_open, ex_closed = _results_counts(existing)
+        bk = _raw_load_json_file(RESULTS_BACKUP_FILE)
+        bk_open, bk_closed = _results_counts(bk)
+        # Backup should keep the richest recent learning state, especially closed 48h.
+        if ex_open + ex_closed * 10 >= bk_open + bk_closed * 10 and (ex_open or ex_closed):
+            with open(RESULTS_BACKUP_FILE, "w", encoding="utf-8") as f:
+                json.dump(existing, f, ensure_ascii=False, indent=2)
+            mark_github_dirty(RESULTS_BACKUP_FILE)
+    except Exception as e:
+        print(f"learning backup update error: {e}")
+
 def save_json(path, data):
+    # v17.5: guard learning data before writes. A short /signal or cache race must not
+    # erase open observations or frozen closed 48h history.
+    try:
+        if os.path.basename(str(path)) == "signal_results.json":
+            existing = _raw_load_json_file(path)
+            _update_results_backup(existing, data)
+            data, guard_changed = repair_learning_data_from_backup_and_frozen(data)
+            if guard_changed:
+                mark_github_dirty(RESULTS_BACKUP_FILE)
+    except Exception as e:
+        print(f"learning data guard error: {e}")
+
     try:
         with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
@@ -558,6 +744,7 @@ def storage_report():
         "",
         file_info_line(RESULTS_FILE, "signal_results.json / обучение"),
         file_info_line(FROZEN_RESULTS_FILE, "frozen_learning_results.json / заморозка 48ч"),
+        file_info_line(RESULTS_BACKUP_FILE, "signal_results_backup.json / резерв обучения"),
         file_info_line(HISTORY_FILE, "signal_history.json / история сигналов"),
         file_info_line(PUMP_FILE, "pump_history.json / alerts"),
         file_info_line(WEEKDAY_FILE, "weekday_market_stats.json / дни недели"),
@@ -598,6 +785,7 @@ def send_backup_files(chat_id):
     files = [
         (RESULTS_FILE, "📚 backup learning"),
         (FROZEN_RESULTS_FILE, "🧊 backup frozen 48h results"),
+        (RESULTS_BACKUP_FILE, "📚 backup learning safe copy"),
         (PAPER_TRADES_FILE, "🧪 backup paper trades"),
         (HISTORY_FILE, "📊 backup signal history"),
         (PUMP_FILE, "⚡ backup alerts"),
@@ -3339,7 +3527,7 @@ def save_frozen_results_store(data, sync_now=False):
     data.setdefault("records", {})
     save_json(FROZEN_RESULTS_FILE, data)
     if sync_now:
-        sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+        sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
 
 
 def learning_results_for_eval(rec):
@@ -3500,11 +3688,11 @@ def persist_closed_learning_freeze(sync_now=False):
         if changed or sync_now:
             save_json(RESULTS_FILE, data)
             if sync_now:
-                sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+                sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
             return changed, len(closed)
 
         if sync_now:
-            sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+            sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
         return False, len(closed)
     except Exception as e:
         print(f"persist closed learning freeze error: {e}")
@@ -3734,7 +3922,7 @@ def background_learning_update(reason="learning"):
                         if ch:
                             data["closed"] = closed2
                             save_json(RESULTS_FILE, data)
-                background_github_sync([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+                background_github_sync([FROZEN_RESULTS_FILE, RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
             except Exception as e:
                 print(f"background learning freeze error: {e}")
         except Exception as e:
@@ -4719,7 +4907,7 @@ def freeze_due_learning_checkpoints_from_cache(max_snapshot_age_seconds=3 * 3600
         data["open"] = open_items
         data.setdefault("version", BOT_VERSION)
         save_json(RESULTS_FILE, data)
-        background_github_sync([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
+        background_github_sync([RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
     return changed
 
 def learning_checkpoints():
@@ -5008,7 +5196,7 @@ def learning_report(sync_github=False):
     # Обычный /learning читает локальный кэш, а обновление checkpoints запускает фоном.
     if sync_github:
         update_signal_results()
-        sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+        sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
     else:
         background_learning_update("manual_learning")
 
@@ -5020,6 +5208,13 @@ def learning_report(sync_github=False):
             "Истории пока нет.\n"
             "Возможная причина: файл истории ещё не создан или сбросился после деплоя Render."
         )
+
+    # v17.5: если после /signal/GitHub-cache race история внезапно стала короче,
+    # восстанавливаем закрытые 48ч из frozen store и открытые наблюдения из backup.
+    data, _guard_changed = repair_learning_data_from_backup_and_frozen(data)
+    if _guard_changed:
+        save_json(RESULTS_FILE, data)
+        background_github_sync([FROZEN_RESULTS_FILE, RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=5)
 
     # v16.3: если 6ч/12ч/24ч уже наступили, фиксируем checkpoint из локального кэша
     # без сетевых запросов. Это быстро и убирает "ждём 0м".
@@ -5033,7 +5228,7 @@ def learning_report(sync_github=False):
     if normalized:
         data["open"] = open_items
         save_json(RESULTS_FILE, data)
-        background_github_sync([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
+        background_github_sync([RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
 
     closed = data.get("closed", [])
     closed, closed_normalized = normalize_closed_learning_records(closed, sync_now=sync_github)
@@ -5042,9 +5237,9 @@ def learning_report(sync_github=False):
         save_json(RESULTS_FILE, data)
         # v16.2: обычный /learning не ждёт GitHub. Синхронизация только фоном.
         if sync_github:
-            sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+            sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
         else:
-            background_github_sync([FROZEN_RESULTS_FILE, RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+            background_github_sync([FROZEN_RESULTS_FILE, RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
     open_items = data.get("open", {})
 
     total = len(closed)
@@ -7342,7 +7537,7 @@ def repair_learning_open_records():
 
     if changed:
         save_json(RESULTS_FILE, data)
-        sync_github_storage_now([RESULTS_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE])
+        sync_github_storage_now([RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE])
         return f"✅ Обучение исправлено: безопасно переписано открытых наблюдений: {fixed}."
 
     return "✅ Проверил обучение: опасных записей GRAM/TAO/спекулятивных монет не найдено."
