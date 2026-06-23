@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v17.3 BTC DROP WORDING GUARD"
+BOT_VERSION = "v17.4 HARD RISK THRESHOLD"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -2270,6 +2270,18 @@ def market_risk_level(ctx):
     if btc_change <= -3 and fg_value <= 25:
         return "danger"
     if btc_change <= -3 and news_score <= 2:
+        return "danger"
+
+    # v17.4: hard-risk threshold.
+    # Если BTC уже падает примерно -2.5% и ниже, страх остается высоким,
+    # а новости отрицательные, это нельзя показывать как обычный осторожный рынок.
+    # BUY и агрессивные формулировки должны оставаться заблокированы,
+    # а рынок должен называться рискованным/опасным.
+    if btc_change <= -2.5 and fg_value <= 25 and news_score <= -6:
+        return "danger"
+
+    # Если BTC почти -3% даже при смешанных новостях и страхе, это hard-risk режим.
+    if btc_change <= -2.8 and fg_value <= 25:
         return "danger"
 
     # v10.9: BTC ниже -2.3% + экстремальный страх — уже danger.
