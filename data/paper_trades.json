@@ -1374,9 +1374,28 @@
       "last_price": 2.5277,
       "last_price_time": 1782221019.2505746,
       "last_pct": -8.2
+    },
+    "ESPORTS:AVOID_PUMP_TEST:495062": {
+      "id": "ESPORTS:AVOID_PUMP_TEST:495062",
+      "asset": "ESPORTS",
+      "entry_time": 1782226638.702043,
+      "entry_price": 0.0366,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 31.65,
+      "btc_change": -3.69,
+      "macro_mod": -5,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [],
-  "last_created_at": 1782192263.1923957,
+  "last_created_at": 1782226638.702043,
   "last_update_at": 1782221019.8480282
 }
