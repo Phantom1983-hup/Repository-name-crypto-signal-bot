@@ -1,0 +1,723 @@
+{
+  "open": {
+    "BTC_1782234515": {
+      "asset": "BTC",
+      "price": 62447.6,
+      "score": 56,
+      "master_score": 56,
+      "bucket": "50-59",
+      "chance_5": 0,
+      "chance_10": 0,
+      "chance_15": 0,
+      "action": "WATCH",
+      "learning_type": "WATCH",
+      "verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
+      "is_quality": true,
+      "profile": "крупный актив",
+      "rsi": 50,
+      "volume_trend": 1.0,
+      "change_24": -3.45,
+      "btc_change": -3.45,
+      "macro_mod": -15,
+      "market_bucket": "bad_macro_btc_down",
+      "tags": [
+        "bad_macro",
+        "btc_down",
+        "core_asset"
+      ],
+      "learning_delta": 0,
+      "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
+      "time": 1782234515.557986,
+      "last_seen": 1782235758.6590822,
+      "last_seen_counted": 1782234515.557986,
+      "seen_count": 1,
+      "results": {
+        "15m": 0.26
+      },
+      "price_points": [
+        {
+          "time": 1782234515.557986,
+          "price": 62447.6
+        },
+        {
+          "time": 1782234627.1241612,
+          "price": 62475.6
+        },
+        {
+          "time": 1782234657.36843,
+          "price": 62513.1
+        },
+        {
+          "time": 1782234722.926031,
+          "price": 62532.9
+        },
+        {
+          "time": 1782234810.0918171,
+          "price": 62519.8
+        },
+        {
+          "time": 1782234860.9994488,
+          "price": 62437.4
+        },
+        {
+          "time": 1782234996.8057725,
+          "price": 62525.2
+        },
+        {
+          "time": 1782235134.3373938,
+          "price": 62530.6
+        },
+        {
+          "time": 1782235394.9594119,
+          "price": 62606.0
+        },
+        {
+          "time": 1782235504.1216133,
+          "price": 62612.4
+        },
+        {
+          "time": 1782235733.3674166,
+          "price": 62649.9
+        },
+        {
+          "time": 1782235866.014543,
+          "price": 62596.1
+        }
+      ],
+      "last_price": 62649.9,
+      "last_score": 57,
+      "last_action": "WATCH",
+      "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782235504.1216133,
+          "target_time": 1782235415.557986,
+          "checkpoint_price": 62612.4,
+          "checkpoint_pct": 0.26,
+          "source": "snapshot"
+        }
+      }
+    },
+    "ETH_1782234515": {
+      "asset": "ETH",
+      "price": 1657.79,
+      "score": 53,
+      "master_score": 53,
+      "bucket": "50-59",
+      "chance_5": 0,
+      "chance_10": 0,
+      "chance_15": 0,
+      "action": "WATCH",
+      "learning_type": "WATCH",
+      "verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
+      "is_quality": true,
+      "profile": "крупный актив",
+      "rsi": 50,
+      "volume_trend": 1.0,
+      "change_24": -4.78,
+      "btc_change": -3.45,
+      "macro_mod": -15,
+      "market_bucket": "bad_macro_btc_down",
+      "tags": [
+        "bad_macro",
+        "btc_down",
+        "core_asset"
+      ],
+      "learning_delta": 0,
+      "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
+      "time": 1782234515.557986,
+      "last_seen": 1782235758.6590822,
+      "last_seen_counted": 1782234515.557986,
+      "seen_count": 1,
+      "results": {
+        "15m": 0.24
+      },
+      "price_points": [
+        {
+          "time": 1782234515.557986,
+          "price": 1657.79
+        },
+        {
+          "time": 1782234627.1241612,
+          "price": 1658.78
+        },
+        {
+          "time": 1782234657.36843,
+          "price": 1659.73
+        },
+        {
+          "time": 1782234722.926031,
+          "price": 1660.76
+        },
+        {
+          "time": 1782234810.0918171,
+          "price": 1660.27
+        },
+        {
+          "time": 1782234860.9994488,
+          "price": 1657.85
+        },
+        {
+          "time": 1782234996.8057725,
+          "price": 1659.67
+        },
+        {
+          "time": 1782235134.3373938,
+          "price": 1659.13
+        },
+        {
+          "time": 1782235394.9594119,
+          "price": 1661.06
+        },
+        {
+          "time": 1782235504.1216133,
+          "price": 1661.82
+        },
+        {
+          "time": 1782235733.3674166,
+          "price": 1663.28
+        },
+        {
+          "time": 1782235866.014543,
+          "price": 1661.54
+        }
+      ],
+      "last_price": 1663.43,
+      "last_score": 55,
+      "last_action": "WATCH",
+      "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782235504.1216133,
+          "target_time": 1782235415.557986,
+          "checkpoint_price": 1661.82,
+          "checkpoint_pct": 0.24,
+          "source": "snapshot"
+        }
+      }
+    },
+    "ARX_1782234515": {
+      "asset": "ARX",
+      "price": 0.36728,
+      "score": 55,
+      "master_score": 55,
+      "bucket": "50-59",
+      "chance_5": 0,
+      "chance_10": 0,
+      "chance_15": 0,
+      "action": "WATCH",
+      "learning_type": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "profile": "спекулятивный альт",
+      "rsi": 50,
+      "volume_trend": 1.0,
+      "change_24": 36.79,
+      "btc_change": -3.45,
+      "macro_mod": -15,
+      "market_bucket": "bad_macro_btc_down",
+      "tags": [
+        "bad_macro",
+        "btc_down",
+        "speculative"
+      ],
+      "learning_delta": 0,
+      "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
+      "time": 1782234515.557986,
+      "last_seen": 1782235758.6590822,
+      "last_seen_counted": 1782234515.557986,
+      "seen_count": 1,
+      "results": {
+        "15m": -0.0
+      },
+      "price_points": [
+        {
+          "time": 1782234515.557986,
+          "price": 0.36728
+        },
+        {
+          "time": 1782234565.7929652,
+          "price": 0.36799
+        },
+        {
+          "time": 1782234627.1241612,
+          "price": 0.36833
+        },
+        {
+          "time": 1782234722.926031,
+          "price": 0.36862
+        },
+        {
+          "time": 1782234810.0918171,
+          "price": 0.36694
+        },
+        {
+          "time": 1782234860.9994488,
+          "price": 0.3673
+        },
+        {
+          "time": 1782234996.8057725,
+          "price": 0.36536
+        },
+        {
+          "time": 1782235134.3373938,
+          "price": 0.36604
+        },
+        {
+          "time": 1782235183.1167781,
+          "price": 0.36527
+        },
+        {
+          "time": 1782235394.9594119,
+          "price": 0.36823
+        },
+        {
+          "time": 1782235452.1372519,
+          "price": 0.36727
+        },
+        {
+          "time": 1782235504.1216133,
+          "price": 0.36872
+        },
+        {
+          "time": 1782235733.3674166,
+          "price": 0.37191
+        },
+        {
+          "time": 1782235758.6590822,
+          "price": 0.36892
+        },
+        {
+          "time": 1782235866.014543,
+          "price": 0.36755
+        }
+      ],
+      "last_price": 0.36892,
+      "last_score": 55,
+      "last_action": "WATCH",
+      "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782235452.1372519,
+          "target_time": 1782235415.557986,
+          "checkpoint_price": 0.36727,
+          "checkpoint_pct": -0.0,
+          "source": "snapshot"
+        }
+      }
+    },
+    "ESPORTS_1782234515": {
+      "asset": "ESPORTS",
+      "price": 0.0356,
+      "score": 55,
+      "master_score": 55,
+      "bucket": "50-59",
+      "chance_5": 0,
+      "chance_10": 0,
+      "chance_15": 0,
+      "action": "WATCH",
+      "learning_type": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "profile": "спекулятивный альт",
+      "rsi": 50,
+      "volume_trend": 1.0,
+      "change_24": 35.36,
+      "btc_change": -3.45,
+      "macro_mod": -15,
+      "market_bucket": "bad_macro_btc_down",
+      "tags": [
+        "bad_macro",
+        "btc_down",
+        "speculative"
+      ],
+      "learning_delta": 0,
+      "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
+      "time": 1782234515.557986,
+      "last_seen": 1782235758.6590822,
+      "last_seen_counted": 1782234515.557986,
+      "seen_count": 1,
+      "results": {
+        "15m": 0.56
+      },
+      "price_points": [
+        {
+          "time": 1782234515.557986,
+          "price": 0.0356
+        },
+        {
+          "time": 1782234565.7929652,
+          "price": 0.0357
+        },
+        {
+          "time": 1782234627.1241612,
+          "price": 0.0356
+        },
+        {
+          "time": 1782234657.36843,
+          "price": 0.0357
+        },
+        {
+          "time": 1782234722.926031,
+          "price": 0.0357
+        },
+        {
+          "time": 1782234810.0918171,
+          "price": 0.0357
+        },
+        {
+          "time": 1782234860.9994488,
+          "price": 0.0355
+        },
+        {
+          "time": 1782234996.8057725,
+          "price": 0.0359
+        },
+        {
+          "time": 1782235134.3373938,
+          "price": 0.0358
+        },
+        {
+          "time": 1782235183.1167781,
+          "price": 0.0357
+        },
+        {
+          "time": 1782235394.9594119,
+          "price": 0.0359
+        },
+        {
+          "time": 1782235452.1372519,
+          "price": 0.0358
+        },
+        {
+          "time": 1782235504.1216133,
+          "price": 0.0356
+        },
+        {
+          "time": 1782235733.3674166,
+          "price": 0.0357
+        },
+        {
+          "time": 1782235758.6590822,
+          "price": 0.0359
+        },
+        {
+          "time": 1782235866.014543,
+          "price": 0.0364
+        }
+      ],
+      "last_price": 0.0359,
+      "last_score": 55,
+      "last_action": "WATCH",
+      "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782235452.1372519,
+          "target_time": 1782235415.557986,
+          "checkpoint_price": 0.0358,
+          "checkpoint_pct": 0.56,
+          "source": "snapshot"
+        }
+      }
+    },
+    "DEXE_1782234515": {
+      "asset": "DEXE",
+      "price": 22.5317,
+      "score": 55,
+      "master_score": 55,
+      "bucket": "50-59",
+      "chance_5": 0,
+      "chance_10": 0,
+      "chance_15": 0,
+      "action": "WATCH",
+      "learning_type": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "profile": "спекулятивный альт",
+      "rsi": 50,
+      "volume_trend": 1.0,
+      "change_24": 23.75,
+      "btc_change": -3.45,
+      "macro_mod": -15,
+      "market_bucket": "bad_macro_btc_down",
+      "tags": [
+        "bad_macro",
+        "btc_down",
+        "speculative"
+      ],
+      "learning_delta": 0,
+      "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
+      "time": 1782234515.557986,
+      "last_seen": 1782235758.6590822,
+      "last_seen_counted": 1782234515.557986,
+      "seen_count": 1,
+      "results": {
+        "15m": -0.33
+      },
+      "price_points": [
+        {
+          "time": 1782234515.557986,
+          "price": 22.5317
+        },
+        {
+          "time": 1782234565.7929652,
+          "price": 22.6005
+        },
+        {
+          "time": 1782234627.1241612,
+          "price": 22.5993
+        },
+        {
+          "time": 1782234657.36843,
+          "price": 22.5442
+        },
+        {
+          "time": 1782234722.926031,
+          "price": 22.5442
+        },
+        {
+          "time": 1782234810.0918171,
+          "price": 22.6059
+        },
+        {
+          "time": 1782234996.8057725,
+          "price": 22.6944
+        },
+        {
+          "time": 1782235134.3373938,
+          "price": 22.6301
+        },
+        {
+          "time": 1782235183.1167781,
+          "price": 22.487
+        },
+        {
+          "time": 1782235394.9594119,
+          "price": 22.4587
+        },
+        {
+          "time": 1782235504.1216133,
+          "price": 22.458
+        },
+        {
+          "time": 1782235733.3674166,
+          "price": 22.5707
+        },
+        {
+          "time": 1782235866.014543,
+          "price": 22.4978
+        }
+      ],
+      "last_price": 22.5707,
+      "last_score": 55,
+      "last_action": "WATCH",
+      "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782235504.1216133,
+          "target_time": 1782235415.557986,
+          "checkpoint_price": 22.458,
+          "checkpoint_pct": -0.33,
+          "source": "snapshot"
+        }
+      }
+    },
+    "BEAT_1782234810": {
+      "asset": "BEAT",
+      "price": 1.9255,
+      "score": 55,
+      "master_score": 55,
+      "bucket": "50-59",
+      "chance_5": 0,
+      "chance_10": 0,
+      "chance_15": 0,
+      "action": "WATCH",
+      "learning_type": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "profile": "спекулятивный альт",
+      "rsi": 50,
+      "volume_trend": 1.0,
+      "change_24": 12.3,
+      "btc_change": -3.31,
+      "macro_mod": -6,
+      "market_bucket": "btc_down",
+      "tags": [
+        "btc_down",
+        "speculative"
+      ],
+      "learning_delta": 0,
+      "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
+      "time": 1782234810.0918171,
+      "last_seen": 1782235758.6590822,
+      "last_seen_counted": 1782234810.0918171,
+      "seen_count": 1,
+      "results": {
+        "15m": 1.38
+      },
+      "price_points": [
+        {
+          "time": 1782234810.0918171,
+          "price": 1.9255
+        },
+        {
+          "time": 1782234996.8057725,
+          "price": 1.9482
+        },
+        {
+          "time": 1782235134.3373938,
+          "price": 1.9236
+        },
+        {
+          "time": 1782235183.1167781,
+          "price": 1.9327
+        },
+        {
+          "time": 1782235394.9594119,
+          "price": 1.9365
+        },
+        {
+          "time": 1782235504.1216133,
+          "price": 1.9477
+        },
+        {
+          "time": 1782235733.3674166,
+          "price": 1.9521
+        },
+        {
+          "time": 1782235758.6590822,
+          "price": 1.9438
+        },
+        {
+          "time": 1782235866.014543,
+          "price": 1.9468
+        }
+      ],
+      "last_price": 1.9438,
+      "last_score": 55,
+      "last_action": "WATCH",
+      "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782235733.3674166,
+          "target_time": 1782235710.0918171,
+          "checkpoint_price": 1.9521,
+          "checkpoint_pct": 1.38,
+          "source": "snapshot"
+        }
+      }
+    },
+    "AVAX_1782235183": {
+      "asset": "AVAX",
+      "price": 6.313,
+      "score": 56,
+      "master_score": 56,
+      "bucket": "50-59",
+      "chance_5": 0,
+      "chance_10": 0,
+      "chance_15": 0,
+      "action": "WATCH",
+      "learning_type": "WATCH",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "is_quality": true,
+      "profile": "качественный альт",
+      "rsi": 50,
+      "volume_trend": 1.0,
+      "change_24": 0.06,
+      "btc_change": -3.21,
+      "macro_mod": -6,
+      "market_bucket": "btc_down",
+      "tags": [
+        "btc_down",
+        "quality_alt"
+      ],
+      "learning_delta": 0,
+      "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
+      "time": 1782235183.1167781,
+      "last_seen": 1782235758.6590822,
+      "last_seen_counted": 1782235183.1167781,
+      "seen_count": 1,
+      "results": {},
+      "price_points": [
+        {
+          "time": 1782235183.1167781,
+          "price": 6.313
+        },
+        {
+          "time": 1782235394.9594119,
+          "price": 6.331
+        },
+        {
+          "time": 1782235504.1216133,
+          "price": 6.337
+        },
+        {
+          "time": 1782235733.3674166,
+          "price": 6.343
+        },
+        {
+          "time": 1782235866.014543,
+          "price": 6.331
+        }
+      ],
+      "last_price": 6.345,
+      "last_score": 57,
+      "last_action": "WATCH",
+      "last_verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "result_details": {}
+    },
+    "FOLKS_1782235452": {
+      "asset": "FOLKS",
+      "price": 2.6025,
+      "score": 55,
+      "master_score": 55,
+      "bucket": "50-59",
+      "chance_5": 0,
+      "chance_10": 0,
+      "chance_15": 0,
+      "action": "WATCH",
+      "learning_type": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "profile": "спекулятивный альт",
+      "rsi": 50,
+      "volume_trend": 1.0,
+      "change_24": 12.19,
+      "btc_change": -3.03,
+      "macro_mod": -6,
+      "market_bucket": "btc_down",
+      "tags": [
+        "btc_down",
+        "speculative"
+      ],
+      "learning_delta": 0,
+      "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
+      "time": 1782235452.1372519,
+      "last_seen": 1782235758.6590822,
+      "last_seen_counted": 1782235452.1372519,
+      "seen_count": 1,
+      "results": {},
+      "price_points": [
+        {
+          "time": 1782235452.1372519,
+          "price": 2.6025
+        },
+        {
+          "time": 1782235733.3674166,
+          "price": 2.6041
+        },
+        {
+          "time": 1782235866.014543,
+          "price": 2.61
+        }
+      ],
+      "last_price": 2.6041,
+      "last_score": 55,
+      "last_action": "WATCH",
+      "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "result_details": {}
+    }
+  },
+  "closed": [],
+  "version": "v17.5 LEARNING DATA GUARD"
+}
