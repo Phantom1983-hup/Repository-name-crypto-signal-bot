@@ -28,7 +28,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782234515.557986,
-      "last_seen": 1782255207.9309943,
+      "last_seen": 1782255261.5549476,
       "last_seen_counted": 1782252875.131754,
       "seen_count": 6,
       "results": {
@@ -512,10 +512,14 @@
         {
           "time": 1782255207.9309943,
           "price": 62521.8
+        },
+        {
+          "time": 1782255261.5549476,
+          "price": 62562.3
         }
       ],
-      "last_price": 62521.8,
-      "last_score": 58,
+      "last_price": 62562.3,
+      "last_score": 59,
       "last_action": "WATCH",
       "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
       "result_details": {
@@ -572,7 +576,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782234515.557986,
-      "last_seen": 1782255207.9309943,
+      "last_seen": 1782255261.5549476,
       "last_seen_counted": 1782252875.131754,
       "seen_count": 6,
       "results": {
@@ -1054,7 +1058,7 @@
           "price": 1663.21
         }
       ],
-      "last_price": 1663.21,
+      "last_price": 1663.96,
       "last_score": 56,
       "last_action": "WATCH",
       "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
@@ -1532,7 +1536,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782234515.557986,
-      "last_seen": 1782255207.9309943,
+      "last_seen": 1782255261.5549476,
       "last_seen_counted": 1782252875.131754,
       "seen_count": 6,
       "results": {
@@ -2124,7 +2128,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782234515.557986,
-      "last_seen": 1782255207.9309943,
+      "last_seen": 1782255261.5549476,
       "last_seen_counted": 1782252875.131754,
       "seen_count": 6,
       "results": {
@@ -2687,7 +2691,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782234810.0918171,
-      "last_seen": 1782255207.9309943,
+      "last_seen": 1782255261.5549476,
       "last_seen_counted": 1782253926.280135,
       "seen_count": 6,
       "results": {
@@ -3231,9 +3235,13 @@
         {
           "time": 1782255207.9309943,
           "price": 2.1188
+        },
+        {
+          "time": 1782255261.5549476,
+          "price": 2.1277
         }
       ],
-      "last_price": 2.1188,
+      "last_price": 2.1277,
       "last_score": 55,
       "last_action": "WATCH",
       "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
@@ -3290,7 +3298,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782235183.1167781,
-      "last_seen": 1782255207.9309943,
+      "last_seen": 1782255261.5549476,
       "last_seen_counted": 1782252051.0229342,
       "seen_count": 5,
       "results": {
@@ -3668,7 +3676,7 @@
           "price": 6.46
         }
       ],
-      "last_price": 6.46,
+      "last_price": 6.459,
       "last_score": 63,
       "last_action": "WATCH",
       "last_verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
@@ -4021,7 +4029,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782239937.7376244,
-      "last_seen": 1782255207.9309943,
+      "last_seen": 1782255261.5549476,
       "last_seen_counted": 1782254662.3995452,
       "seen_count": 5,
       "results": {
@@ -4340,9 +4348,13 @@
         {
           "time": 1782255207.9309943,
           "price": 0.05184
+        },
+        {
+          "time": 1782255261.5549476,
+          "price": 0.052
         }
       ],
-      "last_price": 0.05184,
+      "last_price": 0.052,
       "last_score": 55,
       "last_action": "WATCH",
       "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
@@ -4523,5 +4535,5 @@
     }
   },
   "closed": [],
-  "version": "v17.8.1 MAIN REPORT BUTTON"
+  "version": "v17.8.5 NO REPORT BUTTON"
 }
