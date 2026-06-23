@@ -63,9 +63,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 62460.1,
-      "last_price_time": 1782234367.0678086,
-      "last_pct": -3.26
+      "last_price": 62628.0,
+      "last_price_time": 1782235567.9715917,
+      "last_pct": -3.0
     },
     "ETH:VIRTUAL_WATCH_ENTRY_TEST:495040": {
       "id": "ETH:VIRTUAL_WATCH_ENTRY_TEST:495040",
@@ -129,9 +129,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 1657.27,
-      "last_price_time": 1782234367.0678086,
-      "last_pct": -4.54
+      "last_price": 1662.34,
+      "last_price_time": 1782235567.9715917,
+      "last_pct": -4.24
     },
     "SUI:VIRTUAL_WATCH_ENTRY_TEST:495040": {
       "id": "SUI:VIRTUAL_WATCH_ENTRY_TEST:495040",
@@ -315,9 +315,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.36666,
-      "last_price_time": 1782234418.1626463,
-      "last_pct": 35.35
+      "last_price": 0.37,
+      "last_price_time": 1782235567.9715917,
+      "last_pct": 36.58
     },
     "SYN:AVOID_PUMP_TEST:495040": {
       "id": "SYN:AVOID_PUMP_TEST:495040",
@@ -501,9 +501,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 6.322,
-      "last_price_time": 1782234367.0678086,
-      "last_pct": 0.44
+      "last_price": 6.335,
+      "last_price_time": 1782235567.9715917,
+      "last_pct": 0.65
     },
     "LINK:VIRTUAL_WATCH_ENTRY_TEST:495040": {
       "id": "LINK:VIRTUAL_WATCH_ENTRY_TEST:495040",
@@ -1281,9 +1281,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 22.4995,
-      "last_price_time": 1782234418.1626463,
-      "last_pct": 2.91
+      "last_price": 22.458,
+      "last_price_time": 1782235567.9715917,
+      "last_pct": 2.72
     },
     "UMXM:AVOID_PUMP_TEST:495049": {
       "id": "UMXM:AVOID_PUMP_TEST:495049",
@@ -1364,7 +1364,8 @@
         "30m": 0.03,
         "1h": 0.03,
         "3h": 7.99,
-        "6h": -5.66
+        "6h": -5.66,
+        "12h": -5.5
       },
       "result_details": {
         "15m": {
@@ -1391,13 +1392,18 @@
           "checkpoint_time": 1782213886.7100837,
           "checkpoint_price": 2.5976,
           "source": "learning_cache:snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782235567.9715917,
+          "checkpoint_price": 2.602,
+          "source": "learning_cache:snapshot"
         }
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 2.59,
-      "last_price_time": 1782232956.6403472,
-      "last_pct": -5.94
+      "last_price": 2.602,
+      "last_price_time": 1782235567.9715917,
+      "last_pct": -5.5
     },
     "ESPORTS:AVOID_PUMP_TEST:495062": {
       "id": "ESPORTS:AVOID_PUMP_TEST:495062",
@@ -1437,9 +1443,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.0351,
-      "last_price_time": 1782234367.0678086,
-      "last_pct": -4.1
+      "last_price": 0.0355,
+      "last_price_time": 1782235567.9715917,
+      "last_pct": -3.01
     },
     "BEAT:AVOID_PUMP_TEST:495063": {
       "id": "BEAT:AVOID_PUMP_TEST:495063",
@@ -1479,9 +1485,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 1.9328,
-      "last_price_time": 1782233960.496994,
-      "last_pct": 0.81
+      "last_price": 1.952,
+      "last_price_time": 1782235567.9715917,
+      "last_pct": 1.81
     },
     "POPCAT:AVOID_PUMP_TEST:495064": {
       "id": "POPCAT:AVOID_PUMP_TEST:495064",
@@ -1522,5 +1528,5 @@
   },
   "closed": [],
   "last_created_at": 1782232021.5247328,
-  "last_update_at": 1782234418.6074317
+  "last_update_at": 1782235568.272399
 }
