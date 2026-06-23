@@ -1452,9 +1452,28 @@
       "last_price": 1.9261,
       "last_price_time": 1782230461.104477,
       "last_pct": 0.46
+    },
+    "POPCAT:AVOID_PUMP_TEST:495064": {
+      "id": "POPCAT:AVOID_PUMP_TEST:495064",
+      "asset": "POPCAT",
+      "entry_time": 1782232021.5247328,
+      "entry_price": 0.05221,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 12.03,
+      "btc_change": -3.24,
+      "macro_mod": -15,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [],
-  "last_created_at": 1782229385.2369926,
+  "last_created_at": 1782232021.5247328,
   "last_update_at": 1782231187.133285
 }
