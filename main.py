@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v18.4.3 WORDING + PAPER CLASSIFICATION"
+BOT_VERSION = "v18.5 PAPER + CONFIDENCE + DANGER FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -3321,13 +3321,20 @@ def btc_filter():
         if change > 0:
             return "BTC зелёный, но подтверждение слабое", 0, change
 
+        
+        if change <= -4:
+            return "BTC сильно падает", -25, change
+        if change <= -2:
+            return "BTC заметно давит", -18, change
         return "BTC слегка давит", -12, change
 
     except Exception:
         # Fallback: ticker работает, но свечи/RSI не пришли.
         # Это лучше, чем показывать BTC 0.00%.
+        if change <= -4:
+            return "BTC сильно падает", -25, change
         if change <= -2:
-            return "BTC слегка давит", -12, change
+            return "BTC заметно давит", -18, change
         if change < 0:
             return "BTC слабый", -6, change
         if change >= 2:
@@ -5129,15 +5136,25 @@ def paper_outcome(trade):
     value = r48 if isinstance(r48, (int, float)) else r24
     if not isinstance(value, (int, float)):
         return "open"
+
+    # v18.5: Paper теперь оценивает решение бота, а не просто движение цены.
+    # WATCH/OBSERVE без фактического BUY: падение = бот защитил от входа, рост = возможно был слишком осторожен.
+    # Это исправляет ложные "paper loss" по SUI/LINK/BNB, когда бот НЕ покупал, а рынок упал.
     if vtype == "AVOID_PUMP_TEST":
         if value <= -3:
             return "avoid_saved"
         if value >= 5:
-            # v18.4.3: это не ошибка BUY и не просто "упущенная прибыль".
-            # AVOID PUMP проверяет, стоило ли НЕ догонять резкий памп.
-            # Если памп продолжился без отката, классифицируем отдельно до накопления 48ч статистики.
             return "pump_continued_no_pullback"
         return "avoid_neutral"
+
+    if "WATCH" in vtype or "OBSERVE" in vtype or "MONITOR" in vtype:
+        if value <= -3:
+            return "watch_saved_loss"
+        if value >= 3:
+            return "watch_missed_gain"
+        return "watch_neutral"
+
+    # Только реальные/виртуальные BUY-тесты считаем win/loss по PnL.
     if value >= 2.5:
         return "paper_win"
     if value <= -3:
@@ -5231,12 +5248,14 @@ def paper_summary_line():
     closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
     if not open_n and not closed:
         return "Виртуальные сделки: пока нет"
-    wins = sum(1 for t in closed if paper_outcome(t) == "paper_win")
-    losses = sum(1 for t in closed if paper_outcome(t) == "paper_loss")
-    saved = sum(1 for t in closed if paper_outcome(t) == "avoid_saved")
-    missed = sum(1 for t in closed if paper_outcome(t) == "avoid_missed")
-    pump_continued = sum(1 for t in closed if paper_outcome(t) == "pump_continued_no_pullback")
-    return f"Виртуальные сделки: открыто {open_n} | закрыто {len(closed)} | ✅ {wins} | 🔴 {losses} | 🛡 {saved} | ⚠️ {missed} | 📈 памп без отката {pump_continued}"
+    outcomes = [paper_outcome(t) for t in closed]
+    wins = sum(1 for o in outcomes if o == "paper_win")
+    losses = sum(1 for o in outcomes if o == "paper_loss")
+    saved = sum(1 for o in outcomes if o in ("avoid_saved", "watch_saved_loss"))
+    missed = sum(1 for o in outcomes if o in ("avoid_missed", "watch_missed_gain"))
+    pump_continued = sum(1 for o in outcomes if o == "pump_continued_no_pullback")
+    neutral = sum(1 for o in outcomes if o in ("paper_neutral", "avoid_neutral", "watch_neutral"))
+    return f"Виртуальные сделки: открыто {open_n} | закрыто {len(closed)} | ✅ BUY win {wins} | 🔴 BUY loss {losses} | 🛡 спасло от входа {saved} | ⚠️ возможно пропущен рост {missed} | 🟡 нейтрально {neutral} | 📈 памп без отката {pump_continued}"
 
 
 def paper_outcome_label(outcome):
@@ -5246,12 +5265,18 @@ def paper_outcome_label(outcome):
         return "🛡 не догонять было правильно"
     if outcome == "avoid_missed":
         return "⚠️ пропущен рост"
+    if outcome == "watch_saved_loss":
+        return "🛡 WATCH спас от падения"
+    if outcome == "watch_missed_gain":
+        return "⚠️ WATCH мог быть слишком осторожным"
+    if outcome == "watch_neutral":
+        return "🟡 WATCH нейтрально"
     if outcome == "paper_win":
-        return "✅ paper win"
+        return "✅ BUY paper win"
     if outcome == "paper_loss":
-        return "🔴 paper loss"
+        return "🔴 BUY paper loss"
     if outcome == "paper_neutral":
-        return "🟡 paper neutral"
+        return "🟡 BUY paper neutral"
     if outcome == "avoid_neutral":
         return "🟡 avoid neutral"
     return str(outcome or "open")
@@ -6280,9 +6305,9 @@ def v181_exit_plan(c):
     low = min(0.0, v181_safe_float(c.get("low", 0), 0))
 
     if risk == "danger":
-        return "плана входа нет; если позиция уже есть — не усреднять, стоп по личному риску, вернуться только после стабилизации BTC 3–4ч"
+        return "плана входа нет; если позиция уже есть — не усреднять, стоп по личному риску, вернуться только после остановки падения BTC и удержания цены/объёма 1–2 свечи"
     if action in ["SKIP"] or "НЕ ПОКУПАТЬ" in str(c.get("verdict", "")):
-        return "входа нет; вернуться к идее после стабилизации BTC 3–4ч, объёма выше x1.1 и нормализации RSI"
+        return "входа нет; вернуться к идее после остановки падения BTC и удержания цены/объёма 1–2 свечи, объёма выше x1.1 и нормализации RSI"
     if action == "WATCH":
         return "вход только после подтверждения; отмена идеи при пробое локального минимума или ухудшении BTC; возврат после 1–2 свечей удержания"
     if action == "PUMP" or "НЕ ДОГОНЯТЬ" in str(c.get("verdict", "")):
@@ -8146,7 +8171,7 @@ def compact_reason(c):
 
     if c.get("_danger_market_cap"):
         if btc_change <= -2.5 and macro_mod <= -6:
-            return "BTC падает почти -3% + страх + негативные новости"
+            return "BTC падает сильнее -4% + страх + негативные новости"
         if btc_change <= -2.5:
             return "BTC падает почти -3% + страх"
         if btc_change <= -2.3:
