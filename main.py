@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v18.6 ENTRY QUALITY + CONFIDENCE FIX"
+BOT_VERSION = "v18.7 PAPER CLOSE SWEEP + STABILITY FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -5200,10 +5200,36 @@ def paper_update_from_cache(close_after_seconds=48 * 3600):
             price_ts = float(price_ts or 0)
         except Exception:
             current_price, price_ts = 0, 0
+
+        age = max(0, now - entry_time)
+
+        # v18.7: paper-сделки старше 48ч не должны висеть открытыми.
+        # Если learning-cache уже не содержит монету, берём свежую цену KuCoin;
+        # если сеть недоступна — закрываем по последнему сохранённому paper last_price.
+        if age >= close_after_seconds:
+            try:
+                live_price = learning_price_now(asset)
+                if live_price and float(live_price) > 0:
+                    current_price = float(live_price)
+                    price_ts = now
+                    source = "kucoin_live_overdue"
+            except Exception:
+                pass
+
+        if current_price <= 0 or price_ts <= 0:
+            try:
+                last_price = float(trade.get("last_price", 0) or 0)
+                last_ts = float(trade.get("last_price_time", 0) or 0)
+                if last_price > 0:
+                    current_price = last_price
+                    price_ts = last_ts or now
+                    source = "paper_last_price_fallback"
+            except Exception:
+                pass
+
         if current_price <= 0 or price_ts <= 0:
             continue
 
-        age = max(0, now - entry_time)
         results = trade.setdefault("results", {})
         details = trade.setdefault("result_details", {})
         for label, name, seconds in learning_checkpoints():
@@ -5220,6 +5246,20 @@ def paper_update_from_cache(close_after_seconds=48 * 3600):
         trade["last_price"] = round(current_price, 10)
         trade["last_price_time"] = price_ts
         trade["last_pct"] = round(percent_change(entry_price, current_price), 2)
+
+        # v18.7: если 48h checkpoint по какой-то причине не создался
+        # (например, монета исчезла из learning open), принудительно фиксируем 48h
+        # по доступной текущей/последней цене и закрываем сделку.
+        if age >= close_after_seconds and "48h" not in results:
+            pct = round(percent_change(entry_price, current_price), 2)
+            results["48h"] = pct
+            details["48h"] = {
+                "checkpoint_time": price_ts,
+                "checkpoint_price": round(current_price, 10),
+                "source": f"paper_close_sweep:{source}",
+            }
+            changed = True
+            updated += 1
 
         if age >= close_after_seconds and "48h" in results:
             trade["status"] = "closed"
@@ -5328,7 +5368,8 @@ def paper_report():
         "Цель: проверить, что было бы при виртуальном входе/пропуске сигнала, без риска для денег.\n"
         f"{update_note}"
         f"{summary}\n"
-        "📌 AVOID PUMP TEST: это не оценка упущенной прибыли. Он проверяет риск догонять резкий памп без отката; 24ч checkpoint учитывается как ранняя проверка, финальное закрытие и основной вывод — после 48ч.\n\n"
+        "📌 AVOID PUMP TEST: это не оценка упущенной прибыли. Он проверяет риск догонять резкий памп без отката; 24ч checkpoint учитывается как ранняя проверка, финальное закрытие и основной вывод — после 48ч.\n"
+        "🧹 v18.7: просроченные paper-сделки старше 48ч закрываются sweep по live/кэш цене, чтобы статистика не зависала.\n\n"
     )
 
     if open_trades:
@@ -10458,7 +10499,7 @@ def get_fast_pumps():
                     "Действие: не догонять; только предупреждение, ждать откат.\n\n"
                 )
 
-        text += "⚠️ Для точного входа используй /coin SOL или /signal."
+        text += "⚠️ Для точного входа используй /btc для BTC, /coin <тикер> для монет или /signal. В danger BUY запрещены до стабилизации."
         return text, quality_watch + speculative_pumps
 
     except Exception as e:
@@ -11958,7 +11999,7 @@ def build_audit_file(chat_id):
     add("PAPER FULL", paper_report, 12)
     add("SIGNAL FULL", unified_signal_report, 35)
     add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
-    add("LEARNING QUALITY V18.4", lambda: v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
+    add("LEARNING QUALITY V18.7", lambda: v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
     add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
     add("MARKET", market_status, 10)
     add("BTC FULL", lambda: single_analysis_full("BTC-USDT"), 25)
@@ -12290,7 +12331,8 @@ def main():
                         "🛡 v18.4.2: admin update делает один commit main.py, без старого deploy от backup\n"
                         "✍️ v18.4.3: точные причины входа, BTC wording в alerts/signal, AVOID PUMP отдельной классификацией\n"
                         "🧾 v18.5: честная классификация Paper и danger wording\n"
-                        "🎯 v18.6: Entry Quality Engine, confidence пояснения, режимы open/closed отдельно"
+                        "🎯 v18.6: Entry Quality Engine, confidence пояснения, режимы open/closed отдельно\n"
+                        "🧹 v18.7: paper close sweep — сделки старше 48ч не зависают открытыми"
                     ))
 
                 elif text == "/flush":
