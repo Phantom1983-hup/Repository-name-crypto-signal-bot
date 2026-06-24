@@ -1620,9 +1620,28 @@
       "last_price": 0.05209,
       "last_price_time": 1782266192.523744,
       "last_pct": -0.23
+    },
+    "XPR:AVOID_PUMP_TEST:495075": {
+      "id": "XPR:AVOID_PUMP_TEST:495075",
+      "asset": "XPR",
+      "entry_time": 1782271468.4473476,
+      "entry_price": 0.0024638,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 12.71,
+      "btc_change": -2.29,
+      "macro_mod": -2,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [],
-  "last_created_at": 1782232021.5247328,
+  "last_created_at": 1782271468.4473476,
   "last_update_at": 1782269844.8954945
 }
