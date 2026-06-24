@@ -1145,6 +1145,25 @@
       "last_price": 1.9219,
       "last_price_time": 1782331482.6470377,
       "last_pct": -0.06
+    },
+    "BNB:VIRTUAL_WATCH_ENTRY_TEST:495092": {
+      "id": "BNB:VIRTUAL_WATCH_ENTRY_TEST:495092",
+      "asset": "BNB",
+      "entry_time": 1782331558.270293,
+      "entry_price": 558.894,
+      "score": 50,
+      "master_score": 50,
+      "source_action": "WATCH",
+      "virtual_type": "VIRTUAL_WATCH_ENTRY_TEST",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "is_quality": true,
+      "change_24": -3.01,
+      "btc_change": -3.29,
+      "macro_mod": -10,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [
@@ -2407,6 +2426,6 @@
       "outcome": "avoid_neutral"
     }
   ],
-  "last_created_at": 1782331298.090314,
+  "last_created_at": 1782331558.270293,
   "last_update_at": 1782331484.0847178
 }
