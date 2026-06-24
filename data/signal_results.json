@@ -6940,7 +6940,8 @@
         "30m": -0.94,
         "1h": -0.94,
         "3h": -2.06,
-        "6h": -4.18
+        "6h": -4.18,
+        "12h": -17.87
       },
       "price_points": [
         {
@@ -7144,6 +7145,15 @@
           "source": "cache_due_late_estimate",
           "cache_price_time": 1782295085.1264966,
           "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782323854.070167,
+          "target_time": 1782324882.969119,
+          "checkpoint_price": 0.08539,
+          "checkpoint_pct": -17.87,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782323854.070167,
+          "cache_price_source": "snapshot"
         }
       },
       "market_regime": "caution",
@@ -7233,7 +7243,8 @@
         "30m": -0.07,
         "1h": -0.07,
         "3h": -0.23,
-        "6h": 5.96
+        "6h": 5.96,
+        "12h": 5.8
       },
       "price_points": [
         {
@@ -7935,6 +7946,15 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782304559.7463744,
           "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782325378.4083793,
+          "target_time": 1782325428.7742817,
+          "checkpoint_price": 76.101,
+          "checkpoint_pct": 5.8,
+          "source": "cache_due_near_snapshot",
+          "cache_price_time": 1782325378.4083793,
+          "cache_price_source": "snapshot"
         }
       },
       "market_regime": "danger",
@@ -8019,7 +8039,8 @@
         "30m": -0.03,
         "1h": -0.03,
         "3h": -0.71,
-        "6h": -0.36
+        "6h": -0.36,
+        "12h": -7.15
       },
       "price_points": [
         {
@@ -8421,6 +8442,15 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782304559.7463744,
           "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782323854.070167,
+          "target_time": 1782325428.7742817,
+          "checkpoint_price": 64.96,
+          "checkpoint_pct": -7.15,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782323854.070167,
+          "cache_price_source": "snapshot"
         }
       },
       "market_regime": "danger",
@@ -8505,7 +8535,8 @@
         "30m": -0.0,
         "1h": -0.0,
         "3h": -0.53,
-        "6h": -0.33
+        "6h": -0.33,
+        "12h": -5.17
       },
       "price_points": [
         {
@@ -8878,6 +8909,15 @@
           "checkpoint_pct": -0.33,
           "source": "cache_due_snapshot",
           "cache_price_time": 1782304559.7463744,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782323854.070167,
+          "target_time": 1782325428.7742817,
+          "checkpoint_price": 550.026,
+          "checkpoint_pct": -5.17,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782323854.070167,
           "cache_price_source": "snapshot"
         }
       },
@@ -10879,7 +10919,7 @@
       }
     }
   },
-  "version": "v18.5 PAPER + CONFIDENCE + DANGER FIX",
+  "version": "v18.6 ENTRY QUALITY + CONFIDENCE FIX",
   "learning_guard_note": "v17.5 restored/protected learning data from backup/frozen store",
   "learning_guard_time": 1782276720.389763
 }
