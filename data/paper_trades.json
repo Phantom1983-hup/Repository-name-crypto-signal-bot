@@ -1231,6 +1231,25 @@
       "last_price": 7.1925,
       "last_price_time": 1782327631.0257258,
       "last_pct": -2.34
+    },
+    "TAO:VIRTUAL_WATCH_ENTRY_TEST:495092": {
+      "id": "TAO:VIRTUAL_WATCH_ENTRY_TEST:495092",
+      "asset": "TAO",
+      "entry_time": 1782334234.6569324,
+      "entry_price": 217.92,
+      "score": 56,
+      "master_score": 56,
+      "source_action": "WATCH",
+      "virtual_type": "VIRTUAL_WATCH_ENTRY_TEST",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "is_quality": true,
+      "change_24": -0.28,
+      "btc_change": -1.99,
+      "macro_mod": -15,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [
@@ -2493,6 +2512,6 @@
       "outcome": "avoid_neutral"
     }
   ],
-  "last_created_at": 1782332635.247173,
+  "last_created_at": 1782334234.6569324,
   "last_update_at": 1782333539.5846982
 }
