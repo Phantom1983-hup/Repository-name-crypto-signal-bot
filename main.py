@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v18.0 ALEX EDGE CORE"
+BOT_VERSION = "v18.0.1 QUEUE + LEARNING GUARD"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -584,10 +584,25 @@ def save_json(path, data):
         print(f"learning data guard error: {e}")
 
     try:
-        with open(path, "w", encoding="utf-8") as f:
+        # v18.0.1: атомарная запись JSON.
+        # Это защищает learning от состояния "open=0/closed=0", когда отчёт читает файл
+        # ровно в момент перезаписи background-потоком.
+        tmp_path = f"{path}.tmp"
+        with open(tmp_path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
-    except Exception:
-        pass
+            try:
+                f.flush()
+                os.fsync(f.fileno())
+            except Exception:
+                pass
+        os.replace(tmp_path, path)
+    except Exception as e:
+        print(f"atomic save_json error for {path}: {e}")
+        try:
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+        except Exception:
+            pass
 
     _GITHUB_JSON_CACHE[str(path)] = {"time": time.time(), "data": data}
     mark_github_dirty(path)
@@ -1628,6 +1643,8 @@ COMMAND_POOL_ALIASES = {
     "обучение": "/learning",
     "learning": "/learning",
     "learning_full": "/learning_full",
+    "learning_audit": "/learning_full",
+    "audit_learning": "/learning_full",
     "обучение полное": "/learning_full",
     "полное обучение": "/learning_full",
     "📚 обучение": "/learning",
@@ -1652,6 +1669,58 @@ COMMAND_POOL_ALIASES = {
     "сервис": "/service",
     "🛠 сервис": "/service",
 }
+
+# === v18.0.1 QUEUE + LEARNING GUARD ===
+# Защита от дублей пула команд: Telegram/Render иногда может прислать один и тот же
+# длинный текст повторно, а /learning_full и /learning_audit являются одной командой-аудитом.
+COMMAND_POOL_RECENT_SIGNATURES = {}
+COMMAND_POOL_DUP_TTL_SECONDS = 25
+
+def canonical_pool_command(cmd):
+    c = (cmd or "").strip()
+    low = c.lower()
+    if low in ["/learning_audit", "/audit_learning"]:
+        return "/learning_full"
+    if low.startswith("/coin "):
+        parts = c.split()
+        if len(parts) >= 2:
+            return f"/coin {resolve_coin_symbol(parts[1])}"
+    return c
+
+def _cleanup_recent_pool_signatures(now=None):
+    if now is None:
+        now = time.time()
+    for k, ts in list(COMMAND_POOL_RECENT_SIGNATURES.items()):
+        try:
+            if now - float(ts or 0) > COMMAND_POOL_DUP_TTL_SECONDS:
+                COMMAND_POOL_RECENT_SIGNATURES.pop(k, None)
+        except Exception:
+            COMMAND_POOL_RECENT_SIGNATURES.pop(k, None)
+
+def should_skip_duplicate_pool(chat_id, commands, raw_text=""):
+    now = time.time()
+    _cleanup_recent_pool_signatures(now)
+    normalized = [canonical_pool_command(c) for c in (commands or []) if c]
+    signature = f"{chat_id}|" + "|".join(normalized)
+    last = COMMAND_POOL_RECENT_SIGNATURES.get(signature)
+    if last and now - float(last or 0) <= COMMAND_POOL_DUP_TTL_SECONDS:
+        return True
+    COMMAND_POOL_RECENT_SIGNATURES[signature] = now
+    return False
+
+def dedupe_pool_commands(commands):
+    # Убираем только полные дубли и алиасы внутри одного пула.
+    # Порядок сохраняем, разные команды не трогаем.
+    result = []
+    seen = set()
+    for cmd in commands or []:
+        c = canonical_pool_command(cmd)
+        key = c.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        result.append(c)
+    return result
 
 def _strip_pool_line_prefix(line):
     line = (line or "").strip()
@@ -1731,6 +1800,8 @@ def parse_command_pool(raw_text):
         if cmd:
             commands.append(cmd)
 
+    commands = dedupe_pool_commands(commands)
+
     if len(commands) < 2:
         return []
 
@@ -1748,11 +1819,18 @@ def expand_command_pool_updates(items):
             msg = item.get("message", {}) or {}
             raw = (msg.get("text", "") or "").strip()
             commands = parse_command_pool(raw)
+            chat_id = (msg.get("chat", {}) or {}).get("id")
         except Exception:
             commands = []
+            chat_id = None
 
         if not commands:
             expanded.append(item)
+            continue
+
+        # v18.0.1: не запускаем один и тот же пул дважды, если Telegram/Render
+        # вернул дубликат update или пользователь случайно отправил тот же пул повторно.
+        if should_skip_duplicate_pool(chat_id, commands, raw):
             continue
 
         for idx, cmd in enumerate(commands, start=1):
@@ -1770,7 +1848,7 @@ def expand_command_pool_updates(items):
 def command_pool_ack_text(total):
     return (
         f"📦 Пул команд принят: {total}. Выполняю по очереди.\n"
-        "Команды не теряются: сначала будет первый отчёт, затем следующий. Новые нажатия уйдут в очередь.\n"
+        "Команды не теряются: сначала будет первый отчёт, затем следующий. Дубли одного пула отсекаются.\n"
         f"Версия обработчика: {BOT_VERSION}."
     )
 
@@ -5583,8 +5661,10 @@ def learning_report(sync_github=False, full=False):
     if sync_github:
         update_signal_results()
         sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
-    else:
-        background_learning_update("manual_learning")
+    # v18.0.1: обычный /learning больше не стартует background-update перед чтением.
+    # Иначе быстрый пул (/paper -> /signal -> /learning) мог читать файл в момент записи
+    # и показывать ложные open=0/closed=0. Обновления запускают /paper, /signal, /alerts
+    # и плановый background scan; /learning теперь безопасный отчёт по текущему кэшу.
 
     data = load_json(RESULTS_FILE)
     if not isinstance(data, dict):
@@ -5614,19 +5694,23 @@ def learning_report(sync_github=False, full=False):
     open_items, normalized, fixed_count = normalize_learning_open_records(open_items)
     if dedup_changed or normalized:
         data["open"] = open_items
-        save_json(RESULTS_FILE, data)
-        background_github_sync([RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
+        # v18.0.1: если background learning прямо сейчас пишет checkpoints, отчёт не спорит с ним за файл.
+        # Показываем нормализованные данные в ответе, а сохранение выполнит следующий безопасный цикл.
+        if not (hasattr(_LEARNING_BG_LOCK, "locked") and _LEARNING_BG_LOCK.locked() and not sync_github):
+            save_json(RESULTS_FILE, data)
+            background_github_sync([RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
 
     closed = data.get("closed", [])
     closed, closed_normalized = normalize_closed_learning_records(closed, sync_now=sync_github)
     if closed_normalized:
         data["closed"] = closed
-        save_json(RESULTS_FILE, data)
-        # v16.2: обычный /learning не ждёт GitHub. Синхронизация только фоном.
-        if sync_github:
-            sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
-        else:
-            background_github_sync([FROZEN_RESULTS_FILE, RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+        if not (hasattr(_LEARNING_BG_LOCK, "locked") and _LEARNING_BG_LOCK.locked() and not sync_github):
+            save_json(RESULTS_FILE, data)
+            # v16.2: обычный /learning не ждёт GitHub. Синхронизация только фоном.
+            if sync_github:
+                sync_github_storage_now([FROZEN_RESULTS_FILE, RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+            else:
+                background_github_sync([FROZEN_RESULTS_FILE, RESULTS_FILE, RESULTS_BACKUP_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
     open_items = data.get("open", {})
 
     total = len(closed)
