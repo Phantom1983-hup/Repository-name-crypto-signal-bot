@@ -592,9 +592,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.80206,
-      "last_price_time": 1782341374.0346673,
-      "last_pct": 23.4
+      "last_price": 0.82205,
+      "last_price_time": 1782342133.258476,
+      "last_pct": 26.47
     },
     "NES:AVOID_PUMP_TEST:495086": {
       "id": "NES:AVOID_PUMP_TEST:495086",
@@ -646,9 +646,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.2698,
-      "last_price_time": 1782341374.0346673,
-      "last_pct": -16.44
+      "last_price": 0.2745,
+      "last_price_time": 1782342133.258476,
+      "last_pct": -14.99
     },
     "VERONA:AVOID_PUMP_TEST:495087": {
       "id": "VERONA:AVOID_PUMP_TEST:495087",
@@ -701,7 +701,7 @@
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
       "last_price": 0.1542,
-      "last_price_time": 1782341374.0346673,
+      "last_price_time": 1782342133.258476,
       "last_pct": -6.26
     },
     "BTC:VIRTUAL_WATCH_ENTRY_TEST:495088": {
@@ -754,9 +754,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 60853.0,
-      "last_price_time": 1782341374.0346673,
-      "last_pct": 1.31
+      "last_price": 60866.6,
+      "last_price_time": 1782342133.258476,
+      "last_pct": 1.33
     },
     "ETH:VIRTUAL_WATCH_ENTRY_TEST:495088": {
       "id": "ETH:VIRTUAL_WATCH_ENTRY_TEST:495088",
@@ -808,9 +808,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 1614.14,
-      "last_price_time": 1782341374.0346673,
-      "last_pct": 0.09
+      "last_price": 1614.99,
+      "last_price_time": 1782342133.258476,
+      "last_pct": 0.15
     },
     "AAVE:VIRTUAL_WATCH_ENTRY_TEST:495088": {
       "id": "AAVE:VIRTUAL_WATCH_ENTRY_TEST:495088",
@@ -862,9 +862,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 78.086,
-      "last_price_time": 1782341374.0346673,
-      "last_pct": 4.38
+      "last_price": 79.248,
+      "last_price_time": 1782342133.258476,
+      "last_pct": 5.94
     },
     "SYN:AVOID_PUMP_TEST:495088": {
       "id": "SYN:AVOID_PUMP_TEST:495088",
@@ -991,7 +991,8 @@
       "results": {
         "15m": 0.1,
         "30m": 0.1,
-        "1h": 0.1
+        "1h": 0.1,
+        "3h": 0.1
       },
       "result_details": {
         "15m": {
@@ -1005,6 +1006,11 @@
           "source": "learning_cache:snapshot"
         },
         "1h": {
+          "checkpoint_time": 1782331389.4739227,
+          "checkpoint_price": 1.9249,
+          "source": "learning_cache:snapshot"
+        },
+        "3h": {
           "checkpoint_time": 1782331389.4739227,
           "checkpoint_price": 1.9249,
           "source": "learning_cache:snapshot"
@@ -1180,9 +1186,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.03966,
-      "last_price_time": 1782341374.0346673,
-      "last_pct": -0.43
+      "last_price": 0.03996,
+      "last_price_time": 1782342133.258476,
+      "last_pct": 0.33
     },
     "AVAX:VIRTUAL_WATCH_ENTRY_TEST:495094": {
       "id": "AVAX:VIRTUAL_WATCH_ENTRY_TEST:495094",
@@ -1200,7 +1206,8 @@
       "macro_mod": -10,
       "results": {
         "15m": -5.27,
-        "30m": -5.27
+        "30m": -5.27,
+        "1h": -5.27
       },
       "result_details": {
         "15m": {
@@ -1209,6 +1216,11 @@
           "source": "learning_cache:snapshot"
         },
         "30m": {
+          "checkpoint_time": 1782327631.0257258,
+          "checkpoint_price": 6.097,
+          "source": "learning_cache:snapshot"
+        },
+        "1h": {
           "checkpoint_time": 1782327631.0257258,
           "checkpoint_price": 6.097,
           "source": "learning_cache:snapshot"
@@ -2704,5 +2716,5 @@
     }
   ],
   "last_created_at": 1782338488.149177,
-  "last_update_at": 1782341375.5193217
+  "last_update_at": 1782342134.6742935
 }
