@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v18.3.1 ADMIN COMPILE FIX"
+BOT_VERSION = "v18.4 SHADOW + BACKTEST ACCELERATION"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -5914,7 +5914,7 @@ def v18_learning_core_summary(data):
     neutral = sum(v for k, v in classes.items() if "neutral" in k or k in ["avoid_pump_watch"])
 
     lines = [
-        "🧠 Core Learning + v18.3 Regime Layer",
+        "🧠 Core Learning + v18.4 Shadow/Regime Layer",
         "Режим: уникальное ядро обучения включено; ранние checkpoints учитываются как предварительные выводы, веса меняются только после закрытых 48ч результатов.",
         f"Ранние выводы по открытым наблюдениям: 🛡 спасло/не догонять правильно {saved} | ⚠️ возможно слишком осторожно {missed} | 🟡 нейтрально/спорно {neutral}",
     ]
@@ -5982,7 +5982,7 @@ def learning_open_rows(open_items, limit=6):
             regime = v183_regime_for_rec(rec)
             rr_text = v183_rr_text(rec.get("risk_reward", 0))
             text += (
-                f"  v18.3: режим {regime}; {rec.get('exit_plan', 'exit ждёт данных')} | "
+                f"  v18.4: режим {regime}; {rec.get('exit_plan', 'exit ждёт данных')} | "
                 f"размер: {rec.get('position_size', 'н/д')} | R/R: {rr_text}\n"
             )
 
@@ -6063,7 +6063,7 @@ def learning_report(sync_github=False, full=False):
         f"Версия: {BOT_VERSION}\n\n"
         f"Статус: обучение работает, данные копятся.\n"
         f"Режим отчёта: быстрый кэш; наступившие checkpoints фиксируются из кэша, тяжёлое обновление идёт фоном.\n"
-        f"v18.3: Regime/Context Learning повышает точность, скорость обучения и качество похожих ситуаций.\n"
+        f"v18.4: Shadow/Backtest Acceleration ускоряет обучение на альтернативных сценариях и похожих режимах.\n"
         f"Ускорение: {backtest_file_summary()}\n"
         f"Paper trading: {paper_summary_line()}\n"
         f"Открытых наблюдений: {len(open_items)}\n"
@@ -6072,6 +6072,8 @@ def learning_report(sync_github=False, full=False):
 
     text += v18_learning_core_summary(data)
     text += v181_learning_acceleration_summary(data)
+    if full:
+        text += v184_learning_quality_summary(data)
     text += "🔎 Открытые наблюдения:\n"
     text += learning_open_rows(open_items, limit=None if full else 6)
     text += "\n"
@@ -6338,13 +6340,167 @@ def v181_single_core_lines(c):
     conf, conf_label, a, r = v181_signal_confidence(c)
     rr = v181_rr_value(c)
     return (
-        f"🧠 v18.3 confidence: {conf}/100 — {conf_label}; "
+        f"🧠 v18.4 confidence: {conf}/100 — {conf_label}; "
         f"история монеты {a.get('n', 0)}, режима {r.get('n', 0)}\n"
         f"⚖️ Risk/Reward: {('не рассчитывается без подтверждённого входа' if str(c.get('action', 'SKIP')).upper() in ['SKIP', 'WATCH'] or 'НЕ ПОКУПАТЬ' in str(c.get('verdict', '')) else (rr if rr else 'н/д'))} | 📌 Размер: {v181_position_size(c)}\n"
         f"🎯 Exit Engine: {v181_exit_plan(c)}\n"
         f"🧪 Shadow: {v181_shadow_tests(c)}\n"
     )
 
+
+
+# === v18.4 SHADOW + BACKTEST ACCELERATION ===
+def v184_shadow_scenarios(c):
+    """v18.4: сохраняем не только решение, но и альтернативные сценарии для ускоренного обучения.
+    Это не автоторговля и не рекомендация входа, а журнал гипотез: что было бы если...
+    """
+    if not isinstance(c, dict):
+        return []
+    action = str(c.get("action", "SKIP") or "SKIP").upper()
+    verdict = str(c.get("verdict", "") or "")
+    ctx = c.get("ctx", {}) if isinstance(c.get("ctx", {}), dict) else {}
+    regime = learning_market_regime(ctx)
+    is_pump = (action == "PUMP") or ("НЕ ДОГОНЯТЬ" in verdict) or ("СПЕКУЛЯТИВ" in verdict)
+    scenarios = []
+    scenarios.append({"id": "skip", "name": "полный пропуск", "purpose": "проверить, спас ли пропуск от просадки или упустил рост"})
+    scenarios.append({"id": "enter_now", "name": "вход сразу", "purpose": "проверить, был ли текущий момент лучше ожидания"})
+    scenarios.append({"id": "wait_btc", "name": "ждать стабилизацию BTC", "purpose": "проверить, улучшает ли фильтр BTC качество точки"})
+    scenarios.append({"id": "pullback", "name": "вход после отката", "purpose": "проверить, даёт ли откат лучший риск/прибыль"})
+    if is_pump:
+        scenarios.append({"id": "avoid_pump", "name": "не догонять памп", "purpose": "проверить, был ли запрет догонять полезен"})
+    if regime in ["danger", "safe_caution", "extreme_fear", "caution"]:
+        scenarios.append({"id": "risk_filter", "name": "risk-фильтр рынка", "purpose": "проверить, спас ли режим рынка от плохого входа"})
+    if action in ["BUY", "ACCUM"]:
+        scenarios.append({"id": "scale_in", "name": "вход частями", "purpose": "сравнить вход частями с входом одной точкой"})
+    return scenarios[:7]
+
+
+def v184_shadow_result_note(rec):
+    """Предварительный вывод по shadow-сценариям на основе уже наступивших checkpoints."""
+    if not isinstance(rec, dict):
+        return "данных нет"
+    cls, note = v18_learning_decision_class(rec)
+    verdict = str(rec.get("verdict", "") or "")
+    action = str(rec.get("action", "WATCH") or "WATCH").upper()
+    values = v18_checkpoint_values(rec)
+    if not values:
+        return "ждём первые checkpoints"
+    best_name, best = max(values, key=lambda kv: kv[1])
+    worst_name, worst = min(values, key=lambda kv: kv[1])
+    is_pump = ("НЕ ДОГОНЯТЬ" in verdict) or ("СПЕКУЛЯТИВ" in verdict)
+    if is_pump and best >= 8 and worst > -4:
+        return f"памп пока продолжился ({best_name} {best:+.2f}%), но 48ч ещё решает"
+    if is_pump and worst <= -5:
+        return f"запрет догонять пока полезен: просадка {worst_name} {worst:+.2f}%"
+    if action in ["WATCH", "SKIP"] and worst <= -3:
+        return f"ожидание пока защищает от просадки {worst_name} {worst:+.2f}%"
+    if action in ["WATCH", "SKIP"] and best >= 5:
+        return f"бот мог быть слишком осторожен: рост {best_name} {best:+.2f}%"
+    return note.replace("🟡 ", "").replace("⚠️ ", "").replace("🛡 ", "")
+
+
+def v184_regime_counts(open_items, closed):
+    counts = {}
+    for rec in list(open_items.values()) + list(closed):
+        regime = v183_regime_for_rec(rec)
+        counts[regime] = counts.get(regime, 0) + 1
+    return counts
+
+
+def v184_regime_backtest_summary(data):
+    """v18.4: режимный ускоритель обучения. Пока не меняет веса, а показывает покрытие режимов."""
+    if not isinstance(data, dict):
+        return ""
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    counts = v184_regime_counts(open_items, closed)
+    if not counts:
+        return "Regime Backtest: данных пока мало.\n"
+    parts = ", ".join([f"{k}:{v}" for k, v in sorted(counts.items(), key=lambda kv: kv[1], reverse=True)[:6]])
+    weak = [r for r in ["danger", "safe_caution", "caution", "green", "post_dump"] if counts.get(r, 0) == 0]
+    weak_txt = ", ".join(weak[:4]) if weak else "основные режимы уже начали покрываться"
+    return (
+        f"Regime Backtest: покрытие режимов {parts}.\n"
+        f"Слабые зоны статистики: {weak_txt}. Реальные веса не меняются до достаточных 48ч результатов.\n"
+    )
+
+
+def v184_coin_profile_lines(data, limit=8):
+    """v18.4: профиль монет с live + closed выводами, чтобы бот быстрее видел характер каждой монеты."""
+    if not isinstance(data, dict):
+        return []
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    profiles = {}
+    def ensure(asset):
+        asset = str(asset or "?").upper()
+        profiles.setdefault(asset, {"open": 0, "closed": 0, "saved": 0, "missed": 0, "bad": 0, "neutral": 0, "notes": []})
+        return profiles[asset]
+    for rec in closed:
+        p = ensure(rec.get("asset", "?"))
+        p["closed"] += 1
+        out = classify_learning_result(rec)
+        if out == "watch_saved":
+            p["saved"] += 1
+        elif out == "missed_move":
+            p["missed"] += 1
+        elif out == "bad":
+            p["bad"] += 1
+        else:
+            p["neutral"] += 1
+    for rec in open_items.values():
+        p = ensure(rec.get("asset", "?"))
+        p["open"] += 1
+        note = v184_shadow_result_note(rec)
+        if note and note not in p["notes"]:
+            p["notes"].append(note)
+    ranked = sorted(profiles.items(), key=lambda kv: (kv[1]["saved"] - kv[1]["bad"] - kv[1]["missed"], kv[1]["closed"], kv[1]["open"]), reverse=True)
+    lines = []
+    for asset, p in ranked[:limit]:
+        if p["closed"] or p["open"]:
+            note = p["notes"][0] if p["notes"] else "профиль копится"
+            lines.append(f"• {asset}: open {p['open']} | closed {p['closed']} | 🛡{p['saved']} ⚠️{p['missed']} 🔴{p['bad']} 🟡{p['neutral']} — {note}")
+    return lines
+
+
+def v184_learning_quality_summary(data):
+    """v18.4: короткий технический вывод качества обучения для /audit_file и /learning_full."""
+    if not isinstance(data, dict):
+        return ""
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    if not open_items and not closed:
+        return ""
+    shadow_saved = shadow_missed = shadow_neutral = 0
+    by_regime = {}
+    examples = []
+    for rec in open_items.values():
+        regime = v183_regime_for_rec(rec)
+        by_regime[regime] = by_regime.get(regime, 0) + 1
+        cls, note = v18_learning_decision_class(rec)
+        if "saved" in cls:
+            shadow_saved += 1
+        elif "missed" in cls:
+            shadow_missed += 1
+        else:
+            shadow_neutral += 1
+        if len(examples) < 5:
+            examples.append(f"• {str(rec.get('asset','?')).upper()}: {v184_shadow_result_note(rec)}")
+    regime_txt = ", ".join([f"{k}:{v}" for k, v in sorted(by_regime.items(), key=lambda kv: kv[1], reverse=True)[:5]]) or "данных мало"
+    coin_lines = v184_coin_profile_lines(data, limit=8)
+    text = (
+        "🧪 v18.4 Shadow + Backtest Acceleration\n"
+        "Назначение: бот учится даже на решениях 'не покупать', сравнивая альтернативы без реальных сделок.\n"
+        f"Shadow-проверки open: 🛡 полезная осторожность {shadow_saved} | ⚠️ возможно слишком осторожно {shadow_missed} | 🟡 нейтрально {shadow_neutral}.\n"
+        f"Режимы open-наблюдений: {regime_txt}.\n"
+        + v184_regime_backtest_summary(data)
+    )
+    if examples:
+        text += "Ключевые shadow-кейсы:\n" + "\n".join(examples) + "\n"
+    if coin_lines:
+        text += "Coin Profile 2.0:\n" + "\n".join(coin_lines) + "\n"
+    text += "Правило безопасности: shadow/backtest ускоряют обучение, но не включают автоторговлю и не меняют веса без 48ч статистики.\n\n"
+    return text
 
 def v181_learning_acceleration_summary(data):
     if not isinstance(data, dict):
@@ -6369,8 +6525,8 @@ def v181_learning_acceleration_summary(data):
     top_assets = ", ".join([a for a, _ in sorted(assets.items(), key=lambda kv: kv[1], reverse=True)[:8]]) if assets else "данных мало"
 
     return (
-        "🚀 v18.3 REGIME + LEARNING QUALITY\n"
-        "Цель: быстрее учиться на похожих рыночных режимах и не ломать risk engine. Exit/Shadow/Adaptive пока работают осторожно и не включают автоторговлю.\n"
+        "🚀 v18.4 SHADOW + BACKTEST ACCELERATION\n"
+        "Цель: ускорить обучение через shadow-сценарии, режимный backtest и профили монет, не ломая risk engine. Автоторговля выключена.\n"
         f"Скорость обучения: открытых наблюдений {len(open_items)}, price snapshots {total_price_points}, закрытых 48ч {len(closed)}.\n"
         f"Market Regime Memory: главный режим — {top_bucket}; распределение: {regime_parts}.\n"
         f"Coin Profile Memory: {top_assets}.\n"
@@ -6421,6 +6577,8 @@ def save_signal_history(items):
             existing_rec["position_size"] = v181_position_size(c)
             existing_rec["exit_plan"] = v181_exit_plan(c)
             existing_rec["shadow_tests"] = v181_shadow_tests(c)
+            existing_rec["shadow_scenarios_v184"] = v184_shadow_scenarios(c)
+            existing_rec["shadow_result_v184"] = v184_shadow_result_note(existing_rec)
             existing_rec["confidence_v181"] = v181_signal_confidence(c)[0]
             existing_rec["market_regime"] = learning_market_regime(c.get("ctx", {}))
             existing_rec["market_bucket"] = existing_rec["market_regime"]
@@ -6499,6 +6657,8 @@ def save_signal_history(items):
             "position_size": v181_position_size(c),
             "exit_plan": v181_exit_plan(c),
             "shadow_tests": v181_shadow_tests(c),
+            "shadow_scenarios_v184": v184_shadow_scenarios(c),
+            "shadow_result_v184": "ждём первые checkpoints",
             "confidence_v181": v181_signal_confidence(c)[0]
         }
 
@@ -11588,6 +11748,7 @@ def build_audit_file(chat_id):
     add("PAPER FULL", paper_report)
     add("SIGNAL FULL", unified_signal_report)
     add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True))
+    add("LEARNING QUALITY V18.4", lambda: v184_learning_quality_summary(load_json(RESULTS_FILE)))
     add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts")
     add("MARKET", market_status)
     add("BTC FULL", lambda: single_analysis_full("BTC-USDT"))
@@ -11904,7 +12065,8 @@ def main():
                         "🧾 /audit_short: короткий аудит для ChatGPT\n"
                         "📄 /audit_file: полный txt-файл для ChatGPT\n"
                         "🛡 v18.2.2: защита от старых deploy/очереди Render\n"
-                        "🧠 v18.3: реальные режимы рынка, профили монет и контекст обучения"
+                        "🧠 v18.3: реальные режимы рынка, профили монет и контекст обучения\n"
+                        "🚀 v18.4: shadow-сценарии, regime backtest и quality report"
                     ))
 
                 elif text == "/flush":
