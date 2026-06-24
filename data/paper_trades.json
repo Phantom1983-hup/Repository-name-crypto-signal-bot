@@ -1,5 +1,5 @@
 {
-  "version": "v18.2.2 DEPLOY LOOP GUARD",
+  "version": "v18.4 SHADOW + BACKTEST ACCELERATION",
   "open": {
     "BTC:VIRTUAL_WATCH_ENTRY_TEST:495040": {
       "id": "BTC:VIRTUAL_WATCH_ENTRY_TEST:495040",
@@ -1728,9 +1728,28 @@
       "last_price": 0.10299,
       "last_price_time": 1782282757.2924483,
       "last_pct": -1.96
+    },
+    "GRASS:AVOID_PUMP_TEST:495080": {
+      "id": "GRASS:AVOID_PUMP_TEST:495080",
+      "asset": "GRASS",
+      "entry_time": 1782289640.3663373,
+      "entry_price": 0.4527,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 12.1,
+      "btc_change": 0.86,
+      "macro_mod": -2,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [],
-  "last_created_at": 1782281801.7872565,
+  "last_created_at": 1782289640.3663373,
   "last_update_at": 1782285458.8678691
 }
