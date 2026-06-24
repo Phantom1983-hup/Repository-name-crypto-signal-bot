@@ -1,13 +1,13 @@
 {
   "version": "v18.2.2 DEPLOY LOOP GUARD",
-  "updated_at": "2026-06-24T07:34:54.852557",
-  "updated_at_msk": "2026-06-24 10:34",
+  "updated_at": "2026-06-24T07:35:55.475214",
+  "updated_at_msk": "2026-06-24 10:35",
   "days": 90,
   "assets": {
     "BTC": {
       "n": 93,
       "avg_24h": -0.121,
-      "avg_48h": -0.23,
+      "avg_48h": -0.231,
       "avg_drawdown48": -2.373,
       "avg_runup48": 2.073,
       "good48_rate": 0.333,
@@ -16,7 +16,7 @@
       "weekday": {
         "0": {
           "n": 14,
-          "avg_48h": -0.174,
+          "avg_48h": -0.179,
           "avg_drawdown48": -2.129,
           "avg_runup48": 2.735
         },
@@ -61,7 +61,7 @@
     "ETH": {
       "n": 93,
       "avg_24h": -0.353,
-      "avg_48h": -0.593,
+      "avg_48h": -0.594,
       "avg_drawdown48": -3.338,
       "avg_runup48": 2.623,
       "good48_rate": 0.323,
@@ -70,7 +70,7 @@
       "weekday": {
         "0": {
           "n": 14,
-          "avg_48h": 0.249,
+          "avg_48h": 0.242,
           "avg_drawdown48": -2.215,
           "avg_runup48": 3.949
         },
@@ -115,7 +115,7 @@
     "SOL": {
       "n": 93,
       "avg_24h": -0.353,
-      "avg_48h": -0.598,
+      "avg_48h": -0.6,
       "avg_drawdown48": -3.68,
       "avg_runup48": 2.876,
       "good48_rate": 0.312,
@@ -124,7 +124,7 @@
       "weekday": {
         "0": {
           "n": 14,
-          "avg_48h": -0.856,
+          "avg_48h": -0.865,
           "avg_drawdown48": -3.278,
           "avg_runup48": 3.727
         },
@@ -169,16 +169,16 @@
     "SUI": {
       "n": 93,
       "avg_24h": -0.373,
-      "avg_48h": -0.592,
+      "avg_48h": -0.593,
       "avg_drawdown48": -4.638,
       "avg_runup48": 4.111,
-      "good48_rate": 0.333,
+      "good48_rate": 0.323,
       "bad48_rate": 0.366,
       "strong_drawdown_rate": 0.409,
       "weekday": {
         "0": {
           "n": 14,
-          "avg_48h": 0.06,
+          "avg_48h": 0.052,
           "avg_drawdown48": -3.422,
           "avg_runup48": 4.707
         },
@@ -223,7 +223,7 @@
     "LINK": {
       "n": 93,
       "avg_24h": -0.195,
-      "avg_48h": -0.352,
+      "avg_48h": -0.354,
       "avg_drawdown48": -3.442,
       "avg_runup48": 3.109,
       "good48_rate": 0.312,
@@ -232,7 +232,7 @@
       "weekday": {
         "0": {
           "n": 14,
-          "avg_48h": 0.348,
+          "avg_48h": 0.337,
           "avg_drawdown48": -2.349,
           "avg_runup48": 4.383
         },
@@ -286,7 +286,7 @@
       "weekday": {
         "0": {
           "n": 14,
-          "avg_48h": 0.05,
+          "avg_48h": 0.051,
           "avg_drawdown48": -4.502,
           "avg_runup48": 7.058
         },
@@ -331,7 +331,7 @@
     "NEAR": {
       "n": 93,
       "avg_24h": 1.321,
-      "avg_48h": 2.017,
+      "avg_48h": 2.015,
       "avg_drawdown48": -3.721,
       "avg_runup48": 7.934,
       "good48_rate": 0.462,
@@ -340,7 +340,7 @@
       "weekday": {
         "0": {
           "n": 14,
-          "avg_48h": 4.154,
+          "avg_48h": 4.143,
           "avg_drawdown48": -1.216,
           "avg_runup48": 11.416
         },
@@ -385,7 +385,7 @@
     "AAVE": {
       "n": 93,
       "avg_24h": -0.641,
-      "avg_48h": -1.018,
+      "avg_48h": -1.019,
       "avg_drawdown48": -4.921,
       "avg_runup48": 3.531,
       "good48_rate": 0.344,
@@ -394,7 +394,7 @@
       "weekday": {
         "0": {
           "n": 14,
-          "avg_48h": 0.602,
+          "avg_48h": 0.596,
           "avg_drawdown48": -2.538,
           "avg_runup48": 5.2
         },
@@ -448,7 +448,7 @@
       "weekday": {
         "0": {
           "n": 14,
-          "avg_48h": -0.328,
+          "avg_48h": -0.332,
           "avg_drawdown48": -2.211,
           "avg_runup48": 2.476
         },
@@ -493,7 +493,7 @@
     "ADA": {
       "n": 93,
       "avg_24h": -0.937,
-      "avg_48h": -1.447,
+      "avg_48h": -1.449,
       "avg_drawdown48": -4.346,
       "avg_runup48": 2.661,
       "good48_rate": 0.258,
@@ -502,7 +502,7 @@
       "weekday": {
         "0": {
           "n": 14,
-          "avg_48h": -1.26,
+          "avg_48h": -1.274,
           "avg_drawdown48": -3.85,
           "avg_runup48": 3.597
         },
@@ -547,7 +547,7 @@
     "AVAX": {
       "n": 93,
       "avg_24h": -0.686,
-      "avg_48h": -1.063,
+      "avg_48h": -1.064,
       "avg_drawdown48": -4.239,
       "avg_runup48": 2.721,
       "good48_rate": 0.301,
@@ -556,7 +556,7 @@
       "weekday": {
         "0": {
           "n": 14,
-          "avg_48h": 0.44,
+          "avg_48h": 0.432,
           "avg_drawdown48": -2.569,
           "avg_runup48": 4.394
         },
