@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v18.7 PAPER CLOSE SWEEP + STABILITY FIX"
+BOT_VERSION = "v18.8 SHADOW TIMING + DELAYED ENTRY ENGINE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -6169,7 +6169,7 @@ def learning_report(sync_github=False, full=False):
         f"Версия: {BOT_VERSION}\n\n"
         f"Статус: обучение работает, данные копятся.\n"
         f"Режим отчёта: быстрый кэш; наступившие checkpoints фиксируются из кэша, тяжёлое обновление идёт фоном.\n"
-        f"v18.6: Entry Quality + Shadow/Backtest ускоряет обучение на ожидании, пропуске, откате и похожих режимах.\n"
+        f"v18.8: Shadow Timing учит бота, сколько ждать после запрета входа: 1ч/3ч/6ч/12ч, откат или полный пропуск.\n"
         f"Ускорение: {backtest_file_summary()}\n"
         f"Paper trading: {paper_summary_line()}\n"
         f"Открытых наблюдений: {len(open_items)}\n"
@@ -6601,8 +6601,8 @@ def v184_learning_quality_summary(data):
     regime_txt = ", ".join([f"{k}:{v}" for k, v in sorted(by_regime.items(), key=lambda kv: kv[1], reverse=True)[:5]]) or "данных мало"
     coin_lines = v184_coin_profile_lines(data, limit=8)
     text = (
-        "🧪 v18.6 Shadow + Entry Quality Acceleration\n"
-        "Назначение: бот учится даже на решениях 'не покупать', сравнивая альтернативы без реальных сделок.\n"
+        "🧪 v18.8 Shadow + Timing Acceleration\n"
+        "Назначение: бот учится даже на решениях 'не покупать', сравнивая альтернативы без реальных сделок и задержку входа.\n"
         f"Shadow-проверки open: 🛡 полезная осторожность {shadow_saved} | ⚠️ возможно слишком осторожно {shadow_missed} | 🟡 нейтрально {shadow_neutral}.\n"
         f"Режимы open-наблюдений: {regime_txt}.\n"
         + v184_regime_backtest_summary(data)
@@ -6667,8 +6667,8 @@ def v186_entry_quality_summary(data):
     closed_success = closed_outcomes.count("success")
 
     text = (
-        "🎯 v18.6 ENTRY QUALITY ENGINE\n"
-        "Цель: бот учится не только 'не покупать', а качеству точки входа: вход сейчас, ожидание BTC, вход после отката и полный пропуск.\n"
+        "🎯 v18.8 ENTRY QUALITY ENGINE\n"
+        "Цель: бот учится не только 'не покупать', а качеству точки входа: вход сейчас, ожидание BTC, задержка 1ч/3ч/6ч/12ч, вход после отката и полный пропуск.\n"
         f"Open-проверки: 🛡 ожидание/пропуск защищает {saved} | ⚠️ возможно слишком осторожно {missed} | 🟡 спорно {neutral} | ✅ вход работал {good_entry} | 🔴 вход плохой {bad_entry}.\n"
         f"Closed 48ч: ✅ BUY/entry win {closed_success} | 🛡 watch спас {closed_saved} | ⚠️ watch пропустил {closed_missed} | 🔴 bad {closed_bad}.\n"
         "Правило: до достаточной 48ч статистики v18.6 не включает автоторговлю и не повышает веса агрессивно.\n"
@@ -6677,6 +6677,140 @@ def v186_entry_quality_summary(data):
         text += "Кейсы качества входа:\n" + "\n".join(examples) + "\n"
     return text + "\n"
 
+
+
+
+def v188_delay_return_from_start_pcts(start_to_delay_pct, start_to_latest_pct):
+    """v18.8: доходность если вход был не сразу, а в момент delay checkpoint, до последнего доступного checkpoint."""
+    try:
+        a = 1.0 + float(start_to_delay_pct) / 100.0
+        b = 1.0 + float(start_to_latest_pct) / 100.0
+        if a <= 0:
+            return None
+        return round((b / a - 1.0) * 100.0, 2)
+    except Exception:
+        return None
+
+
+def v188_shadow_timing_for_rec(rec):
+    """v18.8: сравнивает вход сразу с входом через 1ч/3ч/6ч/12ч по уже накопленным checkpoints.
+    Ничего не покупает и не меняет веса — это только ускорение обучения.
+    """
+    if not isinstance(rec, dict):
+        return None
+    values = v18_checkpoint_values(rec)
+    if len(values) < 2:
+        return None
+    order = ["15m", "30m", "1h", "3h", "6h", "12h", "24h", "48h"]
+    idx = {name: i for i, name in enumerate(order)}
+    value_map = {name: pct for name, pct in values}
+    latest_name, latest_pct = max(values, key=lambda kv: idx.get(kv[0], -1))
+    latest_i = idx.get(latest_name, -1)
+    if latest_i <= 0:
+        return None
+
+    candidates = []
+    label_map = {"1h": "1ч", "3h": "3ч", "6h": "6ч", "12h": "12ч"}
+    for delay_name in ["1h", "3h", "6h", "12h"]:
+        if delay_name not in value_map:
+            continue
+        if idx.get(delay_name, 99) >= latest_i:
+            continue
+        delayed_ret = v188_delay_return_from_start_pcts(value_map[delay_name], latest_pct)
+        if delayed_ret is None:
+            continue
+        candidates.append((delay_name, label_map.get(delay_name, delay_name), delayed_ret, value_map[delay_name]))
+    if not candidates:
+        return None
+
+    # лучший сценарий задержки — максимальный результат от точки задержанного входа до последнего checkpoint.
+    best = max(candidates, key=lambda x: x[2])
+    worst_delay = min(candidates, key=lambda x: x[2])
+    asset = str(rec.get("asset", "?")).upper()
+    regime = v183_regime_for_rec(rec)
+    direct = float(latest_pct)
+    best_name, best_label, best_ret, delay_start_pct = best
+
+    if direct <= -3 and best_ret > direct + 2 and best_ret > -3:
+        cls = "delay_better"
+        note = f"{asset}: ждать {best_label} было лучше входа сразу ({best_ret:+.2f}% против {direct:+.2f}% до {latest_name})"
+    elif direct <= -3 and best_ret <= -3:
+        cls = "skip_best"
+        note = f"{asset}: даже после задержки лучший сценарий {best_label} = {best_ret:+.2f}%, лучше полный пропуск"
+    elif direct >= 3 and best_ret < direct - 2:
+        cls = "entry_now_better"
+        note = f"{asset}: вход сразу пока был лучше задержки ({direct:+.2f}% против {best_label} {best_ret:+.2f}%)"
+    elif best_ret > direct + 1.5:
+        cls = "delay_slightly_better"
+        note = f"{asset}: задержка {best_label} немного улучшала вход ({best_ret:+.2f}% против {direct:+.2f}%)"
+    else:
+        cls = "timing_neutral"
+        note = f"{asset}: тайминг пока спорный, лучший delay {best_label} {best_ret:+.2f}% против входа сразу {direct:+.2f}%"
+
+    return {
+        "asset": asset,
+        "regime": regime,
+        "latest": latest_name,
+        "direct_pct": round(direct, 2),
+        "best_delay": best_name,
+        "best_delay_label": best_label,
+        "best_delay_return": round(float(best_ret), 2),
+        "worst_delay": worst_delay[0],
+        "worst_delay_return": round(float(worst_delay[2]), 2),
+        "class": cls,
+        "note": note,
+    }
+
+
+def v188_shadow_timing_summary(data):
+    """v18.8: Delayed Entry / Shadow Timing Engine для /learning_full и audit_file."""
+    if not isinstance(data, dict):
+        return ""
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    records = list(open_items.values()) + list(closed)
+    rows = []
+    for rec in records:
+        r = v188_shadow_timing_for_rec(rec)
+        if r:
+            rows.append(r)
+    if not rows:
+        return (
+            "⏱ v18.8 SHADOW TIMING / DELAYED ENTRY\n"
+            "Пока мало checkpoints для сравнения задержки входа 1ч/3ч/6ч/12ч. Ждём новые 3ч/6ч/12ч/24ч точки.\n\n"
+        )
+
+    class_counts = {}
+    delay_counts = {}
+    regime_counts = {}
+    for r in rows:
+        class_counts[r["class"]] = class_counts.get(r["class"], 0) + 1
+        delay_counts[r["best_delay_label"]] = delay_counts.get(r["best_delay_label"], 0) + 1
+        regime_counts[r["regime"]] = regime_counts.get(r["regime"], 0) + 1
+
+    def fmt_counts(d):
+        return ", ".join([f"{k}:{v}" for k, v in sorted(d.items(), key=lambda kv: kv[1], reverse=True)]) or "данных мало"
+
+    useful_wait = class_counts.get("delay_better", 0) + class_counts.get("delay_slightly_better", 0)
+    skip_best = class_counts.get("skip_best", 0)
+    now_better = class_counts.get("entry_now_better", 0)
+    neutral = class_counts.get("timing_neutral", 0)
+
+    # Показываем сначала самые важные уроки: полный пропуск / задержка лучше / вход сразу лучше.
+    priority = {"skip_best": 0, "delay_better": 1, "delay_slightly_better": 2, "entry_now_better": 3, "timing_neutral": 4}
+    examples = sorted(rows, key=lambda r: (priority.get(r["class"], 9), -abs(r.get("direct_pct", 0))))[:7]
+
+    text = (
+        "⏱ v18.8 SHADOW TIMING / DELAYED ENTRY ENGINE\n"
+        "Цель: понять не только 'не покупать сейчас', а когда после запрета вход мог стать лучше: через 1ч/3ч/6ч/12ч или полный пропуск.\n"
+        f"Проверено сценариев: {len(rows)} | ждать улучшало вход: {useful_wait} | полный пропуск лучше: {skip_best} | вход сразу был лучше: {now_better} | спорно: {neutral}.\n"
+        f"Лучшие задержки по текущей статистике: {fmt_counts(delay_counts)}.\n"
+        f"Режимы timing-проверок: {fmt_counts(regime_counts)}.\n"
+        "Правило безопасности: это shadow-обучение, реальные веса и автоторговля не меняются.\n"
+    )
+    if examples:
+        text += "Ключевые timing-кейсы:\n" + "\n".join(["• " + r["note"] for r in examples]) + "\n"
+    return text + "\n"
 
 def v181_learning_acceleration_summary(data):
     if not isinstance(data, dict):
@@ -6704,8 +6838,8 @@ def v181_learning_acceleration_summary(data):
     top_assets = ", ".join([a for a, _ in sorted(assets.items(), key=lambda kv: kv[1], reverse=True)[:8]]) if assets else "данных мало"
 
     return (
-        "🚀 v18.6 ENTRY QUALITY + SHADOW/BACKTEST\n"
-        "Цель: ускорить обучение через качество точки входа, shadow-сценарии, режимный backtest и профили монет, не ломая risk engine. Автоторговля выключена.\n"
+        "🚀 v18.8 SHADOW TIMING + ENTRY QUALITY\n"
+        "Цель: ускорить обучение через качество точки входа, задержку входа 1ч/3ч/6ч/12ч, shadow-сценарии, режимный backtest и профили монет. Автоторговля выключена.\n"
         f"Скорость обучения: открытых наблюдений {len(open_items)}, price snapshots {total_price_points}, закрытых 48ч {len(closed)}.\n"
         f"Market Regime Memory: open сейчас — {open_top} ({v186_format_counts(open_counts)}); closed 48ч — {closed_top} ({v186_format_counts(closed_counts)}); всего — {v186_format_counts(all_counts)}.\n"
         f"Coin Profile Memory: {top_assets}.\n"
@@ -6713,6 +6847,7 @@ def v181_learning_acceleration_summary(data):
         "Adaptive Weights: активны в режиме подготовки; реальные сдвиги score только после достаточной статистики, чтобы не переобучиться на одном пампе.\n"
         "Paper open и Learning open — разные журналы: Paper проверяет виртуальные сделки, Learning проверяет наблюдения/сигналы.\n\n"
         + v186_entry_quality_summary(data)
+        + v188_shadow_timing_summary(data)
     )
 
 def save_signal_history(items):
@@ -11999,7 +12134,7 @@ def build_audit_file(chat_id):
     add("PAPER FULL", paper_report, 12)
     add("SIGNAL FULL", unified_signal_report, 35)
     add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
-    add("LEARNING QUALITY V18.7", lambda: v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
+    add("LEARNING QUALITY V18.8", lambda: v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
     add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
     add("MARKET", market_status, 10)
     add("BTC FULL", lambda: single_analysis_full("BTC-USDT"), 25)
@@ -12332,7 +12467,8 @@ def main():
                         "✍️ v18.4.3: точные причины входа, BTC wording в alerts/signal, AVOID PUMP отдельной классификацией\n"
                         "🧾 v18.5: честная классификация Paper и danger wording\n"
                         "🎯 v18.6: Entry Quality Engine, confidence пояснения, режимы open/closed отдельно\n"
-                        "🧹 v18.7: paper close sweep — сделки старше 48ч не зависают открытыми"
+                        "🧹 v18.7: paper close sweep — сделки старше 48ч не зависают открытыми\n"
+                        "⏱ v18.8: Shadow Timing — проверка задержки входа 1ч/3ч/6ч/12ч"
                     ))
 
                 elif text == "/flush":
