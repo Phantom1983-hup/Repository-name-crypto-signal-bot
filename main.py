@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v18.0.2 LEARNING ALIAS FIX"
+BOT_VERSION = "v18.1 EXIT + ADAPTIVE CORE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -5660,6 +5660,11 @@ def learning_open_rows(open_items, limit=6):
             f"  прошло: {learning_age_text(age)} | закрытие через: {learning_age_text(close_left)} | встречалось: {seen_count} {russian_raz_word(seen_count)}\n"
             f"  проверки: {learning_checkpoint_status(rec, now)}\n"
         )
+        if rec.get("exit_plan") or rec.get("position_size") or rec.get("risk_reward"):
+            text += (
+                f"  v18.1: {rec.get('exit_plan', 'exit ждёт данных')} | "
+                f"размер: {rec.get('position_size', 'н/д')} | R/R: {rec.get('risk_reward', 'н/д')}\n"
+            )
 
     if limit is not None and len(rows) > limit:
         text += f"…ещё открытых наблюдений: {len(rows) - limit}\n"
@@ -5738,7 +5743,7 @@ def learning_report(sync_github=False, full=False):
         f"Версия: {BOT_VERSION}\n\n"
         f"Статус: обучение работает, данные копятся.\n"
         f"Режим отчёта: быстрый кэш; наступившие checkpoints фиксируются из кэша, тяжёлое обновление идёт фоном.\n"
-        f"v18.0: learning core классифицирует WATCH/AVOID/BUY по ранним и 48ч результатам.\n"
+        f"v18.1: Exit/Adaptive/Shadow core повышает точность, выходы и скорость обучения.\n"
         f"Ускорение: {backtest_file_summary()}\n"
         f"Paper trading: {paper_summary_line()}\n"
         f"Открытых наблюдений: {len(open_items)}\n"
@@ -5746,6 +5751,7 @@ def learning_report(sync_github=False, full=False):
     )
 
     text += v18_learning_core_summary(data)
+    text += v181_learning_acceleration_summary(data)
     text += "🔎 Открытые наблюдения:\n"
     text += learning_open_rows(open_items, limit=None if full else 6)
     text += "\n"
@@ -5821,6 +5827,235 @@ def confidence_level(c):
     return max(5, min(95, base))
 
 
+
+# === v18.1 EXIT + ADAPTIVE CORE ===
+def v181_safe_float(value, default=0.0):
+    try:
+        if value is None:
+            return default
+        return float(value)
+    except Exception:
+        return default
+
+
+def v181_rr_value(c):
+    """v18.1: простой risk/reward для отчёта и будущих весов.
+    Это не торговая гарантия, а фильтр качества точки входа.
+    """
+    high = max(0.0, v181_safe_float(c.get("high", 0), 0.0))
+    low = abs(min(0.0, v181_safe_float(c.get("low", 0), 0.0)))
+    if low <= 0.05:
+        return 0.0
+    return round(high / low, 2)
+
+
+def v181_confidence_from_n(n):
+    try:
+        n = int(n or 0)
+    except Exception:
+        n = 0
+    if n >= 30:
+        return "высокая"
+    if n >= 12:
+        return "средняя"
+    if n >= 5:
+        return "начальная"
+    return "данных мало"
+
+
+def v181_closed_counts_for(asset=None, market_bucket=None):
+    data = load_json(RESULTS_FILE)
+    closed = data.get("closed", []) if isinstance(data, dict) and isinstance(data.get("closed", []), list) else []
+    stats = {"n": 0, "success": 0, "bad": 0, "saved": 0, "missed": 0, "neutral": 0}
+    for rec in closed:
+        if asset and str(rec.get("asset", "")).upper() != str(asset).upper():
+            continue
+        if market_bucket and str(rec.get("market_bucket", "")) != str(market_bucket):
+            continue
+        outcome = classify_learning_result(rec)
+        stats["n"] += 1
+        if outcome == "success":
+            stats["success"] += 1
+        elif outcome == "bad":
+            stats["bad"] += 1
+        elif outcome == "watch_saved":
+            stats["saved"] += 1
+        elif outcome == "missed_move":
+            stats["missed"] += 1
+        else:
+            stats["neutral"] += 1
+    return stats
+
+
+def v181_position_size(c):
+    action = str(c.get("action", "SKIP") or "SKIP").upper()
+    ctx = c.get("ctx", {}) if isinstance(c.get("ctx", {}), dict) else {}
+    risk = market_risk_level(ctx) if ctx else "neutral"
+    score = int(v181_safe_float(c.get("score", 0), 0))
+    rr = v181_rr_value(c)
+    rsi = v181_safe_float(c.get("rsi", 50), 50)
+    volume = v181_safe_float(c.get("volume_trend", 1), 1)
+
+    if risk == "danger" or action in ["SKIP"] or "НЕ ПОКУПАТЬ" in str(c.get("verdict", "")):
+        return "0% — вход запрещён"
+    if action == "WATCH":
+        return "0% сейчас — только после подтверждения"
+    if action == "PUMP":
+        return "микро 0.5–1% максимум после отката"
+    if action in ["BUY", "ACCUM"]:
+        if score >= 75 and rr >= 1.2 and 35 <= rsi <= 68 and volume >= 1.1 and risk in ["neutral", "positive"]:
+            return "до 3–5% от плановой позиции частями"
+        return "микро 1–2% от плановой позиции частями"
+    return "0% — ждать"
+
+
+def v181_exit_plan(c):
+    action = str(c.get("action", "SKIP") or "SKIP").upper()
+    ctx = c.get("ctx", {}) if isinstance(c.get("ctx", {}), dict) else {}
+    risk = market_risk_level(ctx) if ctx else "neutral"
+    symbol = str(c.get("symbol", "?")).upper()
+    high = max(0.0, v181_safe_float(c.get("high", 0), 0))
+    low = min(0.0, v181_safe_float(c.get("low", 0), 0))
+
+    if risk == "danger":
+        return "выход/стоп: входа нет; если позиция уже есть — не усреднять, ждать стабилизацию BTC"
+    if action in ["SKIP"] or "НЕ ПОКУПАТЬ" in str(c.get("verdict", "")):
+        return "выход/стоп: входа нет; новая позиция не открывается"
+    if action == "WATCH":
+        return "выход/стоп: вход только после подтверждения; при пробое минимума дня сценарий отменяется"
+    if action == "PUMP" or "НЕ ДОГОНЯТЬ" in str(c.get("verdict", "")):
+        return "выход/стоп: памп не догонять; фиксация/выход при потере импульса, новый вход только после отката"
+
+    tp1 = max(1.0, min(high * 0.45, 3.0)) if high else 1.0
+    tp2 = max(2.0, min(high, 6.0)) if high else 2.0
+    stop = min(-1.2, max(low, -4.5)) if low else -2.0
+    if symbol in ["BTC", "ETH"]:
+        stop = max(stop, -3.5)
+    return f"выход/стоп: TP1 около +{tp1:.1f}%, TP2 до +{tp2:.1f}%; отмена идеи при {stop:.1f}% или ухудшении BTC"
+
+
+def v181_shadow_tests(c):
+    action = str(c.get("action", "SKIP") or "SKIP").upper()
+    rr = v181_rr_value(c)
+    ctx = c.get("ctx", {}) if isinstance(c.get("ctx", {}), dict) else {}
+    risk = market_risk_level(ctx) if ctx else "neutral"
+    if risk == "danger":
+        return "shadow: проверить, что было бы при входе сейчас vs ожидании стабилизации BTC"
+    if action == "WATCH":
+        return "shadow: сравнить вход сейчас, вход после отката и полный пропуск"
+    if action in ["BUY", "ACCUM"]:
+        return f"shadow: сравнить вход частями vs вход после отката; R/R {rr}"
+    if action == "PUMP":
+        return "shadow: сравнить догон пампа vs вход после отката"
+    return "shadow: проверить, что было бы при пропуске сигнала"
+
+
+def v181_signal_confidence(c):
+    asset = str(c.get("symbol", "")).upper()
+    ctx = c.get("ctx", {}) if isinstance(c.get("ctx", {}), dict) else {}
+    bucket = learning_market_bucket(ctx)
+    asset_stats = v181_closed_counts_for(asset=asset)
+    regime_stats = v181_closed_counts_for(market_bucket=bucket)
+    total_n = asset_stats.get("n", 0) + regime_stats.get("n", 0)
+    rr = v181_rr_value(c)
+    score = int(v181_safe_float(c.get("score", 0), 0))
+
+    base = confidence_level(c)
+    if rr >= 1.2:
+        base += 5
+    elif rr < 0.8:
+        base -= 8
+    if total_n >= 12:
+        base += 8
+    elif total_n < 5:
+        base -= 5
+    base = max(5, min(95, int(base)))
+    return base, v181_confidence_from_n(total_n), asset_stats, regime_stats
+
+
+def v181_apply_adaptive_weight_hint(c):
+    """v18.1: осторожная адаптация веса. Пока не ломает safety caps.
+    Реальный delta включается только при достаточной статистике, чтобы не переобучиться на 1 пампе.
+    """
+    if not c:
+        return c
+    c = dict(c)
+    asset = str(c.get("symbol", "")).upper()
+    ctx = c.get("ctx", {}) if isinstance(c.get("ctx", {}), dict) else {}
+    bucket = learning_market_bucket(ctx)
+    a = v181_closed_counts_for(asset=asset)
+    r = v181_closed_counts_for(market_bucket=bucket)
+    n = a.get("n", 0) + r.get("n", 0)
+    delta = 0
+
+    if n >= 8:
+        good = a.get("success", 0) + a.get("saved", 0) + r.get("success", 0) + r.get("saved", 0)
+        bad = a.get("bad", 0) + a.get("missed", 0) + r.get("bad", 0) + r.get("missed", 0)
+        if good >= bad + 4:
+            delta = 2
+        elif bad >= good + 3:
+            delta = -3
+
+    # Спекулятивные пропущенные пампы не должны агрессивно усиливать BUY.
+    if "СПЕКУЛЯТИВ" in str(c.get("verdict", "")) or "НЕ ДОГОНЯТЬ" in str(c.get("verdict", "")):
+        delta = min(delta, 0)
+
+    if delta:
+        c["score"] = max(0, min(100, int(c.get("score", 0) or 0) + delta))
+        c["_master_score"] = max(0, min(100, int(c.get("_master_score", c.get("score", 0)) or 0) + delta))
+        c["_adaptive_delta"] = delta
+        c.setdefault("plus" if delta > 0 else "minus", [])
+        note = f"v18.1 adaptive weight {delta:+d} по истории {asset}/{bucket}"
+        target = c["plus"] if delta > 0 else c["minus"]
+        if note not in target:
+            target.append(note)
+    else:
+        c["_adaptive_delta"] = 0
+    return c
+
+
+def v181_single_core_lines(c):
+    conf, conf_label, a, r = v181_signal_confidence(c)
+    rr = v181_rr_value(c)
+    return (
+        f"🧠 v18.1 confidence: {conf}/100 — {conf_label}; "
+        f"история монеты {a.get('n', 0)}, режима {r.get('n', 0)}\n"
+        f"⚖️ Risk/Reward: {rr if rr else 'н/д'} | 📌 Размер: {v181_position_size(c)}\n"
+        f"🎯 Exit Engine: {v181_exit_plan(c)}\n"
+        f"🧪 Shadow: {v181_shadow_tests(c)}\n"
+    )
+
+
+def v181_learning_acceleration_summary(data):
+    if not isinstance(data, dict):
+        return ""
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    total_price_points = 0
+    for rec in open_items.values():
+        pts = rec.get("price_points", []) if isinstance(rec.get("price_points", []), list) else []
+        total_price_points += len(pts)
+
+    buckets = {}
+    assets = {}
+    for rec in closed:
+        b = rec.get("market_bucket", "unknown")
+        buckets[b] = buckets.get(b, 0) + 1
+        a = str(rec.get("asset", "?")).upper()
+        assets[a] = assets.get(a, 0) + 1
+
+    top_bucket = max(buckets.items(), key=lambda kv: kv[1])[0] if buckets else "данных мало"
+    top_assets = ", ".join([a for a, _ in sorted(assets.items(), key=lambda kv: kv[1], reverse=True)[:4]]) if assets else "данных мало"
+
+    return (
+        "🚀 v18.1 EXIT + ADAPTIVE CORE\n"
+        "Цель: быстрее учиться, но не ломать risk engine. Exit/Shadow/Adaptive пока работают осторожно и не включают автоторговлю.\n"
+        f"Скорость обучения: открытых наблюдений {len(open_items)}, price snapshots {total_price_points}, закрытых 48ч {len(closed)}.\n"
+        f"Market Regime Memory: главный накопленный режим — {top_bucket}; Coin Profile Memory: {top_assets}.\n"
+        "Adaptive Weights: активны в режиме подготовки; реальные сдвиги score только после достаточной статистики, чтобы не переобучиться на одном пампе.\n"
+        "Paper open и Learning open — разные журналы: Paper проверяет виртуальные сделки, Learning проверяет наблюдения/сигналы.\n\n"
+    )
+
 def save_signal_history(items):
     h = load_json(HISTORY_FILE)
     results = load_json(RESULTS_FILE)
@@ -5860,6 +6095,11 @@ def save_signal_history(items):
             existing_rec["last_score"] = c.get("score", 0)
             existing_rec["last_action"] = c.get("action")
             existing_rec["last_verdict"] = c.get("verdict")
+            existing_rec["risk_reward"] = v181_rr_value(c)
+            existing_rec["position_size"] = v181_position_size(c)
+            existing_rec["exit_plan"] = v181_exit_plan(c)
+            existing_rec["shadow_tests"] = v181_shadow_tests(c)
+            existing_rec["confidence_v181"] = v181_signal_confidence(c)[0]
 
             # v15.1: price snapshots нужны для честных 15м/30м/1ч checkpoints.
             existing_rec = append_learning_price_point(existing_rec, current_price_for_seen, now=now, min_gap_seconds=60)
@@ -5923,7 +6163,12 @@ def save_signal_history(items):
             "last_seen_counted": now,
             "seen_count": 1,
             "results": {},
-            "price_points": [{"time": now, "price": round(float(c.get("price", 0) or 0), 8)}]
+            "price_points": [{"time": now, "price": round(float(c.get("price", 0) or 0), 8)}],
+            "risk_reward": v181_rr_value(c),
+            "position_size": v181_position_size(c),
+            "exit_plan": v181_exit_plan(c),
+            "shadow_tests": v181_shadow_tests(c),
+            "confidence_v181": v181_signal_confidence(c)[0]
         }
 
         open_items[signal_key(c["symbol"], now)] = rec
@@ -8947,6 +9192,7 @@ def get_signal():
         safe_analyzed = []
         for c in analyzed:
             try:
+                c = v181_apply_adaptive_weight_hint(c)
                 safe_analyzed.append(v83_apply_self_learning(c))
             except Exception as e:
                 print(f"learning write skipped {c.get('symbol', '?')}: {e}")
@@ -9842,7 +10088,8 @@ def format_single_coin_report(c):
         f"{('ℹ️ score снижен за плохой момент входа, не за качество актива\n') if c.get('_quality_alt_score_floor') else ''}"
         f"{('ℹ️ score снижен за плохой фон/BTC, не за качество актива\n') if c.get('_bad_alt_entry_cap') else ''}"
         f"{('ℹ️ это наблюдение из-за опасных новостей, не вход\n') if c.get('_bad_news_quality_alt_watch') else ''}"
-        f"📚 {c.get('_learning_note', 'самообучение: история накапливается')}\n\n"
+        f"📚 {c.get('_learning_note', 'самообучение: история накапливается')}\n"
+        f"{v181_single_core_lines(c)}\n"
         f"{macro_mode_text(ctx)} ({ctx.get('macro_mod', 0):+d})\n"
         f"{compact_market_risk_line(ctx)}\n"
         f"BTC: {ctx.get('btc_text', 'н/д')} | {ctx.get('btc_change', 0):.2f}%\n\n"
@@ -10776,6 +11023,9 @@ def single_analysis(symbol):
     c = v155_apply_single_watch_score_consistency(c)
     c = v173_apply_btc_drop_wording_guard(c)
 
+    # v18.1: осторожная адаптация по закрытым 48ч перед learning note.
+    c = v181_apply_adaptive_weight_hint(c)
+
     # v11.4+: learning note/updates только после safety caps.
     c = v83_apply_self_learning(c)
 
@@ -10853,7 +11103,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v17.8.5: кнопка отчёта убрана, command pool работает, Paper на главном экране, доп. cleanup дублей обучения, danger-wording для single coin forecast, fast-learning 15м/30м/1ч/3ч/6ч/12ч/24ч/48ч, background scan каждые 30м"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v18.1: Exit Engine, Adaptive Weights Guard, Shadow Signals, Risk/Reward, position sizing, fast-learning 15м/30м/1ч/3ч/6ч/12ч/24ч/48ч, background scan каждые 30м"
     )
 
 
@@ -11080,8 +11330,10 @@ def main():
                         "📦 Пул команд: включён\n"
                         "🧾 Кнопка отчёта: убрана\n"
                         "🧪 Paper: на главном экране\n"
-                        "🧠 v18.0 Core: ранняя классификация learning включена\n"
-                        "📚 /learning_full: полный аудит открытых наблюдений"
+                        "🧠 v18.1 Core: Exit + Adaptive + Shadow включены\n"
+                        "📚 /learning_full: полный аудит открытых наблюдений\n"
+                        "🎯 Exit Engine: точки выхода/стопа в /btc /sol /coin\n"
+                        "🚀 Learning speed: price snapshots + shadow checks"
                     ))
 
                 elif text == "/flush":
