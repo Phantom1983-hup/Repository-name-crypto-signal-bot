@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v18.1 EXIT + ADAPTIVE CORE"
+BOT_VERSION = "v18.2 USER SHORT + AUDIT FILE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1644,6 +1644,12 @@ COMMAND_POOL_ALIASES = {
     "learning": "/learning",
     "learning_full": "/learning_full",
     "learning_audit": "/learning_full",
+    "audit": "/audit_short",
+    "audit_short": "/audit_short",
+    "аудит": "/audit_short",
+    "audit_file": "/audit_file",
+    "chatgpt_audit_file": "/audit_file",
+    "файл аудита": "/audit_file",
     "audit_learning": "/learning_full",
     "обучение полное": "/learning_full",
     "полное обучение": "/learning_full",
@@ -1893,6 +1899,7 @@ def service_keyboard(chat_id=None):
     rows = [
         ["🧹 Очистить", "💾 Хранилище"],
         ["📅 Дни недели", "⚙️ Версия"],
+        ["/audit_short", "/audit_file"],
         ["🧪 Paper"],
     ]
 
@@ -5940,14 +5947,14 @@ def v181_shadow_tests(c):
     ctx = c.get("ctx", {}) if isinstance(c.get("ctx", {}), dict) else {}
     risk = market_risk_level(ctx) if ctx else "neutral"
     if risk == "danger":
-        return "shadow: проверить, что было бы при входе сейчас vs ожидании стабилизации BTC"
+        return "проверить, что было бы при входе сейчас vs ожидании стабилизации BTC"
     if action == "WATCH":
-        return "shadow: сравнить вход сейчас, вход после отката и полный пропуск"
+        return "сравнить вход сейчас, вход после отката и полный пропуск"
     if action in ["BUY", "ACCUM"]:
-        return f"shadow: сравнить вход частями vs вход после отката; R/R {rr}"
+        return f"сравнить вход частями vs вход после отката; R/R {rr}"
     if action == "PUMP":
-        return "shadow: сравнить догон пампа vs вход после отката"
-    return "shadow: проверить, что было бы при пропуске сигнала"
+        return "сравнить догон пампа vs вход после отката"
+    return "проверить, что было бы при пропуске сигнала"
 
 
 def v181_signal_confidence(c):
@@ -6020,7 +6027,7 @@ def v181_single_core_lines(c):
     return (
         f"🧠 v18.1 confidence: {conf}/100 — {conf_label}; "
         f"история монеты {a.get('n', 0)}, режима {r.get('n', 0)}\n"
-        f"⚖️ Risk/Reward: {rr if rr else 'н/д'} | 📌 Размер: {v181_position_size(c)}\n"
+        f"⚖️ Risk/Reward: {('не рассчитывается без подтверждённого входа' if str(c.get('action', 'SKIP')).upper() in ['SKIP', 'WATCH'] or 'НЕ ПОКУПАТЬ' in str(c.get('verdict', '')) else (rr if rr else 'н/д'))} | 📌 Размер: {v181_position_size(c)}\n"
         f"🎯 Exit Engine: {v181_exit_plan(c)}\n"
         f"🧪 Shadow: {v181_shadow_tests(c)}\n"
     )
@@ -10999,11 +11006,11 @@ def v161_apply_bad_news_quality_alt_watch(c):
 
     return c
 
-def single_analysis(symbol):
+def build_single_coin_analysis(symbol):
     c = alex_edge_ultra(symbol)
 
     if not c:
-        return f"Версия: {BOT_VERSION}\nМонета не найдена."
+        return None
 
     c = v6_apply_single_score_engine(c)
     c = v82_apply_single_coin_consistency(c)
@@ -11028,8 +11035,245 @@ def single_analysis(symbol):
 
     # v11.4+: learning note/updates только после safety caps.
     c = v83_apply_self_learning(c)
+    return c
 
+
+def user_market_word(ctx):
+    risk = market_risk_level(ctx) if isinstance(ctx, dict) else "neutral"
+    btc_change = v181_safe_float(ctx.get("btc_change", 0), 0) if isinstance(ctx, dict) else 0
+    if risk == "danger":
+        return "🔴 опасный"
+    if risk == "caution":
+        if btc_change > -1.0:
+            return "🟡 осторожный: BTC слегка давит"
+        return "🟡 осторожный"
+    return str(ctx.get("state", "нейтральный")) if isinstance(ctx, dict) else "нейтральный"
+
+
+def clean_user_condition_lines(c, limit=2):
+    raw = single_coin_conditions_text(c)
+    lines = []
+    for ln in raw.splitlines():
+        ln = ln.strip()
+        if not ln or ln.startswith("Что нужно"):
+            continue
+        ln = ln.lstrip("• ").strip()
+        if ln:
+            lines.append(ln)
+    return lines[:limit]
+
+
+def format_single_coin_user_report(c):
+    ctx = c.get("ctx", {}) if isinstance(c.get("ctx", {}), dict) else {}
+    symbol = c.get("symbol", "?")
+    action = str(c.get("action", "SKIP") or "SKIP").upper()
+    verdict = str(c.get("verdict", ""))
+
+    if "НЕ ПОКУПАТЬ" in verdict or action == "SKIP":
+        main = "🔴 НЕ ПОКУПАТЬ"
+        decision = "вход сейчас не подходит"
+    elif action == "BUY":
+        main = "🟢 МОЖНО РАССМАТРИВАТЬ"
+        decision = "только частями и после подтверждения"
+    elif action == "ACCUM":
+        main = "🟦 МОЖНО НАБЛЮДАТЬ ДЛЯ ЧАСТИЧНОГО НАБОРА"
+        decision = "не всей суммой, только после подтверждения"
+    else:
+        main = "🟡 ЖДАТЬ / НАБЛЮДАТЬ"
+        decision = "пока без входа, ждать подтверждение"
+
+    reason = compact_reason(c)
+    conditions = clean_user_condition_lines(c, limit=3)
+    if not conditions:
+        conditions = ["нужно подтверждение объёмом и стабилизация BTC"]
+
+    risk_text = user_market_word(ctx)
+    rr_text = "не рассчитывается без подтверждённого входа" if action in ["SKIP", "WATCH"] or "НЕ ПОКУПАТЬ" in verdict else str(v181_rr_value(c))
+
+    lines = [
+        f"{symbol} — {main}",
+        "",
+        f"Цена: {compact_price(c.get('price'))} | 24ч: {c.get('change_24', 0):+.2f}%",
+        f"Итог: {decision}.",
+        f"Причина: {reason}.",
+        f"Риск рынка: {risk_text}.",
+        "",
+        "Что должно измениться:",
+    ]
+    for x in conditions[:3]:
+        lines.append(f"• {x}")
+
+    lines += [
+        "",
+        f"Размер позиции: {v181_position_size(c)}",
+        f"R/R: {rr_text}",
+        "Подробно для аудита: /audit_file"
+    ]
+    return "\n".join(lines)
+
+
+def single_analysis_full(symbol):
+    c = build_single_coin_analysis(symbol)
+    if not c:
+        return f"Версия: {BOT_VERSION}\nМонета не найдена."
     return format_single_coin_report(c)
+
+
+def single_analysis(symbol):
+    c = build_single_coin_analysis(symbol)
+    if not c:
+        return f"Версия: {BOT_VERSION}\nМонета не найдена."
+    return format_single_coin_user_report(c)
+
+
+
+
+def _first_line_with(text, prefix):
+    for ln in str(text or "").splitlines():
+        if ln.strip().startswith(prefix):
+            return ln.strip()
+    return ""
+
+
+def user_signal_report():
+    """v18.2: обычный /signal — короткий пользовательский итог, не технический аудит."""
+    full = unified_signal_report()
+    market = _first_line_with(full, "Рынок:") or "Рынок: н/д"
+    btc = _first_line_with(full, "BTC:") or "BTC: н/д"
+    risk = _first_line_with(full, "Риск рынка:") or "Риск рынка: н/д"
+    buy_line = _first_line_with(full, "🟢 BUY:") or "🟢 BUY: н/д"
+
+    rows = []
+    lines = full.splitlines()
+    for idx, ln in enumerate(lines):
+        if re.match(r"^\d+\.\s+", ln.strip()):
+            main = ln.strip()
+            action = ""
+            if idx + 1 < len(lines):
+                action = lines[idx + 1].strip()
+            sym = main.split("—", 1)[0].split(".", 1)[-1].strip()
+            if "не догонять" in action.lower():
+                rows.append(f"• {sym}: не догонять")
+            elif "без вход" in action.lower() or "только мониторинг" in action.lower():
+                rows.append(f"• {sym}: только наблюдать")
+            elif "индикатор" in action.lower() or "подтверж" in action.lower():
+                rows.append(f"• {sym}: ждать подтверждение")
+            else:
+                rows.append(f"• {sym}: {action or 'наблюдать'}")
+        if len(rows) >= 5:
+            break
+
+    buy_zero = "BUY: 0" in buy_line
+    if buy_zero:
+        decision = "Новых входов сейчас нет. Ждать стабилизацию BTC, объём и откат."
+    else:
+        decision = "Есть идеи, но вход только после проверки конкретной монеты."
+
+    return (
+        f"📊 Короткий сигнал\nВерсия: {BOT_VERSION}\n\n"
+        f"{market}\n{btc}\n{risk}\n{buy_line}\n\n"
+        f"Итог: {decision}\n\n"
+        "Что смотреть сейчас:\n"
+        + ("\n".join(rows) if rows else "• Покупок нет, рынок лучше наблюдать")
+        + "\n\nПодробный техаудит: /audit_file"
+    )
+
+
+def learning_user_report():
+    data = load_json(RESULTS_FILE)
+    if not isinstance(data, dict):
+        data = {}
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    counts = {"success":0,"neutral":0,"bad":0,"watch_saved":0,"missed_move":0}
+    for rec in closed:
+        out = classify_learning_result(rec)
+        counts[out if out in counts else "neutral"] = counts.get(out if out in counts else "neutral", 0) + 1
+    return (
+        f"📚 Обучение — коротко\nВерсия: {BOT_VERSION}\n\n"
+        "Статус: работает, данные копятся в фоне.\n"
+        f"Открытых наблюдений: {len(open_items)}\n"
+        f"Закрытых 48ч результатов: {len(closed)}\n"
+        f"Итоги: 🛡 спасло {counts.get('watch_saved',0)} | ⚠️ пропустило рост {counts.get('missed_move',0)} | 🟡 нейтрально {counts.get('neutral',0)} | 🔴 ошибок {counts.get('bad',0)}\n"
+        f"Paper: {paper_summary_line()}\n\n"
+        "Подробно: /learning_full\n"
+        "Полный файл для ChatGPT: /audit_file"
+    )
+
+
+def paper_user_report():
+    return (
+        f"🧪 Paper — коротко\nВерсия: {BOT_VERSION}\n\n"
+        f"{paper_summary_line()}\n"
+        "Автопокупки выключены. Это только виртуальная проверка.\n"
+        "Подробный аудит: /audit_file"
+    )
+
+
+def alerts_user_report():
+    text_alert, _ = get_fast_pumps()
+    if not text_alert:
+        return f"⚡ Alerts\nВерсия: {BOT_VERSION}\n\nСильных импульсов сейчас нет. Лучше ждать."
+    lines = text_alert.splitlines()
+    btc = _first_line_with(text_alert, "BTC 24ч:")
+    fon = _first_line_with(text_alert, "Фон:")
+    picks = []
+    for ln in lines:
+        st = ln.strip()
+        if re.match(r"^\d+\.\s+", st):
+            name = st.split("—",1)[0].split(".",1)[-1].strip()
+            if name and len(picks) < 4:
+                if "Спекулятив" in "\n".join(lines[max(0, lines.index(ln)-3):lines.index(ln)+1]):
+                    picks.append(f"• {name}: не догонять")
+                else:
+                    picks.append(f"• {name}: наблюдать, не входить без подтверждения")
+    return (
+        f"⚡ Alerts — коротко\nВерсия: {BOT_VERSION}\n\n"
+        f"{btc}\n{fon}\n\n"
+        + ("\n".join(picks[:4]) if picks else "Сильных качественных входов нет.")
+        + "\n\nПодробный аудит: /audit_file"
+    )
+
+
+def audit_short_report():
+    ctx = market_context()
+    data = load_json(RESULTS_FILE)
+    open_count = len(data.get("open", {})) if isinstance(data, dict) and isinstance(data.get("open", {}), dict) else 0
+    closed_count = len(data.get("closed", [])) if isinstance(data, dict) and isinstance(data.get("closed", []), list) else 0
+    return (
+        f"🧾 Audit short\nВерсия: {BOT_VERSION}\n\n"
+        f"Рынок: {user_market_word(ctx)} | BTC {ctx.get('btc_change',0):+.2f}% | страх {ctx.get('fg_value','?')} | новости {ctx.get('macro_mod',0):+d}\n"
+        f"Paper: {paper_summary_line()}\n"
+        f"Learning: open {open_count} | closed48 {closed_count}\n"
+        "Команды: /audit_file — полный txt для ChatGPT\n"
+        "Пользовательские команды теперь короткие: /signal /btc /sol /coin ETH"
+    )
+
+
+def build_audit_file(chat_id):
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    path = f"/tmp/alex_edge_audit_{ts}.txt"
+    sections = []
+    def add(title, func):
+        try:
+            sections.append("\n" + "="*80 + f"\n{title}\n" + "="*80 + "\n" + str(func()))
+        except Exception as e:
+            sections.append("\n" + "="*80 + f"\n{title}\n" + "="*80 + f"\nERROR: {e}")
+    add("VERSION", lambda: f"BOT_VERSION: {BOT_VERSION}")
+    add("AUDIT SHORT", audit_short_report)
+    add("PAPER FULL", paper_report)
+    add("SIGNAL FULL", unified_signal_report)
+    add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True))
+    add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts")
+    add("MARKET", market_status)
+    add("BTC FULL", lambda: single_analysis_full("BTC-USDT"))
+    add("SOL FULL", lambda: single_analysis_full("SOL-USDT"))
+    add("ETH FULL", lambda: single_analysis_full("ETH-USDT"))
+    content = "ALEX EDGE ULTRA TECH AUDIT FILE\n" + "\n".join(sections)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(content)
+    send_document(chat_id, path, caption="🧾 Полный технический отчёт для ChatGPT. Обычные команды остаются короткими.")
+    return path
 
 def market_status():
     ctx = market_context()
@@ -11330,10 +11574,10 @@ def main():
                         "📦 Пул команд: включён\n"
                         "🧾 Кнопка отчёта: убрана\n"
                         "🧪 Paper: на главном экране\n"
-                        "🧠 v18.1 Core: Exit + Adaptive + Shadow включены\n"
-                        "📚 /learning_full: полный аудит открытых наблюдений\n"
-                        "🎯 Exit Engine: точки выхода/стопа в /btc /sol /coin\n"
-                        "🚀 Learning speed: price snapshots + shadow checks"
+                        "🧠 v18.2: обычные команды короткие, техаудит отдельно\n"
+                        "📚 /learning_full: полный learning\n"
+                        "🧾 /audit_short: короткий аудит для ChatGPT\n"
+                        "📄 /audit_file: полный txt-файл для ChatGPT"
                     ))
 
                 elif text == "/flush":
@@ -11420,12 +11664,11 @@ def main():
                     send_message(chat_id, get_top())
 
                 elif text == "/signal":
-                    # v12.6: снова одна кнопка.
-                    # /signal сразу формирует полный быстрый ticker-safe отчёт по 35 монетам.
-                    send_message(chat_id, "⏳ Формирую единый сигнал по 35 монетам...")
-                    send_message(chat_id, unified_signal_report())
-                    background_learning_update("manual_signal_v17_6_2")
-                    background_paper_update("manual_signal_v17_6_2")
+                    # v18.2: обычный пользовательский /signal короткий. Полный технический отчёт — /audit_file или /signal_full.
+                    send_message(chat_id, "⏳ Проверяю рынок и даю короткий итог...")
+                    send_message(chat_id, user_signal_report())
+                    background_learning_update("manual_signal_v18_2_short")
+                    background_paper_update("manual_signal_v18_2_short")
 
                 elif text == "/signal_full":
                     # Скрытая ручная команда для отладки. Делает то же самое, что /signal.
@@ -11437,8 +11680,23 @@ def main():
                 elif text == "/btc":
                     send_message(chat_id, single_analysis("BTC-USDT"))
 
+                elif text == "/btc_full":
+                    send_message(chat_id, single_analysis_full("BTC-USDT"))
+
                 elif text == "/sol":
                     send_message(chat_id, single_analysis("SOL-USDT"))
+
+                elif text == "/sol_full":
+                    send_message(chat_id, single_analysis_full("SOL-USDT"))
+
+                elif text.lower().startswith("/coin_full"):
+                    parts = text.split()
+                    if len(parts) >= 2:
+                        coin = resolve_coin_symbol(parts[1])
+                        send_message(chat_id, coin_analyze_wait_text(coin))
+                        send_message(chat_id, single_analysis_full(f"{coin}-USDT"))
+                    else:
+                        send_message(chat_id, "Напиши так: /coin_full ETH")
 
                 elif text.lower().startswith("/coin"):
                     parts = text.split()
@@ -11469,10 +11727,17 @@ def main():
                     send_message(chat_id, learning_report(sync_github=True))
 
                 elif text == "/learning":
-                    send_message(chat_id, learning_report(sync_github=False, full=False))
+                    send_message(chat_id, learning_user_report())
 
                 elif text in ["/learning_full", "/learning_audit"]:
                     send_message(chat_id, learning_report(sync_github=False, full=True))
+
+                elif text in ["/audit_short", "/chatgpt_short", "/audit"]:
+                    send_message(chat_id, audit_short_report())
+
+                elif text in ["/audit_file", "/chatgpt_audit_file"]:
+                    send_message(chat_id, "⏳ Собираю полный технический txt-отчёт для ChatGPT...")
+                    build_audit_file(chat_id)
 
                 elif text in ["/learn_fast", "/backtest", "/learning_fast"]:
                     send_message(chat_id, learn_fast_report(start=True))
