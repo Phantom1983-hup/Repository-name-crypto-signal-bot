@@ -1867,9 +1867,28 @@
       "last_price": 0.2914,
       "last_price_time": 1782315744.9542453,
       "last_pct": -9.76
+    },
+    "VERONA:AVOID_PUMP_TEST:495087": {
+      "id": "VERONA:AVOID_PUMP_TEST:495087",
+      "asset": "VERONA",
+      "entry_time": 1782316270.387459,
+      "entry_price": 0.1645,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 229.0,
+      "btc_change": -2.85,
+      "macro_mod": -10,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [],
-  "last_created_at": 1782310300.338251,
+  "last_created_at": 1782316270.387459,
   "last_update_at": 1782315799.0182872
 }
