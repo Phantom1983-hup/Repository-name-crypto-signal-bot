@@ -653,7 +653,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782276760.1343987,
-      "last_seen": 1782284599.4547787,
+      "last_seen": 1782285457.7375834,
       "last_seen_counted": 1782284218.455279,
       "seen_count": 3,
       "results": {
@@ -876,9 +876,13 @@
         {
           "time": 1782284599.4547787,
           "price": 62752.7
+        },
+        {
+          "time": 1782285457.7375834,
+          "price": 62756.8
         }
       ],
-      "last_price": 62752.7,
+      "last_price": 62756.8,
       "last_score": 62,
       "last_action": "WATCH",
       "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
@@ -933,7 +937,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782276760.1343987,
-      "last_seen": 1782284599.4547787,
+      "last_seen": 1782285457.7375834,
       "last_seen_counted": 1782284218.455279,
       "seen_count": 3,
       "results": {
@@ -1168,9 +1172,13 @@
         {
           "time": 1782284599.4547787,
           "price": 1673.78
+        },
+        {
+          "time": 1782285457.7375834,
+          "price": 1676.24
         }
       ],
-      "last_price": 1673.78,
+      "last_price": 1676.24,
       "last_score": 61,
       "last_action": "WATCH",
       "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
@@ -1308,7 +1316,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782276760.1343987,
-      "last_seen": 1782284599.4547787,
+      "last_seen": 1782285457.7375834,
       "last_seen_counted": 1782284218.455279,
       "seen_count": 3,
       "results": {
@@ -1551,10 +1559,14 @@
         {
           "time": 1782284599.4547787,
           "price": 6.412
+        },
+        {
+          "time": 1782285457.7375834,
+          "price": 6.41
         }
       ],
-      "last_price": 6.412,
-      "last_score": 63,
+      "last_price": 6.41,
+      "last_score": 62,
       "last_action": "WATCH",
       "last_verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
       "result_details": {
@@ -1579,7 +1591,7 @@
       "position_size": "0% сейчас — только после подтверждения",
       "exit_plan": "выход/стоп: вход только после подтверждения; при пробое минимума дня сценарий отменяется",
       "shadow_tests": "сравнить вход сейчас, вход после отката и полный пропуск",
-      "confidence_v181": 19
+      "confidence_v181": 18
     },
     "BEAT_1782276760": {
       "asset": "BEAT",
@@ -1608,7 +1620,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782276760.1343987,
-      "last_seen": 1782284599.4547787,
+      "last_seen": 1782285457.7375834,
       "last_seen_counted": 1782284218.455279,
       "seen_count": 3,
       "results": {
@@ -1887,9 +1899,13 @@
         {
           "time": 1782284599.4547787,
           "price": 2.54
+        },
+        {
+          "time": 1782285457.7375834,
+          "price": 2.6194
         }
       ],
-      "last_price": 2.54,
+      "last_price": 2.6194,
       "last_score": 55,
       "last_action": "WATCH",
       "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
@@ -1944,7 +1960,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782276760.1343987,
-      "last_seen": 1782284599.4547787,
+      "last_seen": 1782285457.7375834,
       "last_seen_counted": 1782284279.7905493,
       "seen_count": 3,
       "results": {
@@ -2211,9 +2227,13 @@
         {
           "time": 1782284599.4547787,
           "price": 0.224
+        },
+        {
+          "time": 1782285457.7375834,
+          "price": 0.2262
         }
       ],
-      "last_price": 0.224,
+      "last_price": 0.2262,
       "last_score": 55,
       "last_action": "WATCH",
       "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
@@ -2268,7 +2288,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782276760.1343987,
-      "last_seen": 1782284599.4547787,
+      "last_seen": 1782285457.7375834,
       "last_seen_counted": 1782284218.455279,
       "seen_count": 3,
       "results": {
@@ -2407,9 +2427,13 @@
         {
           "time": 1782284599.4547787,
           "price": 0.0339
+        },
+        {
+          "time": 1782285457.7375834,
+          "price": 0.0345
         }
       ],
-      "last_price": 0.0339,
+      "last_price": 0.0345,
       "last_score": 55,
       "last_action": "WATCH",
       "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
@@ -2713,7 +2737,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782279707.163642,
-      "last_seen": 1782284599.4547787,
+      "last_seen": 1782285457.7375834,
       "last_seen_counted": 1782283489.2509482,
       "seen_count": 2,
       "results": {},
@@ -2821,6 +2845,10 @@
         {
           "time": 1782284599.4547787,
           "price": 0.7038
+        },
+        {
+          "time": 1782285457.7375834,
+          "price": 0.7056
         }
       ],
       "risk_reward": 0.0,
@@ -2829,8 +2857,8 @@
       "shadow_tests": "сравнить вход сейчас, вход после отката и полный пропуск",
       "confidence_v181": 16,
       "result_details": {},
-      "last_price": 0.7038,
-      "last_score": 58,
+      "last_price": 0.7056,
+      "last_score": 59,
       "last_action": "WATCH",
       "last_verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
     },
