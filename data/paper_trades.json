@@ -261,9 +261,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.0366,
-      "last_price_time": 1782343465.0334322,
-      "last_pct": 0.0
+      "last_price": 0.0361,
+      "last_price_time": 1782344744.2130706,
+      "last_pct": -1.37
     },
     "BEAT:AVOID_PUMP_TEST:495063": {
       "id": "BEAT:AVOID_PUMP_TEST:495063",
@@ -592,9 +592,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.82632,
-      "last_price_time": 1782343465.0334322,
-      "last_pct": 27.13
+      "last_price": 0.82394,
+      "last_price_time": 1782345054.5322564,
+      "last_pct": 26.76
     },
     "NES:AVOID_PUMP_TEST:495086": {
       "id": "NES:AVOID_PUMP_TEST:495086",
@@ -646,9 +646,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.2671,
-      "last_price_time": 1782343465.0334322,
-      "last_pct": -17.28
+      "last_price": 0.2736,
+      "last_price_time": 1782345054.5322564,
+      "last_pct": -15.27
     },
     "VERONA:AVOID_PUMP_TEST:495087": {
       "id": "VERONA:AVOID_PUMP_TEST:495087",
@@ -700,9 +700,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.1568,
-      "last_price_time": 1782343465.0334322,
-      "last_pct": -4.68
+      "last_price": 0.1577,
+      "last_price_time": 1782345054.5322564,
+      "last_pct": -4.13
     },
     "BTC:VIRTUAL_WATCH_ENTRY_TEST:495088": {
       "id": "BTC:VIRTUAL_WATCH_ENTRY_TEST:495088",
@@ -754,9 +754,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 61003.5,
-      "last_price_time": 1782343465.0334322,
-      "last_pct": 1.56
+      "last_price": 60966.2,
+      "last_price_time": 1782345054.5322564,
+      "last_pct": 1.5
     },
     "ETH:VIRTUAL_WATCH_ENTRY_TEST:495088": {
       "id": "ETH:VIRTUAL_WATCH_ENTRY_TEST:495088",
@@ -808,9 +808,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 1620.94,
-      "last_price_time": 1782343465.0334322,
-      "last_pct": 0.51
+      "last_price": 1619.01,
+      "last_price_time": 1782345054.5322564,
+      "last_pct": 0.39
     },
     "AAVE:VIRTUAL_WATCH_ENTRY_TEST:495088": {
       "id": "AAVE:VIRTUAL_WATCH_ENTRY_TEST:495088",
@@ -862,9 +862,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 79.995,
-      "last_price_time": 1782343465.0334322,
-      "last_pct": 6.93
+      "last_price": 79.659,
+      "last_price_time": 1782345054.5322564,
+      "last_pct": 6.48
     },
     "SYN:AVOID_PUMP_TEST:495088": {
       "id": "SYN:AVOID_PUMP_TEST:495088",
@@ -1135,7 +1135,8 @@
       "results": {
         "15m": -0.17,
         "30m": -0.17,
-        "1h": -0.17
+        "1h": -0.17,
+        "3h": 1.0
       },
       "result_details": {
         "15m": {
@@ -1152,13 +1153,18 @@
           "checkpoint_time": 1782334590.0987694,
           "checkpoint_price": 217.55,
           "source": "learning_cache:snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782344744.2130706,
+          "checkpoint_price": 220.1,
+          "source": "learning_cache:snapshot"
         }
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 218.56,
-      "last_price_time": 1782342526.9930596,
-      "last_pct": 0.29
+      "last_price": 220.1,
+      "last_price_time": 1782344744.2130706,
+      "last_pct": 1.0
     },
     "BAS:AVOID_PUMP_TEST:495093": {
       "id": "BAS:AVOID_PUMP_TEST:495093",
@@ -1198,9 +1204,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.04014,
-      "last_price_time": 1782343465.0334322,
-      "last_pct": 0.78
+      "last_price": 0.03991,
+      "last_price_time": 1782345054.5322564,
+      "last_pct": 0.2
     },
     "AVAX:VIRTUAL_WATCH_ENTRY_TEST:495094": {
       "id": "AVAX:VIRTUAL_WATCH_ENTRY_TEST:495094",
@@ -1240,9 +1246,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 6.097,
-      "last_price_time": 1782327631.0257258,
-      "last_pct": -5.27
+      "last_price": 6.467,
+      "last_price_time": 1782344744.2130706,
+      "last_pct": 0.48
     }
   },
   "closed": [
@@ -2728,5 +2734,5 @@
     }
   ],
   "last_created_at": 1782338488.149177,
-  "last_update_at": 1782343466.4815154
+  "last_update_at": 1782345055.7602928
 }
