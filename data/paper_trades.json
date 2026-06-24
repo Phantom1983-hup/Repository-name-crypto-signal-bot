@@ -1,5 +1,5 @@
 {
-  "version": "v18.1 EXIT + ADAPTIVE CORE",
+  "version": "v18.2 USER SHORT + AUDIT FILE",
   "open": {
     "BTC:VIRTUAL_WATCH_ENTRY_TEST:495040": {
       "id": "BTC:VIRTUAL_WATCH_ENTRY_TEST:495040",
@@ -1680,9 +1680,28 @@
       "last_price": 0.0024748,
       "last_price_time": 1782273962.9065118,
       "last_pct": 0.45
+    },
+    "BASED:AVOID_PUMP_TEST:495078": {
+      "id": "BASED:AVOID_PUMP_TEST:495078",
+      "asset": "BASED",
+      "entry_time": 1782281801.7872565,
+      "entry_price": 0.10505,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 14.03,
+      "btc_change": -0.67,
+      "macro_mod": -2,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [],
-  "last_created_at": 1782271468.4473476,
+  "last_created_at": 1782281801.7872565,
   "last_update_at": 1782279763.718695
 }
