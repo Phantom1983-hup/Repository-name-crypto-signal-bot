@@ -653,9 +653,9 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782276760.1343987,
-      "last_seen": 1782284025.2685502,
-      "last_seen_counted": 1782280445.7045326,
-      "seen_count": 2,
+      "last_seen": 1782284218.455279,
+      "last_seen_counted": 1782284218.455279,
+      "seen_count": 3,
       "results": {
         "15m": 0.03,
         "30m": 0.21
@@ -864,10 +864,14 @@
         {
           "time": 1782283993.0834694,
           "price": 62784.3
+        },
+        {
+          "time": 1782284218.455279,
+          "price": 62791.5
         }
       ],
-      "last_price": 62793.5,
-      "last_score": 63,
+      "last_price": 62791.5,
+      "last_score": 62,
       "last_action": "WATCH",
       "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
       "result_details": {
@@ -892,7 +896,7 @@
       "position_size": "0% сейчас — только после подтверждения",
       "exit_plan": "выход/стоп: вход только после подтверждения; при пробое минимума дня сценарий отменяется",
       "shadow_tests": "сравнить вход сейчас, вход после отката и полный пропуск",
-      "confidence_v181": 19
+      "confidence_v181": 18
     },
     "ETH_1782276760": {
       "asset": "ETH",
@@ -921,9 +925,9 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782276760.1343987,
-      "last_seen": 1782284025.2685502,
-      "last_seen_counted": 1782280445.7045326,
-      "seen_count": 2,
+      "last_seen": 1782284218.455279,
+      "last_seen_counted": 1782284218.455279,
+      "seen_count": 3,
       "results": {
         "15m": 0.05,
         "30m": 0.24
@@ -1144,9 +1148,13 @@
         {
           "time": 1782284025.2685502,
           "price": 1676.18
+        },
+        {
+          "time": 1782284218.455279,
+          "price": 1674.51
         }
       ],
-      "last_price": 1676.18,
+      "last_price": 1674.51,
       "last_score": 61,
       "last_action": "WATCH",
       "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
@@ -1284,9 +1292,9 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782276760.1343987,
-      "last_seen": 1782284025.2685502,
-      "last_seen_counted": 1782280445.7045326,
-      "seen_count": 2,
+      "last_seen": 1782284218.455279,
+      "last_seen_counted": 1782284218.455279,
+      "seen_count": 3,
       "results": {
         "15m": 0.05,
         "30m": 0.2
@@ -1515,9 +1523,13 @@
         {
           "time": 1782284025.2685502,
           "price": 6.431
+        },
+        {
+          "time": 1782284218.455279,
+          "price": 6.424
         }
       ],
-      "last_price": 6.431,
+      "last_price": 6.424,
       "last_score": 64,
       "last_action": "WATCH",
       "last_verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
@@ -1572,9 +1584,9 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782276760.1343987,
-      "last_seen": 1782284025.2685502,
-      "last_seen_counted": 1782280445.7045326,
-      "seen_count": 2,
+      "last_seen": 1782284218.455279,
+      "last_seen_counted": 1782284218.455279,
+      "seen_count": 3,
       "results": {
         "15m": 2.82,
         "30m": 4.58
@@ -1839,9 +1851,13 @@
         {
           "time": 1782284025.2685502,
           "price": 2.5485
+        },
+        {
+          "time": 1782284218.455279,
+          "price": 2.5491
         }
       ],
-      "last_price": 2.5485,
+      "last_price": 2.5491,
       "last_score": 55,
       "last_action": "WATCH",
       "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
@@ -2212,9 +2228,9 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782276760.1343987,
-      "last_seen": 1782284025.2685502,
-      "last_seen_counted": 1782280445.7045326,
-      "seen_count": 2,
+      "last_seen": 1782284218.455279,
+      "last_seen_counted": 1782284218.455279,
+      "seen_count": 3,
       "results": {
         "15m": -0.29,
         "30m": -0.58
@@ -2339,9 +2355,13 @@
         {
           "time": 1782283993.0834694,
           "price": 0.0338
+        },
+        {
+          "time": 1782284218.455279,
+          "price": 0.0337
         }
       ],
-      "last_price": 0.0338,
+      "last_price": 0.0337,
       "last_score": 55,
       "last_action": "WATCH",
       "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
@@ -2473,7 +2493,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782279707.163642,
-      "last_seen": 1782284025.2685502,
+      "last_seen": 1782284218.455279,
       "last_seen_counted": 1782283489.2509482,
       "seen_count": 2,
       "results": {},
@@ -2593,6 +2613,10 @@
         {
           "time": 1782284025.2685502,
           "price": 222.85
+        },
+        {
+          "time": 1782284218.455279,
+          "price": 222.36
         }
       ],
       "risk_reward": 0.0,
@@ -2601,8 +2625,8 @@
       "shadow_tests": "сравнить вход сейчас, вход после отката и полный пропуск",
       "confidence_v181": 15,
       "result_details": {},
-      "last_price": 222.85,
-      "last_score": 57,
+      "last_price": 222.36,
+      "last_score": 56,
       "last_action": "WATCH",
       "last_verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
     },
@@ -2633,7 +2657,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782279707.163642,
-      "last_seen": 1782284025.2685502,
+      "last_seen": 1782284218.455279,
       "last_seen_counted": 1782283489.2509482,
       "seen_count": 2,
       "results": {},
@@ -2729,16 +2753,20 @@
         {
           "time": 1782283993.0834694,
           "price": 0.7054
+        },
+        {
+          "time": 1782284218.455279,
+          "price": 0.7038
         }
       ],
       "risk_reward": 0.0,
       "position_size": "0% сейчас — только после подтверждения",
       "exit_plan": "выход/стоп: вход только после подтверждения; при пробое минимума дня сценарий отменяется",
       "shadow_tests": "сравнить вход сейчас, вход после отката и полный пропуск",
-      "confidence_v181": 17,
+      "confidence_v181": 16,
       "result_details": {},
-      "last_price": 0.7054,
-      "last_score": 60,
+      "last_price": 0.7038,
+      "last_score": 59,
       "last_action": "WATCH",
       "last_verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
     },
