@@ -63,9 +63,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 62794.3,
-      "last_price_time": 1782283638.2390714,
-      "last_pct": -2.74
+      "last_price": 62756.8,
+      "last_price_time": 1782285457.7375834,
+      "last_pct": -2.8
     },
     "ETH:VIRTUAL_WATCH_ENTRY_TEST:495040": {
       "id": "ETH:VIRTUAL_WATCH_ENTRY_TEST:495040",
@@ -129,9 +129,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 1674.68,
-      "last_price_time": 1782283638.2390714,
-      "last_pct": -3.53
+      "last_price": 1676.24,
+      "last_price_time": 1782285457.7375834,
+      "last_pct": -3.44
     },
     "SUI:VIRTUAL_WATCH_ENTRY_TEST:495040": {
       "id": "SUI:VIRTUAL_WATCH_ENTRY_TEST:495040",
@@ -195,9 +195,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.705,
-      "last_price_time": 1782283638.2390714,
-      "last_pct": -1.93
+      "last_price": 0.7056,
+      "last_price_time": 1782285457.7375834,
+      "last_pct": -1.85
     },
     "AAVE:VIRTUAL_WATCH_ENTRY_TEST:495040": {
       "id": "AAVE:VIRTUAL_WATCH_ENTRY_TEST:495040",
@@ -525,9 +525,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 6.418,
-      "last_price_time": 1782283638.2390714,
-      "last_pct": 1.97
+      "last_price": 6.41,
+      "last_price_time": 1782285457.7375834,
+      "last_pct": 1.84
     },
     "LINK:VIRTUAL_WATCH_ENTRY_TEST:495040": {
       "id": "LINK:VIRTUAL_WATCH_ENTRY_TEST:495040",
@@ -1023,9 +1023,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 222.48,
-      "last_price_time": 1782283638.2390714,
-      "last_pct": -2.84
+      "last_price": 222.15,
+      "last_price_time": 1782284599.4547787,
+      "last_pct": -2.99
     },
     "RAIN:AVOID_PUMP_TEST:495044": {
       "id": "RAIN:AVOID_PUMP_TEST:495044",
@@ -1275,9 +1275,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.2189,
-      "last_price_time": 1782283638.2390714,
-      "last_pct": 24.66
+      "last_price": 0.2262,
+      "last_price_time": 1782285457.7375834,
+      "last_pct": 28.82
     },
     "DEXE:AVOID_PUMP_TEST:495049": {
       "id": "DEXE:AVOID_PUMP_TEST:495049",
@@ -1521,9 +1521,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.0343,
-      "last_price_time": 1782283638.2390714,
-      "last_pct": -6.28
+      "last_price": 0.0345,
+      "last_price_time": 1782285457.7375834,
+      "last_pct": -5.74
     },
     "BEAT:AVOID_PUMP_TEST:495063": {
       "id": "BEAT:AVOID_PUMP_TEST:495063",
@@ -1581,9 +1581,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 2.544,
-      "last_price_time": 1782283638.2390714,
-      "last_pct": 32.69
+      "last_price": 2.6194,
+      "last_price_time": 1782285457.7375834,
+      "last_pct": 36.62
     },
     "POPCAT:AVOID_PUMP_TEST:495064": {
       "id": "POPCAT:AVOID_PUMP_TEST:495064",
@@ -1703,7 +1703,8 @@
       "macro_mod": -2,
       "results": {
         "15m": -1.96,
-        "30m": -1.96
+        "30m": -1.96,
+        "1h": -1.96
       },
       "result_details": {
         "15m": {
@@ -1712,6 +1713,11 @@
           "source": "learning_cache:snapshot"
         },
         "30m": {
+          "checkpoint_time": 1782282757.2924483,
+          "checkpoint_price": 0.10299,
+          "source": "learning_cache:snapshot"
+        },
+        "1h": {
           "checkpoint_time": 1782282757.2924483,
           "checkpoint_price": 0.10299,
           "source": "learning_cache:snapshot"
@@ -1726,5 +1732,5 @@
   },
   "closed": [],
   "last_created_at": 1782281801.7872565,
-  "last_update_at": 1782283639.347739
+  "last_update_at": 1782285458.8678691
 }
