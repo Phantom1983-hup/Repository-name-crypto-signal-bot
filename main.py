@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v18.4 SHADOW + BACKTEST ACCELERATION"
+BOT_VERSION = "v18.4.1 AUDIT FILE DELIVERY FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -804,9 +804,17 @@ def send_document(chat_id, file_path, caption=""):
                 f"https://api.telegram.org/bot{BOT_TOKEN}/sendDocument",
                 data={"chat_id": chat_id, "caption": caption},
                 files={"document": f},
-                timeout=60
+                timeout=90
             )
-        return r.status_code == 200
+        if r.status_code == 200:
+            return True
+        # v18.4.1: не молчать, если Telegram не принял файл.
+        try:
+            details = (r.text or "")[:700]
+        except Exception:
+            details = ""
+        send_message(chat_id, f"⚠️ Telegram не принял txt-файл: HTTP {r.status_code}. {details}")
+        return False
     except Exception as e:
         send_message(chat_id, f"Ошибка отправки файла: {e}")
         return False
@@ -3303,6 +3311,11 @@ def btc_filter():
 
         if score >= 30:
             return "BTC нейтральный", 0, change
+
+        # v18.4.1: если BTC зелёный, не писать, что он "давит".
+        # Осторожность может идти от страха/новостей/слабого подтверждения, но не от самого BTC.
+        if change > 0:
+            return "BTC зелёный, но подтверждение слабое", 0, change
 
         return "BTC слегка давит", -12, change
 
@@ -11160,7 +11173,7 @@ def v1313_apply_single_asymmetric_forecast(c):
             if risk_level == "danger":
                 low, high, note = -2.7, 1.2, "BTC слабый, рынок опасный"
             else:
-                low, high, note = -2.7, 1.2, "BTC слабый, фон осторожный"
+                low, high, note = -2.7, 1.2, "BTC слегка давит, рынок осторожный"
         c["low"] = low
         c["high"] = high
         c["target_low"] = price * (1 + low / 100)
@@ -11528,6 +11541,8 @@ def user_market_word(ctx):
     if risk == "danger":
         return "🔴 опасный"
     if risk == "caution":
+        if btc_change > 0.2:
+            return "🟡 осторожный: BTC зелёный, но фон осторожный"
         if btc_change > -1.0:
             return "🟡 осторожный: BTC слегка давит"
         return "🟡 осторожный"
@@ -11734,30 +11749,60 @@ def audit_short_report():
     )
 
 
+def audit_section_text(func, timeout_sec=25):
+    """v18.4.1: одна зависшая секция не должна ломать /audit_file целиком."""
+    executor = None
+    try:
+        executor = ThreadPoolExecutor(max_workers=1)
+        future = executor.submit(func)
+        return str(future.result(timeout=timeout_sec))
+    except FuturesTimeoutError:
+        return f"TIMEOUT: секция строилась дольше {timeout_sec}с и была пропущена, чтобы txt-файл всё равно пришёл."
+    except Exception as e:
+        return f"ERROR: {type(e).__name__}: {e}"
+    finally:
+        if executor is not None:
+            try:
+                executor.shutdown(wait=False, cancel_futures=True)
+            except TypeError:
+                executor.shutdown(wait=False)
+            except Exception:
+                pass
+
 def build_audit_file(chat_id):
+    # v18.4.1: audit_file должен ВСЕГДА либо отправить txt, либо объяснить ошибку.
+    # Каждая тяжёлая секция имеет таймаут, чтобы один зависший API-запрос не ломал весь отчёт.
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
     path = f"/tmp/alex_edge_audit_{ts}.txt"
     sections = []
-    def add(title, func):
-        try:
-            sections.append("\n" + "="*80 + f"\n{title}\n" + "="*80 + "\n" + str(func()))
-        except Exception as e:
-            sections.append("\n" + "="*80 + f"\n{title}\n" + "="*80 + f"\nERROR: {e}")
-    add("VERSION", lambda: f"BOT_VERSION: {BOT_VERSION}")
-    add("AUDIT SHORT", audit_short_report)
-    add("PAPER FULL", paper_report)
-    add("SIGNAL FULL", unified_signal_report)
-    add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True))
-    add("LEARNING QUALITY V18.4", lambda: v184_learning_quality_summary(load_json(RESULTS_FILE)))
-    add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts")
-    add("MARKET", market_status)
-    add("BTC FULL", lambda: single_analysis_full("BTC-USDT"))
-    add("SOL FULL", lambda: single_analysis_full("SOL-USDT"))
-    add("ETH FULL", lambda: single_analysis_full("ETH-USDT"))
+    def add(title, func, timeout_sec=25):
+        body = audit_section_text(func, timeout_sec=timeout_sec)
+        sections.append("\n" + "="*80 + f"\n{title}\n" + "="*80 + "\n" + body)
+
+    add("VERSION", lambda: f"BOT_VERSION: {BOT_VERSION}", 5)
+    add("AUDIT SHORT", audit_short_report, 5)
+    add("PAPER FULL", paper_report, 12)
+    add("SIGNAL FULL", unified_signal_report, 35)
+    add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
+    add("LEARNING QUALITY V18.4", lambda: v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
+    add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
+    add("MARKET", market_status, 10)
+    add("BTC FULL", lambda: single_analysis_full("BTC-USDT"), 25)
+    add("SOL FULL", lambda: single_analysis_full("SOL-USDT"), 25)
+    add("ETH FULL", lambda: single_analysis_full("ETH-USDT"), 25)
+
     content = "ALEX EDGE ULTRA TECH AUDIT FILE\n" + "\n".join(sections)
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(content)
-    send_document(chat_id, path, caption="🧾 Полный технический отчёт для ChatGPT. Обычные команды остаются короткими.")
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
+    except Exception as e:
+        send_message(chat_id, f"❌ Не удалось создать audit txt: {e}")
+        return None
+
+    ok = send_document(chat_id, path, caption="🧾 Полный технический отчёт для ChatGPT. Обычные команды остаются короткими.")
+    if not ok:
+        send_message(chat_id, "⚠️ Отчёт был собран, но Telegram не отправил файл. Короткий аудит ниже; полный файл сохранён на сервере временно.")
+        send_message(chat_id, audit_short_report())
     return path
 
 def market_status():
@@ -12066,7 +12111,8 @@ def main():
                         "📄 /audit_file: полный txt-файл для ChatGPT\n"
                         "🛡 v18.2.2: защита от старых deploy/очереди Render\n"
                         "🧠 v18.3: реальные режимы рынка, профили монет и контекст обучения\n"
-                        "🚀 v18.4: shadow-сценарии, regime backtest и quality report"
+                        "🚀 v18.4: shadow-сценарии, regime backtest и quality report\n"
+                        "🧾 v18.4.1: audit_file защищён от зависания и ошибок отправки"
                     ))
 
                 elif text == "/flush":
