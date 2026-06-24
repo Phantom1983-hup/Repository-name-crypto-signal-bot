@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v18.2 USER SHORT + AUDIT FILE"
+BOT_VERSION = "v18.2.2 DEPLOY LOOP GUARD"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -49,6 +49,7 @@ PAPER_TRADES_FILE = data_path("paper_trades.json")
 ADMIN_STATE_FILE = data_path("admin_deploy_state.json")
 ADMIN_UPLOAD_FILE = data_path("admin_uploaded_main.py")
 ADMIN_UPLOAD_LOCK_FILE = data_path("admin_upload_lock.json")
+ADMIN_PROCESSED_UPLOADS_FILE = data_path("admin_processed_uploads.json")
 LAST_UPDATE_FILE = data_path("last_update_id.txt")
 SIGNAL_LOCK_FILE = data_path("signal_lock.json")
 DEPLOY_NOTIFY_FILE = data_path("deploy_notify.json")
@@ -63,6 +64,12 @@ GITHUB_REPO = (os.getenv("GITHUB_REPO") or "").strip()          # example: owner
 GITHUB_BRANCH = (os.getenv("GITHUB_BRANCH") or "main").strip()
 GITHUB_PATH = (os.getenv("GITHUB_PATH") or "main.py").strip()
 RENDER_DEPLOY_HOOK_URL = (os.getenv("RENDER_DEPLOY_HOOK_URL") or "").strip()
+# v18.2.2: защита от очереди Render / двойного запуска deploy.
+# По умолчанию НЕ вызываем deploy hook из кода, потому что Render Auto Deploy часто уже
+# запускает деплой после GitHub commit. Если одновременно включены Auto Deploy и hook,
+# Render может поставить в очередь старую и новую версии, и бот будет прыгать v18.1 <-> v18.2.
+RENDER_DEPLOY_HOOK_ENABLED = (os.getenv("RENDER_DEPLOY_HOOK_ENABLED") or "0").strip().lower() in ["1", "true", "yes", "on"]
+ADMIN_DEPLOY_MIN_INTERVAL = int(os.getenv("ADMIN_DEPLOY_MIN_INTERVAL", "180"))
 
 # === v11.1 free storage option ===
 # Для бесплатного Render Persistent Disk недоступен.
@@ -708,9 +715,11 @@ def notify_deploy_started():
 
         previous_version = data.get("version")
         current_version = BOT_VERSION
+        latest_main_version = github_latest_main_version() if github_ready() else ""
+        outdated_deploy = bool(latest_main_version and version_tuple(latest_main_version) > version_tuple(current_version))
 
         # Не спамим при обычном рестарте той же версии.
-        if previous_version == current_version:
+        if previous_version == current_version and not outdated_deploy:
             return
 
         commit = (
@@ -725,6 +734,9 @@ def notify_deploy_started():
             "✅ Render запустил новую версию бота",
             f"Версия: {current_version}",
         ]
+        if outdated_deploy:
+            lines.append(f"⚠️ Это НЕ последняя версия в GitHub. В GitHub уже: {latest_main_version}")
+            lines.append("Render поднял старый deploy из очереди. Не отправляй команды, дождись следующего старта или проверь /version через 1–2 минуты.")
 
         if previous_version:
             lines.append(f"Было: {previous_version}")
@@ -888,6 +900,35 @@ def github_get_file(path=None):
 
     return r.json()
 
+
+def extract_bot_version_from_text(text):
+    try:
+        m = re.search(r'BOT_VERSION\s*=\s*["\']([^"\']+)["\']', text or "")
+        return m.group(1).strip() if m else ""
+    except Exception:
+        return ""
+
+def version_tuple(ver):
+    """Грубое сравнение v18.2.2 > v18.2 > v18.1."""
+    try:
+        m = re.search(r'v\s*(\d+)\.(\d+)(?:\.(\d+))?', ver or "", re.I)
+        if not m:
+            return (0, 0, 0)
+        return (int(m.group(1)), int(m.group(2)), int(m.group(3) or 0))
+    except Exception:
+        return (0, 0, 0)
+
+def github_latest_main_version():
+    try:
+        cur = github_get_file(GITHUB_PATH)
+        if not cur or not cur.get("content"):
+            return ""
+        txt = base64.b64decode(cur.get("content") or "").decode("utf-8", errors="ignore")
+        return extract_bot_version_from_text(txt)
+    except Exception as e:
+        print(f"github latest version check error: {e}")
+        return ""
+
 def github_put_file(path, content_bytes, message, sha=None):
     """
     v15.8:
@@ -935,19 +976,23 @@ def github_put_file(path, content_bytes, message, sha=None):
     raise Exception(last_error or "GitHub PUT failed")
 
 def trigger_render_deploy():
+    """
+    v18.2.2:
+    Если Render Auto Deploy включён, GitHub commit сам запускает deploy.
+    Дополнительный deploy hook в этот момент создаёт вторую очередь и может дать скачки версий.
+    Поэтому hook вызывается только при явном ENV RENDER_DEPLOY_HOOK_ENABLED=1.
+    """
+    if not RENDER_DEPLOY_HOOK_ENABLED:
+        return "Render hook не вызван: v18.2.2 защищает от двойного deploy. Если Auto Deploy включён, Render сам подхватит GitHub push."
+
     if not RENDER_DEPLOY_HOOK_URL:
         return "Render hook не задан; если Auto Deploy включён, Render сам подхватит GitHub push."
 
     r = requests.post(RENDER_DEPLOY_HOOK_URL, timeout=30)
     if r.status_code >= 300:
         raise Exception(f"Render deploy hook error {r.status_code}: {r.text[:500]}")
-
     return "Render deploy hook вызван."
 
-def python_compile_file(path):
-    txt = open(path, "r", encoding="utf-8", errors="ignore").read()
-    compile(txt, path, "exec")
-    return txt
 
 def admin_upload_lock_left(ttl=120):
     """
@@ -1061,6 +1106,83 @@ def telegram_download_file(file_id, dest_path):
 
     return dest_path
 
+
+def admin_document_age_seconds(msg):
+    try:
+        msg_date = int((msg or {}).get("date", 0) or 0)
+        if msg_date <= 0:
+            return 0
+        return max(0, int(time.time() - msg_date))
+    except Exception:
+        return 0
+
+def admin_document_upload_key(doc):
+    """
+    v18.2.1:
+    Защита от повторной обработки одного и того же Telegram-документа после Render redeploy.
+    Telegram иногда возвращает старый main.py в backlog; без такого ключа бот может снова залить
+    предыдущую версию и откатиться назад.
+    """
+    doc = doc or {}
+    filename = (doc.get("file_name") or "").strip()
+    unique = (doc.get("file_unique_id") or doc.get("file_id") or "").strip()
+    size = str(doc.get("file_size") or "")
+    return f"{filename}|{unique}|{size}"
+
+def load_admin_processed_uploads():
+    data = load_json(ADMIN_PROCESSED_UPLOADS_FILE)
+    if not isinstance(data, dict):
+        data = {}
+    data.setdefault("items", {})
+    return data
+
+def save_admin_processed_uploads(data):
+    try:
+        save_json(ADMIN_PROCESSED_UPLOADS_FILE, data)
+    except Exception as e:
+        print(f"save admin processed uploads error: {e}")
+
+def admin_upload_already_processed(doc, ttl_seconds=7 * 24 * 3600):
+    key = admin_document_upload_key(doc)
+    if not key.strip("|"):
+        return False, key
+    data = load_admin_processed_uploads()
+    items = data.get("items", {}) or {}
+    rec = items.get(key)
+    if isinstance(rec, dict):
+        ts = float(rec.get("ts", 0) or 0)
+        if ts and time.time() - ts < ttl_seconds:
+            return True, key
+    return False, key
+
+def mark_admin_upload_processed(doc, version=""):
+    key = admin_document_upload_key(doc)
+    if not key.strip("|"):
+        return
+    data = load_admin_processed_uploads()
+    items = data.get("items", {}) or {}
+    # лёгкая очистка старых записей, чтобы json не рос бесконечно
+    now = time.time()
+    cleaned = {}
+    for k, v in items.items():
+        try:
+            if now - float((v or {}).get("ts", 0) or 0) < 14 * 24 * 3600:
+                cleaned[k] = v
+        except Exception:
+            pass
+    cleaned[key] = {
+        "ts": now,
+        "version": version or "unknown",
+        "filename": (doc.get("file_name") or "") if isinstance(doc, dict) else "",
+        "size": (doc.get("file_size") or "") if isinstance(doc, dict) else "",
+    }
+    data["items"] = cleaned
+    save_admin_processed_uploads(data)
+    try:
+        sync_github_storage_now([ADMIN_PROCESSED_UPLOADS_FILE], max_files=1)
+    except Exception:
+        pass
+
 def admin_handle_document(chat_id, msg):
     if not is_admin(chat_id):
         return "⛔ Нет доступа."
@@ -1069,25 +1191,63 @@ def admin_handle_document(chat_id, msg):
 
     doc = msg.get("document") or {}
     file_id = doc.get("file_id")
-    filename = doc.get("file_name", "main.py")
+    filename = (doc.get("file_name") or "").strip() or "main.py"
+    filename_l = filename.lower()
 
-    # v11.8:
-    # Быстрый режим: админ может просто отправить main*.py документом,
-    # без предварительной команды /admin_update.
-    direct_quick_update = (
-        is_admin(chat_id)
-        and filename.endswith(".py")
-        and filename.lower().startswith("main")
-    )
+    is_main_py = filename_l.endswith(".py") and filename_l.startswith("main")
+    waiting_file = bool(state.get("waiting_file"))
 
-    if not state.get("waiting_file") and not direct_quick_update:
+    # v18.2.1 ADMIN UPLOAD SAFETY:
+    # Audit .txt, картинки, любые не-main*.py документы не должны даже случайно запускать deploy.
+    # Особенно важно, когда админ отправляет /audit_file обратно в чат.
+    direct_quick_update = bool(is_admin(chat_id) and is_main_py)
+
+    if not waiting_file and not direct_quick_update:
         return None
+
+    if waiting_file and not filename_l.endswith(".py"):
+        # Если админ случайно включил режим обновления и отправил audit .txt — не деплоим.
+        return "⛔ Это не файл обновления. Для deploy нужен свежий main.py / main*.py. Audit .txt не загружается как код."
+
+    if not is_main_py:
+        return "⛔ Для безопасности принимаю к обновлению только свежий main.py / main*.py."
+
+    # v18.2.2: не ставим несколько deploy подряд в очередь Render.
+    # Это и вызвало скачок v18.2 -> v18.1 -> v18.2 при быстрых обновлениях.
+    try:
+        last_deploy_at = float((state or {}).get("last_deploy_at", 0) or 0)
+        wait_left = int(ADMIN_DEPLOY_MIN_INTERVAL - (time.time() - last_deploy_at))
+        if last_deploy_at and wait_left > 0 and not waiting_file:
+            return (
+                f"⏳ Недавно уже был deploy. Чтобы Render не запускал старые версии из очереди, "
+                f"новый main.py пока не принимаю. Подожди {wait_left} сек и проверь /version."
+            )
+    except Exception:
+        pass
+
+    age = admin_document_age_seconds(msg)
+    # Старые документы после Render redeploy — главная причина внезапного отката на предыдущую версию.
+    # Для quick upload жёсткий лимит 10 минут; для режима /admin_update — 30 минут.
+    max_age = 1800 if waiting_file else 600
+    if age > max_age:
+        save_admin_state({**state, "waiting_file": False})
+        return (
+            f"⚠️ Старый файл обновления пропущен ({age // 60} мин назад).\n"
+            "Чтобы не откатить бота на предыдущую версию, старые main.py из очереди Telegram больше не деплоятся.\n"
+            "Для обновления отправь свежий main.py ещё раз."
+        )
+
+    already, upload_key = admin_upload_already_processed(doc)
+    if already:
+        save_admin_state({**state, "waiting_file": False})
+        return (
+            "⚠️ Этот файл main.py уже был обработан ранее. Повторный deploy не запускаю, "
+            "чтобы бот не откатился на старую версию после Render/Telegram backlog.\n"
+            "Проверь /version. Если нужно обновить код — отправь новый файл main.py."
+        )
 
     if not file_id:
         return "Не вижу file_id у документа."
-
-    if not filename.endswith(".py"):
-        return "⛔ Нужен Python-файл .py"
 
     locked, left = acquire_admin_upload_lock(chat_id, filename)
     if not locked:
@@ -1105,14 +1265,34 @@ def admin_handle_document(chat_id, msg):
         telegram_download_file(file_id, ADMIN_UPLOAD_FILE)
 
         uploaded_text = python_compile_file(ADMIN_UPLOAD_FILE)
-        version_match = re.search(r'BOT_VERSION\s*=\s*"([^"]+)"', uploaded_text)
-        upload_version = version_match.group(1) if version_match else "версия не найдена"
+        upload_version = extract_bot_version_from_text(uploaded_text) or "версия не найдена"
+
+        # Защита от повторного redeploy той же версии. Это не мешает нормальному обновлению,
+        # потому что каждое исправление должно получать новый BOT_VERSION.
+        if upload_version == BOT_VERSION:
+            mark_admin_upload_processed(doc, upload_version)
+            release_admin_upload_lock("skipped_same_version")
+            save_admin_state({**state, "waiting_file": False})
+            return (
+                f"⚠️ Файл содержит ту же версию, что уже запущена: {BOT_VERSION}.\n"
+                "Deploy не запускаю, чтобы не создавать лишний Render redeploy."
+            )
 
         current = github_get_file(GITHUB_PATH)
         backup_path = ""
 
+        new_bytes = open(ADMIN_UPLOAD_FILE, "rb").read()
         if current and current.get("content"):
             current_bytes = base64.b64decode(current["content"])
+            if current_bytes == new_bytes:
+                mark_admin_upload_processed(doc, upload_version)
+                release_admin_upload_lock("skipped_same_content")
+                save_admin_state({**state, "waiting_file": False})
+                return (
+                    f"⚠️ Такой же main.py уже лежит в GitHub. Версия: {upload_version}.\n"
+                    "Deploy не запускаю повторно. Проверь /version."
+                )
+
             backup_path = f"backups/main_backup_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.py"
             github_put_file(
                 backup_path,
@@ -1120,7 +1300,6 @@ def admin_handle_document(chat_id, msg):
                 f"backup before deploy {upload_version}"
             )
 
-        new_bytes = open(ADMIN_UPLOAD_FILE, "rb").read()
         current_sha = current.get("sha") if current else None
 
         github_put_file(
@@ -1130,6 +1309,7 @@ def admin_handle_document(chat_id, msg):
             sha=current_sha
         )
 
+        mark_admin_upload_processed(doc, upload_version)
         deploy_msg = trigger_render_deploy()
 
         save_admin_state({
@@ -1139,6 +1319,10 @@ def admin_handle_document(chat_id, msg):
             "last_deploy_version": upload_version,
             "last_deploy_at": time.time()
         })
+        try:
+            sync_github_storage_now([ADMIN_STATE_FILE, ADMIN_PROCESSED_UPLOADS_FILE], max_files=2)
+        except Exception:
+            pass
 
         release_admin_upload_lock("done")
 
@@ -1148,8 +1332,7 @@ def admin_handle_document(chat_id, msg):
             f"Backup: {backup_path or 'не создан'}\n"
             f"{deploy_msg}\n\n"
             "Через 1–3 минуты проверь /version.\n\n"
-            "v11.8: в следующий раз можно нажать кнопку ⬆️ Обновить "
-            "или просто отправить main*.py документом."
+            "Защита v18.2.1: старые/повторные main*.py и audit .txt не запускают redeploy."
         )
 
     except Exception as e:
@@ -1995,22 +2178,29 @@ def get_updates_now(offset=None):
 
 def is_admin_main_py_document_update(item):
     """
-    v15.6:
-    Приоритетная проверка админского файла main*.py в очереди Telegram.
-    Нужна, чтобы обновление бота не терялось за тяжёлыми /signal, /alerts, /learning.
+    v18.2.1:
+    Приоритетно обрабатываем только свежий admin main*.py.
+    Старые main.py из Telegram backlog после Render redeploy больше не держат очередь
+    и не могут откатить бота на предыдущую версию.
     """
     try:
         msg = item.get("message", {}) or {}
         chat_id = msg.get("chat", {}).get("id")
         doc = msg.get("document") or {}
         filename = (doc.get("file_name") or "").strip().lower()
+        if not (doc and is_admin(chat_id) and filename.endswith(".py") and filename.startswith("main")):
+            return False
 
-        return bool(
-            doc
-            and is_admin(chat_id)
-            and filename.endswith(".py")
-            and filename.startswith("main")
-        )
+        # Не считаем старый файл приоритетным. Его можно безопасно подтвердить offset и пропустить.
+        msg_date = int(msg.get("date", 0) or 0)
+        if msg_date and time.time() - msg_date > 600:
+            return False
+
+        already, _ = admin_upload_already_processed(doc)
+        if already:
+            return False
+
+        return True
     except Exception:
         return False
 
@@ -3091,13 +3281,13 @@ def btc_filter():
         if score >= 30:
             return "BTC нейтральный", 0, change
 
-        return "BTC мешает рынку", -12, change
+        return "BTC слегка давит", -12, change
 
     except Exception:
         # Fallback: ticker работает, но свечи/RSI не пришли.
         # Это лучше, чем показывать BTC 0.00%.
         if change <= -2:
-            return "BTC мешает рынку", -12, change
+            return "BTC слегка давит", -12, change
         if change < 0:
             return "BTC слабый", -6, change
         if change >= 2:
@@ -3196,7 +3386,7 @@ def alex_edge_ultra(symbol):
         ctx = dict(ctx)
         ctx["btc_change"] = change_24
         if change_24 <= -2:
-            ctx["btc_text"] = "BTC мешает рынку"
+            ctx["btc_text"] = "BTC слегка давит"
             ctx["btc_mod"] = -12
         elif change_24 < 0:
             ctx["btc_text"] = "BTC слабый"
@@ -5603,7 +5793,7 @@ def v18_learning_core_summary(data):
     neutral = sum(v for k, v in classes.items() if "neutral" in k or k in ["avoid_pump_watch"])
 
     lines = [
-        "🧠 v18.0 ALEX EDGE CORE",
+        "🧠 Core Learning + v18.2 Adaptive Layer",
         "Режим: уникальное ядро обучения включено; ранние checkpoints учитываются как предварительные выводы, веса меняются только после закрытых 48ч результатов.",
         f"Ранние выводы по открытым наблюдениям: 🛡 спасло/не догонять правильно {saved} | ⚠️ возможно слишком осторожно {missed} | 🟡 нейтрально/спорно {neutral}",
     ]
@@ -5750,7 +5940,7 @@ def learning_report(sync_github=False, full=False):
         f"Версия: {BOT_VERSION}\n\n"
         f"Статус: обучение работает, данные копятся.\n"
         f"Режим отчёта: быстрый кэш; наступившие checkpoints фиксируются из кэша, тяжёлое обновление идёт фоном.\n"
-        f"v18.1: Exit/Adaptive/Shadow core повышает точность, выходы и скорость обучения.\n"
+        f"v18.2: Exit/Adaptive/Shadow core повышает точность, выходы и скорость обучения.\n"
         f"Ускорение: {backtest_file_summary()}\n"
         f"Paper trading: {paper_summary_line()}\n"
         f"Открытых наблюдений: {len(open_items)}\n"
@@ -6025,7 +6215,7 @@ def v181_single_core_lines(c):
     conf, conf_label, a, r = v181_signal_confidence(c)
     rr = v181_rr_value(c)
     return (
-        f"🧠 v18.1 confidence: {conf}/100 — {conf_label}; "
+        f"🧠 v18.2 confidence: {conf}/100 — {conf_label}; "
         f"история монеты {a.get('n', 0)}, режима {r.get('n', 0)}\n"
         f"⚖️ Risk/Reward: {('не рассчитывается без подтверждённого входа' if str(c.get('action', 'SKIP')).upper() in ['SKIP', 'WATCH'] or 'НЕ ПОКУПАТЬ' in str(c.get('verdict', '')) else (rr if rr else 'н/д'))} | 📌 Размер: {v181_position_size(c)}\n"
         f"🎯 Exit Engine: {v181_exit_plan(c)}\n"
@@ -6055,7 +6245,7 @@ def v181_learning_acceleration_summary(data):
     top_assets = ", ".join([a for a, _ in sorted(assets.items(), key=lambda kv: kv[1], reverse=True)[:4]]) if assets else "данных мало"
 
     return (
-        "🚀 v18.1 EXIT + ADAPTIVE CORE\n"
+        "🚀 v18.2 EXIT + ADAPTIVE CORE\n"
         "Цель: быстрее учиться, но не ломать risk engine. Exit/Shadow/Adaptive пока работают осторожно и не включают автоторговлю.\n"
         f"Скорость обучения: открытых наблюдений {len(open_items)}, price snapshots {total_price_points}, закрытых 48ч {len(closed)}.\n"
         f"Market Regime Memory: главный накопленный режим — {top_bucket}; Coin Profile Memory: {top_assets}.\n"
@@ -10119,7 +10309,7 @@ def format_single_coin_report(c):
         text += f"Итог: {c.get('symbol')} — только актив к наблюдению после стабилизации BTC. Сейчас без входа; рынок в экстремальном страхе."
     elif c.get("_safe_caution_cap"):
         if c.get("symbol") == "BTC":
-            text += "Итог: BTC наблюдать, входа сейчас нет. Страх экстремальный, BTC мешает рынку — ждать стабилизацию 3–4 часа и рост объёма."
+            text += "Итог: BTC наблюдать, входа сейчас нет. Страх экстремальный, BTC слегка давит — ждать стабилизацию 3–4 часа и рост объёма."
         elif c.get("symbol") == "ETH":
             text += "Итог: ETH наблюдать, входа сейчас нет. Нужна стабилизация BTC и подтверждение объёмом."
         else:
@@ -10356,7 +10546,7 @@ def v101_apply_danger_market_score_cap(c):
         ctx = dict(ctx)
         ctx["btc_change"] = btc_change
         if btc_change <= -2:
-            ctx["btc_text"] = "BTC мешает рынку"
+            ctx["btc_text"] = "BTC слегка давит"
             ctx["btc_mod"] = -12
         ctx["risk_level"] = market_risk_level(ctx)
         c["ctx"] = ctx
@@ -10487,7 +10677,7 @@ def v106_apply_safe_caution_border_fix(c):
         c.setdefault("minus", [])
         for reason in [
             f"safe-caution: страх {fg_value} и BTC {btc_change:.2f}%",
-            "BTC мешает рынку, вход сейчас запрещён",
+            "BTC слегка давит, вход сейчас запрещён",
             "нужна стабилизация BTC"
         ]:
             if reason not in c["minus"]:
@@ -11575,9 +11765,11 @@ def main():
                         "🧾 Кнопка отчёта: убрана\n"
                         "🧪 Paper: на главном экране\n"
                         "🧠 v18.2: обычные команды короткие, техаудит отдельно\n"
+                        "🛡 v18.2.1: старые main.py/audit .txt не запускают случайный redeploy\n"
                         "📚 /learning_full: полный learning\n"
                         "🧾 /audit_short: короткий аудит для ChatGPT\n"
-                        "📄 /audit_file: полный txt-файл для ChatGPT"
+                        "📄 /audit_file: полный txt-файл для ChatGPT\n"
+        "🛡 v18.2.2: защита от старых deploy/очереди Render"
                     ))
 
                 elif text == "/flush":
