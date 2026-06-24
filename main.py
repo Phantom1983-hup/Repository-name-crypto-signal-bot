@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v18.0.1 QUEUE + LEARNING GUARD"
+BOT_VERSION = "v18.0.2 LEARNING ALIAS FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1670,9 +1670,11 @@ COMMAND_POOL_ALIASES = {
     "🛠 сервис": "/service",
 }
 
-# === v18.0.1 QUEUE + LEARNING GUARD ===
+# === v18.0.2 LEARNING ALIAS FIX ===
 # Защита от дублей пула команд: Telegram/Render иногда может прислать один и тот же
 # длинный текст повторно, а /learning_full и /learning_audit являются одной командой-аудитом.
+# v18.0.2: если пул состоит только из алиасов одного действия (/learning_full + /learning_audit),
+# выполняем один полный аудит, а не молчим.
 COMMAND_POOL_RECENT_SIGNATURES = {}
 COMMAND_POOL_DUP_TTL_SECONDS = 25
 
@@ -1794,15 +1796,21 @@ def parse_command_pool(raw_text):
             if 2 <= len(tokens) <= 12:
                 candidates = tokens
 
-    commands = []
+    raw_commands = []
     for c in candidates:
         cmd = command_pool_line_to_command(c)
         if cmd:
-            commands.append(cmd)
+            raw_commands.append(cmd)
 
-    commands = dedupe_pool_commands(commands)
+    commands = dedupe_pool_commands(raw_commands)
 
+    # v18.0.2:
+    # Обычная одиночная команда не считается пулом. Но если пользователь отправил 2+ строк,
+    # которые после канонизации стали одной командой (/learning_full + /learning_audit),
+    # нужно выполнить эту одну команду, а не молчать.
     if len(commands) < 2:
+        if len(raw_commands) >= 2 and len(commands) == 1:
+            return commands
         return []
 
     # Ограничение, чтобы случайный текст не запускал огромную очередь.
@@ -1846,9 +1854,13 @@ def expand_command_pool_updates(items):
     return expanded
 
 def command_pool_ack_text(total):
+    extra = ""
+    if int(total or 0) == 1:
+        extra = "\nОдинаковые команды/алиасы внутри пула объединены в один отчёт."
     return (
         f"📦 Пул команд принят: {total}. Выполняю по очереди.\n"
-        "Команды не теряются: сначала будет первый отчёт, затем следующий. Дубли одного пула отсекаются.\n"
+        "Команды не теряются: сначала будет первый отчёт, затем следующий. Дубли одного пула отсекаются."
+        f"{extra}\n"
         f"Версия обработчика: {BOT_VERSION}."
     )
 
