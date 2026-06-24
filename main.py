@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v17.8.5 NO REPORT BUTTON"
+BOT_VERSION = "v18.0 ALEX EDGE CORE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1195,7 +1195,7 @@ def get_daily_candles_raw(symbol):
     candles = sorted(data.get("data", []), key=lambda x: int(x[0]))
 
     result = []
-    for c in candles[-120:]:
+    for c in candles[-370:]:
         try:
             ts = int(c[0])
             result.append({
@@ -1265,6 +1265,26 @@ def update_weekday_stats():
 def avg(values):
     return sum(values) / len(values) if values else 0
 
+def median_value(values):
+    try:
+        vals = [float(x) for x in values if isinstance(x, (int, float))]
+        return statistics.median(vals) if vals else 0
+    except Exception:
+        return 0
+
+def weekday_confidence(n):
+    try:
+        n = int(n or 0)
+    except Exception:
+        n = 0
+    if n >= 40:
+        return "уверенность высокая"
+    if n >= 25:
+        return "уверенность средняя"
+    if n >= 14:
+        return "можно учитывать осторожно"
+    return "данных мало"
+
 def weekday_report():
     added, data = update_weekday_stats()
     sync_github_storage_now([WEEKDAY_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE])
@@ -1279,12 +1299,21 @@ def weekday_report():
             if not rr:
                 continue
 
+            drops = [r.get("intraday_drop", 0) for r in rr]
+            rebounds = [r.get("rebound_from_low", 0) for r in rr]
+            dailies = [r.get("daily_change", 0) for r in rr]
+
             stats.append({
                 "wd": wd,
                 "n": len(rr),
-                "drop": avg([r.get("intraday_drop", 0) for r in rr]),
-                "rebound": avg([r.get("rebound_from_low", 0) for r in rr]),
-                "daily": avg([r.get("daily_change", 0) for r in rr]),
+                "drop": avg(drops),
+                "median_drop": median_value(drops),
+                "rebound": avg(rebounds),
+                "median_rebound": median_value(rebounds),
+                "daily": avg(dailies),
+                "prob_drop_2": sum(1 for x in drops if x <= -2.0) / len(drops) * 100 if drops else 0,
+                "prob_rebound_1": sum(1 for x in rebounds if x >= 1.0) / len(rebounds) * 100 if rebounds else 0,
+                "prob_green_close": sum(1 for x in dailies if x > 0) / len(dailies) * 100 if dailies else 0,
             })
 
         return stats
@@ -1369,7 +1398,8 @@ def weekday_report():
         f"Новых записей за запуск: {added}\n"
         f"Всего наблюдений: {len(records)}\n"
         f"Монет в статистике: {len(per_asset_counts)} | записей на монету в среднем: {avg_per_asset}\n"
-        f"Дубли не добавляются: ключ = монета + дата закрытой дневной свечи.\n\n"
+        f"Дубли не добавляются: ключ = монета + дата закрытой дневной свечи.\n"
+        f"v18.0: история расширена до ~365 закрытых дней, добавлены медианы/вероятности/confidence.\n\n"
     )
 
     if dca:
@@ -1426,10 +1456,19 @@ def weekday_report():
         if not best:
             continue
 
-        reliability = "данных мало" if best["n"] < 8 else "можно учитывать осторожно"
+        reliability = weekday_confidence(best["n"])
 
         text += f"{asset}: вероятный день локальных минимумов — {WEEKDAY_NAMES[best['wd']]} ({reliability})\n"
-        text += f"  наблюдений: {best['n']} | средняя просадка: {best['drop']:.2f}% | отскок от минимума: +{best['rebound']:.2f}% | итог дня: {best['daily']:+.2f}%\n\n"
+        text += (
+            f"  наблюдений: {best['n']} | средняя просадка: {best['drop']:.2f}% "
+            f"(медиана {best.get('median_drop', 0):.2f}%) | отскок: +{best['rebound']:.2f}% "
+            f"(медиана +{best.get('median_rebound', 0):.2f}%) | итог дня: {best['daily']:+.2f}%\n"
+        )
+        text += (
+            f"  вероятность просадки >2%: {best.get('prob_drop_2', 0):.0f}% | "
+            f"отскока от минимума >1%: {best.get('prob_rebound_1', 0):.0f}% | "
+            f"зелёного закрытия: {best.get('prob_green_close', 0):.0f}%\n\n"
+        )
 
     text += (
         "Важно: это статистика наблюдений, а не команда покупать. "
@@ -1449,6 +1488,7 @@ BUTTON_TO_COMMAND = {
     "⚡ Alerts": "/alerts",
     "📚 Обучение": "/learning",
     "🧪 Paper": "/paper",
+    "📚 Полное обучение": "/learning_full",
 
     # v12.9: одна служебная кнопка вместо россыпи админ-кнопок.
     "🛠 Сервис": "/service",
@@ -1587,6 +1627,9 @@ COMMAND_POOL_ALIASES = {
     "🧪 paper": "/paper",
     "обучение": "/learning",
     "learning": "/learning",
+    "learning_full": "/learning_full",
+    "обучение полное": "/learning_full",
+    "полное обучение": "/learning_full",
     "📚 обучение": "/learning",
     "alerts": "/alerts",
     "алерты": "/alerts",
@@ -1727,7 +1770,7 @@ def expand_command_pool_updates(items):
 def command_pool_ack_text(total):
     return (
         f"📦 Пул команд принят: {total}. Выполняю по очереди.\n"
-        "Команды не теряются: сначала будет первый отчёт, затем следующий.\n"
+        "Команды не теряются: сначала будет первый отчёт, затем следующий. Новые нажатия уйдут в очередь.\n"
         f"Версия обработчика: {BOT_VERSION}."
     )
 
@@ -4952,8 +4995,8 @@ def v83_learning_adjustment(c):
     if len(sample) < 10:
         hist_delta, hist_note = backtest_learning_adjustment(c)
         if hist_delta:
-            return hist_delta, f"самообучение: мало live-истории ({len(sample)}); {hist_note}"
-        return 0, f"самообучение: мало live-истории ({len(sample)}); {hist_note}"
+            return hist_delta, f"самообучение: закрытых live-результатов пока {len(sample)}; открытые наблюдения копятся; {hist_note}"
+        return 0, f"самообучение: закрытых live-результатов пока {len(sample)}; открытые наблюдения копятся; {hist_note}"
 
     outcomes = [classify_learning_result(x) for x in sample]
 
@@ -5386,7 +5429,104 @@ def normalize_learning_open_records(open_items):
 
     return open_items, changed, fixed
 
-def learning_open_rows(open_items):
+
+def v18_checkpoint_values(rec):
+    results = rec.get("results", {}) if isinstance(rec.get("results", {}), dict) else {}
+    ordered = []
+    for name in ["15m", "30m", "1h", "3h", "6h", "12h", "24h", "48h"]:
+        v = results.get(name)
+        if isinstance(v, (int, float)):
+            ordered.append((name, float(v)))
+    return ordered
+
+def v18_learning_decision_class(rec, final_only=False):
+    """v18.0: единый классификатор решения, пока без агрессивной смены весов.
+    48ч остаётся золотым стандартом; ранние checkpoints дают только предварительный вывод.
+    """
+    if not isinstance(rec, dict):
+        return "open", "⏳ данных нет"
+
+    action = str(rec.get("action", "WATCH") or "WATCH").upper()
+    verdict = str(rec.get("verdict", "") or "")
+    values = v18_checkpoint_values(rec)
+    if final_only:
+        values = [(k, v) for k, v in values if k in ["24h", "48h"]]
+    if not values:
+        return "open", "⏳ ждём checkpoints"
+
+    best_name, best = max(values, key=lambda kv: kv[1])
+    worst_name, worst = min(values, key=lambda kv: kv[1])
+    last_name, last = values[-1]
+    is_avoid_pump = ("НЕ ДОГОНЯТЬ" in verdict) or ("СПЕКУЛЯТИВ" in verdict)
+
+    if action == "WATCH":
+        if is_avoid_pump:
+            if worst <= -5.0:
+                return "avoid_pump_saved", f"🛡 не догонять было правильно: просадка {worst:+.2f}% на {worst_name}"
+            if best >= 8.0 and last >= 5.0:
+                return "avoid_pump_missed", f"⚠️ памп продолжился: лучший рост {best:+.2f}% на {best_name}"
+            if best >= 5.0:
+                return "avoid_pump_watch", f"🟡 памп ещё спорный: был рост {best:+.2f}% на {best_name}, ждём 24/48ч"
+            return "avoid_pump_neutral", f"🟡 памп под наблюдением: текущий checkpoint {last_name} {last:+.2f}%"
+        if worst <= -4.0:
+            return "watch_saved", f"🛡 WATCH спас от просадки {worst:+.2f}% на {worst_name}"
+        if best >= 5.0 and last >= 3.0:
+            return "watch_missed", f"⚠️ WATCH мог быть слишком осторожным: {best:+.2f}% на {best_name}"
+        return "watch_neutral", f"🟡 WATCH нейтрально: {last_name} {last:+.2f}%"
+
+    if action in ["BUY", "ACCUM"]:
+        if worst <= -5.0:
+            return "entry_bad", f"🔴 вход был плохой: просадка {worst:+.2f}% на {worst_name}"
+        if best >= 3.0:
+            return "entry_good", f"✅ вход работал: лучший рост {best:+.2f}% на {best_name}"
+        return "entry_neutral", f"🟡 вход нейтральный: {last_name} {last:+.2f}%"
+
+    return "neutral", f"🟡 нейтрально: {last_name} {last:+.2f}%"
+
+def v18_learning_core_summary(data):
+    if not isinstance(data, dict):
+        return ""
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+
+    classes = {}
+    preview = []
+    for rec in open_items.values():
+        cls, note = v18_learning_decision_class(rec)
+        classes[cls] = classes.get(cls, 0) + 1
+        vals = v18_checkpoint_values(rec)
+        if vals:
+            preview.append((str(rec.get("asset", "?")).upper(), cls, note, vals[-1][0]))
+
+    if not open_items and not closed:
+        return ""
+
+    saved = classes.get("avoid_pump_saved", 0) + classes.get("watch_saved", 0)
+    missed = classes.get("avoid_pump_missed", 0) + classes.get("watch_missed", 0)
+    neutral = sum(v for k, v in classes.items() if "neutral" in k or k in ["avoid_pump_watch"])
+
+    lines = [
+        "🧠 v18.0 ALEX EDGE CORE",
+        "Режим: уникальное ядро обучения включено; ранние checkpoints учитываются как предварительные выводы, веса меняются только после закрытых 48ч результатов.",
+        f"Ранние выводы по открытым наблюдениям: 🛡 спасло/не догонять правильно {saved} | ⚠️ возможно слишком осторожно {missed} | 🟡 нейтрально/спорно {neutral}",
+    ]
+
+    if preview:
+        lines.append("Ключевые ранние кейсы:")
+        for asset, cls, note, last_cp in preview[:5]:
+            lines.append(f"• {asset}: {note}")
+
+    if closed:
+        outcomes = [classify_learning_result(x) for x in closed]
+        lines.append(
+            f"Закрытые 48ч: всего {len(closed)} | ✅ {outcomes.count('success')} | 🛡 {outcomes.count('watch_saved')} | ⚠️ {outcomes.count('missed_move')} | 🔴 {outcomes.count('bad')}"
+        )
+    else:
+        lines.append("Закрытых 48ч пока 0: адаптивные веса только готовятся, без опасных резких изменений.")
+
+    return "\n".join(lines) + "\n\n"
+
+def learning_open_rows(open_items, limit=6):
     if not isinstance(open_items, dict) or not open_items:
         return "Открытых наблюдений нет.\n"
 
@@ -5397,7 +5537,7 @@ def learning_open_rows(open_items):
     )
 
     text = ""
-    for rec in rows[:6]:
+    for rec in (rows if limit is None else rows[:limit]):
         asset = rec.get("asset", "?")
         start_price = float(rec.get("price", 0) or 0)
         current_price, price_ts, price_source = learning_cached_price_for_report(rec)
@@ -5431,12 +5571,12 @@ def learning_open_rows(open_items):
             f"  проверки: {learning_checkpoint_status(rec, now)}\n"
         )
 
-    if len(rows) > 6:
-        text += f"…ещё открытых наблюдений: {len(rows) - 6}\n"
+    if limit is not None and len(rows) > limit:
+        text += f"…ещё открытых наблюдений: {len(rows) - limit}\n"
 
     return text
 
-def learning_report(sync_github=False):
+def learning_report(sync_github=False, full=False):
     # v16.2:
     # /learning должен отвечать мгновенно. Не ждём KuCoin и GitHub в пользовательском ответе.
     # Обычный /learning читает локальный кэш, а обновление checkpoints запускает фоном.
@@ -5502,14 +5642,16 @@ def learning_report(sync_github=False):
         f"Версия: {BOT_VERSION}\n\n"
         f"Статус: обучение работает, данные копятся.\n"
         f"Режим отчёта: быстрый кэш; наступившие checkpoints фиксируются из кэша, тяжёлое обновление идёт фоном.\n"
+        f"v18.0: learning core классифицирует WATCH/AVOID/BUY по ранним и 48ч результатам.\n"
         f"Ускорение: {backtest_file_summary()}\n"
         f"Paper trading: {paper_summary_line()}\n"
         f"Открытых наблюдений: {len(open_items)}\n"
         f"Закрытых 48ч результатов: {total}\n\n"
     )
 
+    text += v18_learning_core_summary(data)
     text += "🔎 Открытые наблюдения:\n"
-    text += learning_open_rows(open_items)
+    text += learning_open_rows(open_items, limit=None if full else 6)
     text += "\n"
 
     if total == 0:
@@ -8413,7 +8555,7 @@ def full_ticker_signal_report():
         f"Решение: {decision}",
         "",
         f"📊 Срез: просканировано {len(selected)} монет, показано {len(display_selected)} {ru_rows_word(len(display_selected))}",
-        f"🟢 BUY: 0 | 🟦 активов к наблюдению сейчас: {active_candidate_count} (BTC/ETH не считаются)",
+        f"🟢 BUY: 0 | 🟦 альтов для мониторинга без входа: {active_candidate_count} (BTC/ETH не считаются)",
         "",
         "🟦 Что реально важно сейчас:",
     ]
@@ -8421,6 +8563,8 @@ def full_ticker_signal_report():
     for i, r in enumerate(display_selected, start=1):
         base = r["base"]
         action = "наблюдать"
+        if risk == "danger" and base not in ["BTC", "ETH"]:
+            action = "только мониторинг, без входа; ждать стабилизацию BTC"
         if base in ["BTC", "ETH"]:
             # BTC/ETH в коротком отчёте — это якоря рынка, а не кандидаты.
             action = "индикатор рынка; вход только после подтверждения"
@@ -10839,7 +10983,9 @@ def main():
                         f"✅ Текущая версия бота: {BOT_VERSION}\n"
                         "📦 Пул команд: включён\n"
                         "🧾 Кнопка отчёта: убрана\n"
-                        "🧪 Paper: на главном экране"
+                        "🧪 Paper: на главном экране\n"
+                        "🧠 v18.0 Core: ранняя классификация learning включена\n"
+                        "📚 /learning_full: полный аудит открытых наблюдений"
                     ))
 
                 elif text == "/flush":
@@ -10975,7 +11121,10 @@ def main():
                     send_message(chat_id, learning_report(sync_github=True))
 
                 elif text == "/learning":
-                    send_message(chat_id, learning_report(sync_github=False))
+                    send_message(chat_id, learning_report(sync_github=False, full=False))
+
+                elif text in ["/learning_full", "/learning_audit"]:
+                    send_message(chat_id, learning_report(sync_github=False, full=True))
 
                 elif text in ["/learn_fast", "/backtest", "/learning_fast"]:
                     send_message(chat_id, learn_fast_report(start=True))
