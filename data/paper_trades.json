@@ -784,9 +784,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.69081,
-      "last_price_time": 1782334995.9286516,
-      "last_pct": 6.28
+      "last_price": 0.68566,
+      "last_price_time": 1782335189.6628613,
+      "last_pct": 5.49
     },
     "NES:AVOID_PUMP_TEST:495086": {
       "id": "NES:AVOID_PUMP_TEST:495086",
@@ -838,9 +838,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.2536,
-      "last_price_time": 1782334995.9286516,
-      "last_pct": -21.46
+      "last_price": 0.253,
+      "last_price_time": 1782335189.6628613,
+      "last_pct": -21.65
     },
     "VERONA:AVOID_PUMP_TEST:495087": {
       "id": "VERONA:AVOID_PUMP_TEST:495087",
@@ -887,7 +887,7 @@
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
       "last_price": 0.1559,
-      "last_price_time": 1782334995.9286516,
+      "last_price_time": 1782335189.6628613,
       "last_pct": -5.23
     },
     "BTC:VIRTUAL_WATCH_ENTRY_TEST:495088": {
@@ -934,9 +934,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 60803.1,
-      "last_price_time": 1782334995.9286516,
-      "last_pct": 1.23
+      "last_price": 60732.0,
+      "last_price_time": 1782335189.6628613,
+      "last_pct": 1.11
     },
     "ETH:VIRTUAL_WATCH_ENTRY_TEST:495088": {
       "id": "ETH:VIRTUAL_WATCH_ENTRY_TEST:495088",
@@ -982,9 +982,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 1610.93,
-      "last_price_time": 1782334995.9286516,
-      "last_pct": -0.11
+      "last_price": 1608.3,
+      "last_price_time": 1782335189.6628613,
+      "last_pct": -0.27
     },
     "AAVE:VIRTUAL_WATCH_ENTRY_TEST:495088": {
       "id": "AAVE:VIRTUAL_WATCH_ENTRY_TEST:495088",
@@ -1030,9 +1030,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 77.266,
-      "last_price_time": 1782334995.9286516,
-      "last_pct": 3.29
+      "last_price": 76.559,
+      "last_price_time": 1782335189.6628613,
+      "last_pct": 2.34
     },
     "SYN:AVOID_PUMP_TEST:495088": {
       "id": "SYN:AVOID_PUMP_TEST:495088",
@@ -1079,7 +1079,7 @@
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
       "last_price": 0.3382,
-      "last_price_time": 1782334995.9286516,
+      "last_price_time": 1782335047.482681,
       "last_pct": -2.82
     },
     "LAB:AVOID_PUMP_TEST:495088": {
@@ -1188,7 +1188,8 @@
       "macro_mod": -10,
       "results": {
         "15m": -0.92,
-        "30m": -0.92
+        "30m": -0.92,
+        "1h": -0.92
       },
       "result_details": {
         "15m": {
@@ -1197,6 +1198,11 @@
           "source": "learning_cache:snapshot"
         },
         "30m": {
+          "checkpoint_time": 1782327631.0257258,
+          "checkpoint_price": 553.743,
+          "source": "learning_cache:snapshot"
+        },
+        "1h": {
           "checkpoint_time": 1782327631.0257258,
           "checkpoint_price": 553.743,
           "source": "learning_cache:snapshot"
@@ -1258,8 +1264,16 @@
       "change_24": -0.28,
       "btc_change": -1.99,
       "macro_mod": -15,
-      "results": {},
-      "result_details": {},
+      "results": {
+        "15m": -0.17
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782334590.0987694,
+          "checkpoint_price": 217.55,
+          "source": "learning_cache:snapshot"
+        }
+      },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
       "last_price": 217.55,
@@ -2528,5 +2542,5 @@
     }
   ],
   "last_created_at": 1782334234.6569324,
-  "last_update_at": 1782334997.456505
+  "last_update_at": 1782335190.8708398
 }
