@@ -1207,6 +1207,25 @@
       "last_price": 0.04016,
       "last_price_time": 1782337909.3864968,
       "last_pct": 0.83
+    },
+    "AVAX:VIRTUAL_WATCH_ENTRY_TEST:495094": {
+      "id": "AVAX:VIRTUAL_WATCH_ENTRY_TEST:495094",
+      "asset": "AVAX",
+      "entry_time": 1782338488.149177,
+      "entry_price": 6.436,
+      "score": 56,
+      "master_score": 56,
+      "source_action": "WATCH",
+      "virtual_type": "VIRTUAL_WATCH_ENTRY_TEST",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "is_quality": true,
+      "change_24": 0.15,
+      "btc_change": -2.19,
+      "macro_mod": -10,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [
@@ -2617,6 +2636,6 @@
       "outcome": "watch_saved_loss"
     }
   ],
-  "last_created_at": 1782336088.9026666,
+  "last_created_at": 1782338488.149177,
   "last_update_at": 1782337910.7898352
 }
