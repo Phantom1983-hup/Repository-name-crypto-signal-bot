@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v18.4.1 AUDIT FILE DELIVERY FIX"
+BOT_VERSION = "v18.4.2 ADMIN ONE-COMMIT DEPLOY FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1324,19 +1324,20 @@ def admin_handle_document(chat_id, msg):
                     "Deploy не запускаю повторно. Проверь /version."
                 )
 
-            backup_path = f"backups/main_backup_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.py"
-            github_put_file(
-                backup_path,
-                current_bytes,
-                f"backup before deploy {upload_version}"
-            )
+            # v18.4.2 ADMIN ONE-COMMIT DEPLOY FIX:
+            # Старый updater сначала коммитил backup-файл в ту же ветку GitHub, которую смотрит Render.
+            # Render Auto Deploy реагирует на ЛЮБОЙ commit в ветке, поэтому запускал deploy со старым main.py,
+            # а уже следующим commit приходила новая версия. Отсюда скачки v18.4 -> v18.4.1.
+            # Теперь при Auto Deploy не создаём отдельный backup commit перед заменой main.py.
+            # Backup остаётся в истории GitHub/Render commits; rollback лучше делать через GitHub history.
+            backup_path = "GitHub history / Render previous deploy"
 
         current_sha = current.get("sha") if current else None
 
         github_put_file(
             GITHUB_PATH,
             new_bytes,
-            f"deploy {upload_version}",
+            f"deploy {upload_version} single-main-commit",
             sha=current_sha
         )
 
@@ -1363,7 +1364,8 @@ def admin_handle_document(chat_id, msg):
             f"Backup: {backup_path or 'не создан'}\n"
             f"{deploy_msg}\n\n"
             "Через 1–3 минуты проверь /version.\n\n"
-            "Защита v18.2.1: старые/повторные main*.py и audit .txt не запускают redeploy."
+            "Защита v18.2.1: старые/повторные main*.py и audit .txt не запускают redeploy.\n"
+            "Защита v18.4.2: backup больше не создаёт отдельный commit перед main.py, поэтому Render не должен стартовать старую версию из backup-очереди."
         )
 
     except Exception as e:
@@ -1380,8 +1382,8 @@ def admin_rollback(chat_id):
     state = load_admin_state()
     backup_path = state.get("last_backup_path")
 
-    if not backup_path:
-        return "Backup для rollback не найден."
+    if not backup_path or "GitHub history" in str(backup_path):
+        return "Backup отдельным файлом не создан: v18.4.2 отключил backup commit, чтобы Render не стартовал старую версию. Rollback делай через GitHub history / Render previous deploy."
 
     try:
         backup = github_get_file(backup_path)
@@ -12112,7 +12114,8 @@ def main():
                         "🛡 v18.2.2: защита от старых deploy/очереди Render\n"
                         "🧠 v18.3: реальные режимы рынка, профили монет и контекст обучения\n"
                         "🚀 v18.4: shadow-сценарии, regime backtest и quality report\n"
-                        "🧾 v18.4.1: audit_file защищён от зависания и ошибок отправки"
+                        "🧾 v18.4.1: audit_file защищён от зависания и ошибок отправки\n"
+                        "🛡 v18.4.2: admin update делает один commit main.py, без старого deploy от backup"
                     ))
 
                 elif text == "/flush":
