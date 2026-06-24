@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v18.5 PAPER + CONFIDENCE + DANGER FIX"
+BOT_VERSION = "v18.6 ENTRY QUALITY + CONFIDENCE FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -5979,7 +5979,7 @@ def v18_learning_core_summary(data):
     neutral = sum(v for k, v in classes.items() if "neutral" in k or k in ["avoid_pump_watch"])
 
     lines = [
-        "🧠 Core Learning + v18.4 Shadow/Regime Layer",
+        "🧠 Core Learning + v18.6 Entry Quality/Regime Layer",
         "Режим: уникальное ядро обучения включено; ранние checkpoints учитываются как предварительные выводы, веса меняются только после закрытых 48ч результатов.",
         f"Ранние выводы по открытым наблюдениям: 🛡 спасло/не догонять правильно {saved} | ⚠️ возможно слишком осторожно {missed} | 🟡 нейтрально/спорно {neutral}",
     ]
@@ -6047,7 +6047,7 @@ def learning_open_rows(open_items, limit=6):
             regime = v183_regime_for_rec(rec)
             rr_text = v183_rr_text(rec.get("risk_reward", 0))
             text += (
-                f"  v18.4: режим {regime}; {rec.get('exit_plan', 'exit ждёт данных')} | "
+                f"  v18.6: режим {regime}; {rec.get('exit_plan', 'exit ждёт данных')} | "
                 f"размер: {rec.get('position_size', 'н/д')} | R/R: {rr_text}\n"
             )
 
@@ -6128,7 +6128,7 @@ def learning_report(sync_github=False, full=False):
         f"Версия: {BOT_VERSION}\n\n"
         f"Статус: обучение работает, данные копятся.\n"
         f"Режим отчёта: быстрый кэш; наступившие checkpoints фиксируются из кэша, тяжёлое обновление идёт фоном.\n"
-        f"v18.4: Shadow/Backtest Acceleration ускоряет обучение на альтернативных сценариях и похожих режимах.\n"
+        f"v18.6: Entry Quality + Shadow/Backtest ускоряет обучение на ожидании, пропуске, откате и похожих режимах.\n"
         f"Ускорение: {backtest_file_summary()}\n"
         f"Paper trading: {paper_summary_line()}\n"
         f"Открытых наблюдений: {len(open_items)}\n"
@@ -6404,14 +6404,20 @@ def v181_apply_adaptive_weight_hint(c):
 def v181_single_core_lines(c):
     conf, conf_label, a, r = v181_signal_confidence(c)
     rr = v181_rr_value(c)
+    ctx = c.get("ctx", {}) if isinstance(c.get("ctx", {}), dict) else {}
+    bucket = learning_market_bucket(ctx) if ctx else "unknown"
+    regime_n = r.get('n', 0)
+    if regime_n == 0:
+        regime_note = f"по текущему режиму {bucket} закрытых 48ч пока 0; open-наблюдения уже копятся"
+    else:
+        regime_note = f"по текущему режиму {bucket} закрытых 48ч: {regime_n}"
     return (
-        f"🧠 v18.4 confidence: {conf}/100 — {conf_label}; "
-        f"история монеты {a.get('n', 0)}, режима {r.get('n', 0)}\n"
+        f"🧠 v18.6 confidence: {conf}/100 — {conf_label}; "
+        f"история монеты {a.get('n', 0)}, {regime_note}\n"
         f"⚖️ Risk/Reward: {('не рассчитывается без подтверждённого входа' if str(c.get('action', 'SKIP')).upper() in ['SKIP', 'WATCH'] or 'НЕ ПОКУПАТЬ' in str(c.get('verdict', '')) else (rr if rr else 'н/д'))} | 📌 Размер: {v181_position_size(c)}\n"
         f"🎯 Exit Engine: {v181_exit_plan(c)}\n"
         f"🧪 Shadow: {v181_shadow_tests(c)}\n"
     )
-
 
 
 # === v18.4 SHADOW + BACKTEST ACCELERATION ===
@@ -6473,7 +6479,7 @@ def v184_regime_counts(open_items, closed):
 
 
 def v184_regime_backtest_summary(data):
-    """v18.4: режимный ускоритель обучения. Пока не меняет веса, а показывает покрытие режимов."""
+    """v18.6: режимный ускоритель обучения. Пока не меняет веса, а показывает покрытие режимов."""
     if not isinstance(data, dict):
         return ""
     open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
@@ -6554,7 +6560,7 @@ def v184_learning_quality_summary(data):
     regime_txt = ", ".join([f"{k}:{v}" for k, v in sorted(by_regime.items(), key=lambda kv: kv[1], reverse=True)[:5]]) or "данных мало"
     coin_lines = v184_coin_profile_lines(data, limit=8)
     text = (
-        "🧪 v18.4 Shadow + Backtest Acceleration\n"
+        "🧪 v18.6 Shadow + Entry Quality Acceleration\n"
         "Назначение: бот учится даже на решениях 'не покупать', сравнивая альтернативы без реальных сделок.\n"
         f"Shadow-проверки open: 🛡 полезная осторожность {shadow_saved} | ⚠️ возможно слишком осторожно {shadow_missed} | 🟡 нейтрально {shadow_neutral}.\n"
         f"Режимы open-наблюдений: {regime_txt}.\n"
@@ -6567,6 +6573,70 @@ def v184_learning_quality_summary(data):
     text += "Правило безопасности: shadow/backtest ускоряют обучение, но не включают автоторговлю и не меняют веса без 48ч статистики.\n\n"
     return text
 
+def v186_counts_by_regime(records):
+    counts = {}
+    if isinstance(records, dict):
+        iterable = records.values()
+    else:
+        iterable = records if isinstance(records, list) else []
+    for rec in iterable:
+        if not isinstance(rec, dict):
+            continue
+        b = v183_regime_for_rec(rec)
+        counts[b] = counts.get(b, 0) + 1
+    return counts
+
+
+def v186_format_counts(counts, empty="данных мало"):
+    if not counts:
+        return empty
+    return ", ".join([f"{k}:{v}" for k, v in sorted(counts.items(), key=lambda kv: kv[1], reverse=True)[:6]])
+
+
+def v186_entry_quality_summary(data):
+    """v18.6: учимся качеству точки входа, а не только факту 'покупать/не покупать'."""
+    if not isinstance(data, dict):
+        return ""
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    if not open_items and not closed:
+        return ""
+
+    saved = missed = neutral = bad_entry = good_entry = 0
+    examples = []
+    for rec in open_items.values():
+        cls, note = v18_learning_decision_class(rec)
+        if "saved" in cls:
+            saved += 1
+        elif "missed" in cls:
+            missed += 1
+        elif cls == "entry_bad":
+            bad_entry += 1
+        elif cls == "entry_good":
+            good_entry += 1
+        else:
+            neutral += 1
+        if len(examples) < 5:
+            examples.append(f"• {str(rec.get('asset','?')).upper()}: {v184_shadow_result_note(rec)}")
+
+    closed_outcomes = [classify_learning_result(x) for x in closed]
+    closed_saved = closed_outcomes.count("watch_saved")
+    closed_missed = closed_outcomes.count("missed_move")
+    closed_bad = closed_outcomes.count("bad")
+    closed_success = closed_outcomes.count("success")
+
+    text = (
+        "🎯 v18.6 ENTRY QUALITY ENGINE\n"
+        "Цель: бот учится не только 'не покупать', а качеству точки входа: вход сейчас, ожидание BTC, вход после отката и полный пропуск.\n"
+        f"Open-проверки: 🛡 ожидание/пропуск защищает {saved} | ⚠️ возможно слишком осторожно {missed} | 🟡 спорно {neutral} | ✅ вход работал {good_entry} | 🔴 вход плохой {bad_entry}.\n"
+        f"Closed 48ч: ✅ BUY/entry win {closed_success} | 🛡 watch спас {closed_saved} | ⚠️ watch пропустил {closed_missed} | 🔴 bad {closed_bad}.\n"
+        "Правило: до достаточной 48ч статистики v18.6 не включает автоторговлю и не повышает веса агрессивно.\n"
+    )
+    if examples:
+        text += "Кейсы качества входа:\n" + "\n".join(examples) + "\n"
+    return text + "\n"
+
+
 def v181_learning_acceleration_summary(data):
     if not isinstance(data, dict):
         return ""
@@ -6577,26 +6647,31 @@ def v181_learning_acceleration_summary(data):
         pts = rec.get("price_points", []) if isinstance(rec.get("price_points", []), list) else []
         total_price_points += len(pts)
 
-    buckets = {}
+    open_counts = v186_counts_by_regime(open_items)
+    closed_counts = v186_counts_by_regime(closed)
+    all_counts = dict(open_counts)
+    for k, v in closed_counts.items():
+        all_counts[k] = all_counts.get(k, 0) + v
+
     assets = {}
     for rec in closed:
-        b = v183_regime_for_rec(rec)
-        buckets[b] = buckets.get(b, 0) + 1
         a = str(rec.get("asset", "?")).upper()
         assets[a] = assets.get(a, 0) + 1
 
-    top_bucket = max(buckets.items(), key=lambda kv: kv[1])[0] if buckets else "данных мало"
-    regime_parts = ", ".join([f"{k}:{v}" for k, v in sorted(buckets.items(), key=lambda kv: kv[1], reverse=True)[:4]]) if buckets else "данных мало"
+    open_top = max(open_counts.items(), key=lambda kv: kv[1])[0] if open_counts else "данных мало"
+    closed_top = max(closed_counts.items(), key=lambda kv: kv[1])[0] if closed_counts else "данных мало"
     top_assets = ", ".join([a for a, _ in sorted(assets.items(), key=lambda kv: kv[1], reverse=True)[:8]]) if assets else "данных мало"
 
     return (
-        "🚀 v18.4 SHADOW + BACKTEST ACCELERATION\n"
-        "Цель: ускорить обучение через shadow-сценарии, режимный backtest и профили монет, не ломая risk engine. Автоторговля выключена.\n"
+        "🚀 v18.6 ENTRY QUALITY + SHADOW/BACKTEST\n"
+        "Цель: ускорить обучение через качество точки входа, shadow-сценарии, режимный backtest и профили монет, не ломая risk engine. Автоторговля выключена.\n"
         f"Скорость обучения: открытых наблюдений {len(open_items)}, price snapshots {total_price_points}, закрытых 48ч {len(closed)}.\n"
-        f"Market Regime Memory: главный режим — {top_bucket}; распределение: {regime_parts}.\n"
+        f"Market Regime Memory: open сейчас — {open_top} ({v186_format_counts(open_counts)}); closed 48ч — {closed_top} ({v186_format_counts(closed_counts)}); всего — {v186_format_counts(all_counts)}.\n"
         f"Coin Profile Memory: {top_assets}.\n"
+        "Confidence: режимы open и closed теперь показаны отдельно, поэтому neutral по старым 48ч не маскирует текущий danger/caution.\n"
         "Adaptive Weights: активны в режиме подготовки; реальные сдвиги score только после достаточной статистики, чтобы не переобучиться на одном пампе.\n"
         "Paper open и Learning open — разные журналы: Paper проверяет виртуальные сделки, Learning проверяет наблюдения/сигналы.\n\n"
+        + v186_entry_quality_summary(data)
     )
 
 def save_signal_history(items):
@@ -12213,7 +12288,9 @@ def main():
                         "🚀 v18.4: shadow-сценарии, regime backtest и quality report\n"
                         "🧾 v18.4.1: audit_file защищён от зависания и ошибок отправки\n"
                         "🛡 v18.4.2: admin update делает один commit main.py, без старого deploy от backup\n"
-                        "✍️ v18.4.3: точные причины входа, BTC wording в alerts/signal, AVOID PUMP отдельной классификацией"
+                        "✍️ v18.4.3: точные причины входа, BTC wording в alerts/signal, AVOID PUMP отдельной классификацией\n"
+                        "🧾 v18.5: честная классификация Paper и danger wording\n"
+                        "🎯 v18.6: Entry Quality Engine, confidence пояснения, режимы open/closed отдельно"
                     ))
 
                 elif text == "/flush":
