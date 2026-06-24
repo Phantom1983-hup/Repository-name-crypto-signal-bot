@@ -653,9 +653,9 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782276760.1343987,
-      "last_seen": 1782306177.5333488,
-      "last_seen_counted": 1782302975.44106,
-      "seen_count": 8,
+      "last_seen": 1782306964.0476978,
+      "last_seen_counted": 1782306964.0476978,
+      "seen_count": 9,
       "results": {
         "15m": 0.03,
         "30m": 0.21,
@@ -1203,10 +1203,14 @@
         {
           "time": 1782306177.5333488,
           "price": 62519.6
+        },
+        {
+          "time": 1782306964.0476978,
+          "price": 62090.1
         }
       ],
-      "last_price": 62519.6,
-      "last_score": 64,
+      "last_price": 62090.1,
+      "last_score": 63,
       "last_action": "WATCH",
       "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
       "result_details": {
@@ -1263,17 +1267,17 @@
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": 0.38,
+        "btc_change": -0.15,
         "fg_value": 17,
         "news_score": -2,
-        "market_mod": -5,
-        "btc_text": "BTC зелёный, но подтверждение слабое",
+        "market_mod": -9,
+        "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": 0.38,
+        "change_24": -0.15,
         "signal_type": "WATCH",
         "action": "WATCH",
-        "score": 64,
+        "score": 63,
         "verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ"
       },
       "fg_value": 17,
@@ -1334,9 +1338,9 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782276760.1343987,
-      "last_seen": 1782306177.5333488,
-      "last_seen_counted": 1782302975.44106,
-      "seen_count": 8,
+      "last_seen": 1782306964.0476978,
+      "last_seen_counted": 1782306964.0476978,
+      "seen_count": 9,
       "results": {
         "15m": 0.05,
         "30m": 0.24,
@@ -1904,9 +1908,13 @@
         {
           "time": 1782306177.5333488,
           "price": 1668.67
+        },
+        {
+          "time": 1782306964.0476978,
+          "price": 1657.85
         }
       ],
-      "last_price": 1668.67,
+      "last_price": 1657.85,
       "last_score": 64,
       "last_action": "WATCH",
       "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
@@ -1964,14 +1972,14 @@
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": 0.38,
+        "btc_change": -0.15,
         "fg_value": 17,
         "news_score": -2,
-        "market_mod": -5,
-        "btc_text": "BTC зелёный, но подтверждение слабое",
+        "market_mod": -9,
+        "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": 0.82,
+        "change_24": 0.35,
         "signal_type": "WATCH",
         "action": "WATCH",
         "score": 64,
@@ -2232,9 +2240,9 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782276760.1343987,
-      "last_seen": 1782306177.5333488,
-      "last_seen_counted": 1782302975.44106,
-      "seen_count": 8,
+      "last_seen": 1782306964.0476978,
+      "last_seen_counted": 1782306964.0476978,
+      "seen_count": 9,
       "results": {
         "15m": 0.05,
         "30m": 0.2,
@@ -2810,10 +2818,14 @@
         {
           "time": 1782306177.5333488,
           "price": 6.417
+        },
+        {
+          "time": 1782306964.0476978,
+          "price": 6.33
         }
       ],
-      "last_price": 6.417,
-      "last_score": 61,
+      "last_price": 6.33,
+      "last_score": 58,
       "last_action": "WATCH",
       "last_verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
       "result_details": {
@@ -2865,22 +2877,22 @@
       "position_size": "0% сейчас — только после подтверждения",
       "exit_plan": "вход только после подтверждения; отмена идеи при пробое локального минимума или ухудшении BTC; возврат после 1–2 свечей удержания",
       "shadow_tests": "сравнить вход сейчас, вход после отката и полный пропуск",
-      "confidence_v181": 18,
+      "confidence_v181": 16,
       "market_regime": "caution",
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": 0.38,
+        "btc_change": -0.15,
         "fg_value": 17,
         "news_score": -2,
-        "market_mod": -5,
-        "btc_text": "BTC зелёный, но подтверждение слабое",
+        "market_mod": -9,
+        "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": 2.73,
+        "change_24": 1.39,
         "signal_type": "WATCH",
         "action": "WATCH",
-        "score": 61,
+        "score": 58,
         "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
       },
       "fg_value": 17,
@@ -6137,7 +6149,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782282228.7742817,
-      "last_seen": 1782306177.5333488,
+      "last_seen": 1782306964.0476978,
       "last_seen_counted": 1782304369.968581,
       "seen_count": 6,
       "results": {
@@ -6455,15 +6467,19 @@
         {
           "time": 1782306177.5333488,
           "price": 76.985
+        },
+        {
+          "time": 1782306964.0476978,
+          "price": 75.365
         }
       ],
       "risk_reward": 0.0,
       "position_size": "0% сейчас — только после подтверждения",
       "exit_plan": "вход только после подтверждения; отмена идеи при пробое локального минимума или ухудшении BTC; возврат после 1–2 свечей удержания",
       "shadow_tests": "сравнить вход сейчас, вход после отката и полный пропуск",
-      "confidence_v181": 22,
-      "last_price": 76.985,
-      "last_score": 69,
+      "confidence_v181": 20,
+      "last_price": 75.365,
+      "last_score": 65,
       "last_action": "WATCH",
       "last_verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
       "result_details": {
@@ -6517,17 +6533,17 @@
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": 0.38,
+        "btc_change": -0.15,
         "fg_value": 17,
         "news_score": -2,
-        "market_mod": -5,
-        "btc_text": "BTC зелёный, но подтверждение слабое",
+        "market_mod": -9,
+        "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": 6.7,
+        "change_24": 4.27,
         "signal_type": "WATCH",
         "action": "WATCH",
-        "score": 69,
+        "score": 65,
         "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
       },
       "fg_value": 17,
@@ -7025,7 +7041,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782282228.7742817,
-      "last_seen": 1782306177.5333488,
+      "last_seen": 1782306964.0476978,
       "last_seen_counted": 1782304369.968581,
       "seen_count": 6,
       "results": {
@@ -7335,6 +7351,10 @@
         {
           "time": 1782306177.5333488,
           "price": 576.147
+        },
+        {
+          "time": 1782306964.0476978,
+          "price": 573.601
         }
       ],
       "risk_reward": 0.0,
@@ -7342,7 +7362,7 @@
       "exit_plan": "вход только после подтверждения; отмена идеи при пробое локального минимума или ухудшении BTC; возврат после 1–2 свечей удержания",
       "shadow_tests": "сравнить вход сейчас, вход после отката и полный пропуск",
       "confidence_v181": 15,
-      "last_price": 576.147,
+      "last_price": 573.601,
       "last_score": 56,
       "last_action": "WATCH",
       "last_verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
@@ -7397,14 +7417,14 @@
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": 0.38,
+        "btc_change": -0.15,
         "fg_value": 17,
         "news_score": -2,
-        "market_mod": -5,
-        "btc_text": "BTC зелёный, но подтверждение слабое",
+        "market_mod": -9,
+        "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": 0.49,
+        "change_24": 0.15,
         "signal_type": "WATCH",
         "action": "WATCH",
         "score": 56,
@@ -7467,14 +7487,14 @@
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": 0.38,
+        "btc_change": -0.15,
         "fg_value": 17,
         "news_score": -2,
-        "market_mod": -5,
-        "btc_text": "BTC зелёный, но подтверждение слабое",
+        "market_mod": -9,
+        "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": 28.76,
+        "change_24": 25.83,
         "signal_type": "WATCH",
         "action": "WATCH",
         "score": 55,
@@ -7486,7 +7506,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782298231.2089777,
-      "last_seen": 1782306177.5333488,
+      "last_seen": 1782306964.0476978,
       "last_seen_counted": 1782305558.7184696,
       "seen_count": 3,
       "results": {
@@ -7638,6 +7658,10 @@
         {
           "time": 1782306177.5333488,
           "price": 0.73333
+        },
+        {
+          "time": 1782306964.0476978,
+          "price": 0.71212
         }
       ],
       "risk_reward": 0.0,
@@ -7678,7 +7702,7 @@
       ],
       "shadow_result_v184": "бот мог быть слишком осторожен: рост 30m +7.77%",
       "confidence_v181": 14,
-      "last_price": 0.73333,
+      "last_price": 0.71212,
       "last_score": 55,
       "last_action": "WATCH",
       "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
