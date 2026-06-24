@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v18.4.2 ADMIN ONE-COMMIT DEPLOY FIX"
+BOT_VERSION = "v18.4.3 WORDING + PAPER CLASSIFICATION"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1103,7 +1103,7 @@ def admin_start_update(chat_id):
         "🛠 Режим обновления включён.\n\n"
         "Теперь отправь мне файл Python как документ, лучше с именем main.py.\n"
         "В v11.8 можно ещё быстрее: админ может просто отправить main*.py без команды /admin_update.\n"
-        "Я проверю compile, сделаю backup старого main.py в GitHub, загружу новый файл и вызову Render deploy hook.\n\n"
+        "Я проверю compile и загружу новый main.py одним commit, без отдельного backup-commit, чтобы Render не стартовал старую версию.\n\n"
         "Отмена: /admin_cancel"
     )
 
@@ -3097,6 +3097,8 @@ def macro_action_hint(ctx):
     if level == "caution":
         if ctx.get("macro_mod", ctx.get("geo_mod", 0)) <= -15 and ctx.get("btc_change", 0) >= 0:
             return "Решение: повышенная осторожность. BUY запрещены до улучшения новостей и подтверждения BTC/объёма."
+        if ctx.get("btc_change", 0) > 0:
+            return "Решение: осторожно. BTC зелёный, но фон ещё слабый — ждать подтверждение BTC и объёма."
         return "Решение: осторожно. Быстрые входы ограничить, ждать подтверждение объёмом и стабилизацию BTC."
 
     if level == "positive":
@@ -5131,7 +5133,10 @@ def paper_outcome(trade):
         if value <= -3:
             return "avoid_saved"
         if value >= 5:
-            return "avoid_missed"
+            # v18.4.3: это не ошибка BUY и не просто "упущенная прибыль".
+            # AVOID PUMP проверяет, стоило ли НЕ догонять резкий памп.
+            # Если памп продолжился без отката, классифицируем отдельно до накопления 48ч статистики.
+            return "pump_continued_no_pullback"
         return "avoid_neutral"
     if value >= 2.5:
         return "paper_win"
@@ -5230,7 +5235,26 @@ def paper_summary_line():
     losses = sum(1 for t in closed if paper_outcome(t) == "paper_loss")
     saved = sum(1 for t in closed if paper_outcome(t) == "avoid_saved")
     missed = sum(1 for t in closed if paper_outcome(t) == "avoid_missed")
-    return f"Виртуальные сделки: открыто {open_n} | закрыто {len(closed)} | ✅ {wins} | 🔴 {losses} | 🛡 {saved} | ⚠️ {missed}"
+    pump_continued = sum(1 for t in closed if paper_outcome(t) == "pump_continued_no_pullback")
+    return f"Виртуальные сделки: открыто {open_n} | закрыто {len(closed)} | ✅ {wins} | 🔴 {losses} | 🛡 {saved} | ⚠️ {missed} | 📈 памп без отката {pump_continued}"
+
+
+def paper_outcome_label(outcome):
+    if outcome == "pump_continued_no_pullback":
+        return "📈 памп продолжился без отката — не считать ошибкой BUY до 48ч"
+    if outcome == "avoid_saved":
+        return "🛡 не догонять было правильно"
+    if outcome == "avoid_missed":
+        return "⚠️ пропущен рост"
+    if outcome == "paper_win":
+        return "✅ paper win"
+    if outcome == "paper_loss":
+        return "🔴 paper loss"
+    if outcome == "paper_neutral":
+        return "🟡 paper neutral"
+    if outcome == "avoid_neutral":
+        return "🟡 avoid neutral"
+    return str(outcome or "open")
 
 
 def _paper_safe_float(value, default=0.0):
@@ -5318,11 +5342,12 @@ def paper_report():
             if not isinstance(t, dict):
                 continue
             out = paper_outcome(t)
+            out_label = paper_outcome_label(out)
             r48 = (t.get("results", {}) or {}).get("48h")
             if isinstance(r48, (int, float)):
-                text += f"• {t.get('asset','?')}: {out} | 48ч {r48:+.2f}%\n"
+                text += f"• {t.get('asset','?')}: {out_label} | 48ч {r48:+.2f}%\n"
             else:
-                text += f"• {t.get('asset','?')}: {out}\n"
+                text += f"• {t.get('asset','?')}: {out_label}\n"
     else:
         has_24h_open = False
         try:
@@ -8064,6 +8089,43 @@ def compact_price(x):
         return f"${p:.2f}"
     return f"${p:.6g}"
 
+def compact_blocked_entry_reason(c):
+    """v18.4.3: конкретная причина вместо сухого 'нет условий для входа'."""
+    ctx = c.get("ctx", {}) if isinstance(c, dict) else {}
+    parts = []
+    try:
+        vol = float(c.get("volume_trend", 1) or 1)
+    except Exception:
+        vol = 1
+    try:
+        fg_value = int(ctx.get("fg_value", 50) or 50)
+    except Exception:
+        fg_value = 50
+    try:
+        macro_mod = int(ctx.get("macro_mod", ctx.get("geo_mod", 0)) or 0)
+    except Exception:
+        macro_mod = 0
+    try:
+        btc_change = float(ctx.get("btc_change", 0) or 0)
+    except Exception:
+        btc_change = 0.0
+
+    if vol < 1.1:
+        parts.append("нет подтверждения объёмом выше x1.1")
+    if market_risk_level(ctx) == "caution":
+        parts.append("рынок осторожный")
+    if fg_value <= 25:
+        parts.append(f"страх {fg_value}")
+    if macro_mod < 0:
+        parts.append(f"новости {macro_mod:+d}")
+    if btc_change > 0 and vol < 1.1:
+        parts.append("BTC зелёный, но подтверждение слабое")
+    if not parts:
+        parts.append("нужно подтверждение ценой и объёмом")
+    # Убираем дубли, сохраняя порядок.
+    return "; ".join(list(dict.fromkeys(parts))[:4])
+
+
 def compact_reason(c):
     reasons = []
     ctx = c.get("ctx", {})
@@ -8135,7 +8197,7 @@ def compact_reason(c):
             return "BTC мешает альтам"
 
         if c.get("volume_trend", 1) < 1.1:
-            return "нужен объём + подтверждение"
+            return compact_blocked_entry_reason(c)
 
         if c.get("rsi", 50) < 28:
             return "перепроданность, нужен разворот"
@@ -8172,7 +8234,10 @@ def compact_reason(c):
             return "импульс есть, но риск высокий"
         return "риск выше нормы"
 
-    return "нет условий для входа"
+    if c.get("action") == "SKIP" or "НЕ ПОКУПАТЬ" in str(c.get("verdict", "")) or "НЕТ СИГНАЛА" in str(c.get("verdict", "")):
+        return compact_blocked_entry_reason(c)
+
+    return compact_blocked_entry_reason(c)
 
 def compact_action(c):
     if c.get("_extreme_fear_cap"):
@@ -10168,7 +10233,7 @@ def get_fast_pumps():
             or (btc_change <= -1.5 and macro_mod <= -8)
             or (btc_change <= -1.0 and fg_value <= 20 and macro_mod <= -5)
         )
-        market_caution = market_danger or btc_change < 0 or macro_mod <= -8
+        market_caution = market_danger or btc_change < 0 or macro_mod <= -8 or fg_value <= 25
 
         rows = []
         for t in tickers:
@@ -10252,7 +10317,7 @@ def get_fast_pumps():
                 "Сильных быстрых импульсов сейчас нет.\n"
                 "Режим: быстрый безопасный alerts без свечей, чтобы команда не зависала.\n\n"
                 f"BTC 24ч: {btc_change:+.2f}%\n"
-                f"{('Фон: 🔴 опасный — BUY запрещены, только наблюдение до стабилизации BTC.' if market_danger else ('Фон: 🟠 осторожный — вход только после подтверждения и отката.' if market_caution else 'Фон: без явного аварийного сигнала по BTC.'))}\n"
+                f"{('Фон: 🔴 опасный — BUY запрещены, только наблюдение до стабилизации BTC.' if market_danger else ('Фон: 🟠 BTC без аварийного сигнала, но общий фон осторожный из-за страха/новостей.' if market_caution else 'Фон: BTC без аварийного сигнала.'))}\n"
                 "Что ждать: качественный актив, умеренный рост, высокий объём и подтверждение в /signal или /coin.\n"
                 "Главное правило: резкую зелёную свечу не догонять."
             )
@@ -10265,16 +10330,19 @@ def get_fast_pumps():
         if market_danger:
             text += "Фон: 🔴 опасный — BUY запрещены, только наблюдение до стабилизации BTC.\n\n"
         elif market_caution:
-            text += "Фон: 🟠 осторожный — вход только после подтверждения и отката.\n\n"
+            text += "Фон: 🟠 BTC без аварийного сигнала, но общий фон осторожный из-за страха/новостей.\n\n"
         else:
-            text += "Фон: без явного аварийного сигнала по BTC.\n\n"
+            text += "Фон: BTC без аварийного сигнала.\n\n"
 
         if quality_watch:
             text += "🟡 Качественные активы к наблюдению / не вход:\n"
             for i, r in enumerate(quality_watch, 1):
-                action = "наблюдать; вход только после подтверждения в /coin"
+                if r.get("symbol") == "BTC":
+                    action = "BTC — индикатор рынка; проверять /btc; вход только после подтверждения объёма"
+                else:
+                    action = "наблюдать; вход только после подтверждения в /coin"
                 if market_danger:
-                    action = "без входа сейчас; ждать стабилизацию BTC/фона"
+                    action = "без входа сейчас; ждать стабилизацию BTC/фона" if r.get("symbol") != "BTC" else "BTC — индикатор рынка; без входа сейчас, проверять /btc"
                 text += (
                     f"{i}. {r['symbol']} — fast alert score {r['score']}/100 | {format_usd_price(r['price'])}\n"
                     f"24ч: {r['change_24']:+.2f}% | объём ${r['volume_usd']/1_000_000:.1f}M\n"
@@ -11665,8 +11733,12 @@ def user_signal_report():
             break
 
     buy_zero = "BUY: 0" in buy_line
+    btc_green = "| +" in btc or "+0." in btc or "+1." in btc or "+2." in btc or "+3." in btc
     if buy_zero:
-        decision = "Новых входов сейчас нет. Ждать стабилизацию BTC, объём и откат."
+        if btc_green:
+            decision = "Новых входов сейчас нет. Ждать подтверждение BTC, объём и откат."
+        else:
+            decision = "Новых входов сейчас нет. Ждать стабилизацию BTC, объём и откат."
     else:
         decision = "Есть идеи, но вход только после проверки конкретной монеты."
 
@@ -12115,7 +12187,8 @@ def main():
                         "🧠 v18.3: реальные режимы рынка, профили монет и контекст обучения\n"
                         "🚀 v18.4: shadow-сценарии, regime backtest и quality report\n"
                         "🧾 v18.4.1: audit_file защищён от зависания и ошибок отправки\n"
-                        "🛡 v18.4.2: admin update делает один commit main.py, без старого deploy от backup"
+                        "🛡 v18.4.2: admin update делает один commit main.py, без старого deploy от backup\n"
+                        "✍️ v18.4.3: точные причины входа, BTC wording в alerts/signal, AVOID PUMP отдельной классификацией"
                     ))
 
                 elif text == "/flush":
