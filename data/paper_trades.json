@@ -1657,7 +1657,8 @@
         "15m": 0.0,
         "30m": 4.2,
         "1h": 3.02,
-        "3h": -3.05
+        "3h": -3.05,
+        "6h": 0.34
       },
       "result_details": {
         "15m": {
@@ -1678,6 +1679,11 @@
         "3h": {
           "checkpoint_time": 1782413334.4159765,
           "checkpoint_price": 1.9627,
+          "source": "learning_cache:snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782426335.1229625,
+          "checkpoint_price": 2.0314,
           "source": "learning_cache:snapshot"
         }
       },
@@ -3711,5 +3717,5 @@
     }
   ],
   "last_created_at": 1782409722.9885206,
-  "last_update_at": 1782426338.143664
+  "last_update_at": 1782427862.874939
 }
