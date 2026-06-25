@@ -285,7 +285,8 @@
         "1h": 0.45,
         "3h": 0.45,
         "6h": 0.45,
-        "12h": 0.45
+        "12h": 0.45,
+        "24h": 0.45
       },
       "result_details": {
         "15m": {
@@ -314,6 +315,11 @@
           "source": "learning_cache:paper_last_price_fallback"
         },
         "12h": {
+          "checkpoint_time": 1782273962.9065118,
+          "checkpoint_price": 0.0024748,
+          "source": "learning_cache:paper_last_price_fallback"
+        },
+        "24h": {
           "checkpoint_time": 1782273962.9065118,
           "checkpoint_price": 0.0024748,
           "source": "learning_cache:paper_last_price_fallback"
@@ -1082,7 +1088,8 @@
         "15m": -1.23,
         "30m": 0.83,
         "1h": 0.53,
-        "3h": 3.04
+        "3h": 3.04,
+        "6h": 3.44
       },
       "result_details": {
         "15m": {
@@ -1103,6 +1110,11 @@
         "3h": {
           "checkpoint_time": 1782346899.73689,
           "checkpoint_price": 0.04104,
+          "source": "learning_cache:snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782356770.9091897,
+          "checkpoint_price": 0.0412,
           "source": "learning_cache:snapshot"
         }
       },
@@ -2792,5 +2804,5 @@
     }
   ],
   "last_created_at": 1782338488.149177,
-  "last_update_at": 1782356771.2817204
+  "last_update_at": 1782358455.7178798
 }
