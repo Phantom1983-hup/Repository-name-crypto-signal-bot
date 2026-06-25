@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.4.1 STATE RESTORE GUARD"
+BOT_VERSION = "v19.5 ACTIVE LEARNING PROFILES"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -7353,7 +7353,7 @@ def v192_checkpoint_accelerator_summary(data, compact=False):
             f"Вход сразу по-прежнему не усиливаем. Подробно: /audit_file"
         )
     text = (
-        "⚡ v19.2 CHECKPOINT ACCELERATOR / LEARNING SPRINT\n"
+        "⚡ v19.5 CHECKPOINT ACCELERATOR / LEARNING SPRINT\n"
         "Задача: не сидеть 48ч без дела. 48ч остаётся финальным судом, но 6ч/12ч/24ч уже дают предварительные уроки для профилей монет и режимов. Автоторговля выключена.\n"
         f"Open-наблюдений с checkpoints: {len(rows)} | зрелых 6ч+: {mature}.\n"
         f"Предварительно: полный skip/не вход {counts.get('skip',0)} | осторожность защищает {counts.get('protect',0)} | quality-growth {counts.get('quality',0)} | pump-growth {counts.get('pump',0)} | спорно {counts.get('neutral',0)}.\n"
@@ -7361,8 +7361,87 @@ def v192_checkpoint_accelerator_summary(data, compact=False):
     )
     if examples:
         text += "Ключевые ускоренные уроки:\n" + "\n".join(["• "+r["note"] for r in examples]) + "\n"
-    text += "Правило v19.2: ранние checkpoints ускоряют обучение, но не дают права на реальный вход без подтверждения объёма, фона и 48ч статистики.\n\n"
+    text += "Правило v19.5: ранние checkpoints ускоряют обучение и строят профили, но не дают права на реальный вход без подтверждения объёма, фона и 48ч статистики.\n\n"
     return text
+
+
+def v195_active_learning_profiles(data):
+    """v19.5: активные профили обучения по 6/12/24ч без ожидания 48ч.
+    Ничего не покупает, не включает автоторговлю и не повышает реальные BUY-веса.
+    Цель — заранее подготовить качественные профили для финальной проверки после 48ч.
+    """
+    if not isinstance(data, dict):
+        return "🧠 v19.5 ACTIVE LEARNING PROFILES\nДанных обучения пока нет.\n"
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    quality = []
+    full_skip = []
+    avoid_pump = []
+    wait_cases = []
+    closing_soon = []
+    now = time.time()
+    for rec in open_items.values():
+        if not isinstance(rec, dict):
+            continue
+        vals = v18_checkpoint_values(rec)
+        if not vals:
+            continue
+        asset = str(rec.get("asset", "?")).upper()
+        verdict = str(rec.get("verdict", "") or "")
+        status = str(rec.get("status", "") or "")
+        action = str(rec.get("action", "") or "")
+        regime = v183_regime_for_rec(rec)
+        best_name, best = max(vals, key=lambda kv: kv[1])
+        worst_name, worst = min(vals, key=lambda kv: kv[1])
+        latest_name, latest = vals[-1]
+        is_pump = ("НЕ ДОГОНЯТЬ" in verdict) or ("СПЕКУЛЯТИВ" in verdict) or ("НЕ ДОГОНЯТЬ" in status) or ("СПЕКУЛЯТИВ" in status)
+        is_quality = asset in QUALITY_LEARNING_ASSETS or asset in ["BTC", "ETH", "SOL", "LINK", "AAVE", "BNB", "TAO", "SUI", "AVAX", "NEAR"]
+        age = float(rec.get("time", rec.get("created_at", now)) or now)
+        remain_h = 48.0 - max(0.0, (now - age) / 3600.0)
+        if remain_h <= 12 and remain_h > -2:
+            closing_soon.append((remain_h, asset, best_name, best, worst_name, worst, regime))
+        if is_quality and best >= 6 and action != "BUY":
+            quality.append((best, asset, best_name, regime, latest_name, latest, worst_name, worst))
+        if worst <= -8 and latest <= 0:
+            full_skip.append((worst, asset, worst_name, regime, latest_name, latest))
+        elif worst <= -12:
+            full_skip.append((worst, asset, worst_name, regime, latest_name, latest))
+        if is_pump and best >= 8:
+            avoid_pump.append((best, asset, best_name, regime, latest_name, latest, worst_name, worst))
+        if best >= 4 and worst < -4 and action != "BUY":
+            wait_cases.append((best - worst, asset, best_name, best, worst_name, worst, regime))
+    quality = sorted(quality, reverse=True)[:5]
+    full_skip = sorted(full_skip, key=lambda x: x[0])[:8]
+    avoid_pump = sorted(avoid_pump, reverse=True)[:5]
+    wait_cases = sorted(wait_cases, reverse=True)[:5]
+    closing_soon = sorted(closing_soon, key=lambda x: x[0])[:8]
+    lines = [
+        "🧠 v19.5 ACTIVE LEARNING PROFILES",
+        "Задача: не ждать пассивно 48ч, а заранее раскладывать открытые наблюдения по профилям. Это НЕ автоторговля и НЕ повышение BUY-весов.",
+        f"Open-наблюдений с checkpoints: {len([r for r in open_items.values() if isinstance(r, dict) and v18_checkpoint_values(r)])}",
+        f"Профили сейчас: quality-exception {len(quality)} | full-skip {len(full_skip)} | avoid-pump continuation {len(avoid_pump)} | timing-spread {len(wait_cases)}",
+    ]
+    if quality:
+        lines.append("\n🟢 Quality-exception кандидаты для проверки после 48ч:")
+        for best, asset, bn, regime, ln, latest, wn, worst in quality:
+            lines.append(f"• {asset}: лучший {bn} {best:+.2f}% при режиме {regime}; вход не разрешать до 48ч/объёма/фона; последний {ln} {latest:+.2f}%, худший {wn} {worst:+.2f}%")
+    if full_skip:
+        lines.append("\n🛡 Full-skip профиль усиливается:")
+        for worst, asset, wn, regime, ln, latest in full_skip:
+            lines.append(f"• {asset}: худший {wn} {worst:+.2f}% | режим {regime} | последний {ln} {latest:+.2f}% — не догонять/не усреднять")
+    if avoid_pump:
+        lines.append("\n📈 Avoid-pump continuation профиль:")
+        for best, asset, bn, regime, ln, latest, wn, worst in avoid_pump:
+            lines.append(f"• {asset}: памп мог продолжиться {bn} {best:+.2f}%, но просадка {wn} {worst:+.2f}%; это timing-урок, не BUY-ошибка")
+    if wait_cases:
+        lines.append("\n⏱ Timing-spread кейсы:")
+        for spread, asset, bn, best, wn, worst, regime in wait_cases:
+            lines.append(f"• {asset}: разброс {spread:.2f} п.п. между {bn} {best:+.2f}% и {wn} {worst:+.2f}% | режим {regime}; важнее точка входа, чем вход сразу")
+    if closing_soon:
+        lines.append("\n⏳ Ближайшие 48ч закрытия:")
+        for remain_h, asset, bn, best, wn, worst, regime in closing_soon:
+            lines.append(f"• {asset}: около {max(0, remain_h):.1f}ч до финала | лучший {bn} {best:+.2f}% | худший {wn} {worst:+.2f}% | режим {regime}")
+    lines.append("\nПравило v19.5: ранние профили готовят выводы заранее, но реальные веса/BUY/автоторговля не усиливаются без закрытых 48ч и улучшения рынка.")
+    return "\n".join(lines) + "\n"
 
 
 def learning_sprint_user_report():
@@ -12715,8 +12794,9 @@ def build_audit_file(chat_id):
     add("PAPER FULL", paper_report, 12)
     add("SIGNAL FULL", unified_signal_report, 35)
     add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
-    add("LEARNING QUALITY V19.3", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
-    add("LEARNING SPRINT V19.3", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
+    add("LEARNING QUALITY V19.5", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
+    add("ACTIVE LEARNING PROFILES V19.5", lambda: v195_active_learning_profiles(load_json(RESULTS_FILE)), 10)
+    add("LEARNING SPRINT V19.5", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
     add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
     add("MARKET", market_status, 10)
     add("BTC FULL", lambda: single_analysis_full("BTC-USDT"), 25)
@@ -13390,9 +13470,10 @@ def main():
                         "🧠 Auto-Audit: короткий self-check, режимы active/normal/quiet/critical\n"
                         "🛡 Risk guard: в no-buy размер 0%, R/R не считается\n"
                         "⚡ Learning Sprint: /learning_sprint ускоряет выводы по 6/12/24ч checkpoints\n"
+                        "🧠 v19.5: active learning profiles — AAVE quality-exception, full-skip и avoid-pump профили без изменения BUY-весов\n"
                         "🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%\n"
                         "🚀 v19.4: main.py → GitHub → одна кнопка ручного Render deploy\n"
-        "🛡 v19.4.1: state restore guard защищает learning/paper/frozen от отката после redeploy"
+                        "🛡 v19.4.1: state restore guard защищает learning/paper/frozen от отката после redeploy"
                     ))
 
                 elif text == "/flush":
