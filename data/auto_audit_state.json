@@ -1,20 +1,19 @@
 {
   "enabled": true,
-  "last_check_at": 1782408367.843024,
-  "last_sent_at": 1782408367.843024,
+  "last_check_at": 1782411979.5751467,
+  "last_sent_at": 1782411979.5751467,
   "last_forced_at": 1782379444.7562673,
   "last_paper_closed": 26,
   "last_paper_saved": 16,
-  "last_paper_open": 27,
-  "last_learning_open": 27,
+  "last_paper_open": 29,
+  "last_learning_open": 29,
   "last_learning_closed": 5,
   "last_risk": "caution",
   "last_btc_bucket": "btc_red",
   "last_timing_checked": 32,
   "last_reason_lines": [
-    "Paper closed вырос: 25 → 26",
-    "🛡 спасло от входа выросло: 15 → 16",
-    "Timing-сценариев стало больше: 27 → 32"
+    "Learning open изменился: 27 → 29"
   ],
-  "version": "v18.9 AUTO-AUDIT + SELF-CHECK SCHEDULER"
+  "version": "v19.2 CHECKPOINT ACCELERATOR",
+  "mode": "active"
 }
