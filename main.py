@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.1 USER SHORT REPORTS FIX"
+BOT_VERSION = "v19.2 CHECKPOINT ACCELERATOR"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1878,6 +1878,10 @@ COMMAND_POOL_ALIASES = {
     "learning": "/learning",
     "learning_full": "/learning_full",
     "learning_audit": "/learning_full",
+    "learning_sprint": "/learning_sprint",
+    "learn_sprint": "/learning_sprint",
+    "обучение ускорение": "/learning_sprint",
+    "спринт обучения": "/learning_sprint",
     "audit": "/audit_short",
     "audit_short": "/audit_short",
     "аудит": "/audit_short",
@@ -6960,6 +6964,79 @@ def v190_coin_timing_profile(data):
         text += "Последние Avoid-Pump уроки:\n" + "\n".join(paper_examples[-6:]) + "\n"
     text += "Правило v19.0: 📈 памп продолжился ≠ BUY-ошибка; он идёт в timing/avoid-pump профиль, а не включает автопокупку. Вход сразу пока не усиливается.\n\n"
     return text
+
+
+def v192_checkpoint_accelerator_summary(data, compact=False):
+    """v19.2: ускоряет самообучение без ожидания 48ч.
+    Использует уже накопленные 6ч/12ч/24ч checkpoints как предварительную статистику.
+    Не включает автоторговлю и не меняет реальные веса агрессивно.
+    """
+    if not isinstance(data, dict):
+        return "⚡ v19.2 Checkpoint Accelerator\nДанных обучения пока нет.\n"
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    rows = []
+    mature = 0
+    for rec in open_items.values():
+        if not isinstance(rec, dict):
+            continue
+        vals = v18_checkpoint_values(rec)
+        if not vals:
+            continue
+        asset = str(rec.get("asset", "?")).upper()
+        verdict = str(rec.get("verdict", "") or "")
+        regime = v183_regime_for_rec(rec)
+        latest_name, latest = vals[-1]
+        best_name, best = max(vals, key=lambda kv: kv[1])
+        worst_name, worst = min(vals, key=lambda kv: kv[1])
+        if latest_name in ["6h", "12h", "24h", "48h"]:
+            mature += 1
+        is_pump = ("НЕ ДОГОНЯТЬ" in verdict) or ("СПЕКУЛЯТИВ" in verdict)
+        is_quality = asset in QUALITY_LEARNING_ASSETS or asset in ["BTC", "ETH", "SOL", "LINK", "AAVE", "BNB", "TAO", "SUI", "AVAX", "NEAR"]
+        if worst <= -8:
+            bucket = "skip"
+            note = f"{asset}: полный skip/не вход подтверждается, худший {worst_name} {worst:+.2f}%"
+        elif best >= 8 and is_pump:
+            bucket = "pump"
+            note = f"{asset}: памп продолжился, нужен timing-профиль, лучший {best_name} {best:+.2f}%"
+        elif best >= 6 and is_quality:
+            bucket = "quality"
+            note = f"{asset}: качественный актив растёт против фона, проверить задержку/условия, лучший {best_name} {best:+.2f}%"
+        elif latest <= -4:
+            bucket = "protect"
+            note = f"{asset}: осторожность пока защищает, последний {latest_name} {latest:+.2f}%"
+        else:
+            bucket = "neutral"
+            note = f"{asset}: пока спорно/нейтрально, последний {latest_name} {latest:+.2f}%"
+        rows.append({"asset":asset,"bucket":bucket,"regime":regime,"latest_name":latest_name,"latest":latest,"best":best,"worst":worst,"note":note})
+    counts = {"skip":0,"pump":0,"quality":0,"protect":0,"neutral":0}
+    for r in rows:
+        counts[r["bucket"]] = counts.get(r["bucket"],0)+1
+    # Сначала важные защитные и спорные кейсы, затем quality/pump.
+    pr = {"skip":0,"protect":1,"quality":2,"pump":3,"neutral":4}
+    examples = sorted(rows, key=lambda r: (pr.get(r["bucket"],9), -abs(float(r.get("best",0) or 0)), -abs(float(r.get("worst",0) or 0))))[:8]
+    if compact:
+        return (
+            f"⚡ Learning Sprint\n"
+            f"Не ждём 48ч: уже используем 6/12/24ч checkpoints.\n"
+            f"Open с checkpoints: {len(rows)} | зрелых 6ч+: {mature}\n"
+            f"Skip/защита: {counts.get('skip',0)+counts.get('protect',0)} | quality-growth: {counts.get('quality',0)} | pump-growth: {counts.get('pump',0)} | спорно: {counts.get('neutral',0)}\n"
+            f"Вход сразу по-прежнему не усиливаем. Подробно: /audit_file"
+        )
+    text = (
+        "⚡ v19.2 CHECKPOINT ACCELERATOR / LEARNING SPRINT\n"
+        "Задача: не сидеть 48ч без дела. 48ч остаётся финальным судом, но 6ч/12ч/24ч уже дают предварительные уроки для профилей монет и режимов. Автоторговля выключена.\n"
+        f"Open-наблюдений с checkpoints: {len(rows)} | зрелых 6ч+: {mature}.\n"
+        f"Предварительно: полный skip/не вход {counts.get('skip',0)} | осторожность защищает {counts.get('protect',0)} | quality-growth {counts.get('quality',0)} | pump-growth {counts.get('pump',0)} | спорно {counts.get('neutral',0)}.\n"
+        "Что бот может делать уже сейчас: обновлять Coin Timing/Avoid-Pump профили, отмечать full-skip монеты, выделять quality-exception кейсы и не повышать BUY до финальных 48ч.\n"
+    )
+    if examples:
+        text += "Ключевые ускоренные уроки:\n" + "\n".join(["• "+r["note"] for r in examples]) + "\n"
+    text += "Правило v19.2: ранние checkpoints ускоряют обучение, но не дают права на реальный вход без подтверждения объёма, фона и 48ч статистики.\n\n"
+    return text
+
+
+def learning_sprint_user_report():
+    return v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=True)
 
 
 def v181_learning_acceleration_summary(data):
@@ -12195,7 +12272,7 @@ def learning_user_report():
         f"Закрытых 48ч результатов: {len(closed)}\n"
         f"Итоги: 🛡 спасло {counts.get('watch_saved',0)} | ⚠️ пропустило рост {counts.get('missed_move',0)} | 🟡 нейтрально {counts.get('neutral',0)} | 🔴 ошибок {counts.get('bad',0)}\n"
         f"Paper: {paper_summary_line()}\n\n"
-        "Подробно: /learning_full\n"
+        "Ускоренный вывод: /learning_sprint\n"
         "Полный файл для ChatGPT: /audit_file"
     )
 
@@ -12285,6 +12362,7 @@ def build_audit_file(chat_id):
     add("SIGNAL FULL", unified_signal_report, 35)
     add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
     add("LEARNING QUALITY V19.0", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
+    add("LEARNING SPRINT V19.2", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
     add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
     add("MARKET", market_status, 10)
     add("BTC FULL", lambda: single_analysis_full("BTC-USDT"), 25)
@@ -12365,7 +12443,7 @@ def help_text():
         "Команды тоже работают:\n"
         "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /top\n"
         "📦 Можно отправить пул команд одним сообщением, каждая с новой строки: /paper, /signal, /learning, /alerts. Бот выполнит их по очереди.\n"
-        "/storage, /backup, /weekday, /learn_fast, /paper, /flush, /auto_audit_status, /auto_audit_now, /auto_audit_on, /auto_audit_off, /auto_audit_mode, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /rollback\n"
+        "/storage, /backup, /weekday, /learn_fast, /learning_sprint, /paper, /flush, /auto_audit_status, /auto_audit_now, /auto_audit_on, /auto_audit_off, /auto_audit_mode, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /rollback\n"
         "TON вводить можно: бот автоматически откроет GRAM.\n\n"
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход частями\n"
@@ -12948,7 +13026,8 @@ def main():
                         "🧾 Пользовательские отчёты: короткие\n"
                         "📄 Полная техника для ChatGPT: только /audit_file txt\n"
                         "🧠 Auto-Audit: короткий self-check, режимы active/normal/quiet/critical\n"
-                        "🛡 Risk guard: в no-buy размер 0%, R/R не считается"
+                        "🛡 Risk guard: в no-buy размер 0%, R/R не считается\n"
+                        "⚡ Learning Sprint: /learning_sprint ускоряет выводы по 6/12/24ч checkpoints"
                     ))
 
                 elif text == "/flush":
@@ -13102,6 +13181,9 @@ def main():
 
                 elif text == "/learning":
                     send_message(chat_id, learning_user_report())
+
+                elif text in ["/learning_sprint", "/learn_sprint"]:
+                    send_message(chat_id, learning_sprint_user_report())
 
                 elif text in ["/learning_full", "/learning_audit"]:
                     send_message(chat_id, learning_user_report() + "\n\n📄 Полный learning/audit теперь отправляется только файлом: /audit_file")
