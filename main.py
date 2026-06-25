@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.3.1 AUDIT DELIVERY + WORDING GUARD"
+BOT_VERSION = "v19.4 QUICK DEPLOY BUTTON + STATE SAFETY"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -70,6 +70,9 @@ RENDER_DEPLOY_HOOK_URL = (os.getenv("RENDER_DEPLOY_HOOK_URL") or "").strip()
 # запускает деплой после GitHub commit. Если одновременно включены Auto Deploy и hook,
 # Render может поставить в очередь старую и новую версии, и бот будет прыгать v18.1 <-> v18.2.
 RENDER_DEPLOY_HOOK_ENABLED = (os.getenv("RENDER_DEPLOY_HOOK_ENABLED") or "0").strip().lower() in ["1", "true", "yes", "on"]
+# v19.4: быстрый ручной deploy через кнопку после проверки main.py.
+# Для кнопки используем RENDER_DEPLOY_HOOK_URL напрямую; RENDER_DEPLOY_HOOK_ENABLED оставлен для старого авто-вызова.
+QUICK_DEPLOY_COOLDOWN_SECONDS = int(os.getenv("QUICK_DEPLOY_COOLDOWN_SECONDS", "600"))
 ADMIN_DEPLOY_MIN_INTERVAL = int(os.getenv("ADMIN_DEPLOY_MIN_INTERVAL", "180"))
 
 # === v11.1 free storage option ===
@@ -1043,6 +1046,141 @@ def trigger_render_deploy():
     return "Render deploy hook вызван."
 
 
+
+def trigger_render_deploy_manual():
+    """
+    v19.4 QUICK DEPLOY BUTTON:
+    ручной deploy запускается только после того, как админ нажал 🚀 Запустить деплой.
+    В отличие от старого trigger_render_deploy(), здесь не нужен RENDER_DEPLOY_HOOK_ENABLED=1,
+    потому что это уже явное ручное действие администратора.
+    """
+    if not RENDER_DEPLOY_HOOK_URL:
+        raise Exception("RENDER_DEPLOY_HOOK_URL не задан в Render Environment")
+
+    # Render deploy hook принимает POST/GET. Делаем POST, если не получилось — пробуем GET.
+    try:
+        r = requests.post(RENDER_DEPLOY_HOOK_URL, timeout=30)
+        if r.status_code < 300:
+            return "Render deploy hook вызван через POST."
+        post_err = f"POST {r.status_code}: {r.text[:300]}"
+    except Exception as e:
+        post_err = f"POST error: {e}"
+
+    r = requests.get(RENDER_DEPLOY_HOOK_URL, timeout=30)
+    if r.status_code >= 300:
+        raise Exception(f"Render deploy hook error. {post_err}; GET {r.status_code}: {r.text[:300]}")
+    return "Render deploy hook вызван через GET."
+
+
+def quick_deploy_keyboard():
+    return {
+        "keyboard": [
+            ["🚀 Запустить деплой"],
+            ["⚙️ Версия", "/deploy_status"],
+            ["🛠 Сервис"]
+        ],
+        "resize_keyboard": True,
+        "one_time_keyboard": True
+    }
+
+
+def state_status_report():
+    files = [
+        (RESULTS_FILE, "learning"),
+        (FROZEN_RESULTS_FILE, "frozen48"),
+        (PAPER_TRADES_FILE, "paper"),
+        (HISTORY_FILE, "history"),
+        (BACKTEST_FILE, "backtest"),
+        (ADMIN_STATE_FILE, "admin_state"),
+    ]
+    lines = [
+        "🧾 State / backup status",
+        f"Версия: {BOT_VERSION}",
+        f"DATA_DIR: {DATA_DIR}",
+        f"GitHub storage: {'✅ включён' if github_storage_enabled() else '❌ выключен'}",
+        ""
+    ]
+    for path, name in files:
+        exists = os.path.exists(path)
+        size = os.path.getsize(path) if exists else 0
+        mtime = datetime.fromtimestamp(os.path.getmtime(path)).strftime("%Y-%m-%d %H:%M:%S") if exists else "нет"
+        lines.append(f"• {name}: {'✅' if exists else '❌'} | {size} байт | {mtime}")
+    lines.append("")
+    lines.append("Для полного списка: /storage. Для отправки backup-файлов: /backup.")
+    return "\n".join(lines)
+
+
+def deploy_status_report(chat_id=None):
+    state = load_admin_state()
+    pending = bool(state.get("pending_deploy"))
+    pver = state.get("pending_deploy_version") or "нет"
+    pat = float(state.get("pending_deploy_at", 0) or 0)
+    age = int(time.time() - pat) if pat else 0
+    last_ver = state.get("last_deploy_version") or "нет"
+    last_at = float(state.get("last_deploy_at", 0) or 0)
+    last_age = int(time.time() - last_at) if last_at else 0
+    lines = [
+        "🚀 Deploy status",
+        f"Версия бота сейчас: {BOT_VERSION}",
+        f"GitHub ready: {'✅' if github_ready() else '❌'}",
+        f"Render hook: {'✅ задан' if bool(RENDER_DEPLOY_HOOK_URL) else '❌ не задан'}",
+        f"Pending deploy: {'✅ да' if pending else '❌ нет'}",
+    ]
+    if pending:
+        lines.append(f"Готовая версия к деплою: {pver}")
+        lines.append(f"Файл в GitHub: {state.get('pending_deploy_file', GITHUB_PATH)}")
+        lines.append(f"Готово {age} сек назад")
+        lines.append("Действие: нажми 🚀 Запустить деплой или отправь /deploy_latest")
+    lines.append(f"Последний запущенный deploy: {last_ver}")
+    if last_at:
+        lines.append(f"Был {last_age} сек назад")
+    lines.append(f"Cooldown: {QUICK_DEPLOY_COOLDOWN_SECONDS} сек")
+    lines.append("Важно: для режима ручного деплоя лучше выключить Render Auto Deploy, иначе Render может стартовать сразу после GitHub commit.")
+    return "\n".join(lines)
+
+
+def admin_deploy_latest(chat_id):
+    if not is_admin(chat_id):
+        return "⛔ Deploy доступен только ADMIN_CHAT_ID."
+    state = load_admin_state()
+    if not state.get("pending_deploy"):
+        return (
+            "ℹ️ Нет подготовленного deploy.\n"
+            "Сначала отправь свежий main.py документом в Telegram. Я проверю файл, обновлю GitHub и покажу кнопку 🚀 Запустить деплой."
+        )
+    if not RENDER_DEPLOY_HOOK_URL:
+        return (
+            "⛔ RENDER_DEPLOY_HOOK_URL не задан в Render Environment.\n"
+            "Один раз добавь Deploy Hook URL в переменные Render и сделай ручной deploy через сайт. Потом кнопка будет работать."
+        )
+    last_at = float(state.get("last_deploy_at", 0) or 0)
+    wait_left = int(QUICK_DEPLOY_COOLDOWN_SECONDS - (time.time() - last_at)) if last_at else 0
+    if wait_left > 0:
+        return f"⏳ Deploy недавно уже запускался. Чтобы не забить очередь Render, подожди {wait_left} сек и проверь /version."
+
+    pending_version = state.get("pending_deploy_version") or "версия не указана"
+    try:
+        deploy_msg = trigger_render_deploy_manual()
+        state["pending_deploy"] = False
+        state["last_deploy_version"] = pending_version
+        state["last_deploy_at"] = time.time()
+        state["last_deploy_result"] = deploy_msg
+        save_admin_state(state)
+        try:
+            sync_github_storage_now([ADMIN_STATE_FILE], max_files=1)
+        except Exception:
+            pass
+        return (
+            f"🚀 Deploy запущен.\n"
+            f"Версия: {pending_version}\n"
+            f"{deploy_msg}\n\n"
+            "Проверь /version через 1–2 минуты."
+        )
+    except Exception as e:
+        state["last_deploy_error"] = str(e)
+        save_admin_state(state)
+        return f"⛔ Deploy не запущен: {e}"
+
 def admin_upload_lock_left(ttl=120):
     """
     v16.4:
@@ -1121,7 +1259,7 @@ def admin_start_update(chat_id):
         "🛠 Режим обновления включён.\n\n"
         "Теперь отправь мне файл Python как документ, лучше с именем main.py.\n"
         "В v11.8 можно ещё быстрее: админ может просто отправить main*.py без команды /admin_update.\n"
-        "Я проверю compile и загружу новый main.py одним commit, без отдельного backup-commit, чтобы Render не стартовал старую версию.\n\n"
+        "Я проверю compile, загружу main.py в GitHub и покажу одну кнопку 🚀 Запустить деплой.\n\n"
         "Отмена: /admin_cancel"
     )
 
@@ -1360,14 +1498,23 @@ def admin_handle_document(chat_id, msg):
         )
 
         mark_admin_upload_processed(doc, upload_version)
-        deploy_msg = trigger_render_deploy()
 
+        # v19.4 QUICK DEPLOY BUTTON:
+        # После проверки и GitHub commit НЕ запускаем Render сразу.
+        # Показываем админу одну кнопку 🚀 Запустить деплой.
+        prev_state = state if isinstance(state, dict) else {}
         save_admin_state({
             "waiting_file": False,
             "chat_id": str(chat_id),
             "last_backup_path": backup_path,
-            "last_deploy_version": upload_version,
-            "last_deploy_at": time.time()
+            "last_github_upload_version": upload_version,
+            "last_github_upload_at": time.time(),
+            "pending_deploy": True,
+            "pending_deploy_version": upload_version,
+            "pending_deploy_at": time.time(),
+            "pending_deploy_file": GITHUB_PATH,
+            "last_deploy_version": prev_state.get("last_deploy_version", ""),
+            "last_deploy_at": prev_state.get("last_deploy_at", 0)
         })
         try:
             sync_github_storage_now([ADMIN_STATE_FILE, ADMIN_PROCESSED_UPLOADS_FILE], max_files=2)
@@ -1377,13 +1524,16 @@ def admin_handle_document(chat_id, msg):
         release_admin_upload_lock("done")
 
         return (
-            f"✅ Новый main.py отправлен в GitHub.\n"
-            f"Версия файла: {upload_version}\n"
-            f"Backup: {backup_path or 'не создан'}\n"
-            f"{deploy_msg}\n\n"
-            "Через 1–3 минуты проверь /version.\n\n"
-            "Защита v18.2.1: старые/повторные main*.py и audit .txt не запускают redeploy.\n"
-            "Защита v18.4.2: backup больше не создаёт отдельный commit перед main.py, поэтому Render не должен стартовать старую версию из backup-очереди."
+            (
+                f"✅ main.py принят и отправлен в GitHub.\n"
+                f"Версия файла: {upload_version}\n"
+                f"Проверка синтаксиса: OK\n"
+                f"Backup: {backup_path or 'не создан'}\n\n"
+                "Теперь нажми одну кнопку: 🚀 Запустить деплой.\n"
+                "После запуска проверь /version через 1–2 минуты.\n\n"
+                "Важно: для режима ручного деплоя лучше выключить Render Auto Deploy, иначе Render может начать deploy сразу после GitHub commit."
+            ),
+            quick_deploy_keyboard()
         )
 
     except Exception as e:
@@ -1756,6 +1906,8 @@ BUTTON_TO_COMMAND = {
     "📈 Топ": "/top",
     "❓ Помощь": "/help",
     "⬆️ Обновить": "/admin_update",
+    "🚀 Запустить деплой": "/deploy_latest",
+    "🚀 Деплой": "/deploy_latest",
     "🔓 Unlock": "/signal_unlock",
     "📡 Signal status": "/signal_status",
 }
@@ -1912,6 +2064,14 @@ COMMAND_POOL_ALIASES = {
     "service": "/service",
     "сервис": "/service",
     "🛠 сервис": "/service",
+    "deploy": "/deploy_latest",
+    "деплой": "/deploy_latest",
+    "запустить деплой": "/deploy_latest",
+    "🚀 запустить деплой": "/deploy_latest",
+    "deploy_status": "/deploy_status",
+    "статус деплоя": "/deploy_status",
+    "state_status": "/state_status",
+    "backup_status": "/state_status",
 }
 
 # === v18.0.2 LEARNING ALIAS FIX ===
@@ -2142,7 +2302,8 @@ def service_keyboard(chat_id=None):
     ]
 
     if chat_id and is_admin(chat_id):
-        rows.append(["🔄 Sync"])
+        rows.append(["🚀 Деплой", "/deploy_status"])
+        rows.append(["🔄 Sync", "/state_status"])
 
     rows.append(["⬅️ Назад"])
 
@@ -12469,7 +12630,7 @@ def help_text():
         "Команды тоже работают:\n"
         "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /top\n"
         "📦 Можно отправить пул команд одним сообщением, каждая с новой строки: /paper, /signal, /learning, /alerts. Бот выполнит их по очереди.\n"
-        "/storage, /backup, /weekday, /learn_fast, /learning_sprint, /paper, /flush, /auto_audit_status, /auto_audit_now, /auto_audit_on, /auto_audit_off, /auto_audit_mode, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /rollback\n"
+        "/storage, /backup, /weekday, /learn_fast, /learning_sprint, /paper, /flush, /auto_audit_status, /auto_audit_now, /auto_audit_on, /auto_audit_off, /auto_audit_mode, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /deploy_latest, /deploy_status, /state_status, /rollback\n"
         "TON вводить можно: бот автоматически откроет GRAM.\n\n"
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход частями\n"
@@ -12912,7 +13073,10 @@ def main():
                         )
                         admin_result = admin_handle_document(priority_chat_id, priority_msg)
                         if admin_result:
-                            send_message(priority_chat_id, admin_result)
+                            if isinstance(admin_result, tuple):
+                                send_message(priority_chat_id, admin_result[0], reply_markup=admin_result[1])
+                            else:
+                                send_message(priority_chat_id, admin_result)
 
                 max_update = last_update or 0
                 for queued_item in items:
@@ -12975,7 +13139,10 @@ def main():
                 if msg.get("document"):
                     admin_result = admin_handle_document(chat_id, msg)
                     if admin_result:
-                        send_message(chat_id, admin_result)
+                        if isinstance(admin_result, tuple):
+                            send_message(chat_id, admin_result[0], reply_markup=admin_result[1])
+                        else:
+                            send_message(chat_id, admin_result)
                     continue
 
                 # v13.7: защита от двойного тапа / повторной доставки одной и той же команды.
@@ -13053,7 +13220,9 @@ def main():
                         "📄 Полная техника для ChatGPT: только /audit_file txt\n"
                         "🧠 Auto-Audit: короткий self-check, режимы active/normal/quiet/critical\n"
                         "🛡 Risk guard: в no-buy размер 0%, R/R не считается\n"
-                        "⚡ Learning Sprint: /learning_sprint ускоряет выводы по 6/12/24ч checkpoints\n🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%"
+                        "⚡ Learning Sprint: /learning_sprint ускоряет выводы по 6/12/24ч checkpoints\n"
+                        "🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%\n"
+                        "🚀 v19.4: main.py → GitHub → одна кнопка ручного Render deploy"
                     ))
 
                 elif text == "/flush":
@@ -13132,6 +13301,18 @@ def main():
 
                 elif text == "/admin_cancel":
                     send_message(chat_id, admin_cancel_update(chat_id))
+
+                elif text in ["/deploy_latest", "/deploy"]:
+                    send_message(chat_id, admin_deploy_latest(chat_id))
+
+                elif text == "/deploy_status":
+                    send_message(chat_id, deploy_status_report(chat_id))
+
+                elif text in ["/state_status", "/backup_status"]:
+                    if is_admin(chat_id):
+                        send_message(chat_id, state_status_report())
+                    else:
+                        send_message(chat_id, "⛔ State status доступен только ADMIN_CHAT_ID.")
 
                 elif text == "/rollback":
                     send_message(chat_id, admin_rollback(chat_id))
