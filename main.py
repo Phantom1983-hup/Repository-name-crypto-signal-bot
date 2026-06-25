@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v18.8 SHADOW TIMING + DELAYED ENTRY ENGINE"
+BOT_VERSION = "v18.9 AUTO-AUDIT + SELF-CHECK SCHEDULER"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -40,6 +40,7 @@ def data_path(name):
 CHAT_ID_FILE = data_path("chat_id.txt")
 HISTORY_FILE = data_path("signal_history.json")
 PUMP_FILE = data_path("pump_history.json")
+AUTO_AUDIT_STATE_FILE = data_path("auto_audit_state.json")
 RESULTS_FILE = data_path("signal_results.json")
 RESULTS_BACKUP_FILE = data_path("signal_results_backup.json")
 FROZEN_RESULTS_FILE = data_path("frozen_learning_results.json")
@@ -90,6 +91,23 @@ PUMP_MINUTES = [0]
 # дубли/устаревший отчёт с BUY по спекулятивным монетам.
 # Ручные кнопки 📊 Сигнал / 🌍 Рынок / ⚡ Alerts продолжают работать.
 AUTO_REPORTS_ENABLED = (os.getenv("AUTO_REPORTS_ENABLED") or "").strip().lower() in ["1", "true", "yes", "on"]
+
+# v18.9: авто-аудит для администратора. Это НЕ автоторговля и не сигнал на покупку.
+# По умолчанию включён, потому что админ попросил: бот сам присылает короткий self-check в Telegram,
+# а полный txt по-прежнему вызывается вручную через /audit_file.
+AUTO_AUDIT_ENABLED_DEFAULT = (os.getenv("AUTO_AUDIT_ENABLED", "1") or "1").strip().lower() in ["1", "true", "yes", "on"]
+try:
+    AUTO_AUDIT_INTERVAL_MIN = max(30, int(float(os.getenv("AUTO_AUDIT_INTERVAL_MIN", "60") or 60)))
+except Exception:
+    AUTO_AUDIT_INTERVAL_MIN = 60
+try:
+    AUTO_AUDIT_MIN_SEND_GAP_MIN = max(30, int(float(os.getenv("AUTO_AUDIT_MIN_SEND_GAP_MIN", "60") or 60)))
+except Exception:
+    AUTO_AUDIT_MIN_SEND_GAP_MIN = 60
+try:
+    AUTO_AUDIT_FORCE_SUMMARY_HOURS = max(3, int(float(os.getenv("AUTO_AUDIT_FORCE_SUMMARY_HOURS", "6") or 6)))
+except Exception:
+    AUTO_AUDIT_FORCE_SUMMARY_HOURS = 6
 
 # === v15.0 fast learning ===
 # 48ч остаётся финальной проверкой, но бот копит короткие checkpoints,
@@ -6020,7 +6038,7 @@ def v18_learning_core_summary(data):
     neutral = sum(v for k, v in classes.items() if "neutral" in k or k in ["avoid_pump_watch"])
 
     lines = [
-        "🧠 Core Learning + v18.6 Entry Quality/Regime Layer",
+        "🧠 Core Learning + v18.8/v18.9 Entry Quality/Regime Layer",
         "Режим: уникальное ядро обучения включено; ранние checkpoints учитываются как предварительные выводы, веса меняются только после закрытых 48ч результатов.",
         f"Ранние выводы по открытым наблюдениям: 🛡 спасло/не догонять правильно {saved} | ⚠️ возможно слишком осторожно {missed} | 🟡 нейтрально/спорно {neutral}",
     ]
@@ -6088,7 +6106,7 @@ def learning_open_rows(open_items, limit=6):
             regime = v183_regime_for_rec(rec)
             rr_text = v183_rr_text(rec.get("risk_reward", 0))
             text += (
-                f"  v18.6: режим {regime}; {rec.get('exit_plan', 'exit ждёт данных')} | "
+                f"  v18.9: режим {regime}; {rec.get('exit_plan', 'exit ждёт данных')} | "
                 f"размер: {rec.get('position_size', 'н/д')} | R/R: {rr_text}\n"
             )
 
@@ -6453,7 +6471,7 @@ def v181_single_core_lines(c):
     else:
         regime_note = f"по текущему режиму {bucket} закрытых 48ч: {regime_n}"
     return (
-        f"🧠 v18.6 confidence: {conf}/100 — {conf_label}; "
+        f"🧠 v18.9 confidence: {conf}/100 — {conf_label}; "
         f"история монеты {a.get('n', 0)}, {regime_note}\n"
         f"⚖️ Risk/Reward: {('не рассчитывается без подтверждённого входа' if str(c.get('action', 'SKIP')).upper() in ['SKIP', 'WATCH'] or 'НЕ ПОКУПАТЬ' in str(c.get('verdict', '')) else (rr if rr else 'н/д'))} | 📌 Размер: {v181_position_size(c)}\n"
         f"🎯 Exit Engine: {v181_exit_plan(c)}\n"
@@ -6520,7 +6538,7 @@ def v184_regime_counts(open_items, closed):
 
 
 def v184_regime_backtest_summary(data):
-    """v18.6: режимный ускоритель обучения. Пока не меняет веса, а показывает покрытие режимов."""
+    """v18.9: режимный ускоритель обучения. Пока не меняет веса, а показывает покрытие режимов."""
     if not isinstance(data, dict):
         return ""
     open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
@@ -6671,7 +6689,7 @@ def v186_entry_quality_summary(data):
         "Цель: бот учится не только 'не покупать', а качеству точки входа: вход сейчас, ожидание BTC, задержка 1ч/3ч/6ч/12ч, вход после отката и полный пропуск.\n"
         f"Open-проверки: 🛡 ожидание/пропуск защищает {saved} | ⚠️ возможно слишком осторожно {missed} | 🟡 спорно {neutral} | ✅ вход работал {good_entry} | 🔴 вход плохой {bad_entry}.\n"
         f"Closed 48ч: ✅ BUY/entry win {closed_success} | 🛡 watch спас {closed_saved} | ⚠️ watch пропустил {closed_missed} | 🔴 bad {closed_bad}.\n"
-        "Правило: до достаточной 48ч статистики v18.6 не включает автоторговлю и не повышает веса агрессивно.\n"
+        "Правило: до достаточной 48ч статистики v18.9 не включает автоторговлю и не повышает веса агрессивно.\n"
     )
     if examples:
         text += "Кейсы качества входа:\n" + "\n".join(examples) + "\n"
@@ -12215,7 +12233,7 @@ def help_text():
         "Команды тоже работают:\n"
         "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /top\n"
         "📦 Можно отправить пул команд одним сообщением, каждая с новой строки: /paper, /signal, /learning, /alerts. Бот выполнит их по очереди.\n"
-        "/storage, /backup, /weekday, /learn_fast, /paper, /flush, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /rollback\n"
+        "/storage, /backup, /weekday, /learn_fast, /paper, /flush, /auto_audit_status, /auto_audit_now, /auto_audit_on, /auto_audit_off, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /rollback\n"
         "TON вводить можно: бот автоматически откроет GRAM.\n\n"
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход частями\n"
@@ -12227,7 +12245,7 @@ def help_text():
         "🔕 Auto-alerts тихие: только качественные монеты, максимум 1 раз в час\n"
         "📚 Обучение без дублей: одна монета = одно открытое наблюдение до 48ч\n"
         "🧯 Красный рынок: score BTC/ETH ограничен до стабилизации\n"
-        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v18.1: Exit Engine, Adaptive Weights Guard, Shadow Signals, Risk/Reward, position sizing, fast-learning 15м/30м/1ч/3ч/6ч/12ч/24ч/48ч, background scan каждые 30м"
+        "📰 Новости: ФРС/геополитика/крипто обновляются по RSS-заголовкам каждые 15 минут\n🧠 v9.6: deal/ceasefire/end war/reopen Hormuz считаются деэскалацией, слабые источники получают меньший вес; v18.1: Exit Engine, Adaptive Weights Guard, Shadow Signals, Risk/Reward, position sizing, fast-learning 15м/30м/1ч/3ч/6ч/12ч/24ч/48ч, background scan каждые 30м; v18.9: Auto-Audit присылает админу self-check при важных изменениях"
     )
 
 
@@ -12236,6 +12254,258 @@ def coin_analyze_wait_text(coin):
 
 def moscow_now():
     return datetime.utcnow() + timedelta(hours=MOSCOW_OFFSET_HOURS)
+
+
+
+def auto_audit_load_state():
+    """v18.9: persistent state for Telegram self-check scheduler."""
+    state = load_json(AUTO_AUDIT_STATE_FILE)
+    if not isinstance(state, dict):
+        state = {}
+    state.setdefault("enabled", bool(AUTO_AUDIT_ENABLED_DEFAULT))
+    state.setdefault("last_check_at", 0)
+    state.setdefault("last_sent_at", 0)
+    state.setdefault("last_forced_at", 0)
+    state.setdefault("last_paper_closed", None)
+    state.setdefault("last_paper_saved", None)
+    state.setdefault("last_paper_open", None)
+    state.setdefault("last_learning_open", None)
+    state.setdefault("last_learning_closed", None)
+    state.setdefault("last_risk", None)
+    state.setdefault("last_btc_bucket", None)
+    state.setdefault("last_timing_checked", None)
+    return state
+
+
+def auto_audit_save_state(state, sync=False):
+    if not isinstance(state, dict):
+        return
+    state["version"] = BOT_VERSION
+    save_json(AUTO_AUDIT_STATE_FILE, state)
+    if sync:
+        background_github_sync([AUTO_AUDIT_STATE_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
+    else:
+        mark_github_dirty(AUTO_AUDIT_STATE_FILE)
+
+
+def auto_audit_set_enabled(enabled):
+    state = auto_audit_load_state()
+    state["enabled"] = bool(enabled)
+    state["updated_at"] = time.time()
+    auto_audit_save_state(state, sync=True)
+    return state
+
+
+def auto_audit_paper_stats():
+    try:
+        data = paper_store()
+    except Exception:
+        data = {}
+    open_trades = data.get("open", {}) if isinstance(data, dict) and isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data, dict) and isinstance(data.get("closed", []), list) else []
+    outcomes = [paper_outcome(t) for t in closed if isinstance(t, dict)]
+    now_ts = time.time()
+    overdue = 0
+    near_close = 0
+    for t in open_trades.values():
+        if not isinstance(t, dict):
+            continue
+        age = max(0, now_ts - _paper_safe_float(t.get("entry_time"), now_ts))
+        if age >= 48 * 3600:
+            overdue += 1
+        elif age >= 47 * 3600:
+            near_close += 1
+    return {
+        "open": len(open_trades),
+        "closed": len(closed),
+        "saved": sum(1 for o in outcomes if o in ("avoid_saved", "watch_saved_loss")),
+        "missed": sum(1 for o in outcomes if o in ("avoid_missed", "watch_missed_gain")),
+        "neutral": sum(1 for o in outcomes if o in ("paper_neutral", "avoid_neutral", "watch_neutral")),
+        "pump": sum(1 for o in outcomes if o == "pump_continued_no_pullback"),
+        "win": sum(1 for o in outcomes if o == "paper_win"),
+        "loss": sum(1 for o in outcomes if o == "paper_loss"),
+        "overdue": overdue,
+        "near_close": near_close,
+        "last_closed_assets": [str(t.get("asset", "?")).upper() for t in closed[-5:] if isinstance(t, dict)],
+    }
+
+
+def auto_audit_learning_stats():
+    data = load_json(RESULTS_FILE)
+    if not isinstance(data, dict):
+        data = {}
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    timing_rows = []
+    try:
+        for rec in list(open_items.values()) + list(closed):
+            r = v188_shadow_timing_for_rec(rec)
+            if r:
+                timing_rows.append(r)
+    except Exception:
+        timing_rows = []
+    return {
+        "open": len(open_items),
+        "closed": len(closed),
+        "timing_checked": len(timing_rows),
+        "timing_skip_best": sum(1 for r in timing_rows if r.get("class") == "skip_best"),
+        "timing_wait_better": sum(1 for r in timing_rows if r.get("class") in ["delay_better", "delay_slightly_better"]),
+        "timing_now_better": sum(1 for r in timing_rows if r.get("class") == "entry_now_better"),
+    }
+
+
+def auto_audit_btc_bucket(value):
+    try:
+        v = float(value or 0)
+    except Exception:
+        v = 0.0
+    if v <= -4:
+        return "btc_drop_4"
+    if v <= -2:
+        return "btc_drop_2"
+    if v < 0:
+        return "btc_red"
+    if v < 1:
+        return "btc_flat_green"
+    return "btc_green"
+
+
+def auto_audit_build_text(reason_lines, ctx, paper, learning, force=False):
+    btc_change = v181_safe_float(ctx.get("btc_change", 0), 0) if isinstance(ctx, dict) else 0
+    fg_value = ctx.get("fg_value", "?") if isinstance(ctx, dict) else "?"
+    macro = ctx.get("macro_mod", 0) if isinstance(ctx, dict) else 0
+    risk = market_risk_level(ctx) if isinstance(ctx, dict) else "neutral"
+    forced = "\nРежим: плановая сводка без спама." if force else ""
+    reasons = "\n".join([f"• {r}" for r in reason_lines[:6]]) if reason_lines else "• изменений для срочного действия нет"
+    last_assets = ", ".join(paper.get("last_closed_assets") or []) or "нет"
+    return (
+        f"🧠 Auto-Audit ALEX EDGE\n"
+        f"Версия: {BOT_VERSION}{forced}\n\n"
+        f"Рынок: {risk} | BTC {btc_change:+.2f}% | страх {fg_value} | новости {int(macro):+d}\n"
+        f"Paper: open {paper.get('open',0)} / closed {paper.get('closed',0)} | 🛡 {paper.get('saved',0)} | 🟡 {paper.get('neutral',0)} | 📈 {paper.get('pump',0)}\n"
+        f"Learning: open {learning.get('open',0)} / closed48 {learning.get('closed',0)}\n"
+        f"Timing: сценариев {learning.get('timing_checked',0)} | полный пропуск лучше {learning.get('timing_skip_best',0)} | ждать лучше {learning.get('timing_wait_better',0)} | сразу лучше {learning.get('timing_now_better',0)}\n\n"
+        f"Что изменилось:\n{reasons}\n\n"
+        f"Последние closed Paper: {last_assets}\n"
+        "Команды для ручной проверки: /paper /learning_full /audit_file\n"
+        "Автоторговля выключена. Это self-check, не рекомендация покупки."
+    )
+
+
+def auto_audit_status_text():
+    state = auto_audit_load_state()
+    paper = auto_audit_paper_stats()
+    learning = auto_audit_learning_stats()
+    enabled = "включён" if state.get("enabled") else "выключен"
+    last_check = int((time.time() - float(state.get("last_check_at", 0) or 0)) // 60) if state.get("last_check_at") else None
+    last_sent = int((time.time() - float(state.get("last_sent_at", 0) or 0)) // 60) if state.get("last_sent_at") else None
+    return (
+        f"🧠 Auto-Audit\nВерсия: {BOT_VERSION}\n\n"
+        f"Статус: {enabled}\n"
+        f"Интервал проверки: каждые {AUTO_AUDIT_INTERVAL_MIN} мин\n"
+        f"Минимальный интервал отправки: {AUTO_AUDIT_MIN_SEND_GAP_MIN} мин\n"
+        f"Последняя проверка: {str(last_check) + ' мин назад' if last_check is not None else 'ещё не было'}\n"
+        f"Последняя отправка: {str(last_sent) + ' мин назад' if last_sent is not None else 'ещё не было'}\n\n"
+        f"Paper сейчас: open {paper.get('open',0)} / closed {paper.get('closed',0)} | 🛡 {paper.get('saved',0)}\n"
+        f"Learning сейчас: open {learning.get('open',0)} / closed48 {learning.get('closed',0)} | timing {learning.get('timing_checked',0)}\n\n"
+        "Команды: /auto_audit_now, /auto_audit_on, /auto_audit_off"
+    )
+
+
+def auto_audit_check_and_send(chat_id=None, force=False):
+    """v18.9: бот сам делает лёгкую проверку и пишет админу в Telegram только при важных изменениях."""
+    target_chat_id = chat_id or (ADMIN_CHAT_ID if ADMIN_CHAT_ID else load_chat_id())
+    if not target_chat_id:
+        return False
+    state = auto_audit_load_state()
+    if not state.get("enabled") and not force:
+        return False
+    now_ts = time.time()
+    interval = AUTO_AUDIT_INTERVAL_MIN * 60
+    if not force and now_ts - float(state.get("last_check_at", 0) or 0) < interval:
+        return False
+
+    state["last_check_at"] = now_ts
+    reason_lines = []
+
+    try:
+        changed, updated, closed_n = paper_update_from_cache()
+        if closed_n:
+            reason_lines.append(f"закрылись новые Paper-сделки: {closed_n}")
+    except Exception as e:
+        reason_lines.append(f"ошибка paper sweep: {str(e)[:80]}")
+
+    try:
+        ctx = market_context()
+    except Exception as e:
+        ctx = {}
+        reason_lines.append(f"ошибка market_context: {str(e)[:80]}")
+
+    paper = auto_audit_paper_stats()
+    learning = auto_audit_learning_stats()
+    risk = market_risk_level(ctx) if isinstance(ctx, dict) else "unknown"
+    btc_bucket = auto_audit_btc_bucket(ctx.get("btc_change", 0) if isinstance(ctx, dict) else 0)
+
+    prev_closed = state.get("last_paper_closed")
+    prev_saved = state.get("last_paper_saved")
+    prev_open = state.get("last_paper_open")
+    prev_learning_open = state.get("last_learning_open")
+    prev_learning_closed = state.get("last_learning_closed")
+    prev_risk = state.get("last_risk")
+    prev_bucket = state.get("last_btc_bucket")
+    prev_timing = state.get("last_timing_checked")
+
+    if prev_closed is not None and paper["closed"] > int(prev_closed):
+        reason_lines.append(f"Paper closed вырос: {prev_closed} → {paper['closed']}")
+    if prev_saved is not None and paper["saved"] > int(prev_saved):
+        reason_lines.append(f"🛡 спасло от входа выросло: {prev_saved} → {paper['saved']}")
+    if paper.get("overdue", 0) > 0:
+        reason_lines.append(f"есть просроченные open Paper >=48ч: {paper['overdue']}")
+    elif paper.get("near_close", 0) > 0:
+        reason_lines.append(f"на подходе к 48ч Paper-сделок: {paper['near_close']}")
+    if prev_risk and prev_risk != risk:
+        reason_lines.append(f"сменился режим рынка: {prev_risk} → {risk}")
+    if prev_bucket and prev_bucket != btc_bucket:
+        reason_lines.append(f"сменился BTC bucket: {prev_bucket} → {btc_bucket}")
+    if prev_timing is not None and learning["timing_checked"] > int(prev_timing):
+        reason_lines.append(f"Timing-сценариев стало больше: {prev_timing} → {learning['timing_checked']}")
+    if prev_learning_open is not None and learning["open"] != int(prev_learning_open):
+        reason_lines.append(f"Learning open изменился: {prev_learning_open} → {learning['open']}")
+    if prev_learning_closed is not None and learning["closed"] > int(prev_learning_closed):
+        reason_lines.append(f"Learning closed48 вырос: {prev_learning_closed} → {learning['closed']}")
+
+    # Первый запуск или плановый heartbeat раз в несколько часов, чтобы админ видел, что self-check живой.
+    first_run = prev_closed is None
+    force_summary = now_ts - float(state.get("last_forced_at", 0) or 0) >= AUTO_AUDIT_FORCE_SUMMARY_HOURS * 3600
+    should_send = bool(force or first_run or reason_lines or force_summary)
+    min_gap_ok = force or now_ts - float(state.get("last_sent_at", 0) or 0) >= AUTO_AUDIT_MIN_SEND_GAP_MIN * 60
+
+    state.update({
+        "last_paper_closed": paper["closed"],
+        "last_paper_saved": paper["saved"],
+        "last_paper_open": paper["open"],
+        "last_learning_open": learning["open"],
+        "last_learning_closed": learning["closed"],
+        "last_risk": risk,
+        "last_btc_bucket": btc_bucket,
+        "last_timing_checked": learning["timing_checked"],
+        "last_reason_lines": reason_lines[-8:],
+    })
+
+    if should_send and min_gap_ok:
+        if force_summary and not force and not reason_lines:
+            reason_lines.append("плановая проверка: новых критичных изменений нет")
+            state["last_forced_at"] = now_ts
+        if first_run and not reason_lines:
+            reason_lines.append("auto-audit включён, первая базовая проверка выполнена")
+        msg = auto_audit_build_text(reason_lines, ctx, paper, learning, force=force)
+        send_message(target_chat_id, msg)
+        state["last_sent_at"] = now_ts
+        auto_audit_save_state(state, sync=True)
+        return True
+
+    auto_audit_save_state(state, sync=False)
+    return False
 
 def run_fast_learning_background_scan():
     """v15.0: фоновый сбор обучения без Telegram-спама."""
@@ -12468,7 +12738,8 @@ def main():
                         "🧾 v18.5: честная классификация Paper и danger wording\n"
                         "🎯 v18.6: Entry Quality Engine, confidence пояснения, режимы open/closed отдельно\n"
                         "🧹 v18.7: paper close sweep — сделки старше 48ч не зависают открытыми\n"
-                        "⏱ v18.8: Shadow Timing — проверка задержки входа 1ч/3ч/6ч/12ч"
+                        "⏱ v18.8: Shadow Timing — проверка задержки входа 1ч/3ч/6ч/12ч\n"
+                        "🧠 v18.9: Auto-Audit — бот сам присылает self-check в Telegram при важных изменениях"
                     ))
 
                 elif text == "/flush":
@@ -12630,6 +12901,29 @@ def main():
                     send_message(chat_id, "⏳ Собираю полный технический txt-отчёт для ChatGPT...")
                     build_audit_file(chat_id)
 
+                elif text in ["/auto_audit", "/auto_audit_status"]:
+                    send_message(chat_id, auto_audit_status_text())
+
+                elif text == "/auto_audit_now":
+                    send_message(chat_id, "⏳ Запускаю Auto-Audit self-check сейчас...")
+                    sent = auto_audit_check_and_send(chat_id=chat_id, force=True)
+                    if not sent:
+                        send_message(chat_id, "Auto-Audit проверка выполнена, но отправка была отключена или не было chat_id.")
+
+                elif text == "/auto_audit_on":
+                    if is_admin(chat_id) or not ADMIN_CHAT_ID:
+                        auto_audit_set_enabled(True)
+                        send_message(chat_id, "✅ Auto-Audit включён. Бот будет сам присылать короткий self-check при важных изменениях. Полный файл — вручную /audit_file.")
+                    else:
+                        send_message(chat_id, "⛔ /auto_audit_on доступен только ADMIN_CHAT_ID.")
+
+                elif text == "/auto_audit_off":
+                    if is_admin(chat_id) or not ADMIN_CHAT_ID:
+                        auto_audit_set_enabled(False)
+                        send_message(chat_id, "⏸ Auto-Audit выключен. Вручную остаются /paper /learning_full /audit_file.")
+                    else:
+                        send_message(chat_id, "⛔ /auto_audit_off доступен только ADMIN_CHAT_ID.")
+
                 elif text in ["/learn_fast", "/backtest", "/learning_fast"]:
                     send_message(chat_id, learn_fast_report(start=True))
 
@@ -12698,6 +12992,14 @@ def main():
                         send_message(saved_chat_id, format_fast_alert(allowed))
 
                     last_pump_key = pump_key
+
+            # v18.9 AUTO-AUDIT: лёгкий self-check для администратора.
+            # Не заменяет /audit_file и не подключает ChatGPT API: бот присылает короткий Telegram-отчёт,
+            # который админ при необходимости пересылает в ChatGPT.
+            try:
+                auto_audit_check_and_send(chat_id=saved_chat_id, force=False)
+            except Exception as e:
+                print(f"auto audit scheduler error: {e}")
 
             run_fast_learning_background_scan()
             time.sleep(2)
