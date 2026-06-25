@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.0 COIN TIMING + AUTO-AUDIT CARDS + QUEUE GUARD"
+BOT_VERSION = "v19.1 USER SHORT REPORTS FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -12943,27 +12943,12 @@ def main():
 
                 elif text == "/version":
                     send_message(chat_id, (
-                        f"✅ Текущая версия бота: {BOT_VERSION}\n"
-                        "📦 Пул команд: включён\n"
-                        "🧾 Кнопка отчёта: убрана\n"
-                        "🧪 Paper: на главном экране\n"
-                        "🧠 v18.2: обычные команды короткие, техаудит отдельно\n"
-                        "🛡 v18.2.1: старые main.py/audit .txt не запускают случайный redeploy\n"
-                        "📚 /learning_full: полный learning\n"
-                        "🧾 /audit_short: короткий аудит для ChatGPT\n"
-                        "📄 /audit_file: полный txt-файл для ChatGPT\n"
-                        "🛡 v18.2.2: защита от старых deploy/очереди Render\n"
-                        "🧠 v18.3: реальные режимы рынка, профили монет и контекст обучения\n"
-                        "🚀 v18.4: shadow-сценарии, regime backtest и quality report\n"
-                        "🧾 v18.4.1: audit_file защищён от зависания и ошибок отправки\n"
-                        "🛡 v18.4.2: admin update делает один commit main.py, без старого deploy от backup\n"
-                        "✍️ v18.4.3: точные причины входа, BTC wording в alerts/signal, AVOID PUMP отдельной классификацией\n"
-                        "🧾 v18.5: честная классификация Paper и danger wording\n"
-                        "🎯 v18.6: Entry Quality Engine, confidence пояснения, режимы open/closed отдельно\n"
-                        "🧹 v18.7: paper close sweep — сделки старше 48ч не зависают открытыми\n"
-                        "⏱ v18.8: Shadow Timing — проверка задержки входа 1ч/3ч/6ч/12ч\n"
-                        "🧠 v18.9: Auto-Audit — бот сам присылает self-check в Telegram при важных изменениях\n"
-                        "🧭 v19.0: Coin Timing/Avoid-Pump Profile, карточки closed Paper, режимы Auto-Audit, hard no-buy guard для BTC/ETH"
+                        f"✅ Версия: {BOT_VERSION}\n"
+                        "📦 Пул команд: включён, дубли отсекаются\n"
+                        "🧾 Пользовательские отчёты: короткие\n"
+                        "📄 Полная техника для ChatGPT: только /audit_file txt\n"
+                        "🧠 Auto-Audit: короткий self-check, режимы active/normal/quiet/critical\n"
+                        "🛡 Risk guard: в no-buy размер 0%, R/R не считается"
                     ))
 
                 elif text == "/flush":
@@ -13057,30 +13042,33 @@ def main():
                     background_paper_update("manual_signal_v18_2_short")
 
                 elif text == "/signal_full":
-                    # Скрытая ручная команда для отладки. Делает то же самое, что /signal.
-                    send_message(chat_id, "⏳ Формирую единый сигнал по 35 монетам...")
-                    send_message(chat_id, unified_signal_report())
-                    background_learning_update("manual_signal_full_v17_6_2")
-                    background_paper_update("manual_signal_full_v17_6_2")
+                    send_message(chat_id, user_signal_report() + "\n\n📄 Полный signal теперь только в /audit_file, чтобы не засорять чат.")
+                    background_learning_update("manual_signal_full_v19_1_short")
+                    background_paper_update("manual_signal_full_v19_1_short")
 
                 elif text == "/btc":
                     send_message(chat_id, single_analysis("BTC-USDT"))
 
                 elif text == "/btc_full":
-                    send_message(chat_id, single_analysis_full("BTC-USDT"))
+                    send_message(chat_id, single_analysis("BTC-USDT") + "\n\n📄 Полный технический разбор теперь только в /audit_file, чтобы не засорять чат.")
+
+                elif text == "/eth_full":
+                    send_message(chat_id, single_analysis("ETH-USDT") + "\n\n📄 Полный технический разбор теперь только в /audit_file, чтобы не засорять чат.")
+
+                elif text == "/eth":
+                    send_message(chat_id, single_analysis("ETH-USDT"))
 
                 elif text == "/sol":
                     send_message(chat_id, single_analysis("SOL-USDT"))
 
                 elif text == "/sol_full":
-                    send_message(chat_id, single_analysis_full("SOL-USDT"))
+                    send_message(chat_id, single_analysis("SOL-USDT") + "\n\n📄 Полный технический разбор теперь только в /audit_file, чтобы не засорять чат.")
 
                 elif text.lower().startswith("/coin_full"):
                     parts = text.split()
                     if len(parts) >= 2:
                         coin = resolve_coin_symbol(parts[1])
-                        send_message(chat_id, coin_analyze_wait_text(coin))
-                        send_message(chat_id, single_analysis_full(f"{coin}-USDT"))
+                        send_message(chat_id, single_analysis(f"{coin}-USDT") + "\n\n📄 Полный технический разбор теперь только в /audit_file, чтобы не засорять чат.")
                     else:
                         send_message(chat_id, "Напиши так: /coin_full ETH")
 
@@ -13116,7 +13104,7 @@ def main():
                     send_message(chat_id, learning_user_report())
 
                 elif text in ["/learning_full", "/learning_audit"]:
-                    send_message(chat_id, learning_report(sync_github=False, full=True))
+                    send_message(chat_id, learning_user_report() + "\n\n📄 Полный learning/audit теперь отправляется только файлом: /audit_file")
 
                 elif text in ["/audit_short", "/chatgpt_short", "/audit"]:
                     send_message(chat_id, audit_short_report())
@@ -13167,28 +13155,20 @@ def main():
                     send_message(chat_id, learn_fast_report(start=True))
 
                 elif text in ["/paper", "/paper_trading", "/virtual"]:
-                    send_message(chat_id, "⏳ Формирую отчёт по виртуальным сделкам...")
-                    background_learning_update("manual_paper_v17_6_2")
+                    background_learning_update("manual_paper_v19_1_short")
                     try:
-                        send_message(chat_id, paper_report())
+                        send_message(chat_id, paper_user_report())
                     except Exception as e:
                         send_message(
                             chat_id,
-                            f"🧪 Paper trading ALEX EDGE\n"
-                            f"Версия: {BOT_VERSION}\n\n"
-                            f"⚠️ Отчёт /paper не сформировался: {str(e)[:180]}\n"
-                            "Виртуальные сделки не трогают реальные деньги. Проверь /learning — там есть краткая строка paper trading."
+                            f"🧪 Paper — коротко\nВерсия: {BOT_VERSION}\n\n"
+                            f"⚠️ Короткий отчёт не сформировался: {str(e)[:180]}\n"
+                            "Полный технический файл: /audit_file"
                         )
 
                 elif text == "/alerts":
-                    send_message(chat_id, "⏳ Проверяю быстрые пампы...")
-                    text_alert, _ = get_fast_pumps()
-                    background_learning_update("manual_alerts_v17_6_2")
-
-                    if text_alert:
-                        send_message(chat_id, text_alert)
-                    else:
-                        send_message(chat_id, f"Версия: {BOT_VERSION}\nСейчас быстрых импульсов нет.")
+                    background_learning_update("manual_alerts_v19_1_short")
+                    send_message(chat_id, alerts_user_report())
 
             saved_chat_id = load_chat_id()
 
