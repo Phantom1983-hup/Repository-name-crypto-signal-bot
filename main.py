@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.2 CHECKPOINT ACCELERATOR"
+BOT_VERSION = "v19.3.1 AUDIT DELIVERY + WORDING GUARD"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -10821,7 +10821,7 @@ def get_fast_pumps():
                 "Режим: быстрый безопасный alerts без свечей, чтобы команда не зависала.\n\n"
                 f"BTC 24ч: {btc_change:+.2f}%\n"
                 f"{('Фон: 🔴 опасный — BUY запрещены, только наблюдение до стабилизации BTC.' if market_danger else ('Фон: 🟠 BTC без аварийного сигнала, но общий фон осторожный из-за страха/новостей.' if market_caution else 'Фон: BTC без аварийного сигнала.'))}\n"
-                "Что ждать: качественный актив, умеренный рост, высокий объём и подтверждение в /signal или /coin.\n"
+                "Что ждать: качественный актив, умеренный рост, высокий объём и подтверждение в /signal или /coin <тикер>.\n"
                 "Главное правило: резкую зелёную свечу не догонять."
             )
             return text, []
@@ -10843,7 +10843,8 @@ def get_fast_pumps():
                 if r.get("symbol") == "BTC":
                     action = "BTC — индикатор рынка; проверять /btc; вход только после подтверждения объёма"
                 else:
-                    action = "наблюдать; вход только после подтверждения в /coin"
+                    sym = str(r.get("symbol", "")).upper()
+                    action = f"наблюдать; вход только после подтверждения в /coin {sym}" if sym else "наблюдать; вход только после подтверждения в /coin <тикер>"
                 if market_danger:
                     action = "без входа сейчас; ждать стабилизацию BTC/фона" if r.get("symbol") != "BTC" else "BTC — индикатор рынка; без входа сейчас, проверять /btc"
                 text += (
@@ -10861,7 +10862,7 @@ def get_fast_pumps():
                     "Действие: не догонять; только предупреждение, ждать откат.\n\n"
                 )
 
-        text += "⚠️ Для точного входа используй /btc для BTC, /coin <тикер> для монет или /signal. В danger/extreme-fear BUY запрещены; в caution вход только после подтверждения объёма и фона."
+        text += "⚠️ Для точного входа используй /btc для BTC, /coin <тикер> для монет или /signal. В danger/extreme-fear BUY запрещены; при страхе 12 любые формулировки только no-buy/наблюдение до подтверждения объёма и фона."
         return text, quality_watch + speculative_pumps
 
     except Exception as e:
@@ -12111,6 +12112,14 @@ def build_single_coin_analysis(symbol):
 def user_market_word(ctx):
     risk = market_risk_level(ctx) if isinstance(ctx, dict) else "neutral"
     btc_change = v181_safe_float(ctx.get("btc_change", 0), 0) if isinstance(ctx, dict) else 0
+    # v19.3.1: если страх экстремальный, пользовательский текст не должен звучать как обычный caution.
+    try:
+        if isinstance(ctx, dict) and v115_extreme_fear_btc_weak(ctx):
+            if btc_change > 0.2:
+                return "🟡 extreme-fear / no-buy: BTC зелёный, но страх высокий"
+            return "🟡 extreme-fear / no-buy: только наблюдать"
+    except Exception:
+        pass
     if risk == "danger":
         return "🔴 опасный"
     if risk == "caution":
@@ -12136,20 +12145,35 @@ def clean_user_condition_lines(c, limit=2):
 
 
 def format_single_coin_user_report(c):
+    """v19.3: короткий пользовательский отчёт обязан быть безопаснее полного теханализа.
+    Если hard no-buy/size 0%, нельзя писать 'можно' или показывать числовой R/R, даже если internal action=ACCUM.
+    """
     ctx = c.get("ctx", {}) if isinstance(c.get("ctx", {}), dict) else {}
     symbol = c.get("symbol", "?")
     action = str(c.get("action", "SKIP") or "SKIP").upper()
     verdict = str(c.get("verdict", ""))
 
-    if "НЕ ПОКУПАТЬ" in verdict or action == "SKIP":
+    no_buy = False
+    try:
+        no_buy = bool(v190_no_buy_guard(c))
+    except Exception:
+        no_buy = False
+    try:
+        size_preview = str(v181_position_size(c))
+        if size_preview.strip().startswith("0%") or "вход запрещ" in size_preview.lower():
+            no_buy = True
+    except Exception:
+        size_preview = "0% — вход запрещён" if no_buy else "н/д"
+
+    if no_buy or "НЕ ПОКУПАТЬ" in verdict or action == "SKIP":
         main = "🔴 НЕ ПОКУПАТЬ"
         decision = "вход сейчас не подходит"
     elif action == "BUY":
         main = "🟢 МОЖНО РАССМАТРИВАТЬ"
         decision = "только частями и после подтверждения"
     elif action == "ACCUM":
-        main = "🟦 МОЖНО НАБЛЮДАТЬ ДЛЯ ЧАСТИЧНОГО НАБОРА"
-        decision = "не всей суммой, только после подтверждения"
+        main = "🟡 НАБЛЮДАТЬ / ЖДАТЬ ПОДТВЕРЖДЕНИЯ"
+        decision = "без входа сейчас; рассматривать только после подтверждения"
     else:
         main = "🟡 ЖДАТЬ / НАБЛЮДАТЬ"
         decision = "пока без входа, ждать подтверждение"
@@ -12160,7 +12184,7 @@ def format_single_coin_user_report(c):
         conditions = ["нужно подтверждение объёмом и стабилизация BTC"]
 
     risk_text = user_market_word(ctx)
-    rr_text = "не рассчитывается без подтверждённого входа" if action in ["SKIP", "WATCH"] or "НЕ ПОКУПАТЬ" in verdict else str(v181_rr_value(c))
+    rr_text = v190_rr_display(c)
 
     lines = [
         f"{symbol} — {main}",
@@ -12177,7 +12201,7 @@ def format_single_coin_user_report(c):
 
     lines += [
         "",
-        f"Размер позиции: {v181_position_size(c)}",
+        f"Размер позиции: {size_preview}",
         f"R/R: {rr_text}",
         "Подробно для аудита: /audit_file"
     ]
@@ -12361,8 +12385,8 @@ def build_audit_file(chat_id):
     add("PAPER FULL", paper_report, 12)
     add("SIGNAL FULL", unified_signal_report, 35)
     add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
-    add("LEARNING QUALITY V19.0", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
-    add("LEARNING SPRINT V19.2", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
+    add("LEARNING QUALITY V19.3", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
+    add("LEARNING SPRINT V19.3", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
     add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
     add("MARKET", market_status, 10)
     add("BTC FULL", lambda: single_analysis_full("BTC-USDT"), 25)
@@ -12377,9 +12401,11 @@ def build_audit_file(chat_id):
         send_message(chat_id, f"❌ Не удалось создать audit txt: {e}")
         return None
 
-    ok = send_document(chat_id, path, caption="🧾 Полный технический отчёт для ChatGPT. Обычные команды остаются короткими.")
+    # v19.3.1: полный аудит никогда не отправляем длинным текстом в чат.
+    # Только txt-документ; если Telegram не принял файл — короткая ошибка + audit_short.
+    ok = send_document(chat_id, path, caption="🧾 Полный технический отчёт для ChatGPT — txt-файл. Обычные команды остаются короткими.")
     if not ok:
-        send_message(chat_id, "⚠️ Отчёт был собран, но Telegram не отправил файл. Короткий аудит ниже; полный файл сохранён на сервере временно.")
+        send_message(chat_id, "⚠️ Полный audit_file собран, но Telegram не принял txt-документ. Длинный текст в чат не отправляю. Ниже только короткий аудит.")
         send_message(chat_id, audit_short_report())
     return path
 
@@ -12678,7 +12704,7 @@ def auto_audit_build_text(reason_lines, ctx, paper, learning, force=False):
         f"Timing: сценариев {learning.get('timing_checked',0)} | полный пропуск лучше {learning.get('timing_skip_best',0)} | ждать лучше {learning.get('timing_wait_better',0)} | сразу лучше {learning.get('timing_now_better',0)}\n\n"
         f"Что изменилось:\n{reasons}{cards_text}\n\n"
         f"Последние closed Paper: {last_assets}\n"
-        "Команды для ручной проверки: /paper /learning_full /audit_file\n"
+        "Команды для ручной проверки: /learning_sprint /paper /audit_file\n"
         "Автоторговля выключена. Это self-check, не рекомендация покупки."
     )
 
@@ -13027,7 +13053,7 @@ def main():
                         "📄 Полная техника для ChatGPT: только /audit_file txt\n"
                         "🧠 Auto-Audit: короткий self-check, режимы active/normal/quiet/critical\n"
                         "🛡 Risk guard: в no-buy размер 0%, R/R не считается\n"
-                        "⚡ Learning Sprint: /learning_sprint ускоряет выводы по 6/12/24ч checkpoints"
+                        "⚡ Learning Sprint: /learning_sprint ускоряет выводы по 6/12/24ч checkpoints\n🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%"
                     ))
 
                 elif text == "/flush":
