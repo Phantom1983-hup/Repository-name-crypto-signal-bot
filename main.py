@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.5 ACTIVE LEARNING PROFILES"
+BOT_VERSION = "v19.5.1 EXTREME FEAR AUDIT SHORT FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -299,7 +299,7 @@ def restore_state_from_github_if_richer(paths=None, force=False):
                 with open(path, "w", encoding="utf-8") as f:
                     json.dump(remote_data, f, ensure_ascii=False, indent=2)
                 _GITHUB_JSON_CACHE[str(path)] = {"time": time.time(), "data": remote_data}
-                notes.append(f"{name}: GitHub {remote_size}b/score {remote_score} → local {local_size}b/score {local_score}")
+                notes.append(f"{name}: восстановлено из GitHub {remote_size}b/score {remote_score}; local был {local_size}b/score {local_score}")
         except Exception as e:
             notes.append(f"{os.path.basename(str(path))}: restore error {str(e)[:120]}")
     _STATE_RESTORE_LAST["time"] = time.time()
@@ -1268,7 +1268,7 @@ def state_status_report():
         lines.append(f"State restore guard: последняя проверка {age} сек назад")
         notes = _STATE_RESTORE_LAST.get("notes") or []
         if notes:
-            lines.append("Восстановлено/сравнено:")
+            lines.append("State restore notes:")
             for n in notes[:6]:
                 lines.append(f"• {n}")
         else:
@@ -3316,10 +3316,10 @@ def compact_market_risk_line(ctx):
 
     if level == "danger":
         return f"⚠️ Риск рынка: 🔴 опасный — BTC {btc_change:.2f}%, страх {fg_value}"
+    if v195_extreme_fear_user_no_buy(ctx) or v115_extreme_fear_btc_weak(ctx):
+        return f"⚠️ Риск рынка: 🟡 extreme-fear / no-buy — BTC {btc_change:.2f}%, страх {fg_value}"
     if v106_safe_caution(ctx):
         return f"⚠️ Риск рынка: 🟠 safe-caution — BTC {btc_change:.2f}%, страх {fg_value}"
-    if v115_extreme_fear_btc_weak(ctx):
-        return f"⚠️ Риск рынка: 🟡 extreme-fear caution — BTC {btc_change:.2f}%, страх {fg_value}"
     if level == "caution":
         return f"⚠️ Риск рынка: 🟡 осторожно — BTC {btc_change:.2f}%, страх {fg_value}"
     if level == "positive":
@@ -3406,6 +3406,24 @@ def v106_safe_caution(ctx):
         )
     )
 
+
+def v195_extreme_fear_user_no_buy(ctx):
+    """v19.5.1: пользовательский слой.
+    При страхе <=15 и BTC в минусе нельзя показывать обычный/safe-caution статус,
+    даже если внутренний risk engine оставляет это как пограничный режим. BUY всё равно 0.
+    """
+    if not isinstance(ctx, dict):
+        return False
+    try:
+        fg_value = v181_safe_float(ctx.get("fg_value", 50), 50)
+        btc_change = v181_safe_float(ctx.get("btc_change", 0), 0)
+        news_score = v181_safe_float(ctx.get("macro_mod", ctx.get("geo_mod", 0)), 0)
+    except Exception:
+        return False
+    if market_risk_level(ctx) == "danger":
+        return False
+    return bool(fg_value <= 15 and btc_change < 0 and news_score <= 3)
+
 def v115_extreme_fear_btc_weak(ctx):
     """
     v11.5:
@@ -3440,11 +3458,11 @@ def macro_action_hint(ctx):
     if level == "danger":
         return "Решение: BUY запрещены. BTC/ETH — только после стабилизации. Альты — не трогать, только наблюдать."
 
+    if v195_extreme_fear_user_no_buy(ctx) or v115_extreme_fear_btc_weak(ctx):
+        return "Решение: экстремальный страх. BUY запрещены. BTC/ETH — только наблюдать, без первой части."
+
     if v106_safe_caution(ctx):
         return "Решение: safe-caution. BUY запрещены до стабилизации BTC. BTC/ETH — наблюдать, альты — только после разворота рынка."
-
-    if v115_extreme_fear_btc_weak(ctx):
-        return "Решение: экстремальный страх. BUY запрещены. BTC/ETH — только наблюдать, без первой части."
 
     if level == "caution":
         if ctx.get("macro_mod", ctx.get("geo_mod", 0)) <= -15 and ctx.get("btc_change", 0) >= 0:
@@ -3729,10 +3747,10 @@ def market_context(force_refresh=False):
 
     if level == "danger":
         state = "🔴 рынок рискованный"
+    elif v195_extreme_fear_user_no_buy(temp_ctx) or v115_extreme_fear_btc_weak(temp_ctx):
+        state = "🟡 extreme-fear / no-buy"
     elif v106_safe_caution(temp_ctx):
         state = "🟠 safe-caution / ждать BTC"
-    elif v115_extreme_fear_btc_weak(temp_ctx):
-        state = "🟡 extreme-fear / только наблюдать"
     elif level == "caution" and macro_mod <= -15 and btc_change >= 0:
         state = "🟠 повышенная осторожность — опасные новости, BTC пока держится"
     elif level == "caution":
@@ -12521,9 +12539,9 @@ def build_single_coin_analysis(symbol):
 def user_market_word(ctx):
     risk = market_risk_level(ctx) if isinstance(ctx, dict) else "neutral"
     btc_change = v181_safe_float(ctx.get("btc_change", 0), 0) if isinstance(ctx, dict) else 0
-    # v19.3.1: если страх экстремальный, пользовательский текст не должен звучать как обычный caution.
+    # v19.5.1: если страх экстремальный, пользовательский текст не должен звучать как обычный/safe-caution.
     try:
-        if isinstance(ctx, dict) and v115_extreme_fear_btc_weak(ctx):
+        if isinstance(ctx, dict) and (v195_extreme_fear_user_no_buy(ctx) or v115_extreme_fear_btc_weak(ctx)):
             if btc_change > 0.2:
                 return "🟡 extreme-fear / no-buy: BTC зелёный, но страх высокий"
             return "🟡 extreme-fear / no-buy: только наблюдать"
@@ -12790,7 +12808,7 @@ def build_audit_file(chat_id):
         sections.append("\n" + "="*80 + f"\n{title}\n" + "="*80 + "\n" + body)
 
     add("VERSION", lambda: f"BOT_VERSION: {BOT_VERSION}", 5)
-    add("AUDIT SHORT", audit_short_report, 5)
+    add("AUDIT SHORT", audit_short_report, 15)
     add("PAPER FULL", paper_report, 12)
     add("SIGNAL FULL", unified_signal_report, 35)
     add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
@@ -12825,10 +12843,10 @@ def market_status():
 
     if level == "danger":
         status = "🔴 ОПАСНЫЙ РЫНОК"
+    elif v195_extreme_fear_user_no_buy(ctx) or v115_extreme_fear_btc_weak(ctx):
+        status = "🟡 EXTREME-FEAR / NO-BUY"
     elif v106_safe_caution(ctx):
         status = "🟠 SAFE-CAUTION / ЖДАТЬ BTC"
-    elif v115_extreme_fear_btc_weak(ctx):
-        status = "🟡 EXTREME-FEAR / ТОЛЬКО НАБЛЮДАТЬ"
     elif level == "caution" and ctx.get("macro_mod", ctx.get("geo_mod", 0)) <= -15 and ctx.get("btc_change", 0) >= 0:
         status = "🟠 ПОВЫШЕННАЯ ОСТОРОЖНОСТЬ"
     elif level == "caution":
@@ -13471,6 +13489,7 @@ def main():
                         "🛡 Risk guard: в no-buy размер 0%, R/R не считается\n"
                         "⚡ Learning Sprint: /learning_sprint ускоряет выводы по 6/12/24ч checkpoints\n"
                         "🧠 v19.5: active learning profiles — AAVE quality-exception, full-skip и avoid-pump профили без изменения BUY-весов\n"
+                        "🟡 v19.5.1: fear<=15 + BTC<0 в пользовательских отчётах всегда extreme-fear/no-buy, не safe-caution\n"
                         "🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%\n"
                         "🚀 v19.4: main.py → GitHub → одна кнопка ручного Render deploy\n"
                         "🛡 v19.4.1: state restore guard защищает learning/paper/frozen от отката после redeploy"
