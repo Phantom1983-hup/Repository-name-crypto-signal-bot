@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.4 QUICK DEPLOY BUTTON + STATE SAFETY"
+BOT_VERSION = "v19.4.1 STATE RESTORE GUARD"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -196,6 +196,146 @@ def github_storage_get_raw(local_path):
     info = r.json()
     content = base64.b64decode(info.get("content", "") or b"")
     return content, info.get("sha")
+
+
+# === v19.4.1 STATE RESTORE GUARD ===
+# После ручного redeploy Render может подняться с пустыми/старыми локальными JSON.
+# Эти функции сравнивают локальное состояние с GitHub storage и не дают маленькому
+# свежему файлу затереть более богатую историю learning/paper/frozen.
+PROTECTED_STATE_BASENAMES = {
+    "signal_results.json",
+    "signal_results_backup.json",
+    "frozen_learning_results.json",
+    "paper_trades.json",
+    "signal_history.json",
+    "historical_backtest_stats.json",
+    "admin_deploy_state.json",
+}
+
+_STATE_RESTORE_LAST = {"time": 0, "notes": []}
+
+
+def _json_loads_bytes(raw):
+    try:
+        data = json.loads(raw.decode("utf-8", errors="ignore"))
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
+def _state_score(path, data, raw_size=0):
+    """Чем выше score, тем ценнее state. Нужен для защиты от отката/обнуления."""
+    name = os.path.basename(str(path))
+    if not isinstance(data, dict):
+        return 0
+    try:
+        if name in ["signal_results.json", "signal_results_backup.json"]:
+            open_n = len(data.get("open") or {}) if isinstance(data.get("open"), dict) else 0
+            closed_n = len(data.get("closed") or []) if isinstance(data.get("closed"), list) else 0
+            return open_n * 3 + closed_n * 40 + int(raw_size / 5000)
+        if name == "frozen_learning_results.json":
+            rec_n = len(data.get("records") or {}) if isinstance(data.get("records"), dict) else 0
+            return rec_n * 50 + int(raw_size / 3000)
+        if name == "paper_trades.json":
+            open_n = len(data.get("open") or []) if isinstance(data.get("open"), list) else 0
+            closed_n = len(data.get("closed") or []) if isinstance(data.get("closed"), list) else 0
+            # В некоторых старых форматах open может быть dict.
+            if isinstance(data.get("open"), dict):
+                open_n = len(data.get("open") or {})
+            return open_n * 3 + closed_n * 30 + int(raw_size / 4000)
+        if name == "signal_history.json":
+            items = data.get("items") or data.get("history") or data.get("records") or []
+            n = len(items) if isinstance(items, list) else (len(items) if isinstance(items, dict) else 0)
+            return n * 5 + int(raw_size / 2000)
+        if name == "historical_backtest_stats.json":
+            return int(raw_size / 1000) + len(data.keys())
+        if name == "admin_deploy_state.json":
+            return int(raw_size / 100) + (5 if data else 0)
+    except Exception:
+        pass
+    return int(raw_size / 1000)
+
+
+def _local_json_and_size(path):
+    try:
+        raw = open(path, "rb").read()
+        return _json_loads_bytes(raw), len(raw)
+    except Exception:
+        return {}, 0
+
+
+def _github_json_and_size(path):
+    if not github_storage_enabled():
+        return {}, 0
+    try:
+        raw, _sha = github_storage_get_raw(path)
+        if not raw:
+            return {}, 0
+        return _json_loads_bytes(raw), len(raw)
+    except Exception as e:
+        print(f"state restore github read error {path}: {e}")
+        return {}, 0
+
+
+def restore_state_from_github_if_richer(paths=None, force=False):
+    """Восстановить локальные JSON из GitHub, если удалённая копия богаче."""
+    if not github_storage_enabled():
+        return []
+    paths = paths or [RESULTS_FILE, RESULTS_BACKUP_FILE, FROZEN_RESULTS_FILE, PAPER_TRADES_FILE, HISTORY_FILE, BACKTEST_FILE, ADMIN_STATE_FILE]
+    notes = []
+    for path in paths:
+        try:
+            name = os.path.basename(str(path))
+            if name not in PROTECTED_STATE_BASENAMES:
+                continue
+            remote_data, remote_size = _github_json_and_size(path)
+            if remote_size <= 0 or not remote_data:
+                continue
+            local_data, local_size = _local_json_and_size(path)
+            remote_score = _state_score(path, remote_data, remote_size)
+            local_score = _state_score(path, local_data, local_size)
+            should_restore = bool(force or (remote_score > local_score) or (remote_size > max(local_size * 2, local_size + 20000)))
+            if should_restore:
+                with open(path, "w", encoding="utf-8") as f:
+                    json.dump(remote_data, f, ensure_ascii=False, indent=2)
+                _GITHUB_JSON_CACHE[str(path)] = {"time": time.time(), "data": remote_data}
+                notes.append(f"{name}: GitHub {remote_size}b/score {remote_score} → local {local_size}b/score {local_score}")
+        except Exception as e:
+            notes.append(f"{os.path.basename(str(path))}: restore error {str(e)[:120]}")
+    _STATE_RESTORE_LAST["time"] = time.time()
+    _STATE_RESTORE_LAST["notes"] = notes
+    return notes
+
+
+def protect_state_write_against_regression(path, data):
+    """Перед save_json не даём маленькому state перезаписать более богатый GitHub state."""
+    try:
+        name = os.path.basename(str(path))
+        if name not in PROTECTED_STATE_BASENAMES or not github_storage_enabled() or not isinstance(data, dict):
+            return data
+        remote_data, remote_size = _github_json_and_size(path)
+        if not remote_data or remote_size <= 0:
+            return data
+        try:
+            candidate_raw_size = len(json.dumps(data, ensure_ascii=False).encode("utf-8"))
+        except Exception:
+            candidate_raw_size = 0
+        remote_score = _state_score(path, remote_data, remote_size)
+        candidate_score = _state_score(path, data, candidate_raw_size)
+        # Сильный откат: удалённая копия явно богаче. Берём её как источник истины.
+        if remote_score > candidate_score and remote_size > max(candidate_raw_size * 2, candidate_raw_size + 15000):
+            print(f"state regression blocked for {name}: remote score {remote_score}, candidate {candidate_score}")
+            return remote_data
+    except Exception as e:
+        print(f"state regression guard error {path}: {e}")
+    return data
+
+
+def state_restore_report(force=False):
+    notes = restore_state_from_github_if_richer(force=force)
+    if not notes:
+        return "✅ State restore: более богатой GitHub-копии не найдено или локальные файлы уже актуальны.\n\n" + state_status_report()
+    return "🛡 State restore guard восстановил/обновил локальные файлы из GitHub:\n" + "\n".join([f"• {n}" for n in notes]) + "\n\n" + state_status_report()
 
 def github_storage_put_raw(local_path, content_bytes, message=None):
     if not github_storage_enabled():
@@ -398,6 +538,20 @@ def load_json(path):
     if cached and time.time() - cached.get("time", 0) < 10:
         return cached.get("data", {})
 
+    # v19.4.1: для критичных state-файлов сравниваем локальный JSON с GitHub.
+    # Это защищает от ситуации после Render redeploy, когда локально появился маленький/старый файл.
+    try:
+        if github_storage_enabled() and os.path.basename(str(path)) in PROTECTED_STATE_BASENAMES:
+            remote_data, remote_size = _github_json_and_size(path)
+            local_data, local_size = _local_json_and_size(path)
+            if remote_data and (not local_data or _state_score(path, remote_data, remote_size) > _state_score(path, local_data, local_size) or remote_size > max(local_size * 2, local_size + 20000)):
+                with open(path, "w", encoding="utf-8") as f:
+                    json.dump(remote_data, f, ensure_ascii=False, indent=2)
+                _GITHUB_JSON_CACHE[cache_key] = {"time": time.time(), "data": remote_data}
+                return remote_data
+    except Exception as e:
+        print(f"load_json state restore check error {path}: {e}")
+
     try:
         data = json.load(open(path, encoding="utf-8"))
         _GITHUB_JSON_CACHE[cache_key] = {"time": time.time(), "data": data}
@@ -596,6 +750,9 @@ def _update_results_backup(existing, candidate):
         print(f"learning backup update error: {e}")
 
 def save_json(path, data):
+    # v19.4.1: не даём свежему маленькому локальному файлу затереть богатый GitHub state.
+    data = protect_state_write_against_regression(path, data)
+
     # v17.5: guard learning data before writes. A short /signal or cache race must not
     # erase open observations or frozen closed 48h history.
     try:
@@ -1106,7 +1263,18 @@ def state_status_report():
         mtime = datetime.fromtimestamp(os.path.getmtime(path)).strftime("%Y-%m-%d %H:%M:%S") if exists else "нет"
         lines.append(f"• {name}: {'✅' if exists else '❌'} | {size} байт | {mtime}")
     lines.append("")
-    lines.append("Для полного списка: /storage. Для отправки backup-файлов: /backup.")
+    if _STATE_RESTORE_LAST.get("time"):
+        age = int(time.time() - float(_STATE_RESTORE_LAST.get("time", 0) or 0))
+        lines.append(f"State restore guard: последняя проверка {age} сек назад")
+        notes = _STATE_RESTORE_LAST.get("notes") or []
+        if notes:
+            lines.append("Восстановлено/сравнено:")
+            for n in notes[:6]:
+                lines.append(f"• {n}")
+        else:
+            lines.append("Восстановление: более богатой GitHub-копии не найдено / уже актуально")
+        lines.append("")
+    lines.append("Для полного списка: /storage. Для отправки backup-файлов: /backup. Ручное восстановление: /state_restore")
     return "\n".join(lines)
 
 
@@ -2072,6 +2240,7 @@ COMMAND_POOL_ALIASES = {
     "статус деплоя": "/deploy_status",
     "state_status": "/state_status",
     "backup_status": "/state_status",
+    "state_restore": "/state_restore",
 }
 
 # === v18.0.2 LEARNING ALIAS FIX ===
@@ -12630,7 +12799,7 @@ def help_text():
         "Команды тоже работают:\n"
         "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /top\n"
         "📦 Можно отправить пул команд одним сообщением, каждая с новой строки: /paper, /signal, /learning, /alerts. Бот выполнит их по очереди.\n"
-        "/storage, /backup, /weekday, /learn_fast, /learning_sprint, /paper, /flush, /auto_audit_status, /auto_audit_now, /auto_audit_on, /auto_audit_off, /auto_audit_mode, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /deploy_latest, /deploy_status, /state_status, /rollback\n"
+        "/storage, /backup, /weekday, /learn_fast, /learning_sprint, /paper, /flush, /auto_audit_status, /auto_audit_now, /auto_audit_on, /auto_audit_off, /auto_audit_mode, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /deploy_latest, /deploy_status, /state_status, /state_restore, /rollback\n"
         "TON вводить можно: бот автоматически откроет GRAM.\n\n"
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход частями\n"
@@ -13222,7 +13391,8 @@ def main():
                         "🛡 Risk guard: в no-buy размер 0%, R/R не считается\n"
                         "⚡ Learning Sprint: /learning_sprint ускоряет выводы по 6/12/24ч checkpoints\n"
                         "🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%\n"
-                        "🚀 v19.4: main.py → GitHub → одна кнопка ручного Render deploy"
+                        "🚀 v19.4: main.py → GitHub → одна кнопка ручного Render deploy\n"
+        "🛡 v19.4.1: state restore guard защищает learning/paper/frozen от отката после redeploy"
                     ))
 
                 elif text == "/flush":
@@ -13313,6 +13483,13 @@ def main():
                         send_message(chat_id, state_status_report())
                     else:
                         send_message(chat_id, "⛔ State status доступен только ADMIN_CHAT_ID.")
+
+                elif text in ["/state_restore", "/restore_state"]:
+                    if is_admin(chat_id):
+                        send_message(chat_id, "⏳ Проверяю GitHub state и восстанавливаю более богатые файлы, если они есть...")
+                        send_message(chat_id, state_restore_report(force=True))
+                    else:
+                        send_message(chat_id, "⛔ State restore доступен только ADMIN_CHAT_ID.")
 
                 elif text == "/rollback":
                     send_message(chat_id, admin_rollback(chat_id))
@@ -13517,6 +13694,10 @@ def main():
             time.sleep(5)
 
 if __name__ == "__main__":
+    try:
+        restore_state_from_github_if_richer()
+    except Exception as e:
+        print(f"startup state restore guard error: {e}")
     keep_alive()
     main()
 
