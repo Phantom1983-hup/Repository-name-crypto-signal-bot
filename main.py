@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v18.9 AUTO-AUDIT + SELF-CHECK SCHEDULER"
+BOT_VERSION = "v19.0 COIN TIMING + AUTO-AUDIT CARDS + QUEUE GUARD"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -5318,7 +5318,7 @@ def paper_summary_line():
 
 def paper_outcome_label(outcome):
     if outcome == "pump_continued_no_pullback":
-        return "📈 памп продолжился без отката — не считать ошибкой BUY до 48ч"
+        return "📈 памп продолжился без отката — не считать BUY-ошибкой"
     if outcome == "avoid_saved":
         return "🛡 не догонять было правильно"
     if outcome == "avoid_missed":
@@ -6187,7 +6187,7 @@ def learning_report(sync_github=False, full=False):
         f"Версия: {BOT_VERSION}\n\n"
         f"Статус: обучение работает, данные копятся.\n"
         f"Режим отчёта: быстрый кэш; наступившие checkpoints фиксируются из кэша, тяжёлое обновление идёт фоном.\n"
-        f"v18.8: Shadow Timing учит бота, сколько ждать после запрета входа: 1ч/3ч/6ч/12ч, откат или полный пропуск.\n"
+        f"v19.0: Coin Timing учит бота, где ждать 1ч/3ч/6ч/12ч, а где лучше полный skip; автоторговля выключена.\n"
         f"Ускорение: {backtest_file_summary()}\n"
         f"Paper trading: {paper_summary_line()}\n"
         f"Открытых наблюдений: {len(open_items)}\n"
@@ -6197,6 +6197,7 @@ def learning_report(sync_github=False, full=False):
     text += v18_learning_core_summary(data)
     text += v181_learning_acceleration_summary(data)
     if full:
+        text += v190_coin_timing_profile(data)
         text += v184_learning_quality_summary(data)
     text += "🔎 Открытые наблюдения:\n"
     text += learning_open_rows(open_items, limit=None if full else 6)
@@ -6333,6 +6334,59 @@ def v181_closed_counts_for(asset=None, market_bucket=None):
     return stats
 
 
+
+def v190_no_buy_guard(c):
+    """v19.0: hard-guard для no-buy режимов.
+    В extreme_fear/danger/safe-caution нельзя показывать микро-размер, TP1/TP2 и числовой R/R.
+    """
+    if not isinstance(c, dict):
+        return True
+    ctx = c.get("ctx", {}) if isinstance(c.get("ctx", {}), dict) else {}
+    action = str(c.get("action", "SKIP") or "SKIP").upper()
+    verdict = str(c.get("verdict", "") or "")
+    symbol = str(c.get("symbol", "") or "").upper()
+    if action in ["SKIP"] or "НЕ ПОКУПАТЬ" in verdict:
+        return True
+    try:
+        risk = market_risk_level(ctx) if ctx else "neutral"
+    except Exception:
+        risk = "neutral"
+    try:
+        if risk == "danger" or v106_safe_caution(ctx) or v115_extreme_fear_btc_weak(ctx):
+            return True
+    except Exception:
+        if risk == "danger":
+            return True
+    try:
+        fg = v181_safe_float(ctx.get("fg_value", 50), 50)
+        btc = v181_safe_float(ctx.get("btc_change", 0), 0)
+        news = v181_safe_float(ctx.get("macro_mod", ctx.get("geo_mod", 0)), 0)
+        if fg <= 15 and symbol in ["BTC", "ETH"] and (btc <= 0 or news <= 3):
+            return True
+        if fg <= 15 and news <= -4:
+            return True
+    except Exception:
+        pass
+    try:
+        hint = macro_action_hint(ctx)
+        if "BUY запрещ" in hint or "только наблюдать" in hint:
+            return True
+    except Exception:
+        pass
+    return False
+
+
+def v190_rr_display(c):
+    if v190_no_buy_guard(c):
+        return "не рассчитывается без подтверждённого входа"
+    action = str(c.get('action', 'SKIP')).upper()
+    verdict = str(c.get('verdict', ''))
+    if action in ['SKIP', 'WATCH'] or 'НЕ ПОКУПАТЬ' in verdict:
+        return "не рассчитывается без подтверждённого входа"
+    rr = v181_rr_value(c)
+    return rr if rr else 'н/д'
+
+
 def v181_position_size(c):
     action = str(c.get("action", "SKIP") or "SKIP").upper()
     ctx = c.get("ctx", {}) if isinstance(c.get("ctx", {}), dict) else {}
@@ -6342,7 +6396,7 @@ def v181_position_size(c):
     rsi = v181_safe_float(c.get("rsi", 50), 50)
     volume = v181_safe_float(c.get("volume_trend", 1), 1)
 
-    if risk == "danger" or action in ["SKIP"] or "НЕ ПОКУПАТЬ" in str(c.get("verdict", "")):
+    if v190_no_buy_guard(c):
         return "0% — вход запрещён"
     if action == "WATCH":
         return "0% сейчас — только после подтверждения"
@@ -6363,8 +6417,8 @@ def v181_exit_plan(c):
     high = max(0.0, v181_safe_float(c.get("high", 0), 0))
     low = min(0.0, v181_safe_float(c.get("low", 0), 0))
 
-    if risk == "danger":
-        return "плана входа нет; если позиция уже есть — не усреднять, стоп по личному риску, вернуться только после остановки падения BTC и удержания цены/объёма 1–2 свечи"
+    if v190_no_buy_guard(c):
+        return "плана входа нет; если позиция уже есть — не усреднять; вернуться только после остановки падения BTC, удержания цены/объёма 1–2 свечи, объёма выше x1.1 и ослабления страха/новостей"
     if action in ["SKIP"] or "НЕ ПОКУПАТЬ" in str(c.get("verdict", "")):
         return "входа нет; вернуться к идее после остановки падения BTC и удержания цены/объёма 1–2 свечи, объёма выше x1.1 и нормализации RSI"
     if action == "WATCH":
@@ -6385,8 +6439,8 @@ def v181_shadow_tests(c):
     rr = v181_rr_value(c)
     ctx = c.get("ctx", {}) if isinstance(c.get("ctx", {}), dict) else {}
     risk = market_risk_level(ctx) if ctx else "neutral"
-    if risk == "danger":
-        return "проверить, что было бы при входе сейчас vs ожидании стабилизации BTC"
+    if v190_no_buy_guard(c):
+        return "проверить полный пропуск vs ожидание 1ч/3ч/6ч/12ч; реального входа сейчас нет"
     if action == "WATCH":
         return "сравнить вход сейчас, вход после отката и полный пропуск"
     if action in ["BUY", "ACCUM"]:
@@ -6473,7 +6527,7 @@ def v181_single_core_lines(c):
     return (
         f"🧠 v18.9 confidence: {conf}/100 — {conf_label}; "
         f"история монеты {a.get('n', 0)}, {regime_note}\n"
-        f"⚖️ Risk/Reward: {('не рассчитывается без подтверждённого входа' if str(c.get('action', 'SKIP')).upper() in ['SKIP', 'WATCH'] or 'НЕ ПОКУПАТЬ' in str(c.get('verdict', '')) else (rr if rr else 'н/д'))} | 📌 Размер: {v181_position_size(c)}\n"
+        f"⚖️ Risk/Reward: {v190_rr_display(c)} | 📌 Размер: {v181_position_size(c)}\n"
         f"🎯 Exit Engine: {v181_exit_plan(c)}\n"
         f"🧪 Shadow: {v181_shadow_tests(c)}\n"
     )
@@ -6829,6 +6883,84 @@ def v188_shadow_timing_summary(data):
     if examples:
         text += "Ключевые timing-кейсы:\n" + "\n".join(["• " + r["note"] for r in examples]) + "\n"
     return text + "\n"
+
+
+def v190_coin_timing_profile(data):
+    """v19.0: Coin Timing + Avoid-Pump Profile для learning_full/audit_file."""
+    if not isinstance(data, dict):
+        return ""
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    records = list(open_items.values()) + list(closed)
+    rows = []
+    for rec in records:
+        try:
+            r = v188_shadow_timing_for_rec(rec)
+            if r:
+                rows.append(r)
+        except Exception:
+            pass
+    if not rows:
+        return "🧭 v19.0 Coin Timing Profile\nПока мало timing-точек для профиля монет.\n\n"
+    by_asset = {}
+    by_regime = {}
+    delay_counts = {}
+    for r in rows:
+        asset = str(r.get("asset", "?")).upper()
+        regime = str(r.get("regime", "unknown"))
+        cls = str(r.get("class", ""))
+        delay = str(r.get("best_delay_label", "?"))
+        delay_counts[delay] = delay_counts.get(delay, 0) + 1
+        by_regime.setdefault(regime, {"wait":0,"skip":0,"now":0,"neutral":0})
+        by_asset.setdefault(asset, {"wait":0,"skip":0,"now":0,"neutral":0})
+        if cls in ["delay_better", "delay_slightly_better"]:
+            key="wait"
+        elif cls == "skip_best":
+            key="skip"
+        elif cls == "entry_now_better":
+            key="now"
+        else:
+            key="neutral"
+        by_asset[asset][key]+=1
+        by_regime[regime][key]+=1
+    def fmt(d):
+        return ", ".join([f"{k}:{v}" for k,v in sorted(d.items(), key=lambda kv: kv[1], reverse=True)]) or "мало данных"
+    wait_assets = [(a,s) for a,s in sorted(by_asset.items(), key=lambda kv: (kv[1]['wait'], -kv[1]['skip']), reverse=True) if s['wait']>0][:5]
+    skip_assets = [(a,s) for a,s in sorted(by_asset.items(), key=lambda kv: (kv[1]['skip'], -kv[1]['wait']), reverse=True) if s['skip']>0][:5]
+    try:
+        p = paper_store()
+        pclosed = p.get("closed", []) if isinstance(p.get("closed", []), list) else []
+    except Exception:
+        pclosed=[]
+    avoid_saved=avoid_pump=avoid_neutral=0
+    paper_examples=[]
+    for t in pclosed:
+        if not isinstance(t, dict) or str(t.get("virtual_type", "")) != "AVOID_PUMP_TEST":
+            continue
+        out=paper_outcome(t)
+        r48=(t.get("results",{}) or {}).get("48h")
+        if out=="avoid_saved": avoid_saved+=1
+        elif out=="pump_continued_no_pullback": avoid_pump+=1
+        elif out=="avoid_neutral": avoid_neutral+=1
+        if isinstance(r48,(int,float)) and len(paper_examples)<6:
+            paper_examples.append(f"• {str(t.get('asset','?')).upper()}: {paper_outcome_label(out)} | 48ч {r48:+.2f}%")
+    regime_txt = "; ".join([f"{r}: ждать {s['wait']} / skip {s['skip']} / сразу {s['now']}" for r,s in sorted(by_regime.items(), key=lambda kv: kv[1]['wait']+kv[1]['skip'], reverse=True)[:5]])
+    text=(
+        "🧭 v19.0 Coin Timing / Avoid-Pump Profile\n"
+        "Цель: разделить, где лучше ждать 1ч/3ч/6ч/12ч, а где безопаснее полный skip. Это обучение, не автоторговля.\n"
+        f"Timing: всего {len(rows)} | лучшие задержки: {fmt(delay_counts)}.\n"
+        f"Режимы: {regime_txt or 'мало данных'}.\n"
+    )
+    if wait_assets:
+        text += "Монеты, где чаще помогает ожидание:\n" + "\n".join([f"• {a}: ждать {s['wait']} / skip {s['skip']} / сразу {s['now']}" for a,s in wait_assets]) + "\n"
+    if skip_assets:
+        text += "Монеты/кейсы, где чаще лучше полный skip:\n" + "\n".join([f"• {a}: skip {s['skip']} / ждать {s['wait']}" for a,s in skip_assets]) + "\n"
+    text += f"Avoid-Pump Paper: 🛡 не догонять спасло {avoid_saved} | 📈 памп продолжился {avoid_pump} | 🟡 нейтрально {avoid_neutral}.\n"
+    if paper_examples:
+        text += "Последние Avoid-Pump уроки:\n" + "\n".join(paper_examples[-6:]) + "\n"
+    text += "Правило v19.0: 📈 памп продолжился ≠ BUY-ошибка; он идёт в timing/avoid-pump профиль, а не включает автопокупку. Вход сразу пока не усиливается.\n\n"
+    return text
+
 
 def v181_learning_acceleration_summary(data):
     if not isinstance(data, dict):
@@ -10652,7 +10784,7 @@ def get_fast_pumps():
                     "Действие: не догонять; только предупреждение, ждать откат.\n\n"
                 )
 
-        text += "⚠️ Для точного входа используй /btc для BTC, /coin <тикер> для монет или /signal. В danger BUY запрещены до стабилизации."
+        text += "⚠️ Для точного входа используй /btc для BTC, /coin <тикер> для монет или /signal. В danger/extreme-fear BUY запрещены; в caution вход только после подтверждения объёма и фона."
         return text, quality_watch + speculative_pumps
 
     except Exception as e:
@@ -12152,7 +12284,7 @@ def build_audit_file(chat_id):
     add("PAPER FULL", paper_report, 12)
     add("SIGNAL FULL", unified_signal_report, 35)
     add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
-    add("LEARNING QUALITY V18.8", lambda: v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
+    add("LEARNING QUALITY V19.0", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
     add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
     add("MARKET", market_status, 10)
     add("BTC FULL", lambda: single_analysis_full("BTC-USDT"), 25)
@@ -12233,7 +12365,7 @@ def help_text():
         "Команды тоже работают:\n"
         "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /top\n"
         "📦 Можно отправить пул команд одним сообщением, каждая с новой строки: /paper, /signal, /learning, /alerts. Бот выполнит их по очереди.\n"
-        "/storage, /backup, /weekday, /learn_fast, /paper, /flush, /auto_audit_status, /auto_audit_now, /auto_audit_on, /auto_audit_off, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /rollback\n"
+        "/storage, /backup, /weekday, /learn_fast, /paper, /flush, /auto_audit_status, /auto_audit_now, /auto_audit_on, /auto_audit_off, /auto_audit_mode, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /rollback\n"
         "TON вводить можно: бот автоматически откроет GRAM.\n\n"
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход частями\n"
@@ -12274,7 +12406,51 @@ def auto_audit_load_state():
     state.setdefault("last_risk", None)
     state.setdefault("last_btc_bucket", None)
     state.setdefault("last_timing_checked", None)
+    state.setdefault("mode", "active")
     return state
+
+
+
+def auto_audit_effective_settings(state):
+    mode = str((state or {}).get("mode", "active") or "active").lower().replace("_", "-")
+    if mode in ["test", "hourly"]: mode = "active"
+    if mode in ["critical"]: mode = "critical-only"
+    if mode not in ["active", "normal", "quiet", "critical-only"]: mode = "active"
+    settings = {"active": (60,60,False), "normal": (180,180,False), "quiet": (360,360,False), "critical-only": (60,30,True)}
+    interval_min, min_gap_min, critical_only = settings[mode]
+    return mode, interval_min, min_gap_min, critical_only
+
+
+def auto_audit_mode_label(mode):
+    mode = str(mode or "active").lower().replace("_", "-")
+    labels = {"active":"active/test — раз в 60 минут", "normal":"normal — раз в 3 часа", "quiet":"quiet — раз в 6 часов", "critical-only":"critical-only — только важные события"}
+    return labels.get(mode, labels["active"])
+
+
+def auto_audit_set_mode(mode):
+    mode = str(mode or "").lower().strip().replace("_", "-")
+    if mode in ["test", "hourly"]: mode = "active"
+    if mode in ["critical"]: mode = "critical-only"
+    if mode not in ["active", "normal", "quiet", "critical-only"]:
+        return None
+    state = auto_audit_load_state()
+    state["mode"] = mode
+    state["updated_at"] = time.time()
+    auto_audit_save_state(state, sync=True)
+    return state
+
+
+def auto_audit_mode_help():
+    state = auto_audit_load_state()
+    mode, interval_min, min_gap_min, critical_only = auto_audit_effective_settings(state)
+    return (
+        f"🧠 Auto-Audit mode\nВерсия: {BOT_VERSION}\n\n"
+        f"Текущий режим: {auto_audit_mode_label(mode)}\n"
+        f"Интервал проверки: {interval_min} мин\n"
+        f"Минимальный gap отправки: {min_gap_min} мин\n"
+        f"Critical-only: {'да' if critical_only else 'нет'}\n\n"
+        "Команды:\n/auto_audit_mode active — активный тест, раз в час\n/auto_audit_mode normal — обычный режим, раз в 3 часа\n/auto_audit_mode quiet — тихий режим, раз в 6 часов\n/auto_audit_mode critical — только важные события"
+    )
 
 
 def auto_audit_save_state(state, sync=False):
@@ -12370,6 +12546,38 @@ def auto_audit_btc_bucket(value):
     return "btc_green"
 
 
+
+def auto_audit_new_closed_cards(prev_closed, current_closed, max_cards=3):
+    """v19.0: короткие карточки новых closed Paper прямо в Auto-Audit."""
+    cards=[]
+    try:
+        prev=int(prev_closed or 0); cur=int(current_closed or 0)
+    except Exception:
+        return cards
+    if cur <= prev:
+        return cards
+    try:
+        data=paper_store(); closed=data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    except Exception:
+        closed=[]
+    for t in closed[prev:cur][-max_cards:]:
+        if not isinstance(t, dict):
+            continue
+        asset=str(t.get("asset","?")).upper()
+        vtype=str(t.get("virtual_type","?")).replace("_"," ")
+        out=paper_outcome(t); label=paper_outcome_label(out)
+        r48=(t.get("results",{}) or {}).get("48h")
+        pct=f"48ч: {r48:+.2f}%" if isinstance(r48,(int,float)) else "48ч: нет данных"
+        if out=="pump_continued_no_pullback": conclusion="не BUY-ошибка; идёт в timing/avoid-pump профиль"
+        elif out in ["avoid_saved", "watch_saved_loss"]: conclusion="осторожность/пропуск защитили от плохого входа"
+        elif out in ["avoid_neutral", "watch_neutral", "paper_neutral"]: conclusion="нейтрально; веса не усиливать"
+        elif out=="paper_win": conclusion="BUY-тест успешен, но нужен ряд закрытий"
+        elif out=="paper_loss": conclusion="BUY-тест плохой; похожие входы ослаблять"
+        else: conclusion="использовать как наблюдение"
+        cards.append(f"• {asset} — {vtype}\n  {pct} | {label}\n  Вывод: {conclusion}")
+    return cards
+
+
 def auto_audit_build_text(reason_lines, ctx, paper, learning, force=False):
     btc_change = v181_safe_float(ctx.get("btc_change", 0), 0) if isinstance(ctx, dict) else 0
     fg_value = ctx.get("fg_value", "?") if isinstance(ctx, dict) else "?"
@@ -12378,14 +12586,19 @@ def auto_audit_build_text(reason_lines, ctx, paper, learning, force=False):
     forced = "\nРежим: плановая сводка без спама." if force else ""
     reasons = "\n".join([f"• {r}" for r in reason_lines[:6]]) if reason_lines else "• изменений для срочного действия нет"
     last_assets = ", ".join(paper.get("last_closed_assets") or []) or "нет"
+    cards = paper.get("new_closed_cards") or []
+    cards_text = ""
+    if cards:
+        cards_text = "\n\n🧪 Новые закрытые Paper:\n" + "\n".join(cards[:3])
+    mode = str(paper.get("auto_audit_mode", "active") or "active")
     return (
         f"🧠 Auto-Audit ALEX EDGE\n"
-        f"Версия: {BOT_VERSION}{forced}\n\n"
+        f"Версия: {BOT_VERSION}{forced}\nРежим Auto-Audit: {auto_audit_mode_label(mode)}\n\n"
         f"Рынок: {risk} | BTC {btc_change:+.2f}% | страх {fg_value} | новости {int(macro):+d}\n"
         f"Paper: open {paper.get('open',0)} / closed {paper.get('closed',0)} | 🛡 {paper.get('saved',0)} | 🟡 {paper.get('neutral',0)} | 📈 {paper.get('pump',0)}\n"
         f"Learning: open {learning.get('open',0)} / closed48 {learning.get('closed',0)}\n"
         f"Timing: сценариев {learning.get('timing_checked',0)} | полный пропуск лучше {learning.get('timing_skip_best',0)} | ждать лучше {learning.get('timing_wait_better',0)} | сразу лучше {learning.get('timing_now_better',0)}\n\n"
-        f"Что изменилось:\n{reasons}\n\n"
+        f"Что изменилось:\n{reasons}{cards_text}\n\n"
         f"Последние closed Paper: {last_assets}\n"
         "Команды для ручной проверки: /paper /learning_full /audit_file\n"
         "Автоторговля выключена. Это self-check, не рекомендация покупки."
@@ -12397,18 +12610,20 @@ def auto_audit_status_text():
     paper = auto_audit_paper_stats()
     learning = auto_audit_learning_stats()
     enabled = "включён" if state.get("enabled") else "выключен"
+    mode, interval_min, min_gap_min, critical_only = auto_audit_effective_settings(state)
     last_check = int((time.time() - float(state.get("last_check_at", 0) or 0)) // 60) if state.get("last_check_at") else None
     last_sent = int((time.time() - float(state.get("last_sent_at", 0) or 0)) // 60) if state.get("last_sent_at") else None
     return (
         f"🧠 Auto-Audit\nВерсия: {BOT_VERSION}\n\n"
         f"Статус: {enabled}\n"
-        f"Интервал проверки: каждые {AUTO_AUDIT_INTERVAL_MIN} мин\n"
-        f"Минимальный интервал отправки: {AUTO_AUDIT_MIN_SEND_GAP_MIN} мин\n"
+        f"Режим: {auto_audit_mode_label(mode)}\n"
+        f"Интервал проверки: каждые {interval_min} мин\n"
+        f"Минимальный интервал отправки: {min_gap_min} мин\n"
         f"Последняя проверка: {str(last_check) + ' мин назад' if last_check is not None else 'ещё не было'}\n"
         f"Последняя отправка: {str(last_sent) + ' мин назад' if last_sent is not None else 'ещё не было'}\n\n"
         f"Paper сейчас: open {paper.get('open',0)} / closed {paper.get('closed',0)} | 🛡 {paper.get('saved',0)}\n"
         f"Learning сейчас: open {learning.get('open',0)} / closed48 {learning.get('closed',0)} | timing {learning.get('timing_checked',0)}\n\n"
-        "Команды: /auto_audit_now, /auto_audit_on, /auto_audit_off"
+        "Команды: /auto_audit_now, /auto_audit_on, /auto_audit_off, /auto_audit_mode"
     )
 
 
@@ -12421,7 +12636,8 @@ def auto_audit_check_and_send(chat_id=None, force=False):
     if not state.get("enabled") and not force:
         return False
     now_ts = time.time()
-    interval = AUTO_AUDIT_INTERVAL_MIN * 60
+    mode, interval_min, min_gap_min, critical_only = auto_audit_effective_settings(state)
+    interval = interval_min * 60
     if not force and now_ts - float(state.get("last_check_at", 0) or 0) < interval:
         return False
 
@@ -12457,6 +12673,7 @@ def auto_audit_check_and_send(chat_id=None, force=False):
 
     if prev_closed is not None and paper["closed"] > int(prev_closed):
         reason_lines.append(f"Paper closed вырос: {prev_closed} → {paper['closed']}")
+        paper["new_closed_cards"] = auto_audit_new_closed_cards(prev_closed, paper["closed"], max_cards=3)
     if prev_saved is not None and paper["saved"] > int(prev_saved):
         reason_lines.append(f"🛡 спасло от входа выросло: {prev_saved} → {paper['saved']}")
     if paper.get("overdue", 0) > 0:
@@ -12474,11 +12691,17 @@ def auto_audit_check_and_send(chat_id=None, force=False):
     if prev_learning_closed is not None and learning["closed"] > int(prev_learning_closed):
         reason_lines.append(f"Learning closed48 вырос: {prev_learning_closed} → {learning['closed']}")
 
+    if critical_only and not force:
+        critical_keywords = ["Paper closed", "закрылись новые Paper", "🛡", "сменился режим", "BTC bucket", "ошибка", "просроченные", "Timing"]
+        reason_lines = [r for r in reason_lines if any(k in r for k in critical_keywords)]
     # Первый запуск или плановый heartbeat раз в несколько часов, чтобы админ видел, что self-check живой.
     first_run = prev_closed is None
     force_summary = now_ts - float(state.get("last_forced_at", 0) or 0) >= AUTO_AUDIT_FORCE_SUMMARY_HOURS * 3600
+    if critical_only and not force:
+        force_summary = False
     should_send = bool(force or first_run or reason_lines or force_summary)
-    min_gap_ok = force or now_ts - float(state.get("last_sent_at", 0) or 0) >= AUTO_AUDIT_MIN_SEND_GAP_MIN * 60
+    min_gap_ok = force or now_ts - float(state.get("last_sent_at", 0) or 0) >= min_gap_min * 60
+    paper["auto_audit_mode"] = mode
 
     state.update({
         "last_paper_closed": paper["closed"],
@@ -12739,7 +12962,8 @@ def main():
                         "🎯 v18.6: Entry Quality Engine, confidence пояснения, режимы open/closed отдельно\n"
                         "🧹 v18.7: paper close sweep — сделки старше 48ч не зависают открытыми\n"
                         "⏱ v18.8: Shadow Timing — проверка задержки входа 1ч/3ч/6ч/12ч\n"
-                        "🧠 v18.9: Auto-Audit — бот сам присылает self-check в Telegram при важных изменениях"
+                        "🧠 v18.9: Auto-Audit — бот сам присылает self-check в Telegram при важных изменениях\n"
+                        "🧭 v19.0: Coin Timing/Avoid-Pump Profile, карточки closed Paper, режимы Auto-Audit, hard no-buy guard для BTC/ETH"
                     ))
 
                 elif text == "/flush":
@@ -12923,6 +13147,21 @@ def main():
                         send_message(chat_id, "⏸ Auto-Audit выключен. Вручную остаются /paper /learning_full /audit_file.")
                     else:
                         send_message(chat_id, "⛔ /auto_audit_off доступен только ADMIN_CHAT_ID.")
+
+                elif text == "/auto_audit_mode" or text.startswith("/auto_audit_mode ") or text.startswith("/auto_audit_interval"):
+                    if is_admin(chat_id) or not ADMIN_CHAT_ID:
+                        parts = text.split()
+                        if len(parts) >= 2:
+                            st = auto_audit_set_mode(parts[1])
+                            if st:
+                                mode, interval_min, min_gap_min, critical_only = auto_audit_effective_settings(st)
+                                send_message(chat_id, f"✅ Auto-Audit режим изменён: {auto_audit_mode_label(mode)}\nИнтервал: {interval_min} мин | gap: {min_gap_min} мин")
+                            else:
+                                send_message(chat_id, auto_audit_mode_help())
+                        else:
+                            send_message(chat_id, auto_audit_mode_help())
+                    else:
+                        send_message(chat_id, "⛔ /auto_audit_mode доступен только ADMIN_CHAT_ID.")
 
                 elif text in ["/learn_fast", "/backtest", "/learning_fast"]:
                     send_message(chat_id, learn_fast_report(start=True))
