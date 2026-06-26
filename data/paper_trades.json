@@ -1628,7 +1628,8 @@
         "30m": 0.0,
         "1h": 0.0,
         "3h": 0.0,
-        "6h": -0.47
+        "6h": -0.47,
+        "12h": 1.86
       },
       "result_details": {
         "15m": {
@@ -1654,6 +1655,11 @@
         "6h": {
           "checkpoint_time": 1782449909.7720783,
           "checkpoint_price": 0.057965,
+          "source": "learning_cache:snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782471994.1485043,
+          "checkpoint_price": 0.059318,
           "source": "learning_cache:snapshot"
         }
       },
@@ -1773,8 +1779,16 @@
       "change_24": 21.12,
       "btc_change": -2.46,
       "macro_mod": -6,
-      "results": {},
-      "result_details": {},
+      "results": {
+        "15m": 0.0
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782477305.3532014,
+          "checkpoint_price": 0.0001772,
+          "source": "learning_cache:snapshot"
+        }
+      },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
       "last_price": 0.0001772,
@@ -4005,5 +4019,5 @@
     }
   ],
   "last_created_at": 1782477308.7811515,
-  "last_update_at": 1782477309.4375966
+  "last_update_at": 1782478965.1163056
 }
