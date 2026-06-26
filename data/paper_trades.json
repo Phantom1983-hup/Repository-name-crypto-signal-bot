@@ -1,5 +1,5 @@
 {
-  "version": "v19.5.1 EXTREME FEAR AUDIT SHORT FIX",
+  "version": "v19.6 FRESHNESS 48H FINALIZER LEARNING RADAR",
   "open": {
     "BASED:AVOID_PUMP_TEST:495078": {
       "id": "BASED:AVOID_PUMP_TEST:495078",
@@ -1776,7 +1776,8 @@
       "results": {
         "15m": 0.0,
         "30m": 0.0,
-        "1h": 0.0
+        "1h": 0.0,
+        "3h": 0.0
       },
       "result_details": {
         "15m": {
@@ -1790,6 +1791,11 @@
           "source": "learning_cache:snapshot"
         },
         "1h": {
+          "checkpoint_time": 1782435476.9232688,
+          "checkpoint_price": 0.058236,
+          "source": "learning_cache:snapshot"
+        },
+        "3h": {
           "checkpoint_time": 1782435476.9232688,
           "checkpoint_price": 0.058236,
           "source": "learning_cache:snapshot"
@@ -1815,8 +1821,16 @@
       "change_24": 13.83,
       "btc_change": -2.84,
       "macro_mod": 12,
-      "results": {},
-      "result_details": {},
+      "results": {
+        "15m": 0.0
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782444609.7239852,
+          "checkpoint_price": 0.27897,
+          "source": "learning_cache:snapshot"
+        }
+      },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
       "last_price": 0.27897,
@@ -3825,5 +3839,5 @@
     }
   ],
   "last_created_at": 1782444612.2627728,
-  "last_update_at": 1782444612.6771603
+  "last_update_at": 1782446372.6111183
 }
