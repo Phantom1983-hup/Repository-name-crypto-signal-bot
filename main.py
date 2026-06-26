@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.7 PAPER CLASSIFIER PROFILE MEMORY"
+BOT_VERSION = "v19.7.1 CLASSIFIER QA CLEANUP"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -7459,7 +7459,7 @@ def v195_active_learning_profiles(data):
     wait_cases = sorted(wait_cases, reverse=True)[:5]
     closing_soon = sorted(closing_soon, key=lambda x: x[0])[:8]
     lines = [
-        "🧠 v19.5 ACTIVE LEARNING PROFILES",
+        "🧠 ACTIVE LEARNING PROFILES CORE",
         "Задача: не ждать пассивно 48ч, а заранее раскладывать открытые наблюдения по профилям. Это НЕ автоторговля и НЕ повышение BUY-весов.",
         f"Open-наблюдений с checkpoints: {len([r for r in open_items.values() if isinstance(r, dict) and v18_checkpoint_values(r)])}",
         f"Профили сейчас: quality-exception {len(quality)} | full-skip {len(full_skip)} | avoid-pump continuation {len(avoid_pump)} | timing-spread {len(wait_cases)}",
@@ -7475,7 +7475,11 @@ def v195_active_learning_profiles(data):
     if avoid_pump:
         lines.append("\n📈 Avoid-pump continuation профиль:")
         for best, asset, bn, regime, ln, latest, wn, worst in avoid_pump:
-            lines.append(f"• {asset}: памп мог продолжиться {bn} {best:+.2f}%, но просадка {wn} {worst:+.2f}%; это timing-урок, не BUY-ошибка")
+            if worst < 0:
+                risk_part = f"просадка {wn} {worst:+.2f}%"
+            else:
+                risk_part = f"минимальный откат/пока без просадки: {wn} {worst:+.2f}%"
+            lines.append(f"• {asset}: памп мог продолжиться {bn} {best:+.2f}%, но {risk_part}; это timing-урок, не BUY-ошибка")
     if wait_cases:
         lines.append("\n⏱ Timing-spread кейсы:")
         for spread, asset, bn, best, wn, worst, regime in wait_cases:
@@ -7484,7 +7488,7 @@ def v195_active_learning_profiles(data):
         lines.append("\n⏳ Ближайшие 48ч закрытия:")
         for remain_h, asset, bn, best, wn, worst, regime in closing_soon:
             lines.append(f"• {asset}: около {max(0, remain_h):.1f}ч до финала | лучший {bn} {best:+.2f}% | худший {wn} {worst:+.2f}% | режим {regime}")
-    lines.append("\nПравило v19.5: ранние профили готовят выводы заранее, но реальные веса/BUY/автоторговля не усиливаются без закрытых 48ч и улучшения рынка.")
+    lines.append("\nПравило v19.7.1: ранние профили готовят выводы заранее, но реальные веса/BUY/автоторговля не усиливаются без серии закрытых 48ч и улучшения рынка.")
     return "\n".join(lines) + "\n"
 
 
@@ -7872,7 +7876,7 @@ def v1961_finalizer_now_user_report():
 
 
 def v197_closed_paper_classifier_report(limit=8):
-    """v19.7: классификатор закрытых Paper-сделок и память профилей.
+    """v19.7.1: классификатор закрытых Paper + QA-cleanup.
     Ничего не меняет в BUY-весах, только объясняет, чему бот научился.
     """
     try:
@@ -7881,12 +7885,13 @@ def v197_closed_paper_classifier_report(limit=8):
         data = {}
     closed = data.get("closed", []) if isinstance(data, dict) and isinstance(data.get("closed", []), list) else []
     if not closed:
-        return "🧠 v19.7 PAPER CLASSIFIER\nЗакрытых Paper-сделок пока нет."
+        return "🧠 v19.7.1 PAPER CLASSIFIER\nЗакрытых Paper-сделок пока нет."
 
     buckets = {
         "full_skip": [],
         "avoid_pump_continued": [],
         "quality_exception": [],
+        "spec_watch_pump": [],
         "watch_saved": [],
         "neutral": [],
         "buy_error": [],
@@ -7894,6 +7899,10 @@ def v197_closed_paper_classifier_report(limit=8):
     }
     by_asset = {}
     by_type = {}
+
+    def _asset_mem(asset):
+        return by_asset.setdefault(asset, {"total":0,"saved":0,"pump":0,"neutral":0,"missed":0,"loss":0,"review":0})
+
     for t in closed:
         if not isinstance(t, dict):
             continue
@@ -7906,67 +7915,110 @@ def v197_closed_paper_classifier_report(limit=8):
         is_avoid = "AVOID" in vtype or "PUMP" in vtype
         is_watch = "WATCH" in vtype or "OBSERVE" in vtype or "MONITOR" in vtype
         item = {"asset": asset, "type": vtype, "outcome": out, "r48": r48}
-        by_asset.setdefault(asset, {"total":0,"saved":0,"pump":0,"neutral":0,"missed":0,"loss":0})["total"] += 1
+        st = _asset_mem(asset)
+        st["total"] += 1
         by_type[vtype] = by_type.get(vtype, 0) + 1
+
         if is_avoid and r48 <= -8:
             bucket = "full_skip"
-            by_asset[asset]["saved"] += 1
+            st["saved"] += 1
         elif is_avoid and r48 >= 8:
             bucket = "avoid_pump_continued"
-            by_asset[asset]["pump"] += 1
+            st["pump"] += 1
         elif is_quality and is_watch and r48 >= 6:
             bucket = "quality_exception"
-            by_asset[asset]["missed"] += 1
-        elif is_watch and r48 <= -3:
+            st["missed"] += 1
+        elif (not is_quality) and is_watch and r48 >= 8:
+            # Спекулятивный WATCH мог улететь вверх. Это не "спасло от падения" и не BUY-ошибка.
+            bucket = "spec_watch_pump"
+            st["pump"] += 1
+        elif is_watch and r48 <= -5:
             bucket = "watch_saved"
-            by_asset[asset]["saved"] += 1
+            st["saved"] += 1
         elif out in ["paper_loss", "buy_loss"] or ("BUY" in vtype and r48 <= -3):
             bucket = "buy_error"
-            by_asset[asset]["loss"] += 1
+            st["loss"] += 1
         elif -3 < r48 < 5:
             bucket = "neutral"
-            by_asset[asset]["neutral"] += 1
+            st["neutral"] += 1
         else:
             bucket = "review"
+            st["review"] += 1
         buckets[bucket].append(item)
 
+    # v19.7.1: дополняем картину closed Learning, чтобы AAVE-подобные quality-exception не терялись,
+    # пока соответствующий Paper ещё не дошёл до 48ч.
+    learning_quality = []
+    try:
+        ldata = load_json(RESULTS_FILE)
+        lclosed = ldata.get("closed", []) if isinstance(ldata, dict) and isinstance(ldata.get("closed", []), list) else []
+        for rec in lclosed:
+            if not isinstance(rec, dict):
+                continue
+            asset = str(rec.get("asset", "?")).upper()
+            action = str(rec.get("action", "")).upper()
+            if action != "WATCH":
+                continue
+            is_quality = asset in QUALITY_LEARNING_ASSETS or asset in ["BTC", "ETH", "SOL", "LINK", "AAVE", "BNB", "TAO", "SUI", "AVAX", "NEAR"]
+            if not is_quality:
+                continue
+            res = learning_results_for_eval(rec)
+            r48 = res.get("48h")
+            r24 = res.get("24h")
+            main = r48 if isinstance(r48, (int, float)) else r24
+            if isinstance(main, (int, float)) and main >= 6:
+                learning_quality.append({"asset": asset, "r48": main, "r24": r24, "score": rec.get("score"), "action": action})
+    except Exception:
+        learning_quality = []
+    learning_quality = sorted(learning_quality, key=lambda x: x.get("r48", 0), reverse=True)[:limit]
+
     lines = [
-        "🧠 v19.7 PAPER CLASSIFIER / PROFILE MEMORY",
-        "Задача: превращать закрытые Paper-сделки в понятные уроки для профилей монет и режимов. Это НЕ автоторговля и НЕ изменение BUY-весов.",
+        "🧠 v19.7.1 PAPER CLASSIFIER / PROFILE MEMORY",
+        "Задача: превращать закрытые Paper/Learning в понятные уроки для профилей монет и режимов. Это НЕ автоторговля и НЕ изменение BUY-весов.",
         f"Закрытых Paper: {len(closed)}",
-        f"🛡 full-skip подтверждён: {len(buckets['full_skip'])} | 📈 памп продолжился: {len(buckets['avoid_pump_continued'])} | 🟢 quality-exception: {len(buckets['quality_exception'])} | 🛡 WATCH спас: {len(buckets['watch_saved'])} | 🟡 neutral: {len(buckets['neutral'])} | 🔎 review: {len(buckets['review'])}",
+        f"🛡 full-skip подтверждён: {len(buckets['full_skip'])} | 📈 avoid-pump продолжился: {len(buckets['avoid_pump_continued'])} | 🟢 quality-exception Paper: {len(buckets['quality_exception'])} | 🟣 speculative WATCH pump: {len(buckets['spec_watch_pump'])} | 🛡 WATCH спас: {len(buckets['watch_saved'])} | 🟡 neutral: {len(buckets['neutral'])} | 🔎 review: {len(buckets['review'])}",
     ]
+
     def add_examples(title, key, sort_reverse=False):
         rows = buckets.get(key, [])
         if not rows:
             return
-        lines.append("\n" + title)
+        suffix = "" if len(rows) <= limit else f" — показано {limit} из {len(rows)}"
+        lines.append("\n" + title + suffix)
         rows = sorted(rows, key=lambda x: x.get("r48", 0), reverse=sort_reverse)
         for it in rows[:limit]:
             lines.append(f"• {it['asset']}: 48ч {it['r48']:+.2f}% | {it['type']}")
+
     add_examples("🛡 Full-skip / не догонять подтверждено:", "full_skip", False)
-    add_examples("📈 Памп продолжился без отката — это timing-урок, не BUY-ошибка:", "avoid_pump_continued", True)
-    add_examples("🟢 Quality-exception кандидаты:", "quality_exception", True)
+    add_examples("📈 Avoid-pump продолжился без отката — timing-урок, не BUY-ошибка:", "avoid_pump_continued", True)
+    add_examples("🟢 Paper quality-exception кандидаты:", "quality_exception", True)
+    add_examples("🟣 Спекулятивный WATCH-памп — не считать спасением от падения:", "spec_watch_pump", True)
     add_examples("🛡 WATCH реально спас от падения:", "watch_saved", False)
+
+    if learning_quality:
+        lines.append("\n🟢 Closed Learning quality-exception кандидаты:")
+        for it in learning_quality[:limit]:
+            extra = f" | 24ч {it['r24']:+.2f}%" if isinstance(it.get('r24'), (int, float)) else ""
+            score = f" | score {it['score']}" if it.get("score") is not None else ""
+            lines.append(f"• {it['asset']}: 48ч/финал {it['r48']:+.2f}%{extra}{score} — приоритетное наблюдение в будущем, но не BUY без фона/объёма")
 
     strong_assets = []
     for asset, st in by_asset.items():
-        if st.get("saved", 0) + st.get("pump", 0) + st.get("missed", 0) <= 0:
+        if st.get("saved", 0) + st.get("pump", 0) + st.get("missed", 0) + st.get("loss", 0) <= 0:
             continue
         strong_assets.append((asset, st))
     if strong_assets:
         lines.append("\n🧬 Profile Memory — что запоминать по монетам:")
-        for asset, st in sorted(strong_assets, key=lambda kv: (kv[1].get('saved',0)+kv[1].get('pump',0)+kv[1].get('missed',0), kv[1].get('total',0)), reverse=True)[:10]:
+        for asset, st in sorted(strong_assets, key=lambda kv: (kv[1].get('saved',0)+kv[1].get('pump',0)+kv[1].get('missed',0)+kv[1].get('loss',0), kv[1].get('total',0)), reverse=True)[:10]:
             notes = []
             if st.get("saved",0): notes.append(f"skip/save {st['saved']}")
-            if st.get("pump",0): notes.append(f"pump-continue {st['pump']}")
+            if st.get("pump",0): notes.append(f"pump/timing {st['pump']}")
             if st.get("missed",0): notes.append(f"quality-exception {st['missed']}")
             if st.get("loss",0): notes.append(f"loss {st['loss']}")
             lines.append(f"• {asset}: " + ", ".join(notes))
 
-    lines.append("\nПравило v19.7: один кейс не меняет BUY-веса. Профиль усиливается только серией закрытых 48ч + свежей ценой + улучшением рынка.")
+    lines.append("\nПравило v19.7.1: один кейс не меняет BUY-веса. Профиль усиливается только серией закрытых 48ч + свежей ценой + улучшением рынка.")
     return "\n".join(lines)
-
 
 def paper_classifier_user_report():
     text = v197_closed_paper_classifier_report(limit=6)
@@ -13324,11 +13376,11 @@ def build_audit_file(chat_id):
     add("PAPER FULL", paper_report, 12)
     add("SIGNAL FULL", unified_signal_report, 35)
     add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
-    add("LEARNING QUALITY V19.5", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
-    add("ACTIVE LEARNING PROFILES V19.5", lambda: v195_active_learning_profiles(load_json(RESULTS_FILE)), 10)
+    add("LEARNING QUALITY CORE", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
+    add("ACTIVE LEARNING PROFILES CORE", lambda: v195_active_learning_profiles(load_json(RESULTS_FILE)), 10)
     add("LEARNING DEVELOPMENT RADAR V19.6", lambda: v196_learning_development_radar(load_json(RESULTS_FILE)), 12)
     add("PAPER CLASSIFIER V19.7", lambda: v197_closed_paper_classifier_report(), 10)
-    add("LEARNING SPRINT V19.6", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
+    add("LEARNING SPRINT CORE", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
     add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
     add("MARKET", market_status, 10)
     add("BTC FULL", lambda: single_analysis_full("BTC-USDT"), 25)
