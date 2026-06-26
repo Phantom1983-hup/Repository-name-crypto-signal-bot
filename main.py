@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.7.1 CLASSIFIER QA CLEANUP"
+BOT_VERSION = "v19.7.2 LEARNING SPEC PUMP CLASSIFIER FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -4756,10 +4756,18 @@ def classify_learning_result(rec):
     threshold = learning_success_threshold(action)
 
     if action == "WATCH":
-        if worst <= -5:
+        asset = str(rec.get("asset", "")).upper()
+        is_quality = asset in QUALITY_LEARNING_ASSETS or asset in ["BTC", "ETH", "SOL", "LINK", "AAVE", "BNB", "TAO", "SUI", "AVAX", "NEAR"]
+        # v19.7.2: финальный рост спекулятивного WATCH — это не "спас от падения".
+        # Сначала смотрим итоговый 48ч/24ч результат, потом худший внутрипериодный провал.
+        if is_quality and main >= 6:
+            return "missed_move"  # quality-exception / слишком осторожно
+        if (not is_quality) and main >= 8:
+            return "spec_watch_pump"  # speculative timing lesson, не BUY-ошибка
+        if main <= -5 or (worst <= -5 and best < 8):
             return "watch_saved"  # правильно, что не купили
         if best >= 5:
-            return "missed_move"  # слишком осторожно
+            return "missed_move"  # временный рост, ждём серию/48ч
         return "neutral"
 
     if action == "ACCUM":
@@ -5913,6 +5921,7 @@ def v83_learning_adjustment(c):
     success = outcomes.count("success")
     bad = outcomes.count("bad")
     missed = outcomes.count("missed_move")
+    spec_watch_pump = outcomes.count("spec_watch_pump")
     watch_saved = outcomes.count("watch_saved")
 
     n = len(sample)
@@ -6133,6 +6142,8 @@ def learning_outcome_text(outcome, rec=None):
         if rec and str(rec.get("asset", "")).upper() not in QUALITY_LEARNING_ASSETS:
             return "⚠️ спекулятивный рост, не приравнивать к качественному BUY"
         return "⚠️ WATCH пропустил рост"
+    if outcome == "spec_watch_pump":
+        return "🟣 speculative WATCH pump"
     if outcome == "neutral":
         return "🟡 нейтрально"
     return "⏳ открыто"
@@ -6180,8 +6191,10 @@ def closed_learning_detail_rows(closed, limit=8):
             text += "  вывод: качественный актив вырос — в будущем можно раньше переводить сильный WATCH в приоритетное наблюдение.\n"
         elif outcome == "missed_move":
             text += "  вывод: рост был спекулятивный; не усиливать BUY так же, как по качественным активам.\n"
+        elif outcome == "spec_watch_pump":
+            text += "  вывод: спекулятивный памп продолжился; это timing-урок, не спасение от падения и не BUY-ошибка.\n"
         elif outcome == "watch_saved":
-            text += "  вывод: осторожность была полезной, памп/риск подтвердился.\n"
+            text += "  вывод: осторожность была полезной, падение/риск подтвердился.\n"
 
     return text
 
@@ -6429,7 +6442,7 @@ def v18_learning_core_summary(data):
     if closed:
         outcomes = [classify_learning_result(x) for x in closed]
         lines.append(
-            f"Закрытые 48ч: всего {len(closed)} | ✅ {outcomes.count('success')} | 🛡 {outcomes.count('watch_saved')} | ⚠️ {outcomes.count('missed_move')} | 🔴 {outcomes.count('bad')}"
+            f"Закрытые 48ч: всего {len(closed)} | ✅ {outcomes.count('success')} | 🛡 {outcomes.count('watch_saved')} | ⚠️ {outcomes.count('missed_move')} | 🟣 spec-pump {outcomes.count('spec_watch_pump')} | 🔴 {outcomes.count('bad')}"
         )
     else:
         lines.append("Закрытых 48ч пока 0: адаптивные веса только готовятся, без опасных резких изменений.")
@@ -6558,6 +6571,7 @@ def learning_report(sync_github=False, full=False):
     bad = outcomes.count("bad")
     neutral = outcomes.count("neutral")
     missed = outcomes.count("missed_move")
+    spec_watch_pump = outcomes.count("spec_watch_pump")
     watch_saved = outcomes.count("watch_saved")
 
     text = (
@@ -6592,7 +6606,7 @@ def learning_report(sync_github=False, full=False):
     by_asset = {}
     for rec in closed:
         a = rec.get("asset", "?")
-        by_asset.setdefault(a, {"n": 0, "success": 0, "bad": 0, "watch_saved": 0, "missed": 0})
+        by_asset.setdefault(a, {"n": 0, "success": 0, "bad": 0, "watch_saved": 0, "missed": 0, "spec": 0})
         by_asset[a]["n"] += 1
         outcome = classify_learning_result(rec)
         if outcome == "success":
@@ -6603,10 +6617,12 @@ def learning_report(sync_github=False, full=False):
             by_asset[a]["watch_saved"] += 1
         if outcome == "missed_move":
             by_asset[a]["missed"] += 1
+        if outcome == "spec_watch_pump":
+            by_asset[a]["spec"] += 1
 
     ranked = sorted(
         by_asset.items(),
-        key=lambda kv: (kv[1]["success"] + kv[1]["watch_saved"] - kv[1]["bad"] - kv[1]["missed"], kv[1]["n"]),
+        key=lambda kv: (kv[1]["success"] + kv[1]["watch_saved"] + kv[1].get("spec",0) - kv[1]["bad"] - kv[1]["missed"], kv[1]["n"]),
         reverse=True
     )[:5]
 
@@ -6616,7 +6632,8 @@ def learning_report(sync_github=False, full=False):
         f"🟡 Нейтрально: {neutral}\n"
         f"🔴 Ошиблись: {bad}\n"
         f"🛡 WATCH спас от падения: {watch_saved}\n"
-        f"⚠️ WATCH пропустил рост: {missed}\n"
+        f"⚠️ WATCH пропустил quality-рост: {missed}\n"
+        f"🟣 speculative WATCH pump: {spec_watch_pump}\n"
     )
 
     text += closed_learning_detail_rows(closed, limit=8) + "\n"
@@ -6626,7 +6643,7 @@ def learning_report(sync_github=False, full=False):
         for asset, s in ranked:
             text += (
                 f"• {asset}: ✅{s['success']} / 🔴{s['bad']} / "
-                f"🛡{s['watch_saved']} / ⚠️{s['missed']} / всего {s['n']}\n"
+                f"🛡{s['watch_saved']} / ⚠️{s['missed']} / 🟣{s.get('spec',0)} / всего {s['n']}\n"
             )
 
     text += "\nКак бот учится: похожие провальные сигналы режут score, похожие успешные чуть повышают доверие. Автопокупки не включены."
@@ -7488,7 +7505,7 @@ def v195_active_learning_profiles(data):
         lines.append("\n⏳ Ближайшие 48ч закрытия:")
         for remain_h, asset, bn, best, wn, worst, regime in closing_soon:
             lines.append(f"• {asset}: около {max(0, remain_h):.1f}ч до финала | лучший {bn} {best:+.2f}% | худший {wn} {worst:+.2f}% | режим {regime}")
-    lines.append("\nПравило v19.7.1: ранние профили готовят выводы заранее, но реальные веса/BUY/автоторговля не усиливаются без серии закрытых 48ч и улучшения рынка.")
+    lines.append("\nПравило v19.7.2: ранние профили готовят выводы заранее, но реальные веса/BUY/автоторговля не усиливаются без серии закрытых 48ч и улучшения рынка.")
     return "\n".join(lines) + "\n"
 
 
@@ -7973,10 +7990,10 @@ def v197_closed_paper_classifier_report(limit=8):
     learning_quality = sorted(learning_quality, key=lambda x: x.get("r48", 0), reverse=True)[:limit]
 
     lines = [
-        "🧠 v19.7.1 PAPER CLASSIFIER / PROFILE MEMORY",
+        "🧠 v19.7.2 PAPER CLASSIFIER / PROFILE MEMORY",
         "Задача: превращать закрытые Paper/Learning в понятные уроки для профилей монет и режимов. Это НЕ автоторговля и НЕ изменение BUY-весов.",
         f"Закрытых Paper: {len(closed)}",
-        f"🛡 full-skip подтверждён: {len(buckets['full_skip'])} | 📈 avoid-pump продолжился: {len(buckets['avoid_pump_continued'])} | 🟢 quality-exception Paper: {len(buckets['quality_exception'])} | 🟣 speculative WATCH pump: {len(buckets['spec_watch_pump'])} | 🛡 WATCH спас: {len(buckets['watch_saved'])} | 🟡 neutral: {len(buckets['neutral'])} | 🔎 review: {len(buckets['review'])}",
+        f"🛡 full-skip подтверждён: {len(buckets['full_skip'])} | 📈 avoid-pump продолжился: {len(buckets['avoid_pump_continued'])} | 🟢 quality-exception Paper: {len(buckets['quality_exception'])} | 🟣 speculative WATCH pump: {len(buckets['spec_watch_pump'])} | 🛡 WATCH спас: {len(buckets['watch_saved'])} | 🟡 neutral: {len(buckets['neutral'])} | 🔴 entry-error: {len(buckets['buy_error'])} | 🔎 review: {len(buckets['review'])}",
     ]
 
     def add_examples(title, key, sort_reverse=False):
@@ -7993,6 +8010,7 @@ def v197_closed_paper_classifier_report(limit=8):
     add_examples("📈 Avoid-pump продолжился без отката — timing-урок, не BUY-ошибка:", "avoid_pump_continued", True)
     add_examples("🟢 Paper quality-exception кандидаты:", "quality_exception", True)
     add_examples("🟣 Спекулятивный WATCH-памп — не считать спасением от падения:", "spec_watch_pump", True)
+    add_examples("🔴 Entry/BUT error — требует проверки, без авто-весов:", "buy_error", False)
     add_examples("🛡 WATCH реально спас от падения:", "watch_saved", False)
 
     if learning_quality:
@@ -8014,10 +8032,10 @@ def v197_closed_paper_classifier_report(limit=8):
             if st.get("saved",0): notes.append(f"skip/save {st['saved']}")
             if st.get("pump",0): notes.append(f"pump/timing {st['pump']}")
             if st.get("missed",0): notes.append(f"quality-exception {st['missed']}")
-            if st.get("loss",0): notes.append(f"loss {st['loss']}")
+            if st.get("loss",0): notes.append(f"entry/error {st['loss']}")
             lines.append(f"• {asset}: " + ", ".join(notes))
 
-    lines.append("\nПравило v19.7.1: один кейс не меняет BUY-веса. Профиль усиливается только серией закрытых 48ч + свежей ценой + улучшением рынка.")
+    lines.append("\nПравило v19.7.2: один кейс не меняет BUY-веса. Профиль усиливается только серией закрытых 48ч + свежей ценой + улучшением рынка.")
     return "\n".join(lines)
 
 def paper_classifier_user_report():
@@ -13379,7 +13397,7 @@ def build_audit_file(chat_id):
     add("LEARNING QUALITY CORE", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
     add("ACTIVE LEARNING PROFILES CORE", lambda: v195_active_learning_profiles(load_json(RESULTS_FILE)), 10)
     add("LEARNING DEVELOPMENT RADAR V19.6", lambda: v196_learning_development_radar(load_json(RESULTS_FILE)), 12)
-    add("PAPER CLASSIFIER V19.7", lambda: v197_closed_paper_classifier_report(), 10)
+    add("PAPER CLASSIFIER V19.7.2", lambda: v197_closed_paper_classifier_report(), 10)
     add("LEARNING SPRINT CORE", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
     add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
     add("MARKET", market_status, 10)
@@ -14080,6 +14098,8 @@ def main():
                         "⏳ v19.6.1: /finalizer_now запускает refresh + 48h finalizer вручную, без ожидания планового часа\n"
                         "🧭 v19.6.2: /finalizer_now показывает Paper ETA и объясняет, почему закрыто 0, если 48ч ещё не наступили\n"
                         "🧠 v19.7: Paper Classifier превращает закрытые Paper-сделки в профили full-skip / pump / quality-exception\n"
+                        "🧹 v19.7.1: QA-cleanup классификатора, AAVE quality-exception и wording fixes\n"
+                        "🟣 v19.7.2: Learning больше не считает speculative WATCH-pump спасением от падения\n"
                         "🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%\n"
                         "🚀 v19.4: main.py → GitHub → одна кнопка ручного Render deploy\n"
                         "🛡 v19.4.1: state restore guard защищает learning/paper/frozen от отката после redeploy"
