@@ -1,18 +1,22 @@
 {
   "enabled": true,
-  "last_check_at": 1782478964.1607134,
-  "last_sent_at": 1782478964.1607134,
+  "last_check_at": 1782482586.0661604,
+  "last_sent_at": 1782482586.0661604,
   "last_forced_at": 1782417005.8693898,
   "last_paper_closed": 30,
   "last_paper_saved": 19,
   "last_paper_open": 29,
-  "last_learning_open": 25,
-  "last_learning_closed": 20,
-  "last_risk": "extreme-fear/no-buy",
-  "last_btc_bucket": "btc_drop_2",
+  "last_learning_open": 28,
+  "last_learning_closed": 21,
+  "last_risk": "caution",
+  "last_btc_bucket": "btc_green",
   "last_timing_checked": 42,
   "last_reason_lines": [
-    "Learning open изменился: 24 → 25"
+    "на подходе к 48ч Paper-сделок: 1",
+    "сменился режим рынка: extreme-fear/no-buy → caution",
+    "сменился BTC bucket: btc_drop_2 → btc_green",
+    "Learning open изменился: 25 → 28",
+    "Learning closed48 вырос: 20 → 21"
   ],
   "version": "v19.7.4 MARKET LABEL FINAL QA",
   "mode": "active"
