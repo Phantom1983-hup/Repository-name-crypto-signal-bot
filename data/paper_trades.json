@@ -1806,6 +1806,25 @@
       "last_price": 0.1281,
       "last_price_time": 1782488222.2461417,
       "last_pct": 0.0
+    },
+    "VELVET:AVOID_PUMP_TEST:495136": {
+      "id": "VELVET:AVOID_PUMP_TEST:495136",
+      "asset": "VELVET",
+      "entry_time": 1782492323.8351364,
+      "entry_price": 0.63545,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 31.66,
+      "btc_change": 1.32,
+      "macro_mod": -10,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [
@@ -4178,6 +4197,6 @@
       "outcome": "avoid_saved"
     }
   ],
-  "last_created_at": 1782488225.7011266,
+  "last_created_at": 1782492323.8351364,
   "last_update_at": 1782491882.3278675
 }
