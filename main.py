@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.6.2 SMART PAPER ETA FINALIZER"
+BOT_VERSION = "v19.7 PAPER CLASSIFIER PROFILE MEMORY"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -1287,6 +1287,9 @@ def deploy_status_report(chat_id=None):
     last_ver = state.get("last_deploy_version") or "нет"
     last_at = float(state.get("last_deploy_at", 0) or 0)
     last_age = int(time.time() - last_at) if last_at else 0
+    wait_left = int(QUICK_DEPLOY_COOLDOWN_SECONDS - (time.time() - last_at)) if last_at else 0
+    if wait_left < 0:
+        wait_left = 0
     lines = [
         "🚀 Deploy status",
         f"Версия бота сейчас: {BOT_VERSION}",
@@ -1298,7 +1301,11 @@ def deploy_status_report(chat_id=None):
         lines.append(f"Готовая версия к деплою: {pver}")
         lines.append(f"Файл в GitHub: {state.get('pending_deploy_file', GITHUB_PATH)}")
         lines.append(f"Готово {age} сек назад")
-        lines.append("Действие: нажми 🚀 Запустить деплой или отправь /deploy_latest")
+        if wait_left > 0:
+            lines.append(f"⏳ Deploy hook на cooldown: ещё {wait_left} сек.")
+            lines.append("Важно: deploy этой версии ЕЩЁ НЕ запущен. После cooldown нажми 🚀 Запустить деплой ещё раз или используй Render Manual Deploy latest commit.")
+        else:
+            lines.append("✅ Cooldown прошёл. Действие: нажми 🚀 Запустить деплой или отправь /deploy_latest")
     lines.append(f"Последний запущенный deploy: {last_ver}")
     if last_at:
         lines.append(f"Был {last_age} сек назад")
@@ -1323,10 +1330,18 @@ def admin_deploy_latest(chat_id):
         )
     last_at = float(state.get("last_deploy_at", 0) or 0)
     wait_left = int(QUICK_DEPLOY_COOLDOWN_SECONDS - (time.time() - last_at)) if last_at else 0
-    if wait_left > 0:
-        return f"⏳ Deploy недавно уже запускался. Чтобы не забить очередь Render, подожди {wait_left} сек и проверь /version."
-
     pending_version = state.get("pending_deploy_version") or "версия не указана"
+    if wait_left > 0:
+        # v19.6.3: deploy НЕ запускается во время cooldown. Не вводим админа в заблуждение фразой "проверь /version".
+        # Pending deploy остаётся сохранённым, чтобы после cooldown можно было нажать кнопку ещё раз.
+        return (
+            f"⏳ Deploy НЕ запущен: Render cooldown ещё {wait_left} сек.\n"
+            f"Готовая версия ждёт запуска: {pending_version}.\n\n"
+            "Что делать: подожди указанное время и нажми 🚀 Запустить деплой ещё раз.\n"
+            "Альтернатива: Render → Manual Deploy → Deploy latest commit.\n\n"
+            "Пока /version не изменится — это нормально, новая версия ещё не запущена."
+        )
+
     try:
         deploy_msg = trigger_render_deploy_manual()
         state["pending_deploy"] = False
@@ -2191,6 +2206,10 @@ COMMAND_POOL_ALIASES = {
     "сигнал": "/signal",
     "📊 сигнал": "/signal",
     "paper": "/paper",
+    "paper_classifier": "/paper_classifier",
+    "paper_profile": "/paper_classifier",
+    "paper_memory": "/paper_classifier",
+    "классификатор paper": "/paper_classifier",
     "пейпер": "/paper",
     "виртуальные сделки": "/paper",
     "🧪 paper": "/paper",
@@ -7851,6 +7870,110 @@ def v1961_finalizer_now_user_report():
         lines.append("/improvement_radar")
     return "\n".join(lines)
 
+
+def v197_closed_paper_classifier_report(limit=8):
+    """v19.7: классификатор закрытых Paper-сделок и память профилей.
+    Ничего не меняет в BUY-весах, только объясняет, чему бот научился.
+    """
+    try:
+        data = paper_store()
+    except Exception:
+        data = {}
+    closed = data.get("closed", []) if isinstance(data, dict) and isinstance(data.get("closed", []), list) else []
+    if not closed:
+        return "🧠 v19.7 PAPER CLASSIFIER\nЗакрытых Paper-сделок пока нет."
+
+    buckets = {
+        "full_skip": [],
+        "avoid_pump_continued": [],
+        "quality_exception": [],
+        "watch_saved": [],
+        "neutral": [],
+        "buy_error": [],
+        "review": [],
+    }
+    by_asset = {}
+    by_type = {}
+    for t in closed:
+        if not isinstance(t, dict):
+            continue
+        asset = str(t.get("asset", "?")).upper()
+        vtype = str(t.get("virtual_type", "") or "")
+        out = str(t.get("outcome") or paper_outcome(t))
+        results = t.get("results", {}) if isinstance(t.get("results", {}), dict) else {}
+        r48 = _paper_safe_float(results.get("48h", t.get("last_pct", 0)), 0.0)
+        is_quality = asset in QUALITY_LEARNING_ASSETS or asset in ["BTC", "ETH", "SOL", "LINK", "AAVE", "BNB", "TAO", "SUI", "AVAX", "NEAR"]
+        is_avoid = "AVOID" in vtype or "PUMP" in vtype
+        is_watch = "WATCH" in vtype or "OBSERVE" in vtype or "MONITOR" in vtype
+        item = {"asset": asset, "type": vtype, "outcome": out, "r48": r48}
+        by_asset.setdefault(asset, {"total":0,"saved":0,"pump":0,"neutral":0,"missed":0,"loss":0})["total"] += 1
+        by_type[vtype] = by_type.get(vtype, 0) + 1
+        if is_avoid and r48 <= -8:
+            bucket = "full_skip"
+            by_asset[asset]["saved"] += 1
+        elif is_avoid and r48 >= 8:
+            bucket = "avoid_pump_continued"
+            by_asset[asset]["pump"] += 1
+        elif is_quality and is_watch and r48 >= 6:
+            bucket = "quality_exception"
+            by_asset[asset]["missed"] += 1
+        elif is_watch and r48 <= -3:
+            bucket = "watch_saved"
+            by_asset[asset]["saved"] += 1
+        elif out in ["paper_loss", "buy_loss"] or ("BUY" in vtype and r48 <= -3):
+            bucket = "buy_error"
+            by_asset[asset]["loss"] += 1
+        elif -3 < r48 < 5:
+            bucket = "neutral"
+            by_asset[asset]["neutral"] += 1
+        else:
+            bucket = "review"
+        buckets[bucket].append(item)
+
+    lines = [
+        "🧠 v19.7 PAPER CLASSIFIER / PROFILE MEMORY",
+        "Задача: превращать закрытые Paper-сделки в понятные уроки для профилей монет и режимов. Это НЕ автоторговля и НЕ изменение BUY-весов.",
+        f"Закрытых Paper: {len(closed)}",
+        f"🛡 full-skip подтверждён: {len(buckets['full_skip'])} | 📈 памп продолжился: {len(buckets['avoid_pump_continued'])} | 🟢 quality-exception: {len(buckets['quality_exception'])} | 🛡 WATCH спас: {len(buckets['watch_saved'])} | 🟡 neutral: {len(buckets['neutral'])} | 🔎 review: {len(buckets['review'])}",
+    ]
+    def add_examples(title, key, sort_reverse=False):
+        rows = buckets.get(key, [])
+        if not rows:
+            return
+        lines.append("\n" + title)
+        rows = sorted(rows, key=lambda x: x.get("r48", 0), reverse=sort_reverse)
+        for it in rows[:limit]:
+            lines.append(f"• {it['asset']}: 48ч {it['r48']:+.2f}% | {it['type']}")
+    add_examples("🛡 Full-skip / не догонять подтверждено:", "full_skip", False)
+    add_examples("📈 Памп продолжился без отката — это timing-урок, не BUY-ошибка:", "avoid_pump_continued", True)
+    add_examples("🟢 Quality-exception кандидаты:", "quality_exception", True)
+    add_examples("🛡 WATCH реально спас от падения:", "watch_saved", False)
+
+    strong_assets = []
+    for asset, st in by_asset.items():
+        if st.get("saved", 0) + st.get("pump", 0) + st.get("missed", 0) <= 0:
+            continue
+        strong_assets.append((asset, st))
+    if strong_assets:
+        lines.append("\n🧬 Profile Memory — что запоминать по монетам:")
+        for asset, st in sorted(strong_assets, key=lambda kv: (kv[1].get('saved',0)+kv[1].get('pump',0)+kv[1].get('missed',0), kv[1].get('total',0)), reverse=True)[:10]:
+            notes = []
+            if st.get("saved",0): notes.append(f"skip/save {st['saved']}")
+            if st.get("pump",0): notes.append(f"pump-continue {st['pump']}")
+            if st.get("missed",0): notes.append(f"quality-exception {st['missed']}")
+            if st.get("loss",0): notes.append(f"loss {st['loss']}")
+            lines.append(f"• {asset}: " + ", ".join(notes))
+
+    lines.append("\nПравило v19.7: один кейс не меняет BUY-веса. Профиль усиливается только серией закрытых 48ч + свежей ценой + улучшением рынка.")
+    return "\n".join(lines)
+
+
+def paper_classifier_user_report():
+    text = v197_closed_paper_classifier_report(limit=6)
+    text += "\n\nПодробно: /audit_file"
+    return text
+
+
 def learning_sprint_user_report():
     return v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=True)
 
@@ -13204,6 +13327,7 @@ def build_audit_file(chat_id):
     add("LEARNING QUALITY V19.5", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
     add("ACTIVE LEARNING PROFILES V19.5", lambda: v195_active_learning_profiles(load_json(RESULTS_FILE)), 10)
     add("LEARNING DEVELOPMENT RADAR V19.6", lambda: v196_learning_development_radar(load_json(RESULTS_FILE)), 12)
+    add("PAPER CLASSIFIER V19.7", lambda: v197_closed_paper_classifier_report(), 10)
     add("LEARNING SPRINT V19.6", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
     add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
     add("MARKET", market_status, 10)
@@ -13287,7 +13411,7 @@ def help_text():
         "Команды тоже работают:\n"
         "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /top\n"
         "📦 Можно отправить пул команд одним сообщением, каждая с новой строки: /paper, /signal, /learning, /alerts. Бот выполнит их по очереди.\n"
-        "/storage, /backup, /weekday, /learn_fast, /learning_sprint, /improvement_radar, /finalizer_now, /paper, /flush, /auto_audit_status, /auto_audit_now, /auto_audit_on, /auto_audit_off, /auto_audit_mode, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /deploy_latest, /deploy_status, /state_status, /state_restore, /rollback\n"
+        "/storage, /backup, /weekday, /learn_fast, /learning_sprint, /improvement_radar, /finalizer_now, /paper_classifier, /paper, /flush, /auto_audit_status, /auto_audit_now, /auto_audit_on, /auto_audit_off, /auto_audit_mode, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /deploy_latest, /deploy_status, /state_status, /state_restore, /rollback\n"
         "TON вводить можно: бот автоматически откроет GRAM.\n\n"
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход частями\n"
@@ -13903,6 +14027,7 @@ def main():
                         "🧊 v19.6: freshness guard, 48h finalizer, anti-overfit и learning priority radar\n"
                         "⏳ v19.6.1: /finalizer_now запускает refresh + 48h finalizer вручную, без ожидания планового часа\n"
                         "🧭 v19.6.2: /finalizer_now показывает Paper ETA и объясняет, почему закрыто 0, если 48ч ещё не наступили\n"
+                        "🧠 v19.7: Paper Classifier превращает закрытые Paper-сделки в профили full-skip / pump / quality-exception\n"
                         "🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%\n"
                         "🚀 v19.4: main.py → GitHub → одна кнопка ручного Render deploy\n"
                         "🛡 v19.4.1: state restore guard защищает learning/paper/frozen от отката после redeploy"
@@ -14084,6 +14209,9 @@ def main():
 
                 elif text in ["/improvement_radar", "/learning_radar", "/radar"]:
                     send_message(chat_id, improvement_radar_user_report())
+
+                elif text in ["/paper_classifier", "/paper_profile", "/paper_memory"]:
+                    send_message(chat_id, paper_classifier_user_report())
 
                 elif text in ["/finalizer_now", "/finalizer", "/48h_finalizer"]:
                     send_message(chat_id, "⏳ Запускаю v19.6.1 refresh + 48h finalizer, подожди 10–30 секунд...")
