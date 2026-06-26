@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.7.3 FINALIZER LABELS CLASSIFIER QA"
+BOT_VERSION = "v19.7.4 MARKET LABEL FINAL QA"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -7505,7 +7505,7 @@ def v195_active_learning_profiles(data):
         lines.append("\n⏳ Ближайшие 48ч закрытия:")
         for remain_h, asset, bn, best, wn, worst, regime in closing_soon:
             lines.append(f"• {asset}: около {max(0, remain_h):.1f}ч до финала | лучший {bn} {best:+.2f}% | худший {wn} {worst:+.2f}% | режим {regime}")
-    lines.append("\nПравило v19.7.3: ранние профили готовят выводы заранее, но реальные веса/BUY/автоторговля не усиливаются без серии закрытых 48ч и улучшения рынка.")
+    lines.append("\nПравило v19.7.4: ранние профили готовят выводы заранее, но реальные веса/BUY/автоторговля не усиливаются без серии закрытых 48ч и улучшения рынка.")
     return "\n".join(lines) + "\n"
 
 
@@ -7902,7 +7902,7 @@ def v197_closed_paper_classifier_report(limit=8):
         data = {}
     closed = data.get("closed", []) if isinstance(data, dict) and isinstance(data.get("closed", []), list) else []
     if not closed:
-        return "🧠 v19.7.1 PAPER CLASSIFIER\nЗакрытых Paper-сделок пока нет."
+        return "🧠 v19.7.4 PAPER CLASSIFIER\nЗакрытых Paper-сделок пока нет."
 
     buckets = {
         "full_skip": [],
@@ -7991,7 +7991,7 @@ def v197_closed_paper_classifier_report(limit=8):
     learning_quality = sorted(learning_quality, key=lambda x: x.get("r48", 0), reverse=True)[:limit]
 
     lines = [
-        "🧠 v19.7.3 PAPER CLASSIFIER / PROFILE MEMORY",
+        "🧠 v19.7.4 PAPER CLASSIFIER / PROFILE MEMORY",
         "Задача: превращать закрытые Paper/Learning в понятные уроки для профилей монет и режимов. Это НЕ автоторговля и НЕ изменение BUY-весов.",
         f"Закрытых Paper: {len(closed)}",
         f"🛡 full-skip подтверждён: {len(buckets['full_skip'])} | 📈 avoid-pump продолжился: {len(buckets['avoid_pump_continued'])} | 🟢 quality-exception Paper: {len(buckets['quality_exception'])} | 🟣 speculative WATCH pump: {len(buckets['spec_watch_pump'])} | 🛡 WATCH спас: {len(buckets['watch_saved'])} | 🟡 neutral: {len(buckets['neutral'])} | 🔴 entry-error: {len(buckets['buy_error'])} | 🔎 review: {len(buckets['review'])}",
@@ -8036,7 +8036,7 @@ def v197_closed_paper_classifier_report(limit=8):
             if st.get("loss",0): notes.append(f"entry/error {st['loss']}")
             lines.append(f"• {asset}: " + ", ".join(notes))
 
-    lines.append("\nПравило v19.7.2: один кейс не меняет BUY-веса. Профиль усиливается только серией закрытых 48ч + свежей ценой + улучшением рынка.")
+    lines.append("\nПравило v19.7.4: один кейс не меняет BUY-веса. Профиль усиливается только серией закрытых 48ч + свежей ценой + улучшением рынка.")
     return "\n".join(lines)
 
 def paper_classifier_user_report():
@@ -13398,7 +13398,7 @@ def build_audit_file(chat_id):
     add("LEARNING QUALITY CORE", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
     add("ACTIVE LEARNING PROFILES CORE", lambda: v195_active_learning_profiles(load_json(RESULTS_FILE)), 10)
     add("LEARNING DEVELOPMENT RADAR CORE", lambda: v196_learning_development_radar(load_json(RESULTS_FILE)), 12)
-    add("PAPER CLASSIFIER V19.7.3", lambda: v197_closed_paper_classifier_report(), 10)
+    add("PAPER CLASSIFIER V19.7.4", lambda: v197_closed_paper_classifier_report(), 10)
     add("LEARNING SPRINT CORE", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
     add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
     add("MARKET", market_status, 10)
@@ -13426,10 +13426,12 @@ def market_status():
     ctx = market_context()
     level = ctx.get("risk_level", "neutral")
 
-    if level == "danger":
-        status = "🔴 ОПАСНЫЙ РЫНОК"
-    elif v195_extreme_fear_user_no_buy(ctx) or v115_extreme_fear_btc_weak(ctx):
+    # v19.7.4: user-facing market status must keep the unified extreme-fear/no-buy wording.
+    # Danger remains for non-extreme-fear cases only, so reports do not flicker between labels.
+    if v195_extreme_fear_user_no_buy(ctx) or v115_extreme_fear_btc_weak(ctx):
         status = "🟡 EXTREME-FEAR / NO-BUY"
+    elif level == "danger":
+        status = "🔴 ОПАСНЫЙ РЫНОК"
     elif v106_safe_caution(ctx):
         status = "🟠 SAFE-CAUTION / ЖДАТЬ BTC"
     elif level == "caution" and ctx.get("macro_mod", ctx.get("geo_mod", 0)) <= -15 and ctx.get("btc_change", 0) >= 0:
@@ -14102,6 +14104,7 @@ def main():
                         "🧹 v19.7.1: QA-cleanup классификатора, AAVE quality-exception и wording fixes\n"
                         "🟣 v19.7.2: Learning больше не считает speculative WATCH-pump спасением от падения\n"
                         "🧹 v19.7.3: Finalizer/ETA labels приведены к CORE, WATCH-минус больше не entry-error\n"
+                        "🧹 v19.7.4: Market label снова unified extreme-fear/no-buy, финальные wording QA\n"
                         "🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%\n"
                         "🚀 v19.4: main.py → GitHub → одна кнопка ручного Render deploy\n"
                         "🛡 v19.4.1: state restore guard защищает learning/paper/frozen от отката после redeploy"
@@ -14288,7 +14291,7 @@ def main():
                     send_message(chat_id, paper_classifier_user_report())
 
                 elif text in ["/finalizer_now", "/finalizer", "/48h_finalizer"]:
-                    send_message(chat_id, "⏳ Запускаю v19.6.1 refresh + 48h finalizer, подожди 10–30 секунд...")
+                    send_message(chat_id, "⏳ Запускаю FINALIZER NOW CORE: refresh + 48h finalizer, подожди 10–30 секунд...")
                     send_message(chat_id, v1961_finalizer_now_user_report())
 
                 elif text in ["/learning_full", "/learning_audit"]:
