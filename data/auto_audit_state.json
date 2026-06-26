@@ -1,19 +1,22 @@
 {
   "enabled": true,
-  "last_check_at": 1782442353.5396771,
-  "last_sent_at": 1782442353.5396771,
+  "last_check_at": 1782445320.8208532,
+  "last_sent_at": 1782445320.8208532,
   "last_forced_at": 1782417005.8693898,
-  "last_paper_closed": 26,
-  "last_paper_saved": 16,
+  "last_paper_closed": 27,
+  "last_paper_saved": 17,
   "last_paper_open": 30,
-  "last_learning_open": 30,
+  "last_learning_open": 31,
   "last_learning_closed": 5,
-  "last_risk": "danger",
+  "last_risk": "extreme-fear/no-buy",
   "last_btc_bucket": "btc_drop_2",
   "last_timing_checked": 32,
   "last_reason_lines": [
-    "на подходе к 48ч Paper-сделок: 1"
+    "Paper closed вырос: 26 → 27",
+    "🛡 спасло от входа выросло: 16 → 17",
+    "сменился режим рынка: danger → extreme-fear/no-buy",
+    "Learning open изменился: 30 → 31"
   ],
-  "version": "v19.5.1 EXTREME FEAR AUDIT SHORT FIX",
+  "version": "v19.5.2 AUTO AUDIT EXTREME FEAR UNIFY",
   "mode": "active"
 }
