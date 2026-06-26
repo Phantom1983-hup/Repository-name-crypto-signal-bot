@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.7.2 LEARNING SPEC PUMP CLASSIFIER FIX"
+BOT_VERSION = "v19.7.3 FINALIZER LABELS CLASSIFIER QA"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -7505,7 +7505,7 @@ def v195_active_learning_profiles(data):
         lines.append("\n⏳ Ближайшие 48ч закрытия:")
         for remain_h, asset, bn, best, wn, worst, regime in closing_soon:
             lines.append(f"• {asset}: около {max(0, remain_h):.1f}ч до финала | лучший {bn} {best:+.2f}% | худший {wn} {worst:+.2f}% | режим {regime}")
-    lines.append("\nПравило v19.7.2: ранние профили готовят выводы заранее, но реальные веса/BUY/автоторговля не усиливаются без серии закрытых 48ч и улучшения рынка.")
+    lines.append("\nПравило v19.7.3: ранние профили готовят выводы заранее, но реальные веса/BUY/автоторговля не усиливаются без серии закрытых 48ч и улучшения рынка.")
     return "\n".join(lines) + "\n"
 
 
@@ -7677,7 +7677,7 @@ def v196_anti_overfit_guard(data):
 def v196_learning_priority_radar(data):
     """v19.6: автопредложение следующих улучшений, чтобы ChatGPT/админ не напоминали вручную."""
     if not isinstance(data, dict):
-        return "🧭 v19.6 Learning Priority Radar\nДанных обучения пока нет.\n"
+        return "🧭 Learning Priority Radar Core\nДанных обучения пока нет.\n"
     open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
     now = time.time()
     stale_n = 0
@@ -7714,7 +7714,7 @@ def v196_learning_priority_radar(data):
         if is_pump and best >= 8:
             pump_n += 1
     lines = [
-        "🧭 v19.6 LEARNING PRIORITY RADAR",
+        "🧭 LEARNING PRIORITY RADAR CORE",
         "Авто-предложения следующих улучшений после каждого теста:",
     ]
     priorities = []
@@ -7804,7 +7804,7 @@ def v1962_paper_finalizer_eta_report(paper_data=None, limit=8):
             pct_txt = ""
         rows.append((left, asset, vtype, age, pct_txt))
     rows.sort(key=lambda x: x[0])
-    lines = ["", "⏳ v19.6.2 PAPER FINALIZER ETA"]
+    lines = ["", "⏳ PAPER FINALIZER ETA CORE"]
     if mature:
         lines.append(f"Созревших paper-сделок уже: {mature}. Если они не закрылись, вероятно, не хватило цены/кэша; повтори /finalizer_now через 5–10 минут.")
     else:
@@ -7868,7 +7868,7 @@ def v1961_finalizer_now_user_report():
         after_open_p = after_closed_p = 0
 
     lines = [
-        "⏳ v19.6.1 FINALIZER NOW",
+        "⏳ FINALIZER NOW CORE",
         "Запущен безопасный refresh learning + paper 48h finalizer вручную.",
         "BUY-веса, Risk Engine и автоторговля не менялись.",
         "",
@@ -7949,10 +7949,11 @@ def v197_closed_paper_classifier_report(limit=8):
             # Спекулятивный WATCH мог улететь вверх. Это не "спасло от падения" и не BUY-ошибка.
             bucket = "spec_watch_pump"
             st["pump"] += 1
-        elif is_watch and r48 <= -5:
+        elif is_watch and r48 <= -3:
+            # WATCH/наблюдение с минусом — это не entry-error, а подтверждение осторожности.
             bucket = "watch_saved"
             st["saved"] += 1
-        elif out in ["paper_loss", "buy_loss"] or ("BUY" in vtype and r48 <= -3):
+        elif ("BUY" in vtype and r48 <= -3) or ((not is_watch) and out in ["paper_loss", "buy_loss"]):
             bucket = "buy_error"
             st["loss"] += 1
         elif -3 < r48 < 5:
@@ -7990,7 +7991,7 @@ def v197_closed_paper_classifier_report(limit=8):
     learning_quality = sorted(learning_quality, key=lambda x: x.get("r48", 0), reverse=True)[:limit]
 
     lines = [
-        "🧠 v19.7.2 PAPER CLASSIFIER / PROFILE MEMORY",
+        "🧠 v19.7.3 PAPER CLASSIFIER / PROFILE MEMORY",
         "Задача: превращать закрытые Paper/Learning в понятные уроки для профилей монет и режимов. Это НЕ автоторговля и НЕ изменение BUY-весов.",
         f"Закрытых Paper: {len(closed)}",
         f"🛡 full-skip подтверждён: {len(buckets['full_skip'])} | 📈 avoid-pump продолжился: {len(buckets['avoid_pump_continued'])} | 🟢 quality-exception Paper: {len(buckets['quality_exception'])} | 🟣 speculative WATCH pump: {len(buckets['spec_watch_pump'])} | 🛡 WATCH спас: {len(buckets['watch_saved'])} | 🟡 neutral: {len(buckets['neutral'])} | 🔴 entry-error: {len(buckets['buy_error'])} | 🔎 review: {len(buckets['review'])}",
@@ -8010,7 +8011,7 @@ def v197_closed_paper_classifier_report(limit=8):
     add_examples("📈 Avoid-pump продолжился без отката — timing-урок, не BUY-ошибка:", "avoid_pump_continued", True)
     add_examples("🟢 Paper quality-exception кандидаты:", "quality_exception", True)
     add_examples("🟣 Спекулятивный WATCH-памп — не считать спасением от падения:", "spec_watch_pump", True)
-    add_examples("🔴 Entry/BUT error — требует проверки, без авто-весов:", "buy_error", False)
+    add_examples("🔴 Entry/BUY error — требует проверки, без авто-весов:", "buy_error", False)
     add_examples("🛡 WATCH реально спас от падения:", "watch_saved", False)
 
     if learning_quality:
@@ -13396,8 +13397,8 @@ def build_audit_file(chat_id):
     add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
     add("LEARNING QUALITY CORE", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
     add("ACTIVE LEARNING PROFILES CORE", lambda: v195_active_learning_profiles(load_json(RESULTS_FILE)), 10)
-    add("LEARNING DEVELOPMENT RADAR V19.6", lambda: v196_learning_development_radar(load_json(RESULTS_FILE)), 12)
-    add("PAPER CLASSIFIER V19.7.2", lambda: v197_closed_paper_classifier_report(), 10)
+    add("LEARNING DEVELOPMENT RADAR CORE", lambda: v196_learning_development_radar(load_json(RESULTS_FILE)), 12)
+    add("PAPER CLASSIFIER V19.7.3", lambda: v197_closed_paper_classifier_report(), 10)
     add("LEARNING SPRINT CORE", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
     add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
     add("MARKET", market_status, 10)
@@ -14100,6 +14101,7 @@ def main():
                         "🧠 v19.7: Paper Classifier превращает закрытые Paper-сделки в профили full-skip / pump / quality-exception\n"
                         "🧹 v19.7.1: QA-cleanup классификатора, AAVE quality-exception и wording fixes\n"
                         "🟣 v19.7.2: Learning больше не считает speculative WATCH-pump спасением от падения\n"
+                        "🧹 v19.7.3: Finalizer/ETA labels приведены к CORE, WATCH-минус больше не entry-error\n"
                         "🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%\n"
                         "🚀 v19.4: main.py → GitHub → одна кнопка ручного Render deploy\n"
                         "🛡 v19.4.1: state restore guard защищает learning/paper/frozen от отката после redeploy"
