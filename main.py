@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.5.1 EXTREME FEAR AUDIT SHORT FIX"
+BOT_VERSION = "v19.5.2 AUTO AUDIT EXTREME FEAR UNIFY"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -3314,10 +3314,11 @@ def compact_market_risk_line(ctx):
     btc_change = ctx.get("btc_change", 0)
     fg_value = ctx.get("fg_value", 50)
 
-    if level == "danger":
-        return f"⚠️ Риск рынка: 🔴 опасный — BTC {btc_change:.2f}%, страх {fg_value}"
+    # v19.5.2: user-facing extreme-fear has priority over internal danger/caution labels.
     if v195_extreme_fear_user_no_buy(ctx) or v115_extreme_fear_btc_weak(ctx):
         return f"⚠️ Риск рынка: 🟡 extreme-fear / no-buy — BTC {btc_change:.2f}%, страх {fg_value}"
+    if level == "danger":
+        return f"⚠️ Риск рынка: 🔴 опасный — BTC {btc_change:.2f}%, страх {fg_value}"
     if v106_safe_caution(ctx):
         return f"⚠️ Риск рынка: 🟠 safe-caution — BTC {btc_change:.2f}%, страх {fg_value}"
     if level == "caution":
@@ -3408,21 +3409,20 @@ def v106_safe_caution(ctx):
 
 
 def v195_extreme_fear_user_no_buy(ctx):
-    """v19.5.1: пользовательский слой.
-    При страхе <=15 и BTC в минусе нельзя показывать обычный/safe-caution статус,
-    даже если внутренний risk engine оставляет это как пограничный режим. BUY всё равно 0.
+    """v19.5.2: пользовательский слой.
+    При страхе <=15 и BTC в минусе все пользовательские отчёты должны звучать как
+    extreme-fear / no-buy, даже если внутренний risk engine классифицирует режим как
+    danger/caution/safe_caution. Это только wording/display guard: BUY, веса и автоторговля
+    не меняются.
     """
     if not isinstance(ctx, dict):
         return False
     try:
         fg_value = v181_safe_float(ctx.get("fg_value", 50), 50)
         btc_change = v181_safe_float(ctx.get("btc_change", 0), 0)
-        news_score = v181_safe_float(ctx.get("macro_mod", ctx.get("geo_mod", 0)), 0)
     except Exception:
         return False
-    if market_risk_level(ctx) == "danger":
-        return False
-    return bool(fg_value <= 15 and btc_change < 0 and news_score <= 3)
+    return bool(fg_value <= 15 and btc_change < 0)
 
 def v115_extreme_fear_btc_weak(ctx):
     """
@@ -3455,11 +3455,12 @@ def v115_extreme_fear_btc_weak(ctx):
 def macro_action_hint(ctx):
     level = market_risk_level(ctx)
 
-    if level == "danger":
-        return "Решение: BUY запрещены. BTC/ETH — только после стабилизации. Альты — не трогать, только наблюдать."
-
+    # v19.5.2: в пользовательском тексте extreme-fear/no-buy важнее внутреннего danger.
     if v195_extreme_fear_user_no_buy(ctx) or v115_extreme_fear_btc_weak(ctx):
         return "Решение: экстремальный страх. BUY запрещены. BTC/ETH — только наблюдать, без первой части."
+
+    if level == "danger":
+        return "Решение: BUY запрещены. BTC/ETH — только после стабилизации. Альты — не трогать, только наблюдать."
 
     if v106_safe_caution(ctx):
         return "Решение: safe-caution. BUY запрещены до стабилизации BTC. BTC/ETH — наблюдать, альты — только после разворота рынка."
@@ -13079,6 +13080,22 @@ def auto_audit_btc_bucket(value):
 
 
 
+def auto_audit_market_label(ctx):
+    """v19.5.2: единая пользовательская метка рынка для Auto-Audit.
+    Не меняет внутренний risk engine, только текст и сравнение в self-check.
+    """
+    if not isinstance(ctx, dict):
+        return "unknown"
+    if v195_extreme_fear_user_no_buy(ctx) or v115_extreme_fear_btc_weak(ctx):
+        return "extreme-fear/no-buy"
+    risk = market_risk_level(ctx)
+    if risk == "danger":
+        return "danger/no-buy"
+    if v106_safe_caution(ctx):
+        return "safe-caution/no-buy"
+    return risk
+
+
 def auto_audit_new_closed_cards(prev_closed, current_closed, max_cards=3):
     """v19.0: короткие карточки новых closed Paper прямо в Auto-Audit."""
     cards=[]
@@ -13114,7 +13131,8 @@ def auto_audit_build_text(reason_lines, ctx, paper, learning, force=False):
     btc_change = v181_safe_float(ctx.get("btc_change", 0), 0) if isinstance(ctx, dict) else 0
     fg_value = ctx.get("fg_value", "?") if isinstance(ctx, dict) else "?"
     macro = ctx.get("macro_mod", 0) if isinstance(ctx, dict) else 0
-    risk = market_risk_level(ctx) if isinstance(ctx, dict) else "neutral"
+    # v19.5.2: Auto-Audit показывает тот же no-buy regime, что /market и /signal.
+    risk = auto_audit_market_label(ctx) if isinstance(ctx, dict) else "neutral"
     forced = "\nРежим: плановая сводка без спама." if force else ""
     reasons = "\n".join([f"• {r}" for r in reason_lines[:6]]) if reason_lines else "• изменений для срочного действия нет"
     last_assets = ", ".join(paper.get("last_closed_assets") or []) or "нет"
@@ -13191,7 +13209,9 @@ def auto_audit_check_and_send(chat_id=None, force=False):
 
     paper = auto_audit_paper_stats()
     learning = auto_audit_learning_stats()
-    risk = market_risk_level(ctx) if isinstance(ctx, dict) else "unknown"
+    # v19.5.2: для Auto-Audit сравниваем и показываем user-facing режим,
+    # чтобы fear<=15 + BTC<0 не мигал как caution/danger.
+    risk = auto_audit_market_label(ctx) if isinstance(ctx, dict) else "unknown"
     btc_bucket = auto_audit_btc_bucket(ctx.get("btc_change", 0) if isinstance(ctx, dict) else 0)
 
     prev_closed = state.get("last_paper_closed")
@@ -13490,6 +13510,7 @@ def main():
                         "⚡ Learning Sprint: /learning_sprint ускоряет выводы по 6/12/24ч checkpoints\n"
                         "🧠 v19.5: active learning profiles — AAVE quality-exception, full-skip и avoid-pump профили без изменения BUY-весов\n"
                         "🟡 v19.5.1: fear<=15 + BTC<0 в пользовательских отчётах всегда extreme-fear/no-buy, не safe-caution\n"
+                        "🧠 v19.5.2: Auto-Audit тоже показывает extreme-fear/no-buy и не мигает caution/danger при страхе\n"
                         "🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%\n"
                         "🚀 v19.4: main.py → GitHub → одна кнопка ручного Render deploy\n"
                         "🛡 v19.4.1: state restore guard защищает learning/paper/frozen от отката после redeploy"
