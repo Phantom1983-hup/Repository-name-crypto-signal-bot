@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.6 FRESHNESS 48H FINALIZER LEARNING RADAR"
+BOT_VERSION = "v19.6.1 FINALIZER NOW REFRESH QUEUE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -2201,6 +2201,9 @@ COMMAND_POOL_ALIASES = {
     "learning_sprint": "/learning_sprint",
     "improvement_radar": "/improvement_radar",
     "learning_radar": "/improvement_radar",
+    "finalizer_now": "/finalizer_now",
+    "finalizer": "/finalizer_now",
+    "48h_finalizer": "/finalizer_now",
     "радар улучшений": "/improvement_radar",
     "learn_sprint": "/learning_sprint",
     "обучение ускорение": "/learning_sprint",
@@ -7712,6 +7715,76 @@ def improvement_radar_user_report():
     text += "\nПодробно: /audit_file"
     return text
 
+
+def v1961_finalizer_now_user_report():
+    """v19.6.1: ручной безопасный запуск refresh + 48h finalizer без ожидания планового часа.
+    Не включает BUY, не меняет реальные веса и не запускает автоторговлю.
+    """
+    before_learning = load_json(RESULTS_FILE)
+    before_paper = paper_store()
+    try:
+        before_open_l = len(before_learning.get("open", {}) if isinstance(before_learning, dict) and isinstance(before_learning.get("open", {}), dict) else {})
+        before_closed_l = len(before_learning.get("closed", []) if isinstance(before_learning, dict) and isinstance(before_learning.get("closed", []), list) else [])
+    except Exception:
+        before_open_l = before_closed_l = 0
+    try:
+        before_open_p = len(before_paper.get("open", {}) if isinstance(before_paper, dict) and isinstance(before_paper.get("open", {}), dict) else {})
+        before_closed_p = len(before_paper.get("closed", []) if isinstance(before_paper, dict) and isinstance(before_paper.get("closed", []), list) else [])
+    except Exception:
+        before_open_p = before_closed_p = 0
+
+    learning_err = None
+    paper_err = None
+    paper_changed = False
+    paper_updated = 0
+    paper_closed = 0
+
+    try:
+        update_signal_results()
+    except Exception as e:
+        learning_err = str(e)[:120]
+
+    try:
+        paper_changed, paper_updated, paper_closed = paper_update_from_cache()
+    except Exception as e:
+        paper_err = str(e)[:120]
+
+    after_learning = load_json(RESULTS_FILE)
+    after_paper = paper_store()
+    try:
+        after_open_l = len(after_learning.get("open", {}) if isinstance(after_learning, dict) and isinstance(after_learning.get("open", {}), dict) else {})
+        after_closed_l = len(after_learning.get("closed", []) if isinstance(after_learning, dict) and isinstance(after_learning.get("closed", []), list) else [])
+    except Exception:
+        after_open_l = after_closed_l = 0
+    try:
+        after_open_p = len(after_paper.get("open", {}) if isinstance(after_paper, dict) and isinstance(after_paper.get("open", {}), dict) else {})
+        after_closed_p = len(after_paper.get("closed", []) if isinstance(after_paper, dict) and isinstance(after_paper.get("closed", []), list) else [])
+    except Exception:
+        after_open_p = after_closed_p = 0
+
+    lines = [
+        "⏳ v19.6.1 FINALIZER NOW",
+        "Запущен безопасный refresh learning + paper 48h finalizer вручную.",
+        "BUY-веса, Risk Engine и автоторговля не менялись.",
+        "",
+        f"Learning: open {before_open_l} → {after_open_l} | closed48 {before_closed_l} → {after_closed_l}",
+        f"Paper: open {before_open_p} → {after_open_p} | closed {before_closed_p} → {after_closed_p}",
+        f"Paper checkpoints обновлено: {paper_updated} | закрыто сейчас: {paper_closed}",
+    ]
+    if learning_err:
+        lines.append(f"⚠️ Learning refresh error: {learning_err}")
+    if paper_err:
+        lines.append(f"⚠️ Paper finalizer error: {paper_err}")
+    if not learning_err and not paper_err:
+        lines.append("✅ Finalizer отработал штатно.")
+
+    lines.append("\nСледующий радар улучшений:")
+    try:
+        lines.append(v196_learning_priority_radar(after_learning))
+    except Exception:
+        lines.append("/improvement_radar")
+    return "\n".join(lines)
+
 def learning_sprint_user_report():
     return v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=True)
 
@@ -13148,7 +13221,7 @@ def help_text():
         "Команды тоже работают:\n"
         "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /top\n"
         "📦 Можно отправить пул команд одним сообщением, каждая с новой строки: /paper, /signal, /learning, /alerts. Бот выполнит их по очереди.\n"
-        "/storage, /backup, /weekday, /learn_fast, /learning_sprint, /improvement_radar, /paper, /flush, /auto_audit_status, /auto_audit_now, /auto_audit_on, /auto_audit_off, /auto_audit_mode, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /deploy_latest, /deploy_status, /state_status, /state_restore, /rollback\n"
+        "/storage, /backup, /weekday, /learn_fast, /learning_sprint, /improvement_radar, /finalizer_now, /paper, /flush, /auto_audit_status, /auto_audit_now, /auto_audit_on, /auto_audit_off, /auto_audit_mode, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /deploy_latest, /deploy_status, /state_status, /state_restore, /rollback\n"
         "TON вводить можно: бот автоматически откроет GRAM.\n\n"
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход частями\n"
@@ -13762,6 +13835,7 @@ def main():
                         "🟡 v19.5.1: fear<=15 + BTC<0 в пользовательских отчётах всегда extreme-fear/no-buy, не safe-caution\n"
                         "🧠 v19.5.2: Auto-Audit тоже показывает extreme-fear/no-buy и не мигает caution/danger при страхе\n"
                         "🧊 v19.6: freshness guard, 48h finalizer, anti-overfit и learning priority radar\n"
+                        "⏳ v19.6.1: /finalizer_now запускает refresh + 48h finalizer вручную, без ожидания планового часа\n"
                         "🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%\n"
                         "🚀 v19.4: main.py → GitHub → одна кнопка ручного Render deploy\n"
                         "🛡 v19.4.1: state restore guard защищает learning/paper/frozen от отката после redeploy"
@@ -13943,6 +14017,10 @@ def main():
 
                 elif text in ["/improvement_radar", "/learning_radar", "/radar"]:
                     send_message(chat_id, improvement_radar_user_report())
+
+                elif text in ["/finalizer_now", "/finalizer", "/48h_finalizer"]:
+                    send_message(chat_id, "⏳ Запускаю v19.6.1 refresh + 48h finalizer, подожди 10–30 секунд...")
+                    send_message(chat_id, v1961_finalizer_now_user_report())
 
                 elif text in ["/learning_full", "/learning_audit"]:
                     send_message(chat_id, learning_user_report() + "\n\n📄 Полный learning/audit теперь отправляется только файлом: /audit_file")
