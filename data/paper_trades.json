@@ -1800,6 +1800,25 @@
       "last_price": 0.39408,
       "last_price_time": 1782429991.9267008,
       "last_pct": 12.96
+    },
+    "H:AVOID_PUMP_TEST:495120": {
+      "id": "H:AVOID_PUMP_TEST:495120",
+      "asset": "H",
+      "entry_time": 1782435479.6107981,
+      "entry_price": 0.058236,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 16.99,
+      "btc_change": -1.94,
+      "macro_mod": 8,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [
@@ -3728,6 +3747,6 @@
       "outcome": "avoid_saved"
     }
   ],
-  "last_created_at": 1782409722.9885206,
+  "last_created_at": 1782435479.6107981,
   "last_update_at": 1782431486.8841765
 }
