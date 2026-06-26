@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.6.1 FINALIZER NOW REFRESH QUEUE"
+BOT_VERSION = "v19.6.2 SMART PAPER ETA FINALIZER"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -7716,6 +7716,71 @@ def improvement_radar_user_report():
     return text
 
 
+
+def _v1962_format_eta_seconds(sec):
+    try:
+        sec = int(max(0, float(sec)))
+    except Exception:
+        sec = 0
+    h = sec // 3600
+    m = (sec % 3600) // 60
+    if h <= 0:
+        return f"{m}м"
+    return f"{h}ч {m}м"
+
+
+def v1962_paper_finalizer_eta_report(paper_data=None, limit=8):
+    """v19.6.2: поясняет, почему /finalizer_now мог не закрыть Paper,
+    и показывает ближайшие paper-сделки к 48h. Только отчёт, без BUY/весов.
+    """
+    if paper_data is None:
+        paper_data = paper_store()
+    if not isinstance(paper_data, dict):
+        paper_data = {}
+    open_trades = paper_data.get("open", {}) if isinstance(paper_data.get("open", {}), dict) else {}
+    if not open_trades:
+        return "\n⏳ Paper ETA: открытых paper-сделок нет."
+    now = time.time()
+    rows = []
+    mature = 0
+    for trade in open_trades.values():
+        if not isinstance(trade, dict):
+            continue
+        asset = str(trade.get("asset", "?")).upper()
+        vtype = str(trade.get("virtual_type", ""))
+        entry_time = float(trade.get("entry_time", 0) or 0)
+        if entry_time <= 0:
+            continue
+        age = max(0, now - entry_time)
+        left = 48 * 3600 - age
+        if left <= 0:
+            mature += 1
+        last_pct = trade.get("last_pct", None)
+        pct_txt = ""
+        try:
+            if isinstance(last_pct, (int, float)):
+                pct_txt = f" | сейчас {last_pct:+.2f}%"
+        except Exception:
+            pct_txt = ""
+        rows.append((left, asset, vtype, age, pct_txt))
+    rows.sort(key=lambda x: x[0])
+    lines = ["", "⏳ v19.6.2 PAPER FINALIZER ETA"]
+    if mature:
+        lines.append(f"Созревших paper-сделок уже: {mature}. Если они не закрылись, вероятно, не хватило цены/кэша; повтори /finalizer_now через 5–10 минут.")
+    else:
+        first_left = rows[0][0] if rows else 0
+        lines.append(f"Сейчас закрыто 0 — это нормально: ближайшие paper-сделки ещё не достигли 48ч. Ближайшая через {_v1962_format_eta_seconds(first_left)}.")
+    lines.append("Ближайшие paper-финалы:")
+    for left, asset, vtype, age, pct_txt in rows[:limit]:
+        if left <= 0:
+            eta = "созрела"
+        else:
+            eta = "через " + _v1962_format_eta_seconds(left)
+        age_txt = _v1962_format_eta_seconds(age)
+        lines.append(f"• {asset}: {eta} | прошло {age_txt}{pct_txt} | {vtype}")
+    lines.append("Правило: Paper закрывается только при 48ч; ранний refresh обновляет checkpoints, но не закрывает незрелые сделки.")
+    return "\n".join(lines)
+
 def v1961_finalizer_now_user_report():
     """v19.6.1: ручной безопасный запуск refresh + 48h finalizer без ожидания планового часа.
     Не включает BUY, не меняет реальные веса и не запускает автоторговлю.
@@ -7770,6 +7835,7 @@ def v1961_finalizer_now_user_report():
         f"Learning: open {before_open_l} → {after_open_l} | closed48 {before_closed_l} → {after_closed_l}",
         f"Paper: open {before_open_p} → {after_open_p} | closed {before_closed_p} → {after_closed_p}",
         f"Paper checkpoints обновлено: {paper_updated} | закрыто сейчас: {paper_closed}",
+        v1962_paper_finalizer_eta_report(after_paper),
     ]
     if learning_err:
         lines.append(f"⚠️ Learning refresh error: {learning_err}")
@@ -13836,6 +13902,7 @@ def main():
                         "🧠 v19.5.2: Auto-Audit тоже показывает extreme-fear/no-buy и не мигает caution/danger при страхе\n"
                         "🧊 v19.6: freshness guard, 48h finalizer, anti-overfit и learning priority radar\n"
                         "⏳ v19.6.1: /finalizer_now запускает refresh + 48h finalizer вручную, без ожидания планового часа\n"
+                        "🧭 v19.6.2: /finalizer_now показывает Paper ETA и объясняет, почему закрыто 0, если 48ч ещё не наступили\n"
                         "🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%\n"
                         "🚀 v19.4: main.py → GitHub → одна кнопка ручного Render deploy\n"
                         "🛡 v19.4.1: state restore guard защищает learning/paper/frozen от отката после redeploy"
