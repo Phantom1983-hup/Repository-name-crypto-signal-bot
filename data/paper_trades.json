@@ -1716,6 +1716,25 @@
       "last_price": 0.27503,
       "last_price_time": 1782464830.558246,
       "last_pct": -1.41
+    },
+    "DN:AVOID_PUMP_TEST:495131": {
+      "id": "DN:AVOID_PUMP_TEST:495131",
+      "asset": "DN",
+      "entry_time": 1782473651.4931998,
+      "entry_price": 0.42261,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 16.99,
+      "btc_change": -2.94,
+      "macro_mod": -15,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [
@@ -3940,6 +3959,6 @@
       "outcome": "avoid_saved"
     }
   ],
-  "last_created_at": 1782444612.2627728,
+  "last_created_at": 1782473651.4931998,
   "last_update_at": 1782471733.2154408
 }
