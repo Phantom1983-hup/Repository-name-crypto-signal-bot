@@ -1,7 +1,7 @@
 {
   "enabled": true,
-  "last_check_at": 1782445320.8208532,
-  "last_sent_at": 1782445320.8208532,
+  "last_check_at": 1782446387.4251063,
+  "last_sent_at": 1782446387.4251063,
   "last_forced_at": 1782417005.8693898,
   "last_paper_closed": 27,
   "last_paper_saved": 17,
@@ -9,14 +9,12 @@
   "last_learning_open": 31,
   "last_learning_closed": 5,
   "last_risk": "extreme-fear/no-buy",
-  "last_btc_bucket": "btc_drop_2",
-  "last_timing_checked": 32,
+  "last_btc_bucket": "btc_red",
+  "last_timing_checked": 33,
   "last_reason_lines": [
-    "Paper closed вырос: 26 → 27",
-    "🛡 спасло от входа выросло: 16 → 17",
-    "сменился режим рынка: danger → extreme-fear/no-buy",
-    "Learning open изменился: 30 → 31"
+    "сменился BTC bucket: btc_drop_2 → btc_red",
+    "Timing-сценариев стало больше: 32 → 33"
   ],
-  "version": "v19.5.2 AUTO AUDIT EXTREME FEAR UNIFY",
+  "version": "v19.6 FRESHNESS 48H FINALIZER LEARNING RADAR",
   "mode": "active"
 }
