@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.5.2 AUTO AUDIT EXTREME FEAR UNIFY"
+BOT_VERSION = "v19.6 FRESHNESS 48H FINALIZER LEARNING RADAR"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -2199,6 +2199,9 @@ COMMAND_POOL_ALIASES = {
     "learning_full": "/learning_full",
     "learning_audit": "/learning_full",
     "learning_sprint": "/learning_sprint",
+    "improvement_radar": "/improvement_radar",
+    "learning_radar": "/improvement_radar",
+    "радар улучшений": "/improvement_radar",
     "learn_sprint": "/learning_sprint",
     "обучение ускорение": "/learning_sprint",
     "спринт обучения": "/learning_sprint",
@@ -7372,7 +7375,7 @@ def v192_checkpoint_accelerator_summary(data, compact=False):
             f"Вход сразу по-прежнему не усиливаем. Подробно: /audit_file"
         )
     text = (
-        "⚡ v19.5 CHECKPOINT ACCELERATOR / LEARNING SPRINT\n"
+        "⚡ v19.6 CHECKPOINT ACCELERATOR / LEARNING SPRINT\n"
         "Задача: не сидеть 48ч без дела. 48ч остаётся финальным судом, но 6ч/12ч/24ч уже дают предварительные уроки для профилей монет и режимов. Автоторговля выключена.\n"
         f"Open-наблюдений с checkpoints: {len(rows)} | зрелых 6ч+: {mature}.\n"
         f"Предварительно: полный skip/не вход {counts.get('skip',0)} | осторожность защищает {counts.get('protect',0)} | quality-growth {counts.get('quality',0)} | pump-growth {counts.get('pump',0)} | спорно {counts.get('neutral',0)}.\n"
@@ -7380,7 +7383,7 @@ def v192_checkpoint_accelerator_summary(data, compact=False):
     )
     if examples:
         text += "Ключевые ускоренные уроки:\n" + "\n".join(["• "+r["note"] for r in examples]) + "\n"
-    text += "Правило v19.5: ранние checkpoints ускоряют обучение и строят профили, но не дают права на реальный вход без подтверждения объёма, фона и 48ч статистики.\n\n"
+    text += "Правило v19.6: ранние checkpoints ускоряют обучение и строят профили, но не дают права на реальный вход без подтверждения объёма, фона и 48ч статистики.\n\n"
     return text
 
 
@@ -7462,6 +7465,252 @@ def v195_active_learning_profiles(data):
     lines.append("\nПравило v19.5: ранние профили готовят выводы заранее, но реальные веса/BUY/автоторговля не усиливаются без закрытых 48ч и улучшения рынка.")
     return "\n".join(lines) + "\n"
 
+
+
+def v196_price_freshness(rec, now=None):
+    """v19.6: возраст последнего ценового снимка для защиты обучения от устаревших данных."""
+    if now is None:
+        now = time.time()
+    try:
+        price, ts, source = learning_cached_price_for_report(rec)
+        ts = float(ts or 0)
+        if ts <= 0:
+            return None, source or "none", 999999.0
+        age_min = max(0.0, (float(now) - ts) / 60.0)
+        return price, source or "cache", age_min
+    except Exception:
+        return None, "error", 999999.0
+
+
+def v196_freshness_guard_summary(data):
+    """v19.6: показывает, какие open-наблюдения свежие, а какие нельзя использовать для сильных выводов."""
+    if not isinstance(data, dict):
+        return "🧊 v19.6 Freshness Guard\nДанных обучения пока нет.\n"
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    now = time.time()
+    fresh = []
+    warm = []
+    stale = []
+    no_data = []
+    for rec in open_items.values():
+        if not isinstance(rec, dict):
+            continue
+        asset = str(rec.get("asset", "?")).upper()
+        price, source, age_min = v196_price_freshness(rec, now=now)
+        vals = v18_checkpoint_values(rec)
+        remain_h = None
+        try:
+            start_time = float(rec.get("time", rec.get("created_at", 0)) or 0)
+            if start_time > 0:
+                remain_h = 48.0 - max(0.0, (now - start_time) / 3600.0)
+        except Exception:
+            remain_h = None
+        row = {"asset": asset, "age": age_min, "source": source, "price": price, "checkpoints": len(vals), "remain_h": remain_h}
+        if age_min >= 999999:
+            no_data.append(row)
+        elif age_min <= 60:
+            fresh.append(row)
+        elif age_min <= 180:
+            warm.append(row)
+        else:
+            stale.append(row)
+    stale_sorted = sorted(stale + no_data, key=lambda r: r.get("age", 999999), reverse=True)[:8]
+    lines = [
+        "🧊 v19.6 FRESHNESS GUARD",
+        "Задача: не давать боту делать сильные выводы по старым ценовым снимкам.",
+        f"Open-наблюдений: {len(open_items)} | свежие ≤60м: {len(fresh)} | 60–180м: {len(warm)} | старые >180м/нет цены: {len(stale) + len(no_data)}",
+    ]
+    if stale_sorted:
+        lines.append("\n⚠️ Не использовать для сильных выводов без обновления цены:")
+        for r in stale_sorted:
+            if r.get("age", 999999) >= 999999:
+                age_txt = "нет свежего снимка"
+            else:
+                age_txt = f"снимок {int(r['age'])}м назад"
+            cp = r.get("checkpoints", 0)
+            remain = r.get("remain_h")
+            remain_txt = f" | 48ч через {max(0, remain):.1f}ч" if isinstance(remain, (int, float)) else ""
+            lines.append(f"• {r['asset']}: {age_txt}, checkpoints {cp}{remain_txt} — вывод только предварительный")
+    else:
+        lines.append("\n✅ Критично устаревших open-наблюдений не видно.")
+    lines.append("\nПравило v19.6: если snapshot старше 60м — не усиливать BUY/Timing; старше 180м — требовать обновления цены перед сильным выводом.")
+    return "\n".join(lines) + "\n"
+
+
+def v196_48h_finalizer_queue(data, max_rows=12):
+    """v19.6: очередь ближайших 48ч финалов, чтобы заранее видеть, какие уроки скоро закроются."""
+    if not isinstance(data, dict):
+        return "⏳ v19.6 48H FINALIZER\nДанных обучения пока нет.\n"
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    now = time.time()
+    rows = []
+    for rec in open_items.values():
+        if not isinstance(rec, dict):
+            continue
+        vals = v18_checkpoint_values(rec)
+        if not vals:
+            continue
+        asset = str(rec.get("asset", "?")).upper()
+        try:
+            start_time = float(rec.get("time", rec.get("created_at", 0)) or 0)
+        except Exception:
+            start_time = 0
+        if start_time <= 0:
+            continue
+        age_h = max(0.0, (now - start_time) / 3600.0)
+        remain_h = 48.0 - age_h
+        if remain_h > 12 or remain_h < -4:
+            continue
+        best_name, best = max(vals, key=lambda kv: kv[1])
+        worst_name, worst = min(vals, key=lambda kv: kv[1])
+        latest_name, latest = vals[-1]
+        cls, note = v18_learning_decision_class(rec, final_only=False)
+        regime = v183_regime_for_rec(rec)
+        price, source, age_min = v196_price_freshness(rec, now=now)
+        rows.append({
+            "asset": asset, "remain_h": remain_h, "best_name": best_name, "best": best,
+            "worst_name": worst_name, "worst": worst, "latest_name": latest_name, "latest": latest,
+            "class": cls, "note": note, "regime": regime, "age_min": age_min
+        })
+    rows = sorted(rows, key=lambda r: abs(r["remain_h"]))[:max_rows]
+    lines = [
+        "⏳ v19.6 48H FINALIZER QUEUE",
+        "Задача: заранее готовить финальные уроки, а не вспоминать о них после закрытия.",
+        f"К закрытию/финалу в ближайшие 12ч: {len(rows)}",
+    ]
+    if rows:
+        for r in rows:
+            if r["remain_h"] >= 0:
+                ttxt = f"через {r['remain_h']:.1f}ч"
+            else:
+                ttxt = f"просрочено {abs(r['remain_h']):.1f}ч"
+            fresh_flag = "⚠️ old price" if r.get("age_min", 0) > 180 else "✅ fresh" if r.get("age_min", 999) <= 60 else "🟡 cache"
+            lines.append(
+                f"• {r['asset']}: финал {ttxt} | {fresh_flag} | лучший {r['best_name']} {r['best']:+.2f}% | худший {r['worst_name']} {r['worst']:+.2f}% | сейчас {r['latest_name']} {r['latest']:+.2f}% | {r['regime']}"
+            )
+    lines.append("\nПравило v19.6: после 48ч закрытия бот классифицирует кейс как full-skip / quality-exception / avoid-pump / neutral и только потом готовит веса, без автоторговли.")
+    return "\n".join(lines) + "\n"
+
+
+def v196_anti_overfit_guard(data):
+    """v19.6: защита от переобучения на одном удачном входе/пампе."""
+    if not isinstance(data, dict):
+        return "🧯 v19.6 Anti-Overfit Guard\nДанных обучения пока нет.\n"
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    rows = []
+    for rec in list(open_items.values()) + list(closed):
+        if not isinstance(rec, dict):
+            continue
+        try:
+            r = v188_shadow_timing_for_rec(rec)
+            if r:
+                rows.append(r)
+        except Exception:
+            pass
+    now_better = [r for r in rows if r.get("class") == "entry_now_better"]
+    wait_better = [r for r in rows if r.get("class") in ["delay_better", "delay_slightly_better"]]
+    skip_best = [r for r in rows if r.get("class") == "skip_best"]
+    lines = [
+        "🧯 v19.6 ANTI-OVERFIT GUARD",
+        "Задача: не дать одному удачному пампу сломать осторожную стратегию.",
+        f"Timing-сценариев: {len(rows)} | ждать лучше {len(wait_better)} | полный skip лучше {len(skip_best)} | вход сразу лучше {len(now_better)}",
+    ]
+    if len(now_better) < 5:
+        lines.append(f"\n🛡 Вход сразу НЕ усиливать: кейсов всего {len(now_better)} из минимум 5–10 нужных.")
+    else:
+        lines.append("\n🟡 Есть серия входов сразу, но всё равно требуется проверка режима рынка, объёма и 48ч закрытий.")
+    if now_better:
+        lines.append("Единичные now-бetter кейсы учитывать как research, не как сигнал BUY:")
+        for r in now_better[-5:]:
+            asset = str(r.get("asset", "?")).upper()
+            regime = str(r.get("regime", "?"))
+            delay = str(r.get("best_delay_label", "?"))
+            lines.append(f"• {asset}: режим {regime}, лучший сценарий {delay}; веса не менять без серии")
+    lines.append("\nПравило v19.6: любые BUY/entry-now усиления только после серии закрытых 48ч кейсов, а не по одному исключению.")
+    return "\n".join(lines) + "\n"
+
+
+def v196_learning_priority_radar(data):
+    """v19.6: автопредложение следующих улучшений, чтобы ChatGPT/админ не напоминали вручную."""
+    if not isinstance(data, dict):
+        return "🧭 v19.6 Learning Priority Radar\nДанных обучения пока нет.\n"
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    now = time.time()
+    stale_n = 0
+    close_n = 0
+    quality_n = 0
+    full_skip_n = 0
+    pump_n = 0
+    for rec in open_items.values():
+        if not isinstance(rec, dict):
+            continue
+        asset = str(rec.get("asset", "?")).upper()
+        vals = v18_checkpoint_values(rec)
+        if not vals:
+            continue
+        price, source, age_min = v196_price_freshness(rec, now=now)
+        if age_min > 180:
+            stale_n += 1
+        try:
+            start_time = float(rec.get("time", rec.get("created_at", 0)) or 0)
+            remain_h = 48.0 - max(0.0, (now - start_time) / 3600.0)
+            if -1 <= remain_h <= 4:
+                close_n += 1
+        except Exception:
+            pass
+        best_name, best = max(vals, key=lambda kv: kv[1])
+        worst_name, worst = min(vals, key=lambda kv: kv[1])
+        verdict = str(rec.get("verdict", "") or "") + " " + str(rec.get("status", "") or "")
+        is_quality = asset in QUALITY_LEARNING_ASSETS or asset in ["BTC", "ETH", "SOL", "LINK", "AAVE", "BNB", "TAO", "SUI", "AVAX", "NEAR"]
+        is_pump = ("НЕ ДОГОНЯТЬ" in verdict) or ("СПЕКУЛЯТИВ" in verdict)
+        if is_quality and best >= 6:
+            quality_n += 1
+        if worst <= -8:
+            full_skip_n += 1
+        if is_pump and best >= 8:
+            pump_n += 1
+    lines = [
+        "🧭 v19.6 LEARNING PRIORITY RADAR",
+        "Авто-предложения следующих улучшений после каждого теста:",
+    ]
+    priorities = []
+    if stale_n:
+        priorities.append((1, f"Freshness guard: обновить/пометить старые цены в {stale_n} open-наблюдениях"))
+    if close_n:
+        priorities.append((2, f"48h finalizer: обработать {close_n} ближайших финальных закрытий"))
+    if quality_n:
+        priorities.append((3, f"Quality-exception: отдельно вести {quality_n} качественных ростов против плохого рынка"))
+    if full_skip_n:
+        priorities.append((4, f"Full-skip profile: усилить шаблоны не-догонять по {full_skip_n} просадочным кейсам"))
+    if pump_n:
+        priorities.append((5, f"Avoid-pump timing: разделить памп-продолжение и опасное догоняние по {pump_n} кейсам"))
+    if not priorities:
+        priorities.append((9, "Критичных улучшений сейчас нет: собирать статистику и ждать закрытия 48ч"))
+    for _, txt in sorted(priorities)[:6]:
+        lines.append(f"• {txt}")
+    lines.append("\nПравило работы дальше: сделали версию → проверили → если зелёно, следующий шаг предлагает сам Radar.")
+    return "\n".join(lines) + "\n"
+
+
+def v196_learning_development_radar(data):
+    """Компактный объединённый блок v19.6 для audit_file."""
+    return (
+        v196_learning_priority_radar(data) + "\n" +
+        v196_freshness_guard_summary(data) + "\n" +
+        v196_48h_finalizer_queue(data) + "\n" +
+        v196_anti_overfit_guard(data)
+    )
+
+
+def improvement_radar_user_report():
+    data = load_json(RESULTS_FILE)
+    if not isinstance(data, dict):
+        data = {}
+    # Короткая версия для Telegram, без огромного audit_file.
+    text = v196_learning_priority_radar(data)
+    text += "\nПодробно: /audit_file"
+    return text
 
 def learning_sprint_user_report():
     return v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=True)
@@ -12815,7 +13064,8 @@ def build_audit_file(chat_id):
     add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
     add("LEARNING QUALITY V19.5", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
     add("ACTIVE LEARNING PROFILES V19.5", lambda: v195_active_learning_profiles(load_json(RESULTS_FILE)), 10)
-    add("LEARNING SPRINT V19.5", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
+    add("LEARNING DEVELOPMENT RADAR V19.6", lambda: v196_learning_development_radar(load_json(RESULTS_FILE)), 12)
+    add("LEARNING SPRINT V19.6", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
     add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
     add("MARKET", market_status, 10)
     add("BTC FULL", lambda: single_analysis_full("BTC-USDT"), 25)
@@ -12898,7 +13148,7 @@ def help_text():
         "Команды тоже работают:\n"
         "/signal, /btc, /sol, /coin ETH, /market, /alerts, /learning, /top\n"
         "📦 Можно отправить пул команд одним сообщением, каждая с новой строки: /paper, /signal, /learning, /alerts. Бот выполнит их по очереди.\n"
-        "/storage, /backup, /weekday, /learn_fast, /learning_sprint, /paper, /flush, /auto_audit_status, /auto_audit_now, /auto_audit_on, /auto_audit_off, /auto_audit_mode, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /deploy_latest, /deploy_status, /state_status, /state_restore, /rollback\n"
+        "/storage, /backup, /weekday, /learn_fast, /learning_sprint, /improvement_radar, /paper, /flush, /auto_audit_status, /auto_audit_now, /auto_audit_on, /auto_audit_off, /auto_audit_mode, /signal, /signal_unlock, /signal_status, /learning_sync, /sync_storage, /admin_update, /deploy_latest, /deploy_status, /state_status, /state_restore, /rollback\n"
         "TON вводить можно: бот автоматически откроет GRAM.\n\n"
         "Статусы:\n"
         "🟢 ПОКУПКА — можно рассмотреть вход частями\n"
@@ -13511,6 +13761,7 @@ def main():
                         "🧠 v19.5: active learning profiles — AAVE quality-exception, full-skip и avoid-pump профили без изменения BUY-весов\n"
                         "🟡 v19.5.1: fear<=15 + BTC<0 в пользовательских отчётах всегда extreme-fear/no-buy, не safe-caution\n"
                         "🧠 v19.5.2: Auto-Audit тоже показывает extreme-fear/no-buy и не мигает caution/danger при страхе\n"
+                        "🧊 v19.6: freshness guard, 48h finalizer, anti-overfit и learning priority radar\n"
                         "🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%\n"
                         "🚀 v19.4: main.py → GitHub → одна кнопка ручного Render deploy\n"
                         "🛡 v19.4.1: state restore guard защищает learning/paper/frozen от отката после redeploy"
@@ -13689,6 +13940,9 @@ def main():
 
                 elif text in ["/learning_sprint", "/learn_sprint"]:
                     send_message(chat_id, learning_sprint_user_report())
+
+                elif text in ["/improvement_radar", "/learning_radar", "/radar"]:
+                    send_message(chat_id, improvement_radar_user_report())
 
                 elif text in ["/learning_full", "/learning_audit"]:
                     send_message(chat_id, learning_user_report() + "\n\n📄 Полный learning/audit теперь отправляется только файлом: /audit_file")
