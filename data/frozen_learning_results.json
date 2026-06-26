@@ -1654,6 +1654,87 @@
       "outcome": "watch_saved",
       "frozen_at": 1782471994.1485043,
       "version": "v19.7.4 MARKET LABEL FINAL QA"
+    },
+    "LAB:1782307318:17.41196": {
+      "asset": "LAB",
+      "time": 1782307318.5458863,
+      "price": 17.41196,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": 4.78,
+        "30m": 5.71,
+        "1h": 12.63,
+        "3h": 4.57,
+        "6h": -2.3,
+        "12h": -3.21,
+        "24h": 7.2,
+        "48h": 15.99
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782308677.3488111,
+          "target_time": 1782308218.5458863,
+          "checkpoint_price": 18.2447,
+          "checkpoint_pct": 4.78,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782309819.7210248,
+          "target_time": 1782309118.5458863,
+          "checkpoint_price": 18.40589,
+          "checkpoint_pct": 5.71,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782311169.8576994,
+          "target_time": 1782310918.5458863,
+          "checkpoint_price": 19.61137,
+          "checkpoint_pct": 12.63,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782318235.2985272,
+          "target_time": 1782318118.5458863,
+          "checkpoint_price": 18.2085,
+          "checkpoint_pct": 4.57,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782332557.5181932,
+          "target_time": 1782328918.5458863,
+          "checkpoint_price": 17.0109,
+          "checkpoint_pct": -2.3,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782350567.9094954,
+          "target_time": 1782350518.5458863,
+          "checkpoint_price": 16.85233,
+          "checkpoint_pct": -3.21,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782405787.9941285,
+          "target_time": 1782393718.5458863,
+          "checkpoint_price": 18.66556,
+          "checkpoint_pct": 7.2,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782477305.3532014,
+          "target_time": 1782480118.5458863,
+          "checkpoint_price": 20.19653,
+          "checkpoint_pct": 15.99,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782477305.3532014,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "spec_watch_pump",
+      "frozen_at": 1782482422.2464666,
+      "version": "v19.7.4 MARKET LABEL FINAL QA"
     }
   }
 }
