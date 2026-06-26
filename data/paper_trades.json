@@ -1680,6 +1680,44 @@
       "last_price": 96.137,
       "last_price_time": 1782499134.2525024,
       "last_pct": 1.34
+    },
+    "ICNT:AVOID_PUMP_TEST:495139": {
+      "id": "ICNT:AVOID_PUMP_TEST:495139",
+      "asset": "ICNT",
+      "entry_time": 1782500937.7444322,
+      "entry_price": 0.25003,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 33.71,
+      "btc_change": 0.85,
+      "macro_mod": -20,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
+    },
+    "KONET:AVOID_PUMP_TEST:495139": {
+      "id": "KONET:AVOID_PUMP_TEST:495139",
+      "asset": "KONET",
+      "entry_time": 1782500937.7444322,
+      "entry_price": 0.03129,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 14.23,
+      "btc_change": 0.85,
+      "macro_mod": -20,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [
@@ -4422,6 +4460,6 @@
       "outcome": "pump_continued_no_pullback"
     }
   ],
-  "last_created_at": 1782492560.958899,
+  "last_created_at": 1782500937.7444322,
   "last_update_at": 1782499137.2524734
 }
