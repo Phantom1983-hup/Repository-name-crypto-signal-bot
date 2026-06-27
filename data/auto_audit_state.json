@@ -1,21 +1,24 @@
 {
   "enabled": true,
-  "last_check_at": 1782551385.4920304,
-  "last_sent_at": 1782551385.4920304,
+  "last_check_at": 1782554041.7745538,
+  "last_sent_at": 1782554041.7745538,
   "last_forced_at": 1782417005.8693898,
-  "last_paper_closed": 46,
-  "last_paper_saved": 23,
-  "last_paper_open": 35,
-  "last_learning_open": 35,
-  "last_learning_closed": 28,
+  "last_paper_closed": 47,
+  "last_paper_saved": 24,
+  "last_paper_open": 34,
+  "last_learning_open": 34,
+  "last_learning_closed": 29,
   "last_risk": "caution",
-  "last_btc_bucket": "btc_flat_green",
+  "last_btc_bucket": "btc_green",
   "last_timing_checked": 60,
   "last_reason_lines": [
+    "Paper closed вырос: 46 → 47",
+    "🛡 спасло от входа выросло: 23 → 24",
     "на подходе к 48ч Paper-сделок: 1",
-    "Learning open изменился: 34 → 35",
-    "Learning closed48 вырос: 27 → 28"
+    "сменился BTC bucket: btc_flat_green → btc_green",
+    "Learning open изменился: 35 → 34",
+    "Learning closed48 вырос: 28 → 29"
   ],
-  "version": "v19.8 GLOBAL QA + SIMPLE USER REPORTS + ACCURACY SCORE",
+  "version": "v19.8.2 REPORT UX CLEANUP",
   "mode": "active"
 }
