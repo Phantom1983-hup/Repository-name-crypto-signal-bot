@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.8.1 SOL PRIORITY WATCH QA"
+BOT_VERSION = "v19.8.2 REPORT UX CLEANUP"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -14184,6 +14184,528 @@ def run_fast_learning_background_scan():
 
     Thread(target=_run, daemon=True).start()
 
+
+# =====================================================================
+# v19.8.2 REPORT UX CLEANUP
+# Пользовательские отчёты: коротко, по-русски, главные цифры выделены.
+# Технические термины и длинные списки остаются только в /audit_file.
+# =====================================================================
+
+def _tg_html_from_marked(text):
+    """Экранирует Telegram HTML и превращает **...** в жирный текст."""
+    try:
+        import html as _html
+        s = _html.escape(str(text or ""), quote=False)
+        return re.sub(r"\*\*([^*\n]+)\*\*", r"<b>\1</b>", s)
+    except Exception:
+        return str(text or "")
+
+
+def send_message(chat_id, text, reply_markup=None):
+    """v19.8.2: безопасная жирная разметка через **...**."""
+    if not BOT_TOKEN:
+        print("BOT_TOKEN is missing")
+        return
+    text = str(text or "")
+    parts = []
+    while len(text) > 3800:
+        cut = text.rfind("\n", 0, 3800)
+        if cut == -1:
+            cut = 3800
+        parts.append(text[:cut])
+        text = text[cut:]
+    parts.append(text)
+    for part in parts:
+        try:
+            payload = {
+                "chat_id": chat_id,
+                "text": _tg_html_from_marked(part),
+                "reply_markup": reply_markup or keyboard(chat_id),
+                "parse_mode": "HTML",
+                "disable_web_page_preview": True,
+            }
+            r = requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage", json=payload, timeout=20)
+            if getattr(r, "status_code", 200) >= 400:
+                requests.post(
+                    f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
+                    json={"chat_id": chat_id, "text": part, "reply_markup": reply_markup or keyboard(chat_id)},
+                    timeout=20,
+                )
+        except Exception as e:
+            print(f"send_message error: {e}")
+        time.sleep(0.3)
+
+
+def version_user_report():
+    return (
+        f"✅ Версия: **{BOT_VERSION}**\n\n"
+        "Что изменено:\n"
+        "• отчёты стали короче и полностью на русском\n"
+        "• главные цифры выделяются жирным\n"
+        "• /status показывает понятную панель состояния\n"
+        "• /accuracy показывает эффективность бота\n"
+        "• /paper_classifier теперь показывает уроки бота, а не техлог\n"
+        "• вся техника остаётся в /audit_file\n\n"
+        "Автоторговля: 🔴 **выключена**\n"
+        "Покупки без подтверждения: 🔴 **запрещены**"
+    )
+
+
+def _v1982_trade_r48(t):
+    try:
+        res = t.get("results", {}) if isinstance(t.get("results", {}), dict) else {}
+        return _paper_safe_float(res.get("48h", t.get("last_pct", 0)), 0.0)
+    except Exception:
+        return 0.0
+
+
+def _v1982_trade_type(t):
+    return str(t.get("virtual_type", "") or "").upper() if isinstance(t, dict) else ""
+
+
+def _v1982_trade_asset(t):
+    return str(t.get("asset", "?") or "?").upper() if isinstance(t, dict) else "?"
+
+
+def _v1982_metrics():
+    try:
+        data = paper_store()
+    except Exception:
+        data = {}
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    m = {
+        "open": len(open_items), "closed": len(closed),
+        "buy_win": 0, "buy_loss": 0,
+        "watch_saved": 0, "full_skip": 0, "protection": 0,
+        "quality_exception": 0, "early_miss": 0, "missed": 0,
+        "short_momentum": 0, "neutral": 0, "review": 0, "entry_error": 0,
+        "quality_examples": [], "early_examples": [], "momentum_examples": [], "skip_examples": [], "saved_examples": [],
+    }
+    for t in closed:
+        if not isinstance(t, dict):
+            continue
+        asset = _v1982_trade_asset(t)
+        vtype = _v1982_trade_type(t)
+        r48 = _v1982_trade_r48(t)
+        is_quality = v198_is_quality_asset(asset)
+        is_watch = ("WATCH" in vtype) or ("OBSERVE" in vtype) or ("MONITOR" in vtype)
+        is_avoid = ("AVOID" in vtype) or ("PUMP" in vtype)
+        is_buy = "BUY" in vtype
+        if is_buy:
+            if r48 >= 2.5:
+                m["buy_win"] += 1
+            elif r48 <= -3:
+                m["buy_loss"] += 1; m["entry_error"] += 1
+            else:
+                m["neutral"] += 1
+        elif is_avoid and r48 <= -3:
+            m["full_skip"] += 1; m["protection"] += 1; m["skip_examples"].append((asset, r48))
+        elif is_watch and r48 <= -3:
+            m["watch_saved"] += 1; m["protection"] += 1; m["saved_examples"].append((asset, r48))
+        elif is_quality and is_watch and r48 >= 6:
+            m["quality_exception"] += 1; m["missed"] += 1; m["quality_examples"].append((asset, r48))
+        elif is_quality and is_watch and 3 <= r48 < 6:
+            m["early_miss"] += 1; m["missed"] += 1; m["early_examples"].append((asset, r48))
+        elif is_avoid and r48 >= 5:
+            m["short_momentum"] += 1; m["momentum_examples"].append((asset, r48))
+        elif -3 < r48 < 5:
+            m["neutral"] += 1
+        else:
+            m["review"] += 1
+    m["quality_examples"] = sorted(m["quality_examples"], key=lambda x: x[1], reverse=True)
+    m["early_examples"] = sorted(m["early_examples"], key=lambda x: x[1], reverse=True)
+    m["momentum_examples"] = sorted(m["momentum_examples"], key=lambda x: x[1], reverse=True)
+    m["skip_examples"] = sorted(m["skip_examples"], key=lambda x: x[1])
+    m["saved_examples"] = sorted(m["saved_examples"], key=lambda x: x[1])
+    misses = max(0, m["missed"])
+    protection_score = int(round(100 * m["protection"] / max(1, m["protection"] + misses)))
+    timing_score = int(round(100 * (m["full_skip"] + m["short_momentum"]) / max(1, m["full_skip"] + m["short_momentum"] + misses)))
+    buy_total = m["buy_win"] + m["buy_loss"]
+    buy_component = 70 if buy_total == 0 else int(round(100 * m["buy_win"] / max(1, buy_total)))
+    score = int(round(protection_score * 0.55 + timing_score * 0.35 + buy_component * 0.10 - min(30, misses * 6)))
+    m["score"] = max(0, min(100, score))
+    m["protection_score"] = protection_score
+    m["timing_score"] = timing_score
+    m["confidence"] = "низкая" if m["closed"] < 25 else ("средняя" if m["closed"] < 80 else "высокая")
+    return m
+
+
+def _v1982_market_simple(ctx=None):
+    ctx = ctx if isinstance(ctx, dict) else market_context()
+    try:
+        if v195_extreme_fear_user_no_buy(ctx) or v115_extreme_fear_btc_weak(ctx):
+            return "🔴 Страх / покупки запрещены"
+    except Exception:
+        pass
+    risk = market_risk_level(ctx)
+    if risk == "danger":
+        return "🔴 Опасно"
+    if risk == "caution":
+        return "🟡 Осторожно"
+    return "🟢 Спокойно"
+
+
+def _v1982_buy_now(ctx=None):
+    ctx = ctx if isinstance(ctx, dict) else market_context()
+    try:
+        if v195_extreme_fear_user_no_buy(ctx) or v115_extreme_fear_btc_weak(ctx) or market_risk_level(ctx) in ["danger", "caution"]:
+            return "🔴 Нет"
+    except Exception:
+        return "🔴 Нет"
+    return "🟡 Только после подтверждения"
+
+
+def _v1982_num_line(ctx=None):
+    ctx = ctx if isinstance(ctx, dict) else market_context()
+    try:
+        btc = float(ctx.get("btc_change", 0) or 0)
+    except Exception:
+        btc = 0.0
+    fear = ctx.get("fg_value", "?") if isinstance(ctx, dict) else "?"
+    news = ctx.get("macro_mod", "?") if isinstance(ctx, dict) else "?"
+    try:
+        news_txt = f"{int(news):+d}"
+    except Exception:
+        news_txt = str(news)
+    return f"BTC: **{btc:+.2f}%** | страх: **{fear}** | новости: **{news_txt}**"
+
+
+def _v1982_pct(v):
+    try:
+        return f"**{float(v):+.1f}%**"
+    except Exception:
+        return "**н/д**"
+
+
+def _v1982_examples(rows, limit=4):
+    if not rows:
+        return "—"
+    return ", ".join([f"{a} {_v1982_pct(v)}" for a, v in rows[:limit]])
+
+
+def paper_summary_line():
+    m = _v1982_metrics()
+    if not m["open"] and not m["closed"]:
+        return "Виртуальные проверки: пока нет"
+    return (
+        f"Виртуальные проверки: открыто **{m['open']}** | закрыто **{m['closed']}**\n"
+        f"Защита: **{m['protection']}** | пропуски роста: **{m['missed']}** | нейтрально: **{m['neutral']}** | ошибки входа: **{m['entry_error']}**"
+    )
+
+
+def paper_outcome_label(outcome):
+    labels = {
+        "pump_continued_no_pullback": "📈 памп продолжился без отката — это урок по таймингу, не ошибка покупки",
+        "avoid_saved": "🛡 не догонять было правильно",
+        "avoid_missed": "⚠️ пропущен рост",
+        "watch_saved_loss": "🛡 ожидание защитило от падения",
+        "watch_missed_gain": "⚠️ бот был слишком осторожным",
+        "watch_neutral": "🟡 нейтрально",
+        "paper_win": "✅ виртуальная покупка успешна",
+        "paper_loss": "🔴 ошибка виртуального входа",
+        "paper_neutral": "🟡 виртуальная покупка нейтральна",
+        "avoid_neutral": "🟡 нейтрально",
+    }
+    return labels.get(outcome, str(outcome or "открыто"))
+
+
+def v198_accuracy_score_report():
+    m = _v1982_metrics()
+    if m["closed"] == 0:
+        return "📈 Эффективность бота\n\nДанных пока нет. Нужно дождаться закрытых 48ч проверок."
+    buy_total = m["buy_win"] + m["buy_loss"]
+    buy_line = "данных нет, покупок не было" if buy_total == 0 else f"{m['buy_win']} из {buy_total}"
+    problem_lines = []
+    if m["quality_examples"]:
+        problem_lines.append("• качественный рост: " + _v1982_examples(m["quality_examples"], 2))
+    if m["early_examples"]:
+        problem_lines.append("• раннее усиление: " + _v1982_examples(m["early_examples"], 2))
+    if not problem_lines:
+        problem_lines.append("• крупных пропусков сейчас нет")
+    return (
+        "📈 Эффективность бота\n\n"
+        f"Общая оценка: 🟢 **{m['score']}/100**\n"
+        f"Уверенность: 🟡 **{m['confidence']}**\n\n"
+        "Что хорошо:\n"
+        f"• защита от плохих входов: **{m['protection']}**\n"
+        f"• ошибок входа: **{m['entry_error']}**\n"
+        f"• короткие импульсы распознаны: **{m['short_momentum']}**\n\n"
+        "Что плохо:\n"
+        f"• пропущено хороших движений: **{m['missed']}**\n"
+        + "\n".join(problem_lines) + "\n\n"
+        f"Покупочная точность: **{buy_line}**\n"
+        f"Проверок закрыто: **{m['closed']}**\n\n"
+        "Вывод: бот сейчас полезен как защита от плохих входов, но для автоторговли данных ещё мало."
+    )
+
+
+def v198_user_status_report():
+    ctx = market_context()
+    m = _v1982_metrics()
+    eta_text = "н/д"
+    try:
+        eta = v1962_paper_finalizer_eta_report(paper_store(), limit=3, closed_now=0)
+        rows = [ln for ln in eta.splitlines() if ln.startswith("• ")]
+        cleaned = []
+        for ln in rows[:3]:
+            ln = ln.replace("AVOID_PUMP_TEST", "проверка пампа")
+            ln = ln.replace("VIRTUAL_WATCH_ENTRY_TEST", "проверка наблюдения")
+            ln = ln.replace("сейчас", "текущий результат")
+            cleaned.append(ln)
+        eta_text = "\n".join(cleaned) if cleaned else "н/д"
+    except Exception:
+        eta_text = "н/д"
+    return (
+        "🧭 Статус бота\n\n"
+        f"Рынок: **{_v1982_market_simple(ctx)}**\n"
+        f"Покупки сейчас: **{_v1982_buy_now(ctx)}**\n"
+        f"{_v1982_num_line(ctx)}\n\n"
+        f"Эффективность: 🟢 **{m['score']}/100**\n"
+        f"Закрыто проверок: **{m['closed']}**\n"
+        f"Защита сработала: **{m['protection']}**\n"
+        f"Пропущено хороших движений: **{m['missed']}**\n"
+        f"Ошибок входа: **{m['entry_error']}**\n\n"
+        "Вывод: бот хорошо защищает от плохих входов, но ещё учится раньше замечать сильные монеты.\n\n"
+        "Ближайшие проверки:\n"
+        f"{eta_text}\n\n"
+        "Подробно: /accuracy | техника: /audit_file"
+    )
+
+
+def _v1982_coin_decision(c, momentum=None):
+    try:
+        no_buy = bool(v190_no_buy_guard(c))
+    except Exception:
+        no_buy = False
+    try:
+        size_preview = str(v181_position_size(c))
+        if size_preview.strip().startswith("0%") or "вход запрещ" in size_preview.lower():
+            no_buy = True
+    except Exception:
+        pass
+    if momentum:
+        if momentum.get("kind") == "early_strength_quality":
+            return "🟡 Приоритетное наблюдение", "не покупать с рынка; ждать откат, удержание и объём"
+        if "spec" in str(momentum.get("kind", "")):
+            return "🟠 Короткий импульс", "не догонять; только быстрая идея после отката"
+        return "⚡ Сильный импульс", "с рынка не входить; ждать точку"
+    if no_buy:
+        return "🔴 Не покупать", "вход сейчас не подходит"
+    if str(c.get("action", "")).upper() == "BUY":
+        return "🟢 Можно рассматривать", "только частями и после подтверждения"
+    return "🟡 Наблюдать", "ждать подтверждение"
+
+
+def format_single_coin_user_report(c):
+    symbol = str(c.get("symbol", "?")).upper()
+    momentum = v198_momentum_status(c)
+    title, decision = _v1982_coin_decision(c, momentum)
+    reason = compact_reason(c)
+    if momentum:
+        reason = momentum.get("reason") or reason
+    try:
+        change = float(c.get("change_24", 0) or 0)
+    except Exception:
+        change = 0.0
+    price = compact_price(c.get("price"))
+    buy_now = "🔴 Нет" if ("не покупать" in decision.lower() or "не вход" in decision.lower() or "ждать" in decision.lower()) else "🟡 Только после подтверждения"
+    lines = [
+        f"{symbol} — {title}",
+        "",
+        f"Цена: **{price}**",
+        f"24ч: **{change:+.2f}%**",
+        "",
+        f"Покупать сейчас: **{buy_now}**",
+        f"Почему: {reason}.",
+    ]
+    if momentum:
+        lines += [
+            "",
+            "План:",
+            f"• ждать откат: **{v198_entry_zone_text(c.get('price')).replace('примерная зона ожидания: ', '')}**",
+            "• вход только при удержании цены и объёме",
+            f"• {v198_target_stop_text(c.get('price')).replace('короткая цель: ', 'цель: ')}",
+            "• отменить идею, если BTC ослабнет",
+            "",
+            "Вывод: монета интересна, но с рынка не догонять.",
+        ]
+    else:
+        conditions = clean_user_condition_lines(c, limit=2) or ["нужно подтверждение объёмом", "нужна стабилизация BTC"]
+        lines += ["", "Что нужно для входа:"] + [f"• {x}" for x in conditions[:2]]
+        lines += ["", "Вывод: лучше ждать, чем входить вслепую."]
+    lines += ["", "Техника и расчёты: /audit_file"]
+    return "\n".join(lines)
+
+
+def user_signal_report():
+    full = unified_signal_report()
+    ctx = market_context()
+    m = _v1982_metrics()
+    rows = []
+    lines = full.splitlines()
+    for idx, ln in enumerate(lines):
+        st = ln.strip()
+        if re.match(r"^\d+\.\s+", st):
+            main = st
+            action = lines[idx + 1].strip() if idx + 1 < len(lines) else ""
+            sym = main.split("—", 1)[0].split(".", 1)[-1].strip().split()[0]
+            low = action.lower()
+            if sym in ["BTC", "ETH"]:
+                txt = "ждать подтверждение"
+            elif sym == "AAVE":
+                txt = "⚡ сильный импульс, поздно входить"
+            elif sym == "SOL":
+                txt = "🟡 наблюдать, нужен объём"
+            elif "не догонять" in low:
+                txt = "памп, не догонять"
+            elif "объём" in low or "наблюдать" in low:
+                txt = "наблюдать"
+            else:
+                txt = "наблюдать"
+            rows.append(f"• {sym} — {txt}")
+        if len(rows) >= 5:
+            break
+    if not rows:
+        rows = ["• Покупок нет, лучше ждать"]
+    return (
+        "📊 Сигнал рынка\n\n"
+        f"Рынок: **{_v1982_market_simple(ctx)}**\n"
+        f"Покупки сейчас: **{_v1982_buy_now(ctx)}**\n"
+        f"{_v1982_num_line(ctx)}\n\n"
+        "Что смотреть:\n"
+        + "\n".join(rows[:5]) + "\n\n"
+        "Итог: с рынка не покупать. Ждать откат, удержание цены и объём.\n\n"
+        f"Эффективность бота: **{m['score']}/100** | защита: **{m['protection']}** | пропуски: **{m['missed']}**\n"
+        "Подробно: /status | /accuracy | /audit_file"
+    )
+
+
+def learning_user_report():
+    data = load_json(RESULTS_FILE)
+    if not isinstance(data, dict):
+        data = {}
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    m = _v1982_metrics()
+    return (
+        "📚 Обучение\n\n"
+        "Статус: **работает**\n"
+        f"Открыто наблюдений: **{len(open_items)}**\n"
+        f"Закрыто 48ч результатов: **{len(closed)}**\n"
+        f"Защита: **{m['protection']}** | пропуски: **{m['missed']}** | ошибки: **{m['entry_error']}**\n\n"
+        "Вывод: данные копятся, веса покупок не меняются без серии подтверждений.\n"
+        "Техника: /audit_file"
+    )
+
+
+def paper_user_report():
+    m = _v1982_metrics()
+    return (
+        "🧪 Виртуальные проверки\n\n"
+        f"Открыто: **{m['open']}**\n"
+        f"Закрыто: **{m['closed']}**\n"
+        f"Защита сработала: **{m['protection']}**\n"
+        f"Пропущено хороших движений: **{m['missed']}**\n"
+        f"Ошибок входа: **{m['entry_error']}**\n"
+        f"Короткие импульсы: **{m['short_momentum']}**\n\n"
+        "Вывод: это проверка без реальных денег. Автопокупки выключены.\n"
+        "Подробно: /paper_classifier | техника: /audit_file"
+    )
+
+
+def paper_classifier_user_report():
+    m = _v1982_metrics()
+    good = []
+    if m["skip_examples"]:
+        good.append("• не догонять пампы было правильно: " + _v1982_examples(m["skip_examples"], 4))
+    if m["saved_examples"]:
+        good.append("• ожидание защитило от падения: " + _v1982_examples(m["saved_examples"], 4))
+    if not good:
+        good = ["• пока копятся данные"]
+    problems = []
+    if m["quality_examples"]:
+        problems.append("• пропущен качественный рост: " + _v1982_examples(m["quality_examples"], 2))
+    if m["early_examples"]:
+        problems.append("• поздно подсвечено раннее усиление: " + _v1982_examples(m["early_examples"], 2))
+    if not problems:
+        problems = ["• крупных пропусков сейчас нет"]
+    momentum = _v1982_examples(m["momentum_examples"], 5)
+    return (
+        "🧠 Уроки бота\n\n"
+        f"Закрыто проверок: **{m['closed']}**\n"
+        f"Защита: **{m['protection']}** | пропуски: **{m['missed']}** | ошибки: **{m['entry_error']}**\n\n"
+        "Что получилось:\n" + "\n".join(good[:2]) + "\n\n"
+        "Что улучшать:\n" + "\n".join(problems[:2]) + "\n\n"
+        f"Короткие импульсы: {momentum}\n\n"
+        "Правило: один кейс не меняет веса. AAVE = качественный рост, SOL = раннее усиление.\n"
+        "Полная техника: /audit_file"
+    )
+
+
+def alerts_user_report():
+    text_alert, _ = get_fast_pumps()
+    if not text_alert:
+        return "⚡ Импульсы\n\nСильных качественных идей сейчас нет. Лучше ждать."
+    rows = []
+    for ln in text_alert.splitlines():
+        st = ln.strip()
+        if re.match(r"^\d+\.\s+", st):
+            sym = st.split("—", 1)[0].split(".", 1)[-1].strip()
+            rows.append(f"• {sym} — наблюдать, с рынка не догонять")
+        if len(rows) >= 4:
+            break
+    return "⚡ Импульсы\n\n" + ("\n".join(rows) if rows else "Сильных качественных входов нет.") + "\n\nТехника: /audit_file"
+
+
+def audit_short_report():
+    ctx = market_context()
+    m = _v1982_metrics()
+    return (
+        "🧾 Короткий аудит\n\n"
+        f"Версия: **{BOT_VERSION}**\n"
+        f"Рынок: **{_v1982_market_simple(ctx)}**\n"
+        f"{_v1982_num_line(ctx)}\n\n"
+        f"Открыто проверок: **{m['open']}**\n"
+        f"Закрыто проверок: **{m['closed']}**\n"
+        f"Защита: **{m['protection']}** | пропуски: **{m['missed']}** | ошибки: **{m['entry_error']}**\n\n"
+        "Полный технический файл: /audit_file"
+    )
+
+
+def auto_audit_build_text(reason_lines, ctx, paper, learning, force=False):
+    m = _v1982_metrics()
+    reasons = "\n".join([f"• {r}" for r in reason_lines[:3]]) if reason_lines else "• критических изменений нет"
+    cards = paper.get("new_closed_cards") or []
+    event = ""
+    if cards:
+        event = "\n\nНовые закрытия:\n" + "\n".join(cards[:2])
+    return (
+        "🧠 Auto-Audit\n\n"
+        f"Рынок: **{_v1982_market_simple(ctx)}**\n"
+        f"{_v1982_num_line(ctx)}\n"
+        f"Покупки: **{_v1982_buy_now(ctx)}**\n\n"
+        f"Закрыто проверок: **{m['closed']}** | защита: **{m['protection']}** | пропуски: **{m['missed']}** | ошибки: **{m['entry_error']}**\n\n"
+        f"Что изменилось:\n{reasons}{event}\n\n"
+        "Автоторговля выключена. Техника: /audit_file"
+    )
+
+
+def auto_audit_status_text():
+    state = auto_audit_load_state()
+    enabled = "включён" if state.get("enabled") else "выключен"
+    mode, interval_min, min_gap_min, critical_only = auto_audit_effective_settings(state)
+    m = _v1982_metrics()
+    return (
+        "🧠 Auto-Audit\n\n"
+        f"Статус: **{enabled}**\n"
+        f"Режим: **{auto_audit_mode_label(mode)}**\n"
+        f"Проверка: каждые **{interval_min} мин**\n\n"
+        f"Закрыто проверок: **{m['closed']}** | защита: **{m['protection']}** | пропуски: **{m['missed']}**\n\n"
+        "Команды: /auto_audit_now, /auto_audit_on, /auto_audit_off"
+    )
+
+
 def main():
     last_update = load_last_update_id()
 
@@ -14380,31 +14902,7 @@ def main():
                     send_message(chat_id, help_text())
 
                 elif text == "/version":
-                    send_message(chat_id, (
-                        f"✅ Версия: {BOT_VERSION}\n"
-                        "📦 Пул команд: включён, дубли отсекаются\n"
-                        "🧾 Пользовательские отчёты: короткие\n"
-                        "📄 Полная техника для ChatGPT: только /audit_file txt\n"
-                        "🧠 Auto-Audit: короткий self-check, режимы active/normal/quiet/critical\n"
-                        "🛡 Risk guard: в no-buy размер 0%, R/R не считается\n"
-                        "⚡ Learning Sprint: /learning_sprint ускоряет выводы по 6/12/24ч checkpoints\n"
-                        "🧠 v19.5: active learning profiles — AAVE quality-exception, full-skip и avoid-pump профили без изменения BUY-весов\n"
-                        "🟡 v19.5.1: fear<=15 + BTC<0 в пользовательских отчётах всегда extreme-fear/no-buy, не safe-caution\n"
-                        "🧠 v19.5.2: Auto-Audit тоже показывает extreme-fear/no-buy и не мигает caution/danger при страхе\n"
-                        "🧊 v19.6: freshness guard, 48h finalizer, anti-overfit и learning priority radar\n"
-                        "⏳ v19.6.1: /finalizer_now запускает refresh + 48h finalizer вручную, без ожидания планового часа\n"
-                        "🧭 v19.6.2: /finalizer_now показывает Paper ETA и объясняет, почему закрыто 0, если 48ч ещё не наступили\n"
-                        "🧠 v19.7: Paper Classifier превращает закрытые Paper-сделки в профили full-skip / pump / quality-exception\n"
-                        "🧹 v19.7.1: QA-cleanup классификатора, AAVE quality-exception и wording fixes\n"
-                        "🟣 v19.7.2: Learning больше не считает speculative WATCH-pump спасением от падения\n"
-                        "🧹 v19.7.3: Finalizer/ETA labels приведены к CORE, WATCH-минус больше не entry-error\n"
-                        "🧹 v19.7.4: Market label снова unified extreme-fear/no-buy, финальные wording QA\n"
-                        "🚀 v19.8: simple user reports, Accuracy Score, Quiet Auto-Audit, Early Strength Alert, Short Momentum Watch, AAVE/SOL QA\n"
-                        "🧹 v19.8.1: SOL Priority Watch QA — /sol больше не сваливается в простое 🔴 НЕ ПОКУПАТЬ, SOL отделён от AAVE quality-exception\n"
-                        "🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%\n"
-                        "🚀 v19.4: main.py → GitHub → одна кнопка ручного Render deploy\n"
-                        "🛡 v19.4.1: state restore guard защищает learning/paper/frozen от отката после redeploy"
-                    ))
+                    send_message(chat_id, version_user_report())
 
                 elif text == "/flush":
                     if is_admin(chat_id) or not ADMIN_CHAT_ID:
