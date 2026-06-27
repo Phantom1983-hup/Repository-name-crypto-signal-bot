@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
+BOT_VERSION = "v19.11.6.1 SIGNAL GROWTH RADAR SYNC"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16627,7 +16627,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
+BOT_VERSION = "v19.11.6.1 SIGNAL GROWTH RADAR SYNC"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17735,7 +17735,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
+BOT_VERSION = "v19.11.6.1 SIGNAL GROWTH RADAR SYNC"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18210,7 +18210,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
+BOT_VERSION = "v19.11.6.1 SIGNAL GROWTH RADAR SYNC"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18374,7 +18374,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
+BOT_VERSION = "v19.11.6.1 SIGNAL GROWTH RADAR SYNC"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18719,7 +18719,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
+BOT_VERSION = "v19.11.6.1 SIGNAL GROWTH RADAR SYNC"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19100,7 +19100,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
+BOT_VERSION = "v19.11.6.1 SIGNAL GROWTH RADAR SYNC"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19407,7 +19407,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
+BOT_VERSION = "v19.11.6.1 SIGNAL GROWTH RADAR SYNC"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -19921,7 +19921,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
+BOT_VERSION = "v19.11.6.1 SIGNAL GROWTH RADAR SYNC"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20062,7 +20062,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
+BOT_VERSION = "v19.11.6.1 SIGNAL GROWTH RADAR SYNC"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20373,7 +20373,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
+BOT_VERSION = "v19.11.6.1 SIGNAL GROWTH RADAR SYNC"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20664,7 +20664,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
+BOT_VERSION = "v19.11.6.1 SIGNAL GROWTH RADAR SYNC"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21480,6 +21480,410 @@ def main():
         except Exception as e:
             print(e)
             time.sleep(5)
+
+
+
+# === v19.11.6.1 SIGNAL GROWTH RADAR SYNC ===
+# Синхронизация /signal с /quality_probe и auto quality probe.
+# Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
+# Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
+
+BOT_VERSION = "v19.11.6.1 SIGNAL GROWTH RADAR SYNC"
+
+try:
+    _v191161_old_unified_signal_report = unified_signal_report
+except Exception:
+    _v191161_old_unified_signal_report = None
+try:
+    _v191161_old_user_signal_report = user_signal_report
+except Exception:
+    _v191161_old_user_signal_report = None
+try:
+    _v191161_old_quality_probe_user_report = quality_probe_user_report
+except Exception:
+    _v191161_old_quality_probe_user_report = None
+try:
+    _v191161_old_build_audit_file = build_audit_file
+except Exception:
+    _v191161_old_build_audit_file = None
+
+
+def v191161_quality_score_value(default=73):
+    try:
+        q = _v191141_quality_score_payload() if '_v191141_quality_score_payload' in globals() else {}
+        val = int(q.get('alex_quality', 0) or 0)
+        if val > 0:
+            return val
+    except Exception:
+        pass
+    try:
+        m = _v1982_metrics()
+        val = int(m.get('score', 0) or 0)
+        if val > 0:
+            return val
+    except Exception:
+        pass
+    return int(default)
+
+
+def v191161_quality_assets():
+    base = {
+        'SOL', 'AAVE', 'INJ', 'AVAX', 'SUI', 'NEAR', 'LINK', 'TAO', 'ADA',
+        'BTC', 'ETH', 'BNB'
+    }
+    try:
+        for a in QUALITY_LEARNING_ASSETS:
+            base.add(str(a).upper().replace('-USDT', ''))
+    except Exception:
+        pass
+    return base
+
+
+def v191161_probe_records():
+    """Все активные quality paper-probe из paper-store, а не только свежие кандидаты."""
+    rows = []
+    try:
+        data = paper_store()
+        open_trades = data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}
+        for key, t in open_trades.items():
+            if not isinstance(t, dict):
+                continue
+            vt = str(t.get('virtual_type', '') or '').upper()
+            if not (t.get('is_probe') or vt == 'VIRTUAL_PROBE_ENTRY_TEST'):
+                continue
+            asset = str(t.get('asset') or t.get('symbol') or '').upper().replace('-USDT', '')
+            if not asset:
+                continue
+            entry = t.get('entry_price', t.get('entry', t.get('price', 0)))
+            try:
+                entry_f = float(entry or 0)
+            except Exception:
+                entry_f = 0.0
+            cur = 0.0
+            try:
+                cur = _safe_price(f'{asset}-USDT') if '_safe_price' in globals() else 0.0
+            except Exception:
+                cur = 0.0
+            if not cur:
+                try:
+                    cur = float(t.get('current_price', t.get('last_price', entry_f)) or entry_f)
+                except Exception:
+                    cur = entry_f
+            pct = 0.0
+            if entry_f:
+                pct = (cur - entry_f) / entry_f * 100
+            created = float(t.get('created_at', t.get('ts', 0)) or 0)
+            age_h = (time.time() - created) / 3600 if created else 0
+            rows.append({
+                'key': key,
+                'asset': asset,
+                'entry': entry_f,
+                'current': cur,
+                'pct': pct,
+                'age_h': age_h,
+                'score': int(t.get('score', t.get('entry_score', 62)) or 62),
+                'raw': t,
+            })
+    except Exception as e:
+        print(f'probe records read error: {e}')
+    # Дедуп по asset: показываем самую свежую/первую открытую пробу.
+    out = []
+    seen = set()
+    for r in sorted(rows, key=lambda x: (x.get('age_h', 0), x.get('asset',''))):
+        if r['asset'] in seen:
+            continue
+        seen.add(r['asset'])
+        out.append(r)
+    return out
+
+
+def v191161_probe_assets():
+    return {r['asset'] for r in v191161_probe_records()}
+
+
+def v191161_probe_report_line(r):
+    try:
+        entry = compact_price(r.get('entry')) if 'compact_price' in globals() else str(round(float(r.get('entry',0)), 6))
+        cur = compact_price(r.get('current')) if 'compact_price' in globals() else str(round(float(r.get('current',0)), 6))
+        age = float(r.get('age_h', 0) or 0)
+        if age >= 1:
+            age_txt = f'{age:.1f}ч'
+        else:
+            age_txt = f'{int(age*60)}м'
+        return f"• {r.get('asset')}: активная paper-проба | {entry} → {cur} ({float(r.get('pct',0) or 0):+.2f}%) | прошло {age_txt} | score {int(r.get('score',62) or 62)}/100"
+    except Exception:
+        return f"• {r.get('asset','?')}: активная paper-проба"
+
+
+def quality_probe_user_report():
+    # Сначала мягко запускаем сбор кандидатов, но отчёт строим по ФАКТИЧЕСКИМ открытым probe.
+    created = 0
+    active_count = 0
+    candidates = []
+    try:
+        candidates = v191151_collect_quality_probe_candidates() if 'v191151_collect_quality_probe_candidates' in globals() else []
+        created, active_count = v191151_open_quality_probe_trades(candidates, reason='quality_probe_command_v191161') if 'v191151_open_quality_probe_trades' in globals() else (0, 0)
+    except Exception as e:
+        print(f'quality probe command collect error: {e}')
+    records = v191161_probe_records()
+    if not active_count:
+        active_count = len(records)
+    body = '\n'.join(v191161_probe_report_line(r) for r in records[:12]) if records else '• активных paper-проб сейчас нет'
+    cand_symbols = []
+    try:
+        cand_symbols = [str(c.get('symbol','')).upper() for c in candidates if isinstance(c, dict) and c.get('symbol')]
+    except Exception:
+        cand_symbols = []
+    cand_line = f"\nПоследние кандидаты: {', '.join(cand_symbols[:10])}" if cand_symbols else ''
+    return (
+        '🟡 Виртуальные пробы качества\n\n'
+        f'Версия: {BOT_VERSION}\n'
+        'Задача: не пропускать SOL/AAVE/INJ-like quality-движения, но не включать реальные покупки.\n'
+        'Режим: только виртуально. Реальные покупки и автоторговля выключены.\n\n'
+        f'Создано новых paper-записей: {int(created or 0)} | активных probe: {int(active_count or len(records))}\n'
+        f'{cand_line}\n\n'
+        'Активные пробы в paper-журнале:\n' + body + '\n\n'
+        'Правило: слабый объём блокирует реальную покупку, но не блокирует обучение. Через 24/48ч бот оценит, была ли проба полезной.'
+    )
+
+
+def v191161_short_market_header(ctx=None):
+    try:
+        ctx = ctx or market_context(force_refresh=True)
+    except Exception:
+        ctx = ctx or {}
+    score = v191161_quality_score_value()
+    btc = float(ctx.get('btc_change', 0) or 0)
+    fear = ctx.get('fg_value', '?')
+    news = int(ctx.get('macro_mod', ctx.get('geo_mod', 0)) or 0)
+    mode = 'ОСТОРОЖНО'
+    try:
+        mode_raw = str(_v1982_market_simple(ctx)).lower() if '_v1982_market_simple' in globals() else str(ctx.get('risk_level', 'caution')).lower()
+        if 'safe' in mode_raw or 'green' in mode_raw:
+            mode = 'УМЕРЕННО ПОЗИТИВНО'
+        elif 'danger' in mode_raw or 'fear' in mode_raw:
+            mode = 'ОПАСНО/СТРАХ'
+        elif 'neutral' in mode_raw:
+            mode = 'НЕЙТРАЛЬНО'
+    except Exception:
+        pass
+    return (
+        '📊 Сигнал рынка — радар роста\n\n'
+        f'🟡 РЕЖИМ: {mode}\n'
+        'Покупки: 🔴 НЕТ\n'
+        f'BTC: {btc:+.2f}% | страх: {fear} | новости: {news:+d}\n'
+        f'Оценка бота: 🟢 {score}/100'
+    )
+
+
+def v191161_analyze_assets_for_radar():
+    active = sorted(list(v191161_probe_assets()))
+    assets = []
+    # Сначала активные пробы, затем ключевые quality и несколько типовых пампов.
+    for a in active + ['BTC','ETH','SOL','SUI','NEAR','LINK','AVAX','AAVE','INJ','TAO','ADA','VELVET','RAVE','CAP','BEAT','ESPORTS']:
+        a = str(a).upper().replace('-USDT','')
+        if a and a not in assets:
+            assets.append(a)
+    rows = []
+    for a in assets[:18]:
+        c = None
+        try:
+            c = analyze_symbol_for_signal(f'{a}-USDT') if 'analyze_symbol_for_signal' in globals() else None
+        except Exception as e:
+            print(f'growth radar analyze skip {a}: {e}')
+        if isinstance(c, dict):
+            c['_growth_asset'] = a
+            rows.append(c)
+    return rows
+
+
+def v191161_growth_label(c, active_assets=None):
+    active_assets = active_assets or set()
+    asset = str(c.get('symbol') or c.get('_growth_asset') or '').upper().replace('-USDT','')
+    try:
+        ch = float(c.get('change_24', c.get('change', 0)) or 0)
+    except Exception:
+        ch = 0.0
+    try:
+        score = int(c.get('score', 0) or 0)
+    except Exception:
+        score = 0
+    try:
+        vol = float(c.get('volume_trend', c.get('vol_power', 1)) or 1)
+    except Exception:
+        vol = 1.0
+    q_assets = v191161_quality_assets()
+    is_active = asset in active_assets
+    is_quality = asset in q_assets or bool(c.get('is_quality'))
+    # Базовые индикаторы рынка не классифицируем как trade.
+    if asset in ['BTC', 'ETH', 'BNB']:
+        return '🟦 индикатор рынка', 80
+    # Спекулятивные пампы и перегрев.
+    if ch >= 15 and not is_quality:
+        return '🔴 памп/перегрев — не догонять', 10
+    if ch >= 25:
+        return '🔴 памп/перегрев — не догонять', 10
+    # Активная paper-проба имеет приоритет в сигнале.
+    if is_active:
+        if ch >= 4.5 or score >= 65:
+            return '🟠 paper-проба активна, рост уже сильный — не добирать с рынка', 55
+        if ch >= 0.5:
+            return '🟡 quality-рост, paper-проба активна', 100
+        return '🟦 paper-проба активна, рост остыл — наблюдать итог', 65
+    # Неактивные quality-активы.
+    if is_quality and ch >= 1.0 and score >= 58:
+        if ch >= 4.5 or score >= 68:
+            return '🟠 рост сильный, вход поздноват — ждать откат', 50
+        return '🟡 quality-рост, нужна/возможна paper-проба', 90
+    if ch >= 8:
+        return '🟠 рост уже поздний — ждать откат', 40
+    return '🟦 обычное наблюдение / роста пока мало', 20
+
+
+def v191161_growth_row(c, idx, active_assets=None):
+    asset = str(c.get('symbol') or c.get('_growth_asset') or '?').upper().replace('-USDT','')
+    label, _rank = v191161_growth_label(c, active_assets)
+    try:
+        price = format_usd_price(c.get('price')) if 'format_usd_price' in globals() else compact_price(c.get('price'))
+    except Exception:
+        try:
+            price = compact_price(c.get('price'))
+        except Exception:
+            price = str(c.get('price','?'))
+    try:
+        ch = float(c.get('change_24', c.get('change',0)) or 0)
+    except Exception:
+        ch = 0.0
+    score = int(c.get('score', 0) or 0)
+    return f'{idx}. {asset} — {label}\n   {score}/100 | {price} | 24ч {ch:+.2f}%'
+
+
+def v191161_growth_radar_report(full=False):
+    try:
+        ctx = market_context(force_refresh=True)
+    except Exception:
+        ctx = {}
+    active_assets = v191161_probe_assets()
+    analyzed = v191161_analyze_assets_for_radar()
+    ranked = []
+    for c in analyzed:
+        label, rank = v191161_growth_label(c, active_assets)
+        asset = str(c.get('symbol') or c.get('_growth_asset') or '').upper().replace('-USDT','')
+        try:
+            ch = float(c.get('change_24', c.get('change',0)) or 0)
+        except Exception:
+            ch = 0.0
+        # Не засоряем обычными слабыми строками, кроме BTC/ETH.
+        if rank < 30 and asset not in ['BTC','ETH'] and ch < 8:
+            continue
+        ranked.append((rank, ch, asset, c))
+    ranked.sort(key=lambda x: (x[0], x[1]), reverse=True)
+    # Показываем BTC/ETH + топ роста/проб.
+    rows = []
+    used = set()
+    for preferred in ['BTC', 'ETH']:
+        for _rank, _ch, asset, c in ranked:
+            if asset == preferred and asset not in used:
+                rows.append(c); used.add(asset)
+                break
+    for _rank, _ch, asset, c in ranked:
+        if asset in used:
+            continue
+        rows.append(c); used.add(asset)
+        if len(rows) >= (10 if full else 7):
+            break
+    if not rows:
+        return v191161_short_market_header(ctx) + '\n\nСейчас нет достаточно сильных кандидатов для радара роста.\nРеальных покупок нет.'
+    focus_assets = []
+    for _rank, _ch, asset, c in ranked:
+        label, r = v191161_growth_label(c, active_assets)
+        if '🟡' in label and asset not in ['BTC','ETH']:
+            focus_assets.append(asset)
+        if len(focus_assets) >= 3:
+            break
+    focus = ', '.join(focus_assets) if focus_assets else 'ждать откат и подтверждение'
+    body = '\n'.join(v191161_growth_row(c, i+1, active_assets) for i, c in enumerate(rows))
+    active_line = ', '.join(sorted(active_assets)) if active_assets else 'нет'
+    return (
+        v191161_short_market_header(ctx) + '\n\n'
+        f'🎯 Фокус сейчас: {focus}\n'
+        f'🧪 Активные paper-пробы: {active_line}\n\n'
+        'Что смотреть в первую очередь:\n' + body + '\n\n'
+        'Легенда:\n'
+        '🟡 quality-рост / paper-проба активна\n'
+        '🟠 рост уже сильный / ждать откат\n'
+        '🔴 памп/перегрев / не догонять\n'
+        '🟦 обычное наблюдение / индикатор рынка\n\n'
+        'Итог: 🔴 реальных покупок нет. Бот только наблюдает и учится через paper-пробы.\n'
+        'Подробно: /auto_probe | /quality_probe | /paper | /audit_file'
+    )
+
+
+def user_signal_report():
+    return v191161_growth_radar_report(full=False)
+
+
+def unified_signal_report():
+    return v191161_growth_radar_report(full=True)
+
+
+def version_user_report():
+    return (
+        f'✅ Версия: {BOT_VERSION}\n\n'
+        'Что исправлено:\n'
+        '• /signal синхронизирован с /quality_probe и авто-пробами;\n'
+        '• /signal теперь показывает тип роста: 🟡 quality, 🟠 поздний рост, 🔴 памп, 🟦 наблюдение;\n'
+        '• оценка бота в /signal берётся из quality score и не проседает отдельно до старой цифры;\n'
+        '• /quality_probe показывает все активные paper-пробы из журнала, а не только свежих кандидатов;\n'
+        '• активная paper-проба не дублируется и не становится реальной покупкой.\n\n'
+        'Ограничения:\n'
+        '• реальные покупки: 0;\n'
+        '• автоторговля: выключена;\n'
+        '• блок риска не менялся.\n\n'
+        'Команды: /signal | /auto_probe | /quality_probe | /paper | /audit_file'
+    )
+
+
+def build_audit_file(chat_id):
+    ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+    path = f'/tmp/alex_edge_audit_{ts}.txt'
+    sections=[]
+    def add(title, func, timeout_sec=25):
+        body = audit_section_text(func, timeout_sec=timeout_sec)
+        try:
+            body = v191151_normalize_version_text(body)
+        except Exception:
+            body = str(body)
+        sections.append('\n' + '='*80 + f'\n{title}\n' + '='*80 + '\n' + body)
+    add('VERSION', lambda: f'BOT_VERSION: {BOT_VERSION}', 5)
+    add('AUDIT SHORT', audit_short_report, 15)
+    add('SIGNAL GROWTH RADAR V19.11.6.1', unified_signal_report, 35)
+    add('AUTO QUALITY PROBE SCHEDULER V19.11.6.1', auto_quality_probe_status_report, 8)
+    add('QUALITY PAPER PROBE V19.11.6.1', quality_probe_user_report, 12)
+    add('QUALITY LEARNING ACCELERATOR V19.11.6.1', quality_accelerator_audit_report, 10)
+    add('SELF-LEARNING BRAIN CORE V19.11.6.1', v199_brain_audit_report, 10)
+    add('QUALITY WATCH LADDER V19.11.6.1', quality_watch_ladder_audit_report, 10)
+    add('QUALITY SCORE V19.11.6.1', quality_score_audit_report, 8)
+    add('CHECKPOINT SCORING V19.11.6.1', v19112_checkpoint_scoring_user_report, 10)
+    add('TECH: HYPOTHESES', v1910_hypotheses_user_report, 8)
+    add('TECH: PAPER FULL', paper_report, 12)
+    add('TECH: SOL FULL', lambda: single_analysis_full('SOL-USDT'), 25)
+    content = 'ALEX EDGE ULTRA TECH AUDIT FILE\n' + '\n'.join(sections)
+    try:
+        content = v191151_normalize_version_text(content)
+    except Exception:
+        pass
+    try:
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(content)
+    except Exception as e:
+        send_message(chat_id, f'❌ Не удалось создать audit txt: {e}')
+        return None
+    ok = send_document(chat_id, path, caption='🧾 Технический отчёт готов.')
+    if not ok:
+        send_message(chat_id, '⚠️ audit_file собран, но Telegram не принял файл. Ниже короткий аудит.')
+        send_message(chat_id, audit_short_report())
+    return path
 
 if __name__ == "__main__":
     try:
