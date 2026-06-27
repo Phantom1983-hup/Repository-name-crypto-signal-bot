@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.8.4 REPORT MICRO-POLISH"
+BOT_VERSION = "v19.9 SELF-LEARNING BRAIN CORE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -2215,6 +2215,13 @@ COMMAND_POOL_ALIASES = {
     "🧪 paper": "/paper",
     "обучение": "/learning",
     "learning": "/learning",
+    "brain": "/brain",
+    "мозг": "/brain",
+    "self_learning": "/brain",
+    "самообучение": "/brain",
+    "error_review": "/error_review",
+    "errors": "/error_review",
+    "разбор ошибок": "/error_review",
     "learning_full": "/learning_full",
     "learning_audit": "/learning_full",
     "learning_sprint": "/learning_sprint",
@@ -15075,6 +15082,504 @@ def auto_audit_status_text():
         "Команды: /auto_audit_now, /auto_audit_on, /auto_audit_off"
     )
 
+
+# === v19.9 SELF-LEARNING BRAIN CORE ===
+# Цель: развивать уникальный алгоритм оценки без включения автоторговли и без агрессивного изменения BUY-весов.
+try:
+    BRAIN_DATASET_FILE = data_path("brain_dataset_v19_9.json")
+except Exception:
+    BRAIN_DATASET_FILE = "/tmp/brain_dataset_v19_9.json"
+
+V199_QUALITY_ASSETS = set(["SOL", "AAVE", "LINK", "SUI", "AVAX", "INJ", "TAO", "NEAR", "ADA", "BNB", "XRP"])
+V199_BASE_ASSETS = set(["BTC", "ETH"])
+V199_SPEC_ASSETS = set(["LAB", "BAS", "SYN", "UB", "XPL", "ARX", "WIF", "RAVE", "SIREN"])
+V199_TRASH_PUMP_ASSETS = set(["CAP", "VELVET", "ESPORTS", "FARTCOIN", "PUMP", "HMSTR", "VERONA", "NES", "BASED", "O", "RE", "W", "XPR", "ILY", "DN"])
+
+def _v199_float(x, default=0.0):
+    try:
+        if x is None or x == "":
+            return default
+        return float(x)
+    except Exception:
+        return default
+
+def v199_coin_type(symbol):
+    sym = str(symbol or "").upper().replace("-USDT", "")
+    if sym in V199_BASE_ASSETS:
+        return "базовый актив"
+    if sym in V199_QUALITY_ASSETS:
+        return "качественный альт"
+    if sym in V199_SPEC_ASSETS:
+        return "короткий импульс"
+    if sym in V199_TRASH_PUMP_ASSETS:
+        return "опасный памп"
+    return "средний/неизвестный альт"
+
+def v199_classify_paper_event(t):
+    asset = str((t or {}).get("asset", "?")).upper()
+    vtype = str((t or {}).get("virtual_type", "") or "")
+    res = (t or {}).get("results", {}) if isinstance((t or {}).get("results", {}), dict) else {}
+    r48 = _paper_safe_float(res.get("48h", (t or {}).get("last_pct", 0)), 0.0)
+    r24 = _paper_safe_float(res.get("24h", 0), 0.0)
+    ctype = v199_coin_type(asset)
+    is_watch = "WATCH" in vtype or "OBSERVE" in vtype or "MONITOR" in vtype
+    is_avoid = "AVOID" in vtype or "PUMP" in vtype
+    if is_watch and ctype == "качественный альт" and r48 >= 6:
+        lesson = "пропущен качественный рост"
+    elif is_watch and ctype == "качественный альт" and 3 <= r48 < 6:
+        lesson = "пропущено раннее усиление"
+    elif is_watch and r48 <= -3:
+        lesson = "ожидание спасло"
+    elif is_avoid and r48 <= -3:
+        lesson = "не догонять было правильно"
+    elif is_avoid and r48 >= 5:
+        lesson = "короткий импульс / нужен тайминг"
+    elif r48 <= -3:
+        lesson = "защитный пропуск"
+    elif r48 >= 5:
+        lesson = "рост требует разбора"
+    else:
+        lesson = "нейтрально"
+    return {
+        "asset": asset,
+        "coin_type": ctype,
+        "virtual_type": vtype,
+        "r24": r24,
+        "r48": r48,
+        "lesson": lesson,
+        "source": "paper",
+    }
+
+def v199_classify_learning_event(rec):
+    asset = str((rec or {}).get("asset", (rec or {}).get("symbol", "?"))).upper().replace("-USDT", "")
+    results = learning_results_for_eval(rec) if isinstance(rec, dict) else {}
+    r48 = _v199_float(results.get("48h"), 0.0) if isinstance(results, dict) else 0.0
+    r24 = _v199_float(results.get("24h"), 0.0) if isinstance(results, dict) else 0.0
+    action = str((rec or {}).get("learning_type", (rec or {}).get("action", "WATCH")) or "WATCH")
+    ctype = v199_coin_type(asset)
+    if ctype == "качественный альт" and r48 >= 6 and "WATCH" in action.upper():
+        lesson = "пропущен качественный рост"
+    elif ctype == "качественный альт" and 3 <= r48 < 6:
+        lesson = "пропущено раннее усиление"
+    elif r48 <= -3:
+        lesson = "ожидание спасло"
+    elif r48 >= 5:
+        lesson = "рост требует разбора"
+    else:
+        lesson = "нейтрально"
+    return {
+        "asset": asset,
+        "coin_type": ctype,
+        "action": action,
+        "r24": r24,
+        "r48": r48,
+        "lesson": lesson,
+        "source": "learning",
+    }
+
+def v199_build_learning_dataset(limit=250):
+    events = []
+    try:
+        pdata = paper_store()
+        for t in (pdata.get("closed", []) if isinstance(pdata.get("closed", []), list) else []):
+            if isinstance(t, dict):
+                events.append(v199_classify_paper_event(t))
+    except Exception:
+        pass
+    try:
+        ldata = load_json(RESULTS_FILE)
+        closed = ldata.get("closed", []) if isinstance(ldata, dict) and isinstance(ldata.get("closed", []), list) else []
+        for rec in closed:
+            if isinstance(rec, dict):
+                events.append(v199_classify_learning_event(rec))
+    except Exception:
+        pass
+    # последние важнее, но не выкидываем полностью ранние кейсы в audit
+    return events[-limit:]
+
+def v199_dataset_stats(events=None):
+    events = events if isinstance(events, list) else v199_build_learning_dataset()
+    stats = {
+        "total": len(events),
+        "quality_miss": 0,
+        "early_miss": 0,
+        "saved": 0,
+        "full_skip": 0,
+        "short_momentum": 0,
+        "neutral": 0,
+        "by_type": {},
+        "top_quality_miss": [],
+        "top_early_miss": [],
+        "top_saved": [],
+        "top_momentum": [],
+    }
+    for e in events:
+        if not isinstance(e, dict):
+            continue
+        typ = e.get("coin_type", "?")
+        stats["by_type"][typ] = stats["by_type"].get(typ, 0) + 1
+        lesson = str(e.get("lesson", ""))
+        row = (str(e.get("asset", "?")), _v199_float(e.get("r48"), 0.0))
+        if "качественный рост" in lesson:
+            stats["quality_miss"] += 1; stats["top_quality_miss"].append(row)
+        elif "раннее усиление" in lesson:
+            stats["early_miss"] += 1; stats["top_early_miss"].append(row)
+        elif "ожидание спасло" in lesson:
+            stats["saved"] += 1; stats["top_saved"].append(row)
+        elif "не догонять" in lesson or "защитный пропуск" in lesson:
+            stats["full_skip"] += 1; stats["top_saved"].append(row)
+        elif "короткий импульс" in lesson:
+            stats["short_momentum"] += 1; stats["top_momentum"].append(row)
+        else:
+            stats["neutral"] += 1
+    for k in ["top_quality_miss", "top_early_miss", "top_momentum"]:
+        stats[k] = sorted(stats[k], key=lambda x: x[1], reverse=True)
+    stats["top_saved"] = sorted(stats["top_saved"], key=lambda x: x[1])
+    return stats
+
+def v199_multi_scores(ctx=None):
+    ctx = ctx if isinstance(ctx, dict) else market_context()
+    fg = _v199_float(ctx.get("fg_value"), 50)
+    btc = _v199_float(ctx.get("btc_change"), 0.0)
+    news = _v199_float(ctx.get("macro_mod", 0.0), 0.0)
+    risk = str(market_risk_level(ctx))
+    # 0..100, но не используем для BUY, только для объяснения и обучения.
+    market_score = int(max(0, min(100, 45 + btc * 5 + news * 0.8 + (fg - 20) * 0.6)))
+    danger_score = int(max(0, min(100, 50 - btc * 4 - news * 1.2 + max(0, 25 - fg) * 1.2 + (20 if risk == "danger" else 0))))
+    news_score = int(max(0, min(100, 50 + news * 2)))
+    btc_pressure = int(max(0, min(100, 50 - btc * 8)))
+    dataset = v199_dataset_stats()
+    closed = dataset.get("total", 0)
+    confidence = int(max(5, min(85, 20 + min(closed, 120) * 0.45)))
+    # Brain score — насколько хороша обучающая база, не покупочная точность.
+    brain_score = int(max(0, min(100, 50 + min(dataset.get("saved",0)+dataset.get("full_skip",0), 40) - dataset.get("quality_miss",0)*2 - dataset.get("early_miss",0))))
+    return {
+        "market_score": market_score,
+        "danger_score": danger_score,
+        "news_score": news_score,
+        "btc_pressure": btc_pressure,
+        "learning_confidence": confidence,
+        "brain_score": brain_score,
+        "dataset_total": closed,
+    }
+
+def v199_examples(rows, limit=3):
+    if not rows:
+        return "нет"
+    return ", ".join([f"{a} **{v:+.1f}%**" for a, v in rows[:limit]])
+
+def v199_persist_brain_snapshot(reason="manual"):
+    try:
+        events = v199_build_learning_dataset()
+        stats = v199_dataset_stats(events)
+        scores = v199_multi_scores()
+        payload = {
+            "version": BOT_VERSION,
+            "updated_at": datetime.now().isoformat(),
+            "reason": reason,
+            "scores": scores,
+            "stats": stats,
+            "events_tail": events[-80:],
+            "note": "v19.9 brain dataset is research-only; BUY weights and autotrading are not changed",
+        }
+        save_json(BRAIN_DATASET_FILE, payload)
+        try:
+            mark_github_dirty(BRAIN_DATASET_FILE)
+        except Exception:
+            pass
+        return True
+    except Exception as e:
+        print(f"brain snapshot error: {e}")
+        return False
+
+def v199_brain_user_report():
+    events = v199_build_learning_dataset()
+    stats = v199_dataset_stats(events)
+    scores = v199_multi_scores()
+    focus = "раннее распознавание качественного роста"
+    if stats.get("short_momentum", 0) >= stats.get("quality_miss", 0) + stats.get("early_miss", 0):
+        focus = "тайминг коротких импульсов без обычной покупки"
+    if scores.get("danger_score", 0) >= 70:
+        focus = "защита в опасном рынке"
+    return (
+        "🧠 Мозг бота\n\n"
+        f"Режим обучения: 🟢 **активен**\n"
+        f"База опыта: **{stats['total']}** кейсов\n"
+        f"Уверенность обучения: 🟡 **{scores['learning_confidence']}/100**\n"
+        f"Оценка мозга: 🟢 **{scores['brain_score']}/100**\n\n"
+        "Что бот уже понял:\n"
+        f"🛡 Не догонять слабые пампы — работает: **{stats['full_skip'] + stats['saved']}**\n"
+        f"⚡ Короткие импульсы есть, но это не обычная покупка: **{stats['short_momentum']}**\n"
+        f"⚠️ Качественные движения надо ловить раньше: **{stats['quality_miss'] + stats['early_miss']}**\n\n"
+        "Главные уроки:\n"
+        f"1️⃣ Пропущен качественный рост: {v199_examples(stats['top_quality_miss'], 2)}\n"
+        f"2️⃣ Раннее усиление: {v199_examples(stats['top_early_miss'], 2)}\n"
+        f"3️⃣ Защита сработала: {v199_examples(stats['top_saved'], 3)}\n"
+        f"4️⃣ Короткий импульс: {v199_examples(stats['top_momentum'], 3)}\n\n"
+        "📌 Следующий шаг:\n"
+        f"усилить **{focus}**, но автоторговлю не включать.\n\n"
+        "Команды: /error_review | /learning_radar | /audit_file"
+    )
+
+def v199_error_review_report():
+    stats = v199_dataset_stats()
+    quality = stats.get("top_quality_miss", [])
+    early = stats.get("top_early_miss", [])
+    lines = []
+    if quality:
+        a, v = quality[0]
+        lines.append(f"1️⃣ {a} **{v:+.1f}%** — бот был слишком осторожен к качественному активу")
+    if early:
+        a, v = early[0]
+        lines.append(f"2️⃣ {a} **{v:+.1f}%** — раннее усиление надо подсвечивать раньше")
+    if not lines:
+        lines.append("крупных ошибок сейчас не видно")
+    return (
+        "🔎 Разбор ошибок\n\n"
+        f"Проверено кейсов: **{stats['total']}**\n"
+        f"Пропущено хороших движений: **{stats['quality_miss'] + stats['early_miss']}**\n\n"
+        "Что бот сделал неидеально:\n"
+        + "\n".join(lines) + "\n\n"
+        "Почему так произошло:\n"
+        "• общий страх/новости слишком сильно давили на качественные активы\n"
+        "• качественный рост и мусорный памп ещё недостаточно разделены\n"
+        "• ранний импульс не всегда переводился в приоритетное наблюдение\n\n"
+        "Что улучшить в алгоритме:\n"
+        "1️⃣ отдельно оценивать качество монеты\n"
+        "2️⃣ отдельно оценивать момент входа\n"
+        "3️⃣ для SOL/AAVE-like активов включать раннее наблюдение раньше\n"
+        "4️⃣ для LAB/BAS/UB-like пампов вести только короткий импульс, не обычную покупку\n\n"
+        "Автоторговля: 🔴 **не включать** — покупочных данных всё ещё мало."
+    )
+
+def improvement_radar_user_report():
+    stats = v199_dataset_stats()
+    scores = v199_multi_scores()
+    return (
+        "🧭 Радар улучшений\n\n"
+        f"База опыта: **{stats['total']}** кейсов\n"
+        f"Уверенность обучения: 🟡 **{scores['learning_confidence']}/100**\n\n"
+        "Следующие улучшения:\n"
+        "1️⃣ **Quality Growth Filter** — раньше замечать AAVE-подобные движения\n"
+        "2️⃣ **Early Strength Watch** — SOL-подобное усиление переводить в приоритетное наблюдение\n"
+        "3️⃣ **Short Momentum Timing** — LAB/BAS/UB не покупать как обычный BUY, а учить откат/выход\n"
+        "4️⃣ **Full-Skip Memory** — не ослаблять защиту по NES/SEI/BLEND-подобным пампам\n"
+        "5️⃣ **Market Regime 2.0** — отдельно учитывать страх, BTC, новости и тип монеты\n\n"
+        "📌 Рекомендация: следующая разработка — не автопокупки, а улучшение раннего распознавания качественного роста."
+    )
+
+def learning_user_report():
+    data = load_json(RESULTS_FILE)
+    if not isinstance(data, dict):
+        data = {}
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    m = _v1982_metrics()
+    brain = v199_multi_scores()
+    return (
+        "📚 Обучение\n\n"
+        "Статус: 🟢 **работает**\n"
+        f"Открыто наблюдений: **{len(open_items)}**\n"
+        f"Закрыто результатов: **{len(closed)}**\n"
+        f"База мозга: **{brain['dataset_total']}** кейсов\n"
+        f"Уверенность обучения: 🟡 **{brain['learning_confidence']}/100**\n"
+        f"Защита: **{m['protection']}** | пропуски: **{m['missed']}** | ошибки: **{m['entry_error']}**\n\n"
+        "📌 Вывод: бот учится разделять рынок, тип монеты и момент входа. Веса покупок и автоторговля не меняются.\n"
+        "Подробнее: /brain | /error_review | /audit_file"
+    )
+
+def user_signal_report():
+    full = unified_signal_report()
+    ctx = market_context()
+    m = _v1982_metrics()
+    found = []
+    lines = full.splitlines()
+    for idx, ln in enumerate(lines):
+        st = ln.strip()
+        if re.match(r"^\d+\.\s+", st):
+            action = lines[idx + 1].strip() if idx + 1 < len(lines) else ""
+            sym = st.split("—", 1)[0].split(".", 1)[-1].strip().split()[0]
+            low = action.lower()
+            if sym in ["BTC", "ETH"]:
+                label = "ждать подтверждение"
+                rank = 90 if sym == "BTC" else 80
+            elif sym == "SOL":
+                label = "🟡 **приоритетное наблюдение**, ждать объём"
+                rank = 10
+            elif sym == "AAVE":
+                label = "🟠 **сильный импульс, вход поздний**"
+                rank = 20
+            elif sym == "SUI":
+                label = "🟡 наблюдать"
+                rank = 30
+            elif sym == "LINK":
+                label = "🟡 слабое наблюдение"
+                rank = 40
+            elif "не догонять" in low:
+                label = "🟠 памп, не догонять"
+                rank = 60
+            else:
+                label = "🟡 наблюдать"
+                rank = 50
+            found.append((rank, sym, label))
+    ordered = []
+    used = set()
+    for sym in ["SOL", "AAVE", "SUI", "LINK"]:
+        for item in found:
+            if item[1] == sym and sym not in used:
+                ordered.append(item); used.add(sym)
+    for item in sorted(found, key=lambda x: x[0]):
+        if item[1] not in used and len(ordered) < 4:
+            ordered.append(item); used.add(item[1])
+    if not ordered:
+        ordered = [(1, "—", "покупок нет, лучше ждать")]
+    nums = ["1️⃣", "2️⃣", "3️⃣", "4️⃣"]
+    rows = [f"{nums[i]} {sym} — {label}" for i, (_, sym, label) in enumerate(ordered[:4])]
+    focus = "SOL и AAVE наблюдать, но с рынка не покупать"
+    if ordered:
+        focus = ", ".join([x[1] for x in ordered[:2] if x[1] != "—"]) + " — наблюдать, не догонять"
+    return (
+        _v1983_header("📊 Сигнал рынка", ctx, m) + "\n\n"
+        f"🎯 Фокус сейчас: **{focus}**\n\n"
+        "📌 Что делать:\n"
+        "• с рынка **не покупать**\n"
+        "• ждать **откат + удержание + объём**\n"
+        "• приоритет — только лучшие монеты\n\n"
+        "Что смотреть в первую очередь:\n"
+        + "\n".join(rows) + "\n\n"
+        "Итог: 🔴 **новых покупок нет**\n"
+        "Подробно: /status | /accuracy | /brain | /audit_file"
+    )
+
+def paper_classifier_user_report():
+    m = _v1982_metrics()
+    pump_line = _v1983_examples(m["skip_examples"], 3) if m["skip_examples"] else "данные копятся"
+    saved_line = _v1983_examples(m["saved_examples"], 3) if m["saved_examples"] else "данные копятся"
+    missed_line = []
+    if m["quality_examples"]:
+        missed_line.append("качественный рост: " + _v1983_examples(m["quality_examples"], 2))
+    if m["early_examples"]:
+        missed_line.append("раннее усиление: " + _v1983_examples(m["early_examples"], 2))
+    if not missed_line:
+        missed_line.append("крупных пропусков нет")
+    return (
+        "🧠 Чему научился бот\n\n"
+        f"Проверок: **{m['closed']}**\n"
+        f"🛡 Защита сработала: **{m['protection']}** раз\n"
+        f"⚠️ Пропущено движений: **{m['missed']}**\n"
+        f"🔴 Ошибок входа: **{m['entry_error']}**\n\n"
+        "🛡 Защита работает:\n"
+        f"• не догнали пампы: {pump_line}\n"
+        f"• ожидание спасло: {saved_line}\n\n"
+        "⚠️ Что пропустил:\n"
+        + "\n".join([f"• {x}" for x in missed_line[:2]]) + "\n\n"
+        "⚡ Короткие импульсы:\n"
+        f"{_v1983_examples(m['momentum_examples'], 4)}\n\n"
+        "📌 Вывод: защита сильная, ранний импульс надо ловить лучше.\n"
+        "Подробнее: /brain | полная техника: /audit_file"
+    )
+
+def auto_audit_build_text(reason_lines, ctx, paper, learning, force=False):
+    m = _v1982_metrics()
+    cards = paper.get("new_closed_cards") or []
+    if cards:
+        new_block = "\n".join([_v1983_card_to_one_line(c) for c in cards[:2]])
+    else:
+        cleaned = [_v1983_clean_terms(r) for r in (reason_lines or [])]
+        cleaned = [r for r in cleaned if not any(x in r.lower() for x in ["закрытых проверок вырос", "вырос:", "на подходе"])]
+        new_block = "критических изменений нет" if not cleaned else "\n".join([f"• {r}" for r in cleaned[:2]])
+    return (
+        "🧠 Автопроверка\n\n"
+        f"{_v1983_plain_market(ctx)} | покупки: {_v1983_buy_word(ctx)}\n"
+        f"Оценка: 🟢 **{m['score']}/100**\n"
+        f"Закрыто: **{m['closed']}** | защита: **{m['protection']}** | пропуски: **{m['missed']}** | ошибки: **{m['entry_error']}**\n\n"
+        "📌 Изменения:\n"
+        f"{new_block}\n\n"
+        "📌 Что делать: новых покупок не открывать, ждать подтверждение.\n"
+        "Техника: /audit_file"
+    )
+
+def version_user_report():
+    return (
+        f"✅ Версия: **{BOT_VERSION}**\n\n"
+        "Что добавлено:\n"
+        "• 🧠 /brain — мозг бота и база опыта\n"
+        "• 🔎 /error_review — разбор ошибок\n"
+        "• 🧭 /learning_radar — конкретные улучшения алгоритма\n"
+        "• Multi-Score Engine: рынок, риск, новости, BTC, уверенность\n"
+        "• Coin Type Profile: базовые, качественные, импульсные и опасные пампы\n"
+        "• Learning Dataset: память сигналов и 48ч результатов\n\n"
+        "Автоторговля: 🔴 **выключена**\n"
+        "BUY-веса: **не менялись**\n"
+        "Покупки без подтверждения: 🔴 **запрещены**"
+    )
+
+def v199_brain_audit_report():
+    events = v199_build_learning_dataset()
+    stats = v199_dataset_stats(events)
+    scores = v199_multi_scores()
+    type_lines = []
+    for k, v in sorted(stats.get("by_type", {}).items(), key=lambda x: x[1], reverse=True):
+        type_lines.append(f"• {k}: {v}")
+    return (
+        "🧠 SELF-LEARNING BRAIN CORE v19.9\n\n"
+        f"Версия: {BOT_VERSION}\n"
+        "Статус: research-only; BUY-веса, Risk Engine и автоторговля не меняются.\n\n"
+        "Multi-Score Engine:\n"
+        f"• Market Score: {scores['market_score']}/100\n"
+        f"• Danger Score: {scores['danger_score']}/100\n"
+        f"• News Score: {scores['news_score']}/100\n"
+        f"• BTC Pressure: {scores['btc_pressure']}/100\n"
+        f"• Learning Confidence: {scores['learning_confidence']}/100\n"
+        f"• Brain Score: {scores['brain_score']}/100\n\n"
+        f"Learning Dataset: {stats['total']} событий\n"
+        "Распределение типов:\n" + ("\n".join(type_lines) if type_lines else "• данных пока нет") + "\n\n"
+        "Ключевые уроки:\n"
+        f"• Quality miss: {v199_examples(stats['top_quality_miss'], 5)}\n"
+        f"• Early-strength miss: {v199_examples(stats['top_early_miss'], 5)}\n"
+        f"• Saved/skip: {v199_examples(stats['top_saved'], 8)}\n"
+        f"• Short momentum: {v199_examples(stats['top_momentum'], 8)}\n"
+    )
+
+def build_audit_file(chat_id):
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    path = f"/tmp/alex_edge_audit_{ts}.txt"
+    sections = []
+    def add(title, func, timeout_sec=25):
+        body = audit_section_text(func, timeout_sec=timeout_sec)
+        sections.append("\n" + "="*80 + f"\n{title}\n" + "="*80 + "\n" + body)
+    add("VERSION", lambda: f"BOT_VERSION: {BOT_VERSION}", 5)
+    add("AUDIT SHORT", audit_short_report, 15)
+    add("SELF-LEARNING BRAIN CORE V19.9", v199_brain_audit_report, 10)
+    add("ERROR REVIEW V19.9", v199_error_review_report, 8)
+    add("LEARNING RADAR V19.9", improvement_radar_user_report, 8)
+    add("PAPER FULL", paper_report, 12)
+    add("SIGNAL FULL", unified_signal_report, 35)
+    add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
+    add("LEARNING QUALITY CORE", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
+    add("ACTIVE LEARNING PROFILES CORE", lambda: v195_active_learning_profiles(load_json(RESULTS_FILE)), 10)
+    add("PAPER CLASSIFIER", lambda: v197_closed_paper_classifier_report(), 10)
+    add("ACCURACY SCORE", v198_accuracy_score_report, 10)
+    add("USER STATUS", v198_user_status_report, 10)
+    add("LEARNING SPRINT CORE", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
+    add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
+    add("MARKET", market_status, 10)
+    add("BTC FULL", lambda: single_analysis_full("BTC-USDT"), 25)
+    add("SOL FULL", lambda: single_analysis_full("SOL-USDT"), 25)
+    add("ETH FULL", lambda: single_analysis_full("ETH-USDT"), 25)
+    content = "ALEX EDGE ULTRA TECH AUDIT FILE\n" + "\n".join(sections)
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
+    except Exception as e:
+        send_message(chat_id, f"❌ Не удалось создать audit txt: {e}")
+        return None
+    ok = send_document(chat_id, path, caption="🧾 Технический отчёт готов. Полный текст — только в txt-файле.")
+    if not ok:
+        send_message(chat_id, "⚠️ Полный audit_file собран, но Telegram не принял txt-документ. Длинный текст в чат не отправляю. Ниже только короткий аудит.")
+        send_message(chat_id, audit_short_report())
+    return path
+
 def main():
     last_update = load_last_update_id()
 
@@ -15444,6 +15949,13 @@ def main():
                 elif text == "/learning_sync":
                     send_message(chat_id, "⏳ Синхронизирую обучение с GitHub...")
                     send_message(chat_id, learning_report(sync_github=True))
+
+                elif text in ["/brain", "/self_learning", "/learning_brain"]:
+                    send_message(chat_id, v199_brain_user_report())
+                    v199_persist_brain_snapshot("manual_brain")
+
+                elif text in ["/error_review", "/errors", "/mistakes"]:
+                    send_message(chat_id, v199_error_review_report())
 
                 elif text == "/learning":
                     send_message(chat_id, learning_user_report())
