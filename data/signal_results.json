@@ -32325,7 +32325,8 @@
       "results": {
         "15m": -0.37,
         "30m": -1.15,
-        "1h": -0.35
+        "1h": -0.35,
+        "3h": -2.31
       },
       "price_points": [
         {
@@ -32456,6 +32457,15 @@
           "checkpoint_price": 0.5179,
           "checkpoint_pct": -0.35,
           "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782560653.7916973,
+          "target_time": 1782560763.574256,
+          "checkpoint_price": 0.5077,
+          "checkpoint_pct": -2.31,
+          "source": "cache_due_near_snapshot",
+          "cache_price_time": 1782560653.7916973,
+          "cache_price_source": "snapshot"
         }
       }
     },
@@ -32594,7 +32604,7 @@
       }
     }
   },
-  "version": "v19.11 PAPER PROFILE WEIGHTING",
+  "version": "v19.11.1 FAST PAPER CHECKPOINTS",
   "learning_guard_note": "v17.5 restored/protected learning data from backup/frozen store",
   "learning_guard_time": 1782276720.389763
 }
