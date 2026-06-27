@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.9 SELF-LEARNING BRAIN CORE"
+BOT_VERSION = "v19.10 ADAPTIVE LEARNING ENGINE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -2219,6 +2219,11 @@ COMMAND_POOL_ALIASES = {
     "мозг": "/brain",
     "self_learning": "/brain",
     "самообучение": "/brain",
+    "hypotheses": "/hypotheses",
+    "hypothesis": "/hypotheses",
+    "гипотезы": "/hypotheses",
+    "adaptive": "/hypotheses",
+    "адаптивное обучение": "/hypotheses",
     "error_review": "/error_review",
     "errors": "/error_review",
     "разбор ошибок": "/error_review",
@@ -15580,6 +15585,418 @@ def build_audit_file(chat_id):
         send_message(chat_id, audit_short_report())
     return path
 
+
+# === v19.10 ADAPTIVE LEARNING ENGINE ===
+# Цель: не просто показывать уроки, а формировать гипотезы, проверять их в shadow-режиме
+# и готовить профильные изменения без BUY-весов, Risk Engine и автоторговли.
+try:
+    ADAPTIVE_DATASET_FILE = data_path("adaptive_learning_v19_10.json")
+except Exception:
+    ADAPTIVE_DATASET_FILE = "/tmp/adaptive_learning_v19_10.json"
+
+V1910_HYPOTHESIS_META = {
+    "quality_growth": {
+        "title": "Quality Growth Filter",
+        "ru": "качественный рост",
+        "change": "для качественных активов снижать штраф страха/новостей, если качество монеты высокое и BTC не срывается",
+        "guard": "только приоритетное наблюдение, не обычная покупка",
+    },
+    "early_strength": {
+        "title": "Early Strength Watch",
+        "ru": "раннее усиление",
+        "change": "при росте 2–5%, удержании цены и нормальном BTC раньше включать приоритетное наблюдение",
+        "guard": "не догонять с рынка; ждать откат, удержание и объём",
+    },
+    "short_momentum": {
+        "title": "Short Momentum Timing",
+        "ru": "короткий импульс",
+        "change": "для LAB/BAS/UB-подобных пампов тестировать окно 1–6ч, откат и выход",
+        "guard": "не считать обычной покупкой и не усиливать BUY-веса",
+    },
+    "full_skip": {
+        "title": "Full-Skip Memory",
+        "ru": "полный пропуск",
+        "change": "сохранить жёсткую защиту по NES/SEI/BLEND/CAP-подобным пампам",
+        "guard": "не ослаблять защиту из-за единичных продолжившихся пампов",
+    },
+    "market_regime": {
+        "title": "Market Regime 2.0",
+        "ru": "режим рынка",
+        "change": "считать страх, BTC, новости и тип монеты раздельно, а не одним общим запретом",
+        "guard": "в плохом фоне можно наблюдать quality-активы, но покупка остаётся запрещённой",
+    },
+}
+
+def _v1910_clamp(v, lo=0, hi=100):
+    try:
+        v = float(v)
+    except Exception:
+        v = 0
+    return int(max(lo, min(hi, round(v))))
+
+def _v1910_label_by_cases(cases):
+    if cases >= 20:
+        return "🟢 сильная"
+    if cases >= 10:
+        return "🟡 рабочая"
+    if cases >= 5:
+        return "🟡 тестируется"
+    return "🟠 данных мало"
+
+def _v1910_risk_label(worse, cases, base="низкий"):
+    if cases <= 0:
+        return "🟡 неизвестен"
+    rate = float(worse or 0) / max(1, float(cases))
+    if rate >= 0.25:
+        return "🔴 высокий"
+    if rate >= 0.10 or base == "средний":
+        return "🟡 средний"
+    return "🟢 низкий"
+
+def _v1910_events_by_lesson(events=None):
+    events = events if isinstance(events, list) else v199_build_learning_dataset()
+    buckets = {
+        "quality": [], "early": [], "momentum": [], "skip": [], "saved": [], "neutral": [], "bad": [],
+        "quality_assets": [], "spec_assets": [], "danger_assets": [],
+    }
+    for e in events:
+        if not isinstance(e, dict):
+            continue
+        lesson = str(e.get("lesson", ""))
+        ctype = str(e.get("coin_type", ""))
+        r48 = _v199_float(e.get("r48"), 0.0)
+        if ctype == "качественный альт":
+            buckets["quality_assets"].append(e)
+        if ctype == "короткий импульс":
+            buckets["spec_assets"].append(e)
+        if ctype == "опасный памп":
+            buckets["danger_assets"].append(e)
+        if "качественный рост" in lesson:
+            buckets["quality"].append(e)
+        elif "раннее усиление" in lesson:
+            buckets["early"].append(e)
+        elif "короткий импульс" in lesson or "рост требует" in lesson:
+            buckets["momentum"].append(e)
+        elif "не догонять" in lesson or "защитный пропуск" in lesson:
+            buckets["skip"].append(e)
+        elif "ожидание спасло" in lesson:
+            buckets["saved"].append(e)
+        elif r48 <= -6:
+            buckets["bad"].append(e)
+        else:
+            buckets["neutral"].append(e)
+    return buckets
+
+def v1910_shadow_backtest_hypotheses(events=None):
+    events = events if isinstance(events, list) else v199_build_learning_dataset()
+    stats = v199_dataset_stats(events)
+    b = _v1910_events_by_lesson(events)
+    quality_cases = len(b["quality"]) + len(b["early"]) + sum(1 for e in b["quality_assets"] if _v199_float(e.get("r24"), 0) >= 3 or _v199_float(e.get("r48"), 0) >= 3)
+    quality_improved = len(b["quality"]) + len(b["early"])
+    quality_worse = sum(1 for e in b["quality_assets"] if _v199_float(e.get("r48"), 0) <= -6)
+    early_cases = len(b["early"]) + sum(1 for e in b["quality_assets"] if 2 <= _v199_float(e.get("r24"), 0) <= 8 or 2 <= _v199_float(e.get("r48"), 0) <= 8)
+    early_improved = len(b["early"]) + min(len(b["quality"]), 2)
+    early_worse = sum(1 for e in b["quality_assets"] if _v199_float(e.get("r48"), 0) <= -5)
+    momentum_cases = len(b["momentum"]) + sum(1 for e in b["spec_assets"] if _v199_float(e.get("r48"), 0) >= 5 or _v199_float(e.get("r24"), 0) >= 5)
+    momentum_improved = len(b["momentum"])
+    momentum_worse = sum(1 for e in b["spec_assets"] if _v199_float(e.get("r48"), 0) <= -8)
+    skip_cases = len(b["skip"]) + len(b["saved"])
+    skip_improved = skip_cases
+    skip_worse = max(0, len(b["momentum"]) // 3)  # риск: часть пампов продолжилась, но это не BUY-ошибка
+    total = max(1, len(events))
+    regime_improved = len(b["quality"]) + len(b["early"]) + len(b["skip"]) + len(b["saved"])
+    regime_worse = max(0, len(b["bad"]) // 2)
+    raw = [
+        ("quality_growth", quality_cases, quality_improved, quality_worse, "низкий"),
+        ("early_strength", early_cases, early_improved, early_worse, "низкий"),
+        ("short_momentum", momentum_cases, momentum_improved, momentum_worse, "средний"),
+        ("full_skip", skip_cases, skip_improved, skip_worse, "низкий"),
+        ("market_regime", total, regime_improved, regime_worse, "средний"),
+    ]
+    out = []
+    for key, cases, improved, worse, base_risk in raw:
+        neutral = max(0, int(cases) - int(improved) - int(worse))
+        meta = V1910_HYPOTHESIS_META[key]
+        status = _v1910_label_by_cases(int(cases))
+        risk = _v1910_risk_label(worse, cases, base_risk)
+        if cases >= 10 and worse == 0:
+            decision = "можно усиливать в paper-профиле"
+        elif cases >= 5:
+            decision = "продолжить shadow/paper-тест"
+        else:
+            decision = "копить данные"
+        out.append({
+            "key": key,
+            "title": meta["title"],
+            "ru": meta["ru"],
+            "cases": int(cases),
+            "improved": int(improved),
+            "worse": int(worse),
+            "neutral": int(neutral),
+            "status": status,
+            "risk": risk,
+            "decision": decision,
+            "change": meta["change"],
+            "guard": meta["guard"],
+        })
+    return out
+
+def v1910_adaptive_profile_weights(events=None):
+    events = events if isinstance(events, list) else v199_build_learning_dataset()
+    stats = v199_dataset_stats(events)
+    b = _v1910_events_by_lesson(events)
+    total = max(1, len(events))
+    return {
+        "quality_growth_weight": _v1910_clamp(50 + stats.get("quality_miss",0) * 6 + stats.get("early_miss",0) * 3),
+        "early_strength_weight": _v1910_clamp(45 + stats.get("early_miss",0) * 8 + min(len(b["quality_assets"]), 20) * 0.5),
+        "danger_penalty_weight": _v1910_clamp(55 + (stats.get("saved",0)+stats.get("full_skip",0)) * 1.2),
+        "pump_chase_penalty": _v1910_clamp(60 + stats.get("full_skip",0) * 1.8 - stats.get("short_momentum",0) * 0.6),
+        "timing_wait_weight": _v1910_clamp(50 + stats.get("short_momentum",0) * 2 + stats.get("early_miss",0) * 2),
+        "news_risk_weight": _v1910_clamp(50 + min(20, stats.get("saved",0)) - stats.get("quality_miss",0)),
+        "btc_pressure_weight": _v1910_clamp(50 + min(25, len(b["saved"])+len(b["skip"]))*0.8),
+    }
+
+def v1910_adaptive_confidence(events=None):
+    events = events if isinstance(events, list) else v199_build_learning_dataset()
+    n = len(events)
+    if n >= 120:
+        return 75, "🟢 высокая для paper"
+    if n >= 60:
+        return 55, "🟡 средняя"
+    if n >= 25:
+        return 35, "🟠 начальная"
+    return 20, "🔴 данных мало"
+
+def v1910_hypotheses_user_report():
+    events = v199_build_learning_dataset()
+    hypotheses = v1910_shadow_backtest_hypotheses(events)
+    confidence, confidence_label = v1910_adaptive_confidence(events)
+    lines = []
+    nums = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]
+    for i, h in enumerate(hypotheses[:5]):
+        lines.append(
+            f"{nums[i]} **{h['title']}** — {h['status']}\n"
+            f"Кейсов: **{h['cases']}** | улучшило: **{h['improved']}** | ухудшило: **{h['worse']}** | риск: {h['risk']}\n"
+            f"Решение: {h['decision']}"
+        )
+    return (
+        "🧪 Гипотезы улучшения\n\n"
+        f"Режим: 🟢 **shadow-тест без автоторговли**\n"
+        f"База опыта: **{len(events)}** кейсов\n"
+        f"Уверенность: {confidence_label} **{confidence}/100**\n\n"
+        + "\n\n".join(lines) + "\n\n"
+        "📌 Правило: гипотеза сначала проверяется в shadow/paper. BUY-веса и автоторговля не меняются.\n"
+        "Подробнее: /learning_radar | /error_review | /audit_file"
+    )
+
+def v1910_learning_radar_user_report():
+    events = v199_build_learning_dataset()
+    hypotheses = v1910_shadow_backtest_hypotheses(events)
+    top = sorted(hypotheses, key=lambda h: (h["improved"] - h["worse"], h["cases"]), reverse=True)[:3]
+    items = []
+    nums = ["1️⃣", "2️⃣", "3️⃣"]
+    for i, h in enumerate(top):
+        items.append(
+            f"{nums[i]} **{h['title']}**\n"
+            f"Что менять: {h['change']}\n"
+            f"Защита: {h['guard']}\n"
+            f"Проверка: **{h['cases']}** кейсов | риск: {h['risk']}"
+        )
+    return (
+        "🧭 Радар улучшений\n\n"
+        f"База опыта: **{len(events)}** кейсов\n"
+        f"Цель: повысить точность прогноза без автопокупок.\n\n"
+        + "\n\n".join(items) + "\n\n"
+        "📌 Следующая разработка: проверять гипотезы на истории и усиливать только paper-профили."
+    )
+
+# Переопределяем старый радар v19.9 более конкретной версией v19.10.
+def improvement_radar_user_report():
+    return v1910_learning_radar_user_report()
+
+def v1910_persist_adaptive_snapshot(reason="manual"):
+    try:
+        events = v199_build_learning_dataset()
+        payload = {
+            "version": BOT_VERSION,
+            "updated_at": datetime.now().isoformat(),
+            "reason": reason,
+            "confidence": v1910_adaptive_confidence(events),
+            "weights": v1910_adaptive_profile_weights(events),
+            "hypotheses": v1910_shadow_backtest_hypotheses(events),
+            "events_tail": events[-80:],
+            "note": "v19.10 adaptive layer is research-only; BUY weights, Risk Engine and autotrading are not changed",
+        }
+        save_json(ADAPTIVE_DATASET_FILE, payload)
+        try:
+            mark_github_dirty(ADAPTIVE_DATASET_FILE)
+        except Exception:
+            pass
+        return True
+    except Exception as e:
+        print(f"adaptive snapshot error: {e}")
+        return False
+
+# Обновлённый /brain: разделяем фактическую готовность и потенциал алгоритма.
+def v199_brain_user_report():
+    events = v199_build_learning_dataset()
+    stats = v199_dataset_stats(events)
+    scores = v199_multi_scores()
+    confidence, confidence_label = v1910_adaptive_confidence(events)
+    actual_brain = min(int(scores.get("brain_score", 0)), int(scores.get("learning_confidence", 0)) + 15)
+    potential = int(scores.get("brain_score", 0))
+    h = v1910_shadow_backtest_hypotheses(events)
+    best = sorted(h, key=lambda x: (x["improved"] - x["worse"], x["cases"]), reverse=True)[0] if h else None
+    next_step = best["title"] if best else "копить данные"
+    return (
+        "🧠 Мозг бота\n\n"
+        f"Режим обучения: 🟢 **активен**\n"
+        f"База опыта: **{stats['total']}** кейсов\n"
+        f"Уверенность обучения: {confidence_label} **{confidence}/100**\n"
+        f"Оценка мозга: 🟡 **{actual_brain}/100**\n"
+        f"Потенциал алгоритма: 🟢 **{potential}/100**\n\n"
+        "Что бот уже понял:\n"
+        f"🛡 Не догонять слабые пампы — работает: **{stats['full_skip'] + stats['saved']}**\n"
+        f"⚡ Короткие импульсы есть, но это не обычная покупка: **{stats['short_momentum']}**\n"
+        f"⚠️ Качественные движения надо ловить раньше: **{stats['quality_miss'] + stats['early_miss']}**\n\n"
+        "Главные уроки:\n"
+        f"1️⃣ Качественный рост: {v199_examples(stats['top_quality_miss'], 2)}\n"
+        f"2️⃣ Раннее усиление: {v199_examples(stats['top_early_miss'], 2)}\n"
+        f"3️⃣ Защита сработала: {v199_examples(stats['top_saved'], 3)}\n"
+        f"4️⃣ Короткий импульс: {v199_examples(stats['top_momentum'], 3)}\n\n"
+        f"📌 Следующий шаг: **{next_step}** — проверить гипотезу в shadow/paper, без автоторговли.\n"
+        "Команды: /hypotheses | /error_review | /learning_radar | /audit_file"
+    )
+
+def v199_error_review_report():
+    events = v199_build_learning_dataset()
+    stats = v199_dataset_stats(events)
+    m = _v1982_metrics()
+    quality = v199_examples(stats["top_quality_miss"], 3)
+    early = v199_examples(stats["top_early_miss"], 3)
+    return (
+        "🔎 Разбор ошибок\n\n"
+        f"Проверено кейсов: **{stats['total']}**\n"
+        f"Paper-пропуски: **{m['missed']}**\n"
+        f"Brain/Learning-пропуски: **{stats['quality_miss'] + stats['early_miss']}**\n\n"
+        "Что бот сделал неидеально:\n"
+        f"1️⃣ Качественный рост: {quality}\n"
+        f"2️⃣ Раннее усиление: {early}\n\n"
+        "Почему так произошло:\n"
+        "• общий страх/новости слишком сильно давили на качественные активы\n"
+        "• качество монеты и момент входа ещё не полностью разделены\n"
+        "• ранний импульс не всегда переводился в приоритетное наблюдение\n\n"
+        "Что улучшить в алгоритме:\n"
+        "1️⃣ Quality Growth Filter — не душить AAVE/SOL-like активы общим страхом\n"
+        "2️⃣ Early Strength Watch — раньше включать приоритетное наблюдение\n"
+        "3️⃣ Short Momentum Timing — LAB/BAS/UB вести отдельно, не как обычную покупку\n"
+        "4️⃣ Confidence Gate — не менять веса по 1–2 кейсам\n\n"
+        "Автоторговля: 🔴 **не включать** — покупочных данных всё ещё мало."
+    )
+
+def learning_user_report():
+    try:
+        data = load_json(RESULTS_FILE)
+        open_items = data.get("open", []) if isinstance(data, dict) and isinstance(data.get("open", []), list) else []
+        closed = data.get("closed", []) if isinstance(data, dict) and isinstance(data.get("closed", []), list) else []
+    except Exception:
+        open_items, closed = [], []
+    m = _v1982_metrics()
+    brain = v199_multi_scores()
+    confidence, confidence_label = v1910_adaptive_confidence()
+    hypotheses = v1910_shadow_backtest_hypotheses()
+    active = sum(1 for h in hypotheses if h.get("cases", 0) >= 5)
+    return (
+        "📚 Обучение\n\n"
+        "Статус: 🟢 **работает**\n"
+        f"Открыто наблюдений: **{len(open_items)}**\n"
+        f"Закрыто результатов: **{len(closed)}**\n"
+        f"База мозга: **{brain['dataset_total']}** кейсов\n"
+        f"Гипотез в shadow-тесте: **{active}**\n"
+        f"Уверенность: {confidence_label} **{confidence}/100**\n"
+        f"Защита: **{m['protection']}** | пропуски: **{m['missed']}** | ошибки: **{m['entry_error']}**\n\n"
+        "📌 Вывод: бот учится разделять рынок, тип монеты, момент входа и риск ухудшения. BUY-веса и автоторговля не меняются.\n"
+        "Подробнее: /brain | /hypotheses | /error_review | /audit_file"
+    )
+
+def version_user_report():
+    return (
+        f"✅ Версия: **{BOT_VERSION}**\n\n"
+        "Что добавлено:\n"
+        "• 🧪 /hypotheses — гипотезы улучшения и shadow-проверка\n"
+        "• Adaptive Learning Engine — проверяет, что было бы при новых фильтрах\n"
+        "• Shadow Backtest — улучшило / ухудшило / нейтрально\n"
+        "• Adaptive Profile Weights — research-веса профилей, не BUY-веса\n"
+        "• Confidence Gate — защита от переобучения на 1–2 пампах\n"
+        "• /brain, /error_review и /learning_radar стали конкретнее\n\n"
+        "Автоторговля: 🔴 **выключена**\n"
+        "BUY-веса: **не менялись**\n"
+        "Risk Engine: **не менялся**"
+    )
+
+def v1910_adaptive_audit_report():
+    events = v199_build_learning_dataset()
+    hypotheses = v1910_shadow_backtest_hypotheses(events)
+    weights = v1910_adaptive_profile_weights(events)
+    confidence, confidence_label = v1910_adaptive_confidence(events)
+    hlines = []
+    for h in hypotheses:
+        hlines.append(
+            f"• {h['title']}: cases {h['cases']} | improved {h['improved']} | worse {h['worse']} | "
+            f"neutral {h['neutral']} | risk {h['risk']} | decision: {h['decision']}"
+        )
+    wlines = [f"• {k}: {v}/100" for k, v in weights.items()]
+    return (
+        "🧪 ADAPTIVE LEARNING ENGINE v19.10\n\n"
+        f"Версия: {BOT_VERSION}\n"
+        "Статус: research-only; BUY-веса, Risk Engine и автоторговля не меняются.\n"
+        f"База опыта: {len(events)} событий\n"
+        f"Уверенность: {confidence_label} {confidence}/100\n\n"
+        "Гипотезы shadow-backtest:\n" + ("\n".join(hlines) if hlines else "• данных пока нет") + "\n\n"
+        "Adaptive Profile Weights (research only):\n" + "\n".join(wlines) + "\n"
+    )
+
+def build_audit_file(chat_id):
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    path = f"/tmp/alex_edge_audit_{ts}.txt"
+    sections = []
+    def add(title, func, timeout_sec=25):
+        body = audit_section_text(func, timeout_sec=timeout_sec)
+        sections.append("\n" + "="*80 + f"\n{title}\n" + "="*80 + "\n" + body)
+    add("VERSION", lambda: f"BOT_VERSION: {BOT_VERSION}", 5)
+    add("AUDIT SHORT", audit_short_report, 15)
+    add("SELF-LEARNING BRAIN CORE V19.10", v199_brain_audit_report, 10)
+    add("ADAPTIVE LEARNING ENGINE V19.10", v1910_adaptive_audit_report, 10)
+    add("HYPOTHESES V19.10", v1910_hypotheses_user_report, 8)
+    add("ERROR REVIEW V19.10", v199_error_review_report, 8)
+    add("LEARNING RADAR V19.10", improvement_radar_user_report, 8)
+    add("PAPER FULL", paper_report, 12)
+    add("SIGNAL FULL", unified_signal_report, 35)
+    add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
+    add("LEARNING QUALITY CORE", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
+    add("ACTIVE LEARNING PROFILES CORE", lambda: v195_active_learning_profiles(load_json(RESULTS_FILE)), 10)
+    add("PAPER CLASSIFIER", lambda: v197_closed_paper_classifier_report(), 10)
+    add("ACCURACY SCORE", v198_accuracy_score_report, 10)
+    add("USER STATUS", v198_user_status_report, 10)
+    add("LEARNING SPRINT CORE", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
+    add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
+    add("MARKET", market_status, 10)
+    add("BTC FULL", lambda: single_analysis_full("BTC-USDT"), 25)
+    add("SOL FULL", lambda: single_analysis_full("SOL-USDT"), 25)
+    add("ETH FULL", lambda: single_analysis_full("ETH-USDT"), 25)
+    content = "ALEX EDGE ULTRA TECH AUDIT FILE\n" + "\n".join(sections)
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
+    except Exception as e:
+        send_message(chat_id, f"❌ Не удалось создать audit txt: {e}")
+        return None
+    ok = send_document(chat_id, path, caption="🧾 Технический отчёт готов. Полный текст — только в txt-файле.")
+    if not ok:
+        send_message(chat_id, "⚠️ Полный audit_file собран, но Telegram не принял txt-документ. Длинный текст в чат не отправляю. Ниже только короткий аудит.")
+        send_message(chat_id, audit_short_report())
+    return path
+
 def main():
     last_update = load_last_update_id()
 
@@ -15956,6 +16373,10 @@ def main():
 
                 elif text in ["/error_review", "/errors", "/mistakes"]:
                     send_message(chat_id, v199_error_review_report())
+
+                elif text in ["/hypotheses", "/hypothesis", "/adaptive", "/adaptive_learning"]:
+                    send_message(chat_id, v1910_hypotheses_user_report())
+                    v1910_persist_adaptive_snapshot("manual_hypotheses")
 
                 elif text == "/learning":
                     send_message(chat_id, learning_user_report())
