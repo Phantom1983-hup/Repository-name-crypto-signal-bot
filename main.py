@@ -20,7 +20,9 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
+BOT_VERSION = "v19.11.4.2 VERSION HEADER HARD FIX"
+# === v19.11.4.2 version header hard fix ===
+# Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -16625,9 +16627,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
-
-
+BOT_VERSION = "v19.11.4.2 VERSION HEADER HARD FIX"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17735,8 +17735,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
-
+BOT_VERSION = "v19.11.4.2 VERSION HEADER HARD FIX"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18211,7 +18210,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
+BOT_VERSION = "v19.11.4.2 VERSION HEADER HARD FIX"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18375,7 +18374,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
+BOT_VERSION = "v19.11.4.2 VERSION HEADER HARD FIX"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18720,7 +18719,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
+BOT_VERSION = "v19.11.4.2 VERSION HEADER HARD FIX"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19101,7 +19100,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
+BOT_VERSION = "v19.11.4.2 VERSION HEADER HARD FIX"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19402,13 +19401,13 @@ def build_audit_file(chat_id):
     return path
 
 
-# === v19.11.4 QUALITY LEARNING ACCELERATOR ===
+# === v19.11.4.2 VERSION HEADER HARD FIX ===
 # Комплекс мер для улучшения качества и ускорения обучения.
 # Важно: эта версия НЕ включает реальные покупки, НЕ меняет боевой риск-блок и НЕ включает автоторговлю.
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
+BOT_VERSION = "v19.11.4.2 VERSION HEADER HARD FIX"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -19916,6 +19915,145 @@ def build_audit_file(chat_id):
         send_message(chat_id, "⚠️ Полный audit_file собран, но Telegram не принял txt-документ. Длинный текст в чат не отправляю. Ниже только короткий аудит.")
         send_message(chat_id, audit_short_report())
     return path
+
+
+# === v19.11.4.2 VERSION HEADER HARD FIX ===
+# Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
+# Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
+
+BOT_VERSION = "v19.11.4.2 VERSION HEADER HARD FIX"
+V191141_CANON = "v19.11.4.1"
+try:
+    V19114_CANON = V191141_CANON
+except Exception:
+    pass
+
+try:
+    _v191141_old_paper_weight_from_hypothesis = _v1911_paper_weight_from_hypothesis
+except Exception:
+    _v191141_old_paper_weight_from_hypothesis = None
+try:
+    _v191141_old_quality_score_payload = _v191132_quality_score_payload
+except Exception:
+    _v191141_old_quality_score_payload = None
+
+
+def _v1911_paper_weight_from_hypothesis(h):
+    """v19.11.4.1: не даём Full-Skip Memory падать до 45/100,
+    если защита статистически чаще помогала, чем вредила.
+    Это paper-вес, не live BUY.
+    """
+    old = 0
+    try:
+        if _v191141_old_paper_weight_from_hypothesis:
+            old = int(_v191141_old_paper_weight_from_hypothesis(h))
+    except Exception:
+        old = 0
+    try:
+        key = str((h or {}).get('key', ''))
+        if key != 'full_skip':
+            return old
+        cases = max(0, int((h or {}).get('cases', 0) or 0))
+        improved = max(0, int((h or {}).get('improved', 0) or 0))
+        worse = max(0, int((h or {}).get('worse', 0) or 0))
+        total = max(1, improved + worse)
+        success = improved / total
+        # Если полные пропуски спасают в большинстве случаев, это не weak shadow.
+        # При 38/51 защита должна быть около 75/100, а не 45/100.
+        if cases >= 20 and improved > worse and success >= 0.60:
+            restored = int(round(success * 100))
+            return max(old, min(78, max(62, restored)))
+        return old
+    except Exception:
+        return old
+
+
+def _v191141_quality_score_payload():
+    try:
+        q = _v191141_old_quality_score_payload() if _v191141_old_quality_score_payload else {}
+        if not isinstance(q, dict):
+            q = {}
+    except Exception:
+        q = {}
+    try:
+        m = _v1982_metrics()
+        if isinstance(m, dict):
+            # закрытые/защита/пропуски берём из фактического paper-store, если там больше данных
+            q['closed'] = max(int(q.get('closed', 0) or 0), int(m.get('closed', 0) or 0))
+            q['protection'] = max(int(q.get('protection', 0) or 0), int(m.get('protection', 0) or 0))
+            q['missed'] = max(int(q.get('missed', 0) or 0), int(m.get('missed', 0) or 0))
+            q['entry_error'] = max(int(q.get('entry_error', 0) or 0), int(m.get('entry_error', 0) or 0))
+    except Exception:
+        pass
+    # защитный пересчёт процентов после нормализации чисел
+    try:
+        protection = int(q.get('protection', 0) or 0)
+        missed = int(q.get('missed', 0) or 0)
+        entry_error = int(q.get('entry_error', 0) or 0)
+        closed = int(q.get('closed', 0) or 0)
+        q['protection_accuracy'] = round(100 * protection / max(1, protection + missed + entry_error), 1)
+        q['miss_rate'] = round(100 * missed / max(1, closed), 1)
+        q['false_entry_rate'] = round(100 * entry_error / max(1, closed), 1)
+        # Не даём итоговой оценке расходиться с /quality_score и /audit_short.
+        if int(q.get('alex_quality', 0) or 0) <= 0:
+            checkpoint = int(q.get('checkpoint_reliability', 0) or 0)
+            recall = float(q.get('quality_watch_recall', 0) or 0)
+            raw = 50 + min(20, protection * 0.7) - missed * 4 - entry_error * 8 + checkpoint * 0.15 + recall * 0.10
+            q['alex_quality'] = int(max(0, min(100, round(raw))))
+        aq = int(q.get('alex_quality', 0) or 0)
+        if aq >= 85:
+            q['quality_label'] = 'очень сильный защитный фильтр'
+        elif aq >= 75:
+            q['quality_label'] = 'хороший защитный фильтр'
+        elif aq >= 60:
+            q['quality_label'] = 'рабочий защитный фильтр'
+        else:
+            q['quality_label'] = 'качество ещё копится'
+    except Exception:
+        pass
+    return q
+
+
+def _v191132_quality_score_payload():
+    return _v191141_quality_score_payload()
+
+
+def audit_short_report():
+    ctx = market_context()
+    try:
+        m = _v1982_metrics()
+    except Exception:
+        m = {}
+    try:
+        q = _v191141_quality_score_payload()
+    except Exception:
+        q = {}
+    return (
+        "🧾 Короткий аудит\n\n"
+        f"🟡 **РЕЖИМ: {_v1982_market_simple(ctx).upper()}**\n"
+        f"Покупки: 🔴 **НЕТ**\n"
+        f"BTC: **{float(ctx.get('btc_change',0) or 0):+.2f}%** | страх: **{ctx.get('fg_value','?')}** | новости: **{int(ctx.get('macro_mod',0) or 0):+d}**\n"
+        f"Оценка бота: 🟢 **{int(q.get('alex_quality', m.get('score',0)) or 0)}/100**\n\n"
+        f"Открыто: **{int(m.get('open',0) or 0)}** | закрыто: **{int(q.get('closed', m.get('closed',0)) or 0)}**\n"
+        f"Защита: **{int(q.get('protection', m.get('protection',0)) or 0)}** | пропуски: **{int(q.get('missed', m.get('missed',0)) or 0)}** | ошибки: **{int(q.get('entry_error', m.get('entry_error',0)) or 0)}**\n\n"
+        "Полный технический файл: /audit_file"
+    )
+
+
+def version_user_report():
+    return (
+        f"✅ Версия: {BOT_VERSION}\n\n"
+        "Что исправлено:\n"
+        "• оценка качества в /quality_score и /audit_file теперь совпадает;\n"
+        "• защита от догоняния пампов не проседает искусственно до 45/100;\n"
+        "• Full-Skip Memory считается как защитный фильтр, если он чаще спасает, чем мешает;\n"
+        "• комплекс ускорения обучения v19.11.4 сохранён.\n\n"
+        "Ограничения:\n"
+        "• реальные покупки: 0;\n"
+        "• автоторговля: выключена;\n"
+        "• блок риска не менялся;\n"
+        "• 48ч остаётся финальной проверкой."
+    )
 
 def main():
     last_update = load_last_update_id()
