@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.2.2.1 VERSION HEADER FIX"
+BOT_VERSION = "v19.11.2.2.2 AUDIT WORDING FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -16625,7 +16625,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.2.2.1 VERSION HEADER FIX"
+BOT_VERSION = "v19.11.2.2.2 AUDIT WORDING FIX"
 
 
 def _v1911_safe_int(v, default=0):
@@ -17735,7 +17735,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.2.2.1 VERSION HEADER FIX"
+BOT_VERSION = "v19.11.2.2.2 AUDIT WORDING FIX"
 
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
@@ -18204,6 +18204,169 @@ def v1911_paper_profile_report():
         return "🧩 Paper Profile Weighting\n\nДанные временно недоступны."
     return _v191122_fix_version_words(_V191122_BASE_PAPER_PROFILE())
 
+
+
+# === v19.11.2.2.2 AUDIT WORDING FIX ===
+# Цель hotfix: логика v19.11.2.2.1 прошла, но audit показал косметический хвост
+# "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
+# но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
+
+BOT_VERSION = "v19.11.2.2.2 AUDIT WORDING FIX"
+V1911222_CANON = "v19.11.2.2.2"
+
+
+def _v191122_fix_version_words(text):
+    """Нормализует только хвосты ветки v19.11.*, не трогая исторические v18/v19.0 секции."""
+    text = str(text or "")
+    # Схлопнуть любые повреждённые повторяющиеся хвосты вида v19.11.2.2.1.2.2.1
+    text = re.sub(r"\bv19\.11\.2\.2\.1(?:\.\d+)+", V1911222_CANON, text)
+    # Схлопнуть все плановые версии ветки v19.11.* в текущую для новых отчётов
+    text = re.sub(r"\bv19\.11\.2(?:\.\d+)*", V1911222_CANON, text)
+    text = re.sub(r"\bv19\.11\.1(?:\.\d+)*", V1911222_CANON, text)
+    text = re.sub(r"\bv19\.11(?![.\d])", V1911222_CANON, text)
+    # Защита от повторного применения, если рядом остался хвост после label replace
+    text = re.sub(r"\bv19\.11\.2\.2\.2(?:\.\d+)+", V1911222_CANON, text)
+    return text
+
+
+try:
+    _V1911222_BASE_BRAIN_AUDIT = v199_brain_audit_report
+except Exception:
+    _V1911222_BASE_BRAIN_AUDIT = None
+
+
+def v199_brain_audit_report():
+    if _V1911222_BASE_BRAIN_AUDIT is None:
+        return "SELF-LEARNING BRAIN CORE: данные временно недоступны"
+    return _v191122_fix_version_words(_V1911222_BASE_BRAIN_AUDIT())
+
+
+try:
+    _V1911222_BASE_BRAIN_USER = v199_brain_user_report
+except Exception:
+    _V1911222_BASE_BRAIN_USER = None
+
+
+def v199_brain_user_report():
+    if _V1911222_BASE_BRAIN_USER is None:
+        return "🧠 Мозг бота\n\nДанные временно недоступны."
+    return _v191122_fix_version_words(_V1911222_BASE_BRAIN_USER())
+
+
+try:
+    _V1911222_BASE_LEARNING_USER = learning_user_report
+except Exception:
+    _V1911222_BASE_LEARNING_USER = None
+
+
+def learning_user_report():
+    if _V1911222_BASE_LEARNING_USER is None:
+        return "📚 Обучение\n\nДанные временно недоступны."
+    return _v191122_fix_version_words(_V1911222_BASE_LEARNING_USER())
+
+
+try:
+    _V1911222_BASE_CHECKPOINT_SCORE = v19112_checkpoint_scoring_user_report
+except Exception:
+    _V1911222_BASE_CHECKPOINT_SCORE = None
+
+
+def v19112_checkpoint_scoring_user_report():
+    if _V1911222_BASE_CHECKPOINT_SCORE is None:
+        return "🎚 Checkpoint Scoring\n\nДанные временно недоступны."
+    return _v191122_fix_version_words(_V1911222_BASE_CHECKPOINT_SCORE())
+
+
+try:
+    _V1911222_BASE_ACC_PLAN = v19111_acceleration_plan_user_report
+except Exception:
+    _V1911222_BASE_ACC_PLAN = None
+
+
+def v19111_acceleration_plan_user_report():
+    if _V1911222_BASE_ACC_PLAN is None:
+        return "🚀 План ускорения самообучения\n\nДанные временно недоступны."
+    return _v191122_fix_version_words(_V1911222_BASE_ACC_PLAN())
+
+
+try:
+    _V1911222_BASE_QUALITY_SCORE = quality_score_user_report
+except Exception:
+    _V1911222_BASE_QUALITY_SCORE = None
+
+
+def quality_score_user_report():
+    if _V1911222_BASE_QUALITY_SCORE is None:
+        return "📊 ALEX QUALITY SCORE\n\nДанные временно недоступны."
+    return _v191122_fix_version_words(_V1911222_BASE_QUALITY_SCORE())
+
+
+def quality_score_audit_report():
+    return quality_score_user_report()
+
+
+def version_user_report():
+    return (
+        f"✅ Версия: **{BOT_VERSION}**\n\n"
+        "Что исправлено:\n"
+        "• VERSION HEADER FIX сохранён: вверху файла и в runtime одна версия\n"
+        "• DATASET TYPE MAP FIX сохранён: quality/base/pump/momentum/unknown считаются раздельно\n"
+        "• Убран повреждённый audit-хвост вида v19.11.2.2.1.2.2.1\n"
+        "• /quality_score сохранён\n"
+        "• /audit_file получил чистые секции v19.11.2.2.2\n\n"
+        "Ограничения:\n"
+        "• live BUY-веса: +0\n"
+        "• автоторговля: 🔴 выключена\n"
+        "• Risk Engine: не менялся\n"
+        "• 48ч остаётся финальным контролем качества"
+    )
+
+
+def build_audit_file(chat_id):
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    path = f"/tmp/alex_edge_audit_{ts}.txt"
+    sections = []
+    def add(title, func, timeout_sec=25):
+        body = _v191122_fix_version_words(audit_section_text(func, timeout_sec=timeout_sec))
+        sections.append("\n" + "="*80 + f"\n{title}\n" + "="*80 + "\n" + body)
+    add("VERSION", lambda: f"BOT_VERSION: {BOT_VERSION}", 5)
+    add("AUDIT SHORT", audit_short_report, 15)
+    add("SELF-LEARNING BRAIN CORE V19.11.2.2.2", v199_brain_audit_report, 10)
+    add("FAST PAPER CHECKPOINTS V19.11.2.2.2", v1911_paper_profile_report, 10)
+    add("CHECKPOINT RADAR V19.11.2.2.2", v19111_checkpoint_radar_user_report, 10)
+    add("CHECKPOINT SCORING V19.11.2.2.2", v19112_checkpoint_scoring_user_report, 10)
+    add("QUALITY SCORE V19.11.2.2.2", quality_score_audit_report, 8)
+    add("LEARNING ACCELERATION PLAN V19.11.2.2.2", v19111_acceleration_plan_user_report, 8)
+    add("ADAPTIVE LEARNING ENGINE V19.11.2.2.2", v1910_adaptive_audit_report, 10)
+    add("HYPOTHESES V19.11.2.2.2", v1910_hypotheses_user_report, 8)
+    add("ERROR REVIEW V19.11.2.2.2", v199_error_review_report, 8)
+    add("LEARNING RADAR V19.11.2.2.2", improvement_radar_user_report, 8)
+    add("PAPER FULL", paper_report, 12)
+    add("SIGNAL FULL", unified_signal_report, 35)
+    add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
+    add("LEARNING QUALITY CORE", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
+    add("ACTIVE LEARNING PROFILES CORE", lambda: v195_active_learning_profiles(load_json(RESULTS_FILE)), 10)
+    add("PAPER CLASSIFIER", lambda: v197_closed_paper_classifier_report(), 10)
+    add("ACCURACY SCORE", v198_accuracy_score_report, 10)
+    add("USER STATUS", v198_user_status_report, 10)
+    add("LEARNING SPRINT CORE", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
+    add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
+    add("MARKET", market_status, 10)
+    add("BTC FULL", lambda: single_analysis_full("BTC-USDT"), 25)
+    add("SOL FULL", lambda: single_analysis_full("SOL-USDT"), 25)
+    add("ETH FULL", lambda: single_analysis_full("ETH-USDT"), 25)
+    content = "ALEX EDGE ULTRA TECH AUDIT FILE\n" + "\n".join(sections)
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
+    except Exception as e:
+        send_message(chat_id, f"❌ Не удалось создать audit txt: {e}")
+        return None
+    ok = send_document(chat_id, path, caption="🧾 Технический отчёт готов. Полный текст — только в txt-файле.")
+    if not ok:
+        send_message(chat_id, "⚠️ Полный audit_file собран, но Telegram не принял txt-документ. Длинный текст в чат не отправляю. Ниже только короткий аудит.")
+        send_message(chat_id, audit_short_report())
+    return path
 
 def main():
     last_update = load_last_update_id()
