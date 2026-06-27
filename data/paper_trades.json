@@ -1,5 +1,5 @@
 {
-  "version": "v19.11.2 CHECKPOINT SCORING",
+  "version": "v19.11.2.1 AUDIT CORE FIX + QUALITY SCORE FOUNDATION",
   "open": {
     "SUI:VIRTUAL_WATCH_ENTRY_TEST:495109": {
       "id": "SUI:VIRTUAL_WATCH_ENTRY_TEST:495109",
@@ -2022,6 +2022,25 @@
       "last_price": 0.1469,
       "last_price_time": 1782562420.4528944,
       "last_pct": -0.2
+    },
+    "UB:AVOID_PUMP_TEST:495156": {
+      "id": "UB:AVOID_PUMP_TEST:495156",
+      "asset": "UB",
+      "entry_time": 1782563257.4338255,
+      "entry_price": 0.082672,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 14.49,
+      "btc_change": 1.08,
+      "macro_mod": -6,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [
@@ -5578,6 +5597,6 @@
       "outcome": "watch_neutral"
     }
   ],
-  "last_created_at": 1782556534.8438249,
+  "last_created_at": 1782563257.4338255,
   "last_update_at": 1782562423.9518816
 }
