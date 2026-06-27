@@ -2632,6 +2632,91 @@
       "outcome": "spec_watch_pump",
       "frozen_at": 1782567850.4008284,
       "version": "v19.11.3.1 UX REPORT CLEANUP"
+    },
+    "VVV:1782408439:14.138": {
+      "asset": "VVV",
+      "time": 1782408439.5141256,
+      "price": 14.138,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": -0.28,
+        "30m": 1.92,
+        "1h": 1.22,
+        "3h": -4.22,
+        "6h": -4.22,
+        "12h": -2.48,
+        "24h": -0.85,
+        "48h": -2.2
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782409710.829803,
+          "target_time": 1782409339.5141256,
+          "checkpoint_price": 14.098,
+          "checkpoint_pct": -0.28,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782410549.2452757,
+          "target_time": 1782410239.5141256,
+          "checkpoint_price": 14.41,
+          "checkpoint_pct": 1.92,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782410601.7418752,
+          "target_time": 1782412039.5141256,
+          "checkpoint_price": 14.311,
+          "checkpoint_pct": 1.22,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782410601.7418752,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782449909.7720783,
+          "target_time": 1782419239.5141256,
+          "checkpoint_price": 13.542,
+          "checkpoint_pct": -4.22,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782449909.7720783,
+          "target_time": 1782430039.5141256,
+          "checkpoint_price": 13.542,
+          "checkpoint_pct": -4.22,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782459534.8905706,
+          "target_time": 1782451639.5141256,
+          "checkpoint_price": 13.788,
+          "checkpoint_pct": -2.48,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782492550.5719576,
+          "target_time": 1782494839.5141256,
+          "checkpoint_price": 14.018,
+          "checkpoint_pct": -0.85,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782492550.5719576,
+          "cache_price_source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782580793.3337896,
+          "target_time": 1782581239.5141256,
+          "checkpoint_price": 13.827,
+          "checkpoint_pct": -2.2,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782580793.3337896,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782581602.842798,
+      "version": "v19.11.6.1 SIGNAL GROWTH RADAR SYNC"
     }
   }
 }
