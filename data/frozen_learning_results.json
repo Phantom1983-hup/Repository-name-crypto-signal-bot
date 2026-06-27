@@ -2717,6 +2717,97 @@
       "outcome": "neutral",
       "frozen_at": 1782581602.842798,
       "version": "v19.11.6.1 SIGNAL GROWTH RADAR SYNC"
+    },
+    "IP:1782410549:0.34925": {
+      "asset": "IP",
+      "time": 1782410549.2452757,
+      "price": 0.34925,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": -2.14,
+        "30m": -1.89,
+        "1h": 1.95,
+        "3h": 9.78,
+        "6h": 16.63,
+        "12h": -1.22,
+        "24h": -5.0,
+        "48h": -10.66
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782411788.3411145,
+          "target_time": 1782411449.2452757,
+          "checkpoint_price": 0.34176,
+          "checkpoint_pct": -2.14,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782412681.25457,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782412681.25457,
+          "target_time": 1782412349.2452757,
+          "checkpoint_price": 0.34265,
+          "checkpoint_pct": -1.89,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782412681.25457,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782417014.2471552,
+          "target_time": 1782414149.2452757,
+          "checkpoint_price": 0.35605,
+          "checkpoint_pct": 1.95,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782422708.5210094,
+          "target_time": 1782421349.2452757,
+          "checkpoint_price": 0.38341,
+          "checkpoint_pct": 9.78,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782446375.3898506,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782433646.118906,
+          "target_time": 1782432149.2452757,
+          "checkpoint_price": 0.40732,
+          "checkpoint_pct": 16.63,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782446375.3898506,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782459534.8905706,
+          "target_time": 1782453749.2452757,
+          "checkpoint_price": 0.345,
+          "checkpoint_pct": -1.22,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782492550.5719576,
+          "target_time": 1782496949.2452757,
+          "checkpoint_price": 0.3318,
+          "checkpoint_pct": -5.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782492550.5719576,
+          "cache_price_source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782581602.842798,
+          "target_time": 1782583349.2452757,
+          "checkpoint_price": 0.31203,
+          "checkpoint_pct": -10.66,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782581602.842798,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "watch_saved",
+      "frozen_at": 1782583679.6577957,
+      "version": "v19.11.6.2 AUTO CHECK SCORE SYNC"
     }
   }
 }
