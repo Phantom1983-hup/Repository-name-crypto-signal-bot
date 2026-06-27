@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.8 GLOBAL QA + SIMPLE USER REPORTS + ACCURACY SCORE"
+BOT_VERSION = "v19.8.1 SOL PRIORITY WATCH QA"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -7909,7 +7909,7 @@ def v197_closed_paper_classifier_report(limit=8):
         data = {}
     closed = data.get("closed", []) if isinstance(data, dict) and isinstance(data.get("closed", []), list) else []
     if not closed:
-        return "🧠 v19.8 PAPER CLASSIFIER\nЗакрытых Paper-сделок пока нет."
+        return "🧠 v19.8.1 PAPER CLASSIFIER\nЗакрытых Paper-сделок пока нет."
 
     buckets = {
         "full_skip": [],
@@ -8004,7 +8004,7 @@ def v197_closed_paper_classifier_report(limit=8):
     learning_quality = sorted(learning_quality, key=lambda x: x.get("r48", 0), reverse=True)[:limit]
 
     lines = [
-        "🧠 v19.8 PAPER CLASSIFIER / PROFILE MEMORY",
+        "🧠 v19.8.1 PAPER CLASSIFIER / PROFILE MEMORY",
         "Задача: превращать закрытые Paper/Learning в понятные уроки для профилей монет и режимов. Это НЕ автоторговля и НЕ изменение BUY-весов.",
         f"Закрытых Paper: {len(closed)}",
         f"🛡 full-skip подтверждён: {len(buckets['full_skip'])} | 📈 avoid-pump продолжился: {len(buckets['avoid_pump_continued'])} | 🟢 quality-exception Paper: {len(buckets['quality_exception'])} | ⚡ early-strength miss: {len(buckets['early_strength_miss'])} | 🟣 speculative WATCH pump: {len(buckets['spec_watch_pump'])} | 🛡 WATCH спас: {len(buckets['watch_saved'])} | 🟡 neutral: {len(buckets['neutral'])} | 🔴 entry-error: {len(buckets['buy_error'])} | 🔎 review: {len(buckets['review'])}",
@@ -8046,11 +8046,15 @@ def v197_closed_paper_classifier_report(limit=8):
             notes = []
             if st.get("saved",0): notes.append(f"skip/save {st['saved']}")
             if st.get("pump",0): notes.append(f"pump/timing {st['pump']}")
-            if st.get("missed",0): notes.append(f"quality-exception {st['missed']}")
+            if st.get("missed",0):
+                if asset == "SOL":
+                    notes.append(f"early-strength miss {st['missed']}")
+                else:
+                    notes.append(f"quality-exception {st['missed']}")
             if st.get("loss",0): notes.append(f"entry/error {st['loss']}")
             lines.append(f"• {asset}: " + ", ".join(notes))
 
-    lines.append("\nПравило v19.7.4: один кейс не меняет BUY-веса. Профиль усиливается только серией закрытых 48ч + свежей ценой + улучшением рынка.")
+    lines.append("\nПравило v19.8.1: один кейс не меняет BUY-веса. SOL = early-strength/priority-watch, AAVE = quality-exception. Профиль усиливается только серией закрытых 48ч + свежей ценой + улучшением рынка.")
     return "\n".join(lines)
 
 def paper_classifier_user_report():
@@ -13214,13 +13218,16 @@ def v198_momentum_status(c):
             "reason": "качественный актив уже сильно вырос, но общий фон не даёт безопасный BUY",
             "risk": "повышенный: поздний вход после роста может быстро откатить",
         }
-    if quality and change >= 3 and (score >= 58 or vol >= 1.0):
+    # v19.8.1: SOL/AAVE-like assets must not fall back to plain 🔴 НЕ ПОКУПАТЬ.
+    # Even with weak volume, a quality asset +2%...+8% is PRIORITY WATCH, not aggressive BUY.
+    if quality and (change >= 3 or (symbol == "SOL" and change >= 2)):
+        reason = "SOL уже была отмечена как early-strength miss: нужен priority-watch, а не агрессивный BUY" if symbol == "SOL" else "качественный актив усиливается быстрее рынка"
         return {
             "kind": "early_strength_quality",
-            "title": "🟡 РАННЕЕ УСИЛЕНИЕ / PRIORITY WATCH",
-            "decision": "покупать рано, но актив нужно держать в приоритетном наблюдении",
-            "reason": "качественный актив усиливается быстрее рынка",
-            "risk": "средний/повышенный: нужен откат или удержание 1–2 свечи",
+            "title": "🟡 PRIORITY WATCH / РАННЕЕ УСИЛЕНИЕ",
+            "decision": "не покупать с рынка; срочно следить за откатом, удержанием и объёмом",
+            "reason": reason,
+            "risk": "средний/повышенный: вход без подтверждения может попасть в откат",
         }
     if (not quality) and change >= 8:
         return {
@@ -13319,7 +13326,7 @@ def v198_accuracy_score_report():
     except Exception:
         closed, open_n = [], 0
     if not closed:
-        return f"📈 Accuracy v19.8\nВерсия: {BOT_VERSION}\n\nДанных Paper пока нет."
+        return f"📈 Accuracy v19.8.1\nВерсия: {BOT_VERSION}\n\nДанных Paper пока нет."
     counts = {"buy_win":0,"buy_loss":0,"watch_saved":0,"full_skip":0,"quality_exception":0,"early_miss":0,"short_momentum":0,"neutral":0,"entry_error":0}
     for t in closed:
         if not isinstance(t, dict):
@@ -13360,7 +13367,7 @@ def v198_accuracy_score_report():
     confidence = "низкая" if len(closed) < 25 else ("средняя" if len(closed) < 80 else "высокая")
     buy_line = "BUY-точность: данных нет (BUY 0/0)" if buy_total == 0 else f"BUY-точность: {counts['buy_win']}/{buy_total}"
     return (
-        f"📈 Accuracy v19.8\nВерсия: {BOT_VERSION}\n\n"
+        f"📈 Accuracy v19.8.1\nВерсия: {BOT_VERSION}\n\n"
         f"Итоговый score: {overall}/100 | уверенность: {confidence}\n"
         f"Protection accuracy: {protection_score}/100\n"
         f"Timing / short-momentum accuracy: {timing_score}/100\n"
@@ -13397,7 +13404,7 @@ def v198_user_status_report():
     if em: notes.append("Early-strength: " + ", ".join([f"{a} {v:+.1f}%" for a, v in em]))
     if sm: notes.append("Short momentum: " + ", ".join([f"{a} {v:+.1f}%" for a, v in sm]))
     return (
-        f"🧭 Status v19.8\nВерсия: {BOT_VERSION}\n\n"
+        f"🧭 Status v19.8.1\nВерсия: {BOT_VERSION}\n\n"
         f"Рынок: {risk_txt} | BTC {ctx.get('btc_change',0):+.2f}% | страх {ctx.get('fg_value','?')} | новости {ctx.get('macro_mod',0):+d}\n"
         f"Покупки сейчас: {buy_allowed}\n"
         f"Paper: open {open_n} / closed {closed_n}\n"
@@ -13463,6 +13470,12 @@ def format_single_coin_user_report(c):
 
     if momentum:
         lines.append("")
+        if momentum.get("kind") == "early_strength_quality":
+            lines.append("Что это значит:")
+            lines.append("• актив усиливается, но это НЕ сигнал покупать с рынка")
+            lines.append("• задача — следить за точкой входа после отката/удержания")
+            lines.append("• если объём не появится или BTC ослабнет — идею отменить")
+            lines.append("")
         lines += v198_coin_user_plan(c, momentum)
     else:
         conditions = clean_user_condition_lines(c, limit=3)
@@ -13556,7 +13569,7 @@ def user_signal_report():
         lessons.append("пампы типа LAB/UB/BAS — только short momentum, не обычный BUY")
 
     return (
-        f"📊 Сигнал v19.8\nВерсия: {BOT_VERSION}\n\n"
+        f"📊 Сигнал v19.8.1\nВерсия: {BOT_VERSION}\n\n"
         f"{market}\n{btc}\n{risk}\n{buy_line}\n\n"
         f"Итог: {decision}\n\n"
         "Что смотреть сейчас:\n"
@@ -14387,6 +14400,7 @@ def main():
                         "🧹 v19.7.3: Finalizer/ETA labels приведены к CORE, WATCH-минус больше не entry-error\n"
                         "🧹 v19.7.4: Market label снова unified extreme-fear/no-buy, финальные wording QA\n"
                         "🚀 v19.8: simple user reports, Accuracy Score, Quiet Auto-Audit, Early Strength Alert, Short Momentum Watch, AAVE/SOL QA\n"
+                        "🧹 v19.8.1: SOL Priority Watch QA — /sol больше не сваливается в простое 🔴 НЕ ПОКУПАТЬ, SOL отделён от AAVE quality-exception\n"
                         "🛡 v19.3: короткие пользовательские отчёты никогда не показывают частичный набор при size 0%\n"
                         "🚀 v19.4: main.py → GitHub → одна кнопка ручного Render deploy\n"
                         "🛡 v19.4.1: state restore guard защищает learning/paper/frozen от отката после redeploy"
