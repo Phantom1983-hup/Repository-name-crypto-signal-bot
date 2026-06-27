@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.6.2 AUTO CHECK SCORE SYNC"
+BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16627,7 +16627,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.6.2 AUTO CHECK SCORE SYNC"
+BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17735,7 +17735,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.6.2 AUTO CHECK SCORE SYNC"
+BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18210,7 +18210,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.6.2 AUTO CHECK SCORE SYNC"
+BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18374,7 +18374,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.6.2 AUTO CHECK SCORE SYNC"
+BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18719,7 +18719,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.6.2 AUTO CHECK SCORE SYNC"
+BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19100,7 +19100,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.6.2 AUTO CHECK SCORE SYNC"
+BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19407,7 +19407,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.6.2 AUTO CHECK SCORE SYNC"
+BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -19921,7 +19921,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.6.2 AUTO CHECK SCORE SYNC"
+BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20062,7 +20062,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.6.2 AUTO CHECK SCORE SYNC"
+BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20373,7 +20373,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.6.2 AUTO CHECK SCORE SYNC"
+BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20664,7 +20664,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.6.2 AUTO CHECK SCORE SYNC"
+BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21483,12 +21483,12 @@ def main():
 
 
 
-# === v19.11.6.2 AUTO CHECK SCORE SYNC ===
+# === v19.11.6.3 SINGLE COIN NO-BUY SYNC ===
 # Синхронизация /signal с /quality_probe и auto quality probe.
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.6.2 AUTO CHECK SCORE SYNC"
+BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -21887,12 +21887,12 @@ def build_audit_file(chat_id):
 
 
 
-# === v19.11.6.2 AUTO CHECK SCORE SYNC ===
+# === v19.11.6.3 SINGLE COIN NO-BUY SYNC ===
 # Причина: после v19.11.6.1 /signal и /audit_file показывали quality score 73/100,
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.6.2 AUTO CHECK SCORE SYNC"
+BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22163,6 +22163,292 @@ def build_audit_file(chat_id):
         send_message(chat_id, '⚠️ audit_file собран, но Telegram не принял файл. Ниже короткий аудит.')
         send_message(chat_id, audit_short_report())
     return path
+
+
+
+# === v19.11.6.3 SINGLE COIN NO-BUY SYNC ===
+# Проблема: /signal и auto-audit говорят "покупки НЕТ", но single-coin /sol мог писать
+# "можно начать очень малой частью" / "среднесрочный набор". Это опасное UX-противоречие.
+# Исправление: single-coin отчёты синхронизированы с глобальным no-buy режимом и активными paper-пробами.
+# Реальные покупки, автоторговля и Risk Engine НЕ менялись.
+
+try:
+    _v191163_old_single_coin_action_text = single_coin_action_text
+except Exception:
+    _v191163_old_single_coin_action_text = None
+try:
+    _v191163_old_format_single_coin_report = format_single_coin_report
+except Exception:
+    _v191163_old_format_single_coin_report = None
+try:
+    _v191163_old_format_single_coin_user_report = format_single_coin_user_report
+except Exception:
+    _v191163_old_format_single_coin_user_report = None
+try:
+    _v191163_old_build_audit_file = build_audit_file
+except Exception:
+    _v191163_old_build_audit_file = None
+
+
+def v191163_safe_float(x, default=0.0):
+    try:
+        return float(x)
+    except Exception:
+        return default
+
+
+def v191163_ctx(c):
+    try:
+        ctx = c.get('ctx', {}) if isinstance(c, dict) else {}
+        return ctx if isinstance(ctx, dict) else {}
+    except Exception:
+        return {}
+
+
+def v191163_active_probe_info(symbol):
+    """Возвращает активную paper-probe по монете, если она уже открыта."""
+    sym = str(symbol or '').upper().replace('-USDT','')
+    try:
+        rows = v191162_active_probe_records() if 'v191162_active_probe_records' in globals() else []
+        for r in rows or []:
+            asset = str(r.get('asset','')).upper().replace('-USDT','')
+            if asset == sym:
+                return r
+    except Exception as e:
+        print(f'v191163 active probe lookup error: {e}')
+    return None
+
+
+def v191163_global_no_buy(c=None):
+    """В пользовательских отчётах текущей ветки real BUY всегда выключен.
+    Поэтому single-coin не должен звучать как совет купить с рынка.
+    """
+    return True
+
+
+def v191163_single_no_buy_reason(c):
+    ctx = v191163_ctx(c)
+    parts = []
+    try:
+        risk = str(ctx.get('risk_level','') or '')
+        if risk:
+            parts.append(f'режим рынка {risk}')
+    except Exception:
+        pass
+    try:
+        fear = ctx.get('fg_value', None)
+        if fear is not None:
+            parts.append(f'страх {fear}')
+    except Exception:
+        pass
+    try:
+        macro = int(ctx.get('macro_mod', ctx.get('geo_mod', 0)) or 0)
+        if macro < 0:
+            parts.append(f'новости {macro:+d}')
+    except Exception:
+        pass
+    try:
+        btc = v191163_safe_float(ctx.get('btc_change', 0), 0)
+        parts.append(f'BTC {btc:+.2f}%')
+    except Exception:
+        pass
+    if not parts:
+        parts.append('боевые покупки отключены')
+    return '; '.join(parts[:4])
+
+
+def v191163_single_status_title(c):
+    sym = str((c or {}).get('symbol','?')).upper().replace('-USDT','') if isinstance(c, dict) else '?'
+    probe = v191163_active_probe_info(sym)
+    if probe:
+        return '🟦 PAPER-ПРОБА АКТИВНА / НОВЫЙ ВХОД НЕ ОТКРЫВАТЬ'
+    return '🟡 НАБЛЮДАТЬ / РЕАЛЬНАЯ ПОКУПКА ЗАПРЕЩЕНА'
+
+
+def single_coin_action_text(c):
+    if v191163_global_no_buy(c):
+        sym = str((c or {}).get('symbol','?')).upper().replace('-USDT','') if isinstance(c, dict) else '?'
+        if v191163_active_probe_info(sym):
+            return 'paper-проба активна; новую реальную покупку не открывать'
+        return 'реальная покупка запрещена; только наблюдение до подтверждения'
+    return _v191163_old_single_coin_action_text(c) if _v191163_old_single_coin_action_text else 'наблюдать'
+
+
+def v191163_target_zone(c):
+    try:
+        price = (c or {}).get('price')
+        target, stop = _v1983_target_stop(price) if '_v1983_target_stop' in globals() else ('н/д','н/д')
+    except Exception:
+        target, stop = 'н/д', 'н/д'
+    try:
+        zone = v198_entry_zone_text((c or {}).get('price')).replace('примерная зона ожидания: ', '')
+    except Exception:
+        zone = 'н/д'
+    return zone, target, stop
+
+
+def v191163_single_no_buy_report(c, technical=False):
+    if not isinstance(c, dict):
+        return str(c)
+    sym = str(c.get('symbol','?')).upper().replace('-USDT','')
+    probe = v191163_active_probe_info(sym)
+    title = v191163_single_status_title(c)
+    price = compact_price(c.get('price')) if 'compact_price' in globals() else str(c.get('price','?'))
+    change = v191163_safe_float(c.get('change_24', c.get('change', 0)), 0)
+    rsi = v191163_safe_float(c.get('rsi', 0), 0)
+    vol = v191163_safe_float(c.get('volume_trend', 1), 1)
+    score = int(c.get('score', c.get('_master_score', 0)) or 0)
+    zone, target, stop = v191163_target_zone(c)
+    ctx = v191163_ctx(c)
+    probe_line = ''
+    if probe:
+        try:
+            entry = probe.get('entry')
+            cur = probe.get('current')
+            pnl = v191163_safe_float(probe.get('pnl_pct', 0), 0)
+            age_h = v191163_safe_float(probe.get('age_h', 0), 0)
+            probe_line = f"\nPaper-проба: {compact_price(entry)} → {compact_price(cur)} ({pnl:+.2f}%) | прошло {age_h:.1f}ч"
+        except Exception:
+            probe_line = '\nPaper-проба: активна, ждём 24/48ч результат'
+    action = '🔴 НОВУЮ РЕАЛЬНУЮ ПОКУПКУ НЕ ОТКРЫВАТЬ'
+    if probe:
+        action = '🟦 ДЕРЖАТЬ ТОЛЬКО PAPER-ПРОВЕРКУ; НОВЫЙ РЕАЛЬНЫЙ ВХОД НЕ ОТКРЫВАТЬ'
+    reason = v191163_single_no_buy_reason(c)
+    btc_txt = ''
+    try:
+        btc_txt = f"\nBTC: {ctx.get('btc_text','н/д')} | {v191163_safe_float(ctx.get('btc_change',0),0):+.2f}%"
+    except Exception:
+        btc_txt = ''
+    if technical:
+        return (
+            f"Версия: {BOT_VERSION}\n\n"
+            f"{sym} — {title}\n"
+            f"Тип: {c.get('profile','качественный актив')}\n\n"
+            f"Цена: {price}\n"
+            f"24ч: {change:.2f}%\n"
+            f"RSI: {rsi:.1f} | объём: x{vol:.2f}\n"
+            f"Оценка входа: {score}/100{probe_line}\n"
+            f"{compact_market_risk_line(ctx) if 'compact_market_risk_line' in globals() else ''}{btc_txt}\n\n"
+            f"Действие: {action}\n"
+            f"Причина: {reason}; реальные покупки и автоторговля выключены.\n\n"
+            "План:\n"
+            "1️⃣ Текущую paper-пробу не дублировать.\n"
+            "2️⃣ Реально не покупать до удержания цены 1–2 свечи, объёма и улучшения фона.\n"
+            f"3️⃣ Зона ожидания: {zone}\n"
+            f"4️⃣ Контрольная цель paper: {target}\n"
+            f"5️⃣ Отмена идеи: {stop}\n\n"
+            "Итог: это не сигнал на реальную покупку. Бот только учится и ждёт 24/48ч результат."
+        )
+    return (
+        f"{sym} — **{title}**\n\n"
+        f"Цена: **{price}**\n"
+        f"24ч: **{change:+.2f}%**{probe_line}\n\n"
+        f"Решение: **{action}**\n"
+        f"Причина: {reason}; реальные покупки отключены.\n\n"
+        "📌 План:\n"
+        "1️⃣ Не открывать новую покупку с рынка.\n"
+        "2️⃣ Ждать 24/48ч результата paper-пробы.\n"
+        "3️⃣ Новый вход только после удержания цены + объёма + улучшения фона.\n"
+        f"4️⃣ Зона ожидания: **{zone}**\n"
+        f"5️⃣ 🧯 Отмена идеи: **{stop}**\n\n"
+        "Вывод: paper-проба может быть активна, но это не боевой BUY.\n\n"
+        "Техника: /audit_file"
+    )
+
+
+def format_single_coin_user_report(c):
+    if isinstance(c, dict) and v191163_global_no_buy(c):
+        # Если старый код мог написать ACCUM/BUY/среднесрочный набор — принудительно синхронизируем с no-buy режимом.
+        action = str(c.get('action','')).upper()
+        verdict = str(c.get('verdict','')).upper()
+        sym = str(c.get('symbol','')).upper().replace('-USDT','')
+        if action in ['ACCUM','BUY'] or 'СРЕДНЕСРОЧ' in verdict or v191163_active_probe_info(sym):
+            return v191163_single_no_buy_report(c, technical=False)
+    return _v191163_old_format_single_coin_user_report(c) if _v191163_old_format_single_coin_user_report else str(c)
+
+
+def format_single_coin_report(c):
+    if isinstance(c, dict) and v191163_global_no_buy(c):
+        action = str(c.get('action','')).upper()
+        verdict = str(c.get('verdict','')).upper()
+        sym = str(c.get('symbol','')).upper().replace('-USDT','')
+        if action in ['ACCUM','BUY'] or 'СРЕДНЕСРОЧ' in verdict or v191163_active_probe_info(sym):
+            return v191163_single_no_buy_report(c, technical=True)
+    return _v191163_old_format_single_coin_report(c) if _v191163_old_format_single_coin_report else str(c)
+
+
+def single_coin_no_buy_sync_report():
+    return (
+        '🧩 SINGLE COIN NO-BUY SYNC\n\n'
+        f'Версия: {BOT_VERSION}\n'
+        'Статус: /sol и /coin синхронизированы с глобальным режимом “покупки НЕТ”.\n\n'
+        'Исправлено:\n'
+        '• single-coin больше не пишет “можно начать очень малой частью”, когда покупки запрещены;\n'
+        '• активная paper-проба показывается как обучение, а не как реальный вход;\n'
+        '• старые формулировки “среднесрочный набор” блокируются в no-buy режиме.\n\n'
+        'Реальные покупки: 0. Автоторговля выключена. Risk Engine не менялся.'
+    )
+
+
+def version_user_report():
+    return (
+        f'✅ Версия: {BOT_VERSION}\n\n'
+        'Что исправлено:\n'
+        '• /sol и /coin больше не противоречат /signal и автопроверке;\n'
+        '• если общий режим “покупки НЕТ”, single-coin не пишет “можно начать очень малой частью”;\n'
+        '• активная paper-проба показывается как обучение, а не как боевой BUY;\n'
+        '• /signal growth radar и auto-check score sync сохранены.\n\n'
+        'Ограничения:\n'
+        '• реальные покупки: 0;\n'
+        '• автоторговля: выключена;\n'
+        '• блок риска не менялся.\n\n'
+        'Команды: /signal | /sol | /quality_probe | /paper | /audit_file'
+    )
+
+
+def build_audit_file(chat_id):
+    ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+    path = f'/tmp/alex_edge_audit_{ts}.txt'
+    sections=[]
+    def add(title, func, timeout_sec=25):
+        body = audit_section_text(func, timeout_sec=timeout_sec)
+        try:
+            body = v191151_normalize_version_text(body)
+        except Exception:
+            body = str(body)
+        sections.append('\n' + '='*80 + f'\n{title}\n' + '='*80 + '\n' + body)
+    add('VERSION', lambda: f'BOT_VERSION: {BOT_VERSION}', 5)
+    add('AUDIT SHORT', audit_short_report, 15)
+    add('AUTO CHECK SCORE SYNC V19.11.6.3', auto_check_score_sync_report, 8)
+    add('SINGLE COIN NO-BUY SYNC V19.11.6.3', single_coin_no_buy_sync_report, 8)
+    add('SIGNAL GROWTH RADAR V19.11.6.3', unified_signal_report, 35)
+    add('AUTO QUALITY PROBE SCHEDULER V19.11.6.3', auto_quality_probe_status_report, 8)
+    add('QUALITY PAPER PROBE V19.11.6.3', quality_probe_user_report, 12)
+    add('QUALITY LEARNING ACCELERATOR V19.11.6.3', quality_accelerator_audit_report, 10)
+    add('SELF-LEARNING BRAIN CORE V19.11.6.3', v199_brain_audit_report, 10)
+    add('QUALITY WATCH LADDER V19.11.6.3', quality_watch_ladder_audit_report, 10)
+    add('QUALITY SCORE V19.11.6.3', quality_score_audit_report, 8)
+    add('CHECKPOINT SCORING V19.11.6.3', v19112_checkpoint_scoring_user_report, 10)
+    add('TECH: HYPOTHESES', v1910_hypotheses_user_report, 8)
+    add('TECH: PAPER FULL', paper_report, 12)
+    add('TECH: SOL FULL', lambda: single_analysis_full('SOL-USDT'), 25)
+    content = 'ALEX EDGE ULTRA TECH AUDIT FILE\n' + '\n'.join(sections)
+    try:
+        content = v191151_normalize_version_text(content)
+    except Exception:
+        pass
+    try:
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(content)
+    except Exception as e:
+        send_message(chat_id, f'❌ Не удалось создать audit txt: {e}')
+        return None
+    ok = send_document(chat_id, path, caption='🧾 Технический отчёт готов.')
+    if not ok:
+        send_message(chat_id, '⚠️ audit_file собран, но Telegram не принял файл. Ниже короткий аудит.')
+        send_message(chat_id, audit_short_report())
+    return path
+
 
 if __name__ == "__main__":
     try:
