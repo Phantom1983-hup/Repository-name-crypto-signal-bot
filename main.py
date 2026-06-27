@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.5 QUALITY PAPER PROBE"
+BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16627,7 +16627,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.5 QUALITY PAPER PROBE"
+BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17735,7 +17735,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.5 QUALITY PAPER PROBE"
+BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18210,7 +18210,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.5 QUALITY PAPER PROBE"
+BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18374,7 +18374,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.5 QUALITY PAPER PROBE"
+BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18719,7 +18719,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.5 QUALITY PAPER PROBE"
+BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19100,7 +19100,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.5 QUALITY PAPER PROBE"
+BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19407,7 +19407,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.5 QUALITY PAPER PROBE"
+BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -19921,7 +19921,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.5 QUALITY PAPER PROBE"
+BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20062,7 +20062,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.5 QUALITY PAPER PROBE"
+BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20354,6 +20354,297 @@ def build_audit_file(chat_id):
     add('TECH: SIGNAL FULL', unified_signal_report, 35)
     add('TECH: SOL FULL', lambda: single_analysis_full('SOL-USDT'), 25)
     content = 'ALEX EDGE ULTRA TECH AUDIT FILE\n' + '\n'.join(sections)
+    try:
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(content)
+    except Exception as e:
+        send_message(chat_id, f'❌ Не удалось создать audit txt: {e}')
+        return None
+    ok = send_document(chat_id, path, caption='🧾 Технический отчёт готов.')
+    if not ok:
+        send_message(chat_id, '⚠️ audit_file собран, но Telegram не принял файл. Ниже короткий аудит.')
+        send_message(chat_id, audit_short_report())
+    return path
+
+
+
+# === v19.11.5.1 QUALITY PROBE RECORD FIX ===
+# Исправление к v19.11.5: virtual probe должен не только отображаться в /sol и /quality_probe,
+# но и реально записываться в paper_trades как отдельная виртуальная проверка.
+# Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
+
+BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
+
+
+def v191151_collect_quality_probe_candidates():
+    """Собрать текущие quality-probe кандидаты без сетевого перебора всего рынка."""
+    out = []
+    for sym in ['SOL-USDT','AVAX-USDT','SUI-USDT','NEAR-USDT','LINK-USDT','AAVE-USDT','INJ-USDT']:
+        try:
+            c = build_single_coin_analysis(sym)
+            if isinstance(c, dict) and c.get('_quality_paper_probe'):
+                out.append(c)
+        except Exception as e:
+            print(f'quality probe collect error {sym}: {e}')
+            continue
+    return out
+
+
+def v191151_open_quality_probe_trades(candidates=None, reason='quality_probe'):
+    """Создаёт реальные paper-записи для quality-probe.
+    Важно: это отдельный тип VIRTUAL_PROBE_ENTRY_TEST, поэтому он может идти параллельно
+    старому WATCH-тесту по той же монете, но не дублируется внутри одного открытого probe.
+    """
+    if candidates is None:
+        candidates = v191151_collect_quality_probe_candidates()
+    data = paper_store()
+    open_trades = data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}
+    now = time.time()
+    created = 0
+    active = 0
+    existing_probe_assets = set()
+    for t in open_trades.values():
+        if not isinstance(t, dict):
+            continue
+        if str(t.get('virtual_type','')).upper() == 'VIRTUAL_PROBE_ENTRY_TEST':
+            existing_probe_assets.add(str(t.get('asset','')).upper())
+    for c in candidates or []:
+        try:
+            if not isinstance(c, dict) or not c.get('_quality_paper_probe'):
+                continue
+            asset = str(c.get('symbol','')).upper()
+            if not asset or asset in STABLE_SKIP_ASSETS:
+                continue
+            if asset in existing_probe_assets:
+                active += 1
+                continue
+            price = float(c.get('price', 0) or 0)
+            if price <= 0:
+                continue
+            score = int(float(c.get('score', 0) or 0))
+            change24 = float(c.get('change_24', c.get('change', 0)) or 0)
+            ctx = c.get('ctx', {}) if isinstance(c.get('ctx', {}), dict) else {}
+            vtype = 'VIRTUAL_PROBE_ENTRY_TEST'
+            key = paper_trade_key(asset, vtype, now)
+            if key in open_trades:
+                active += 1
+                existing_probe_assets.add(asset)
+                continue
+            open_trades[key] = {
+                'id': key,
+                'asset': asset,
+                'entry_time': now,
+                'entry_price': round(price, 10),
+                'last_price': round(price, 10),
+                'last_pct': 0.0,
+                'score': score,
+                'master_score': c.get('_master_score', score),
+                'source_action': 'PAPER_PROBE',
+                'virtual_type': vtype,
+                'verdict': c.get('verdict', '🟡 виртуальная проба'),
+                'is_quality': True,
+                'is_probe': True,
+                'probe_reason': v19115_probe_reason(c) if 'v19115_probe_reason' in globals() else 'quality paper probe',
+                'change_24': round(change24, 3),
+                'btc_change': round(float(ctx.get('btc_change', 0) or 0), 3),
+                'macro_mod': ctx.get('macro_mod', ctx.get('geo_mod', 0)),
+                'results': {},
+                'result_details': {},
+                'status': 'open',
+                'note': 'quality paper probe only: реальные сделки и автопокупки выключены',
+                'created_by': reason,
+            }
+            existing_probe_assets.add(asset)
+            created += 1
+        except Exception as e:
+            print(f'quality probe open error: {e}')
+            continue
+    if created:
+        data['open'] = open_trades
+        data['last_quality_probe_created_at'] = now
+        save_paper_store(data, sync=False)
+    return created, len(existing_probe_assets)
+
+
+try:
+    _v191151_old_quality_probe_user_report = quality_probe_user_report
+except Exception:
+    _v191151_old_quality_probe_user_report = None
+
+
+def quality_probe_user_report():
+    try:
+        candidates = v191151_collect_quality_probe_candidates()
+        created, active = v191151_open_quality_probe_trades(candidates, reason='quality_probe_command')
+        rows = []
+        for c in candidates:
+            rows.append(
+                f"• {c.get('symbol')}: виртуальная проба | {compact_price(c.get('price'))} | "
+                f"24ч {float(c.get('change_24',0) or 0):+.2f}% | score {c.get('score',0)}/100"
+            )
+        body = '\n'.join(rows) if rows else '• сейчас нет quality-проб: ждём новый импульс/удержание'
+        created_line = f'Создано новых paper-записей: {created} | активных probe: {active}'
+    except Exception as e:
+        body = f'• не удалось собрать список: {e}'
+        created_line = 'Создание paper-записей: ошибка чтения кандидатов'
+    return (
+        '🟡 Виртуальные пробы качества\n\n'
+        f'Версия: {BOT_VERSION}\n'
+        'Задача: бот не должен только ждать и пропускать SOL/AAVE/INJ-like движения.\n'
+        'Режим: только виртуально. Реальные покупки и автоторговля выключены.\n\n'
+        f'{created_line}\n\n'
+        'Активные пробы:\n' + body + '\n\n'
+        'Правило: слабый объём блокирует реальную покупку, но не блокирует обучение. Через 24/48ч бот проверит, была ли такая проба полезной.'
+    )
+
+
+try:
+    _v191151_old_format_single_coin_user_report = format_single_coin_user_report
+except Exception:
+    _v191151_old_format_single_coin_user_report = None
+
+
+def format_single_coin_user_report(c):
+    if isinstance(c, dict) and c.get('_quality_paper_probe'):
+        try:
+            v191151_open_quality_probe_trades([c], reason='single_coin_user_report')
+        except Exception as e:
+            print(f'coin probe open error: {e}')
+    return _v191151_old_format_single_coin_user_report(c) if _v191151_old_format_single_coin_user_report else str(c)
+
+
+try:
+    _v191151_old_format_single_coin_report = format_single_coin_report
+except Exception:
+    _v191151_old_format_single_coin_report = None
+
+
+def format_single_coin_report(c):
+    """Технический single-coin report тоже не должен противоречить /sol.
+    Для probe показываем: виртуальная проба создана, реальный вход запрещён.
+    """
+    if isinstance(c, dict) and c.get('_quality_paper_probe'):
+        try:
+            v191151_open_quality_probe_trades([c], reason='single_coin_full_report')
+        except Exception as e:
+            print(f'coin full probe open error: {e}')
+        symbol = str(c.get('symbol','?')).upper()
+        price = compact_price(c.get('price'))
+        try:
+            change = float(c.get('change_24', 0) or 0)
+        except Exception:
+            change = 0.0
+        try:
+            rsi = float(c.get('rsi', 0) or 0)
+        except Exception:
+            rsi = 0.0
+        try:
+            vol = float(c.get('volume_trend', 1) or 1)
+        except Exception:
+            vol = 1.0
+        ctx = c.get('ctx', {}) if isinstance(c.get('ctx', {}), dict) else {}
+        reason = v19115_probe_reason(c) if 'v19115_probe_reason' in globals() else 'quality-актив подходит для виртуальной проверки'
+        target, stop = _v1983_target_stop(c.get('price')) if '_v1983_target_stop' in globals() else ('н/д','н/д')
+        zone = v198_entry_zone_text(c.get('price')).replace('примерная зона ожидания: ', '') if 'v198_entry_zone_text' in globals() else 'н/д'
+        return (
+            f'Версия: {BOT_VERSION}\n\n'
+            f'{symbol} — 🟡 ВИРТУАЛЬНАЯ ПРОБА / quality-рост\n'
+            f'Тип: {c.get("profile", "качественный актив")}\n\n'
+            f'Цена: {price}\n'
+            f'24ч: {change:.2f}%\n'
+            f'RSI: {rsi:.1f} | объём: x{vol:.2f}\n'
+            f'Оценка входа: {c.get("score", 0)}/100\n'
+            f'Рынок: {compact_market_risk_line(ctx)}\n'
+            f'BTC: {ctx.get("btc_text", "н/д")} | {float(ctx.get("btc_change",0) or 0):.2f}%\n\n'
+            'Действие: 🟡 открыть/держать виртуальную пробу. Реальная покупка — 0%.\n'
+            f'Причина: {reason}.\n\n'
+            'План проверки:\n'
+            '1️⃣ Виртуально: проверить вход от текущей цены.\n'
+            '2️⃣ Реально: не покупать без удержания 1–2 свечи и объёма выше x1.1.\n'
+            f'3️⃣ Зона отката/добора: {zone}\n'
+            f'4️⃣ Цель проверки: {target}\n'
+            f'5️⃣ Отмена идеи: {stop}\n\n'
+            'Итог: это не боевой BUY. Это обязательная paper-проверка, чтобы бот научился не пропускать SOL/AAVE/INJ-like движения.'
+        )
+    return _v191151_old_format_single_coin_report(c) if _v191151_old_format_single_coin_report else str(c)
+
+
+try:
+    _v191151_old_paper_report = paper_report
+except Exception:
+    _v191151_old_paper_report = None
+
+
+def paper_report():
+    try:
+        v191151_open_quality_probe_trades(reason='paper_report')
+    except Exception as e:
+        print(f'paper report probe open error: {e}')
+    text = _v191151_old_paper_report() if _v191151_old_paper_report else '🧪 Paper report недоступен'
+    text = str(text).replace('VIRTUAL PROBE ENTRY TEST', '🟡 QUALITY PAPER PROBE')
+    text = text.replace('VIRTUAL_PROBE_ENTRY_TEST', '🟡 QUALITY PAPER PROBE')
+    return text
+
+
+def version_user_report():
+    return (
+        f'✅ Версия: {BOT_VERSION}\n\n'
+        'Что исправлено:\n'
+        '• /sol и /quality_probe теперь не только показывают виртуальную пробу, но и записывают её в /paper;\n'
+        '• paper-пробы идут отдельным типом виртуальной сделки;\n'
+        '• слабый объём блокирует только реальную покупку, но не обучение;\n'
+        '• технический SOL-отчёт больше не противоречит пользовательскому /sol;\n'
+        '• реальные покупки: 0, автоторговля выключена, блок риска не менялся.\n\n'
+        'Команды проверки: /sol | /quality_probe | /paper | /audit_file'
+    )
+
+
+
+# === v19.11.5.1 AUDIT TITLE NORMALIZER ===
+# Технический audit тоже должен показывать текущую версию в заголовках секций,
+# чтобы не было визуального ощущения отката на предыдущие версии.
+
+def v191151_normalize_version_text(txt):
+    s = str(txt or '')
+    for old in [
+        'v19.11.5 QUALITY PAPER PROBE',
+        'v19.11.4.2 VERSION HEADER HARD FIX',
+        'v19.11.4.1 QUALITY CONSISTENCY FIX',
+        'v19.11.4.1',
+        'v19.11.4',
+    ]:
+        s = s.replace(old, BOT_VERSION)
+    return s
+
+
+try:
+    _v191151_old_build_audit_file_final = build_audit_file
+except Exception:
+    _v191151_old_build_audit_file_final = None
+
+
+def build_audit_file(chat_id):
+    ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+    path = f'/tmp/alex_edge_audit_{ts}.txt'
+    sections=[]
+    def add(title, func, timeout_sec=25):
+        body = audit_section_text(func, timeout_sec=timeout_sec)
+        body = v191151_normalize_version_text(body)
+        sections.append('\n' + '='*80 + f'\n{title}\n' + '='*80 + '\n' + body)
+    add('VERSION', lambda: f'BOT_VERSION: {BOT_VERSION}', 5)
+    add('AUDIT SHORT', audit_short_report, 15)
+    add('QUALITY PAPER PROBE V19.11.5.1', quality_probe_user_report, 12)
+    add('QUALITY LEARNING ACCELERATOR V19.11.5.1', quality_accelerator_audit_report, 10)
+    add('SELF-LEARNING BRAIN CORE V19.11.5.1', v199_brain_audit_report, 10)
+    add('QUALITY WATCH LADDER V19.11.5.1', quality_watch_ladder_audit_report, 10)
+    add('QUALITY SCORE V19.11.5.1', quality_score_audit_report, 8)
+    add('CHECKPOINT SCORING V19.11.5.1', v19112_checkpoint_scoring_user_report, 10)
+    add('TECH: HYPOTHESES', v1910_hypotheses_user_report, 8)
+    add('TECH: PAPER FULL', paper_report, 12)
+    add('TECH: SIGNAL FULL', unified_signal_report, 35)
+    add('TECH: SOL FULL', lambda: single_analysis_full('SOL-USDT'), 25)
+    content = 'ALEX EDGE ULTRA TECH AUDIT FILE\n' + '\n'.join(sections)
+    content = v191151_normalize_version_text(content)
     try:
         with open(path, 'w', encoding='utf-8') as f:
             f.write(content)
