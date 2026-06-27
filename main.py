@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.10.1 HYPOTHESIS QA FIX"
+BOT_VERSION = "v19.11 PAPER PROFILE WEIGHTING"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -16310,6 +16310,422 @@ def build_audit_file(chat_id):
         send_message(chat_id, "⚠️ Полный audit_file собран, но Telegram не принял txt-документ. Длинный текст в чат не отправляю. Ниже только короткий аудит.")
         send_message(chat_id, audit_short_report())
     return path
+
+
+# === v19.11 PAPER PROFILE WEIGHTING ===
+# Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
+# Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
+BOT_VERSION = "v19.11 PAPER PROFILE WEIGHTING"
+
+
+def _v1911_safe_int(v, default=0):
+    try:
+        return int(v or 0)
+    except Exception:
+        return default
+
+
+def _v1911_paper_weight_from_hypothesis(h):
+    """Paper-only вес гипотезы. Не используется для live BUY."""
+    cases = max(0, _v1911_safe_int((h or {}).get("cases")))
+    improved = max(0, _v1911_safe_int((h or {}).get("improved")))
+    worse = max(0, _v1911_safe_int((h or {}).get("worse")))
+    risk = str((h or {}).get("risk", ""))
+    credibility = str((h or {}).get("credibility", ""))
+
+    if cases <= 0 or (cases <= 1 and improved == 0 and worse == 0):
+        return 0
+
+    improved_rate = improved / max(1, cases)
+    worse_rate = worse / max(1, cases)
+    case_bonus = min(18, cases * 0.7)
+    raw = 42 + case_bonus + improved_rate * 34 - worse_rate * 44
+
+    # Risk/credibility caps: высокий риск не может получить paper-усиление.
+    if "🔴" in risk:
+        raw = min(raw, 45)
+    elif "🟡" in risk:
+        raw = min(raw, 76)
+
+    if "данных мало" in credibility:
+        raw = min(raw, 40)
+    elif "слаб" in credibility:
+        raw = min(raw, 55)
+    elif "сред" in credibility:
+        raw = min(raw, 72)
+
+    return _v1910_clamp(raw)
+
+
+def _v1911_paper_delta(weight):
+    """Компактный paper-delta для отчётов. Не live BUY."""
+    weight = _v1911_safe_int(weight)
+    if weight < 50:
+        return 0
+    return max(0, min(8, int(round((weight - 50) / 6))))
+
+
+def v1911_paper_profile_weights(events=None):
+    events = events if isinstance(events, list) else v199_build_learning_dataset()
+    hypotheses = v1910_shadow_backtest_hypotheses(events)
+    by_key = {h.get("key"): h for h in hypotheses if isinstance(h, dict)}
+
+    def w(key):
+        return _v1911_paper_weight_from_hypothesis(by_key.get(key, {}))
+
+    quality = w("quality_growth")
+    early = w("early_strength")
+    momentum = w("short_momentum")
+    full_skip = w("full_skip")
+    regime = w("market_regime")
+
+    return {
+        "market_regime_profile": regime,
+        "full_skip_protection_profile": full_skip,
+        "early_strength_watch_profile": early,
+        "short_momentum_timing_profile": momentum,
+        "quality_growth_shadow_profile": quality,
+        "live_buy_weight_delta": 0,
+        "autotrading_gate": 0,
+    }
+
+
+def v1911_hypothesis_paper_action(h):
+    key = str((h or {}).get("key", ""))
+    weight = _v1911_paper_weight_from_hypothesis(h)
+    delta = _v1911_paper_delta(weight)
+    risk = str((h or {}).get("risk", ""))
+
+    if "🔴" in risk:
+        return "оставить в shadow, paper/live-веса не усиливать"
+    if key == "market_regime":
+        return f"paper +{delta} к Market Regime Profile; live BUY +0"
+    if key == "full_skip":
+        return f"paper +{delta} к защите Full-Skip; не ослаблять запрет догонять пампы"
+    if key == "early_strength":
+        return f"paper +{delta} к приоритетному наблюдению; вход только после отката/объёма"
+    if key == "short_momentum":
+        return f"paper +{delta} к timing/watch; не переводить в обычный BUY"
+    if key == "quality_growth":
+        return f"paper +{delta} только к quality-watch; без live BUY"
+    return "копить данные, live BUY +0"
+
+
+def v1911_paper_profile_report():
+    events = v199_build_learning_dataset()
+    weights = v1911_paper_profile_weights(events)
+    hypotheses = v1910_shadow_backtest_hypotheses(events)
+    active = [h for h in hypotheses if _v1911_paper_weight_from_hypothesis(h) >= 50 and "🔴" not in str(h.get("risk", ""))]
+
+    lines = [
+        f"• Market Regime Profile: **{weights['market_regime_profile']}/100**",
+        f"• Full-Skip Protection: **{weights['full_skip_protection_profile']}/100**",
+        f"• Early Strength Watch: **{weights['early_strength_watch_profile']}/100**",
+        f"• Short Momentum Timing: **{weights['short_momentum_timing_profile']}/100**",
+        f"• Quality Growth Shadow: **{weights['quality_growth_shadow_profile']}/100**",
+    ]
+    actions = []
+    nums = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]
+    for i, h in enumerate(hypotheses[:5]):
+        actions.append(f"{nums[i]} {h['title']}: {v1911_hypothesis_paper_action(h)}")
+
+    return (
+        "🧩 Paper Profile Weighting\n\n"
+        f"Версия: **{BOT_VERSION}**\n"
+        f"База: **{len(events)}** кейсов\n"
+        f"Активных paper-профилей: **{len(active)}**\n\n"
+        "Paper-веса:\n" + "\n".join(lines) + "\n\n"
+        "Что разрешено делать:\n" + "\n".join(actions) + "\n\n"
+        "🔒 Ограничения: live BUY +0, автоторговля 0, Risk Engine не меняется."
+    )
+
+
+def v1910_hypotheses_user_report():
+    events = v199_build_learning_dataset()
+    hypotheses = v1910_shadow_backtest_hypotheses(events)
+    confidence, confidence_label = v1910_adaptive_confidence(events)
+    lines = []
+    nums = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]
+    for i, h in enumerate(hypotheses[:5]):
+        paper_w = _v1911_paper_weight_from_hypothesis(h)
+        lines.append(
+            f"{nums[i]} **{h['title']}** — {h['status']}\n"
+            f"Кейсов: **{h['cases']}**\n"
+            f"Улучшило: **{h['improved']}** | ухудшило: **{h['worse']}** | нейтрально: **{h['neutral']}**\n"
+            f"Риск: {h['risk']} | достоверность: {h.get('credibility', '🟡 средняя')}\n"
+            f"Paper-вес: **{paper_w}/100**\n"
+            f"Решение: {h['decision']}\n"
+            f"v19.11: {v1911_hypothesis_paper_action(h)}"
+        )
+    return (
+        "🧪 Гипотезы улучшения\n\n"
+        f"Режим: 🟢 **paper/shadow без автоторговли**\n"
+        f"Версия: **{BOT_VERSION}**\n"
+        f"База опыта: **{len(events)}** кейсов\n"
+        f"Уверенность: {confidence_label} **{confidence}/100**\n\n"
+        + "\n\n".join(lines) + "\n\n"
+        "📌 Проверка: улучшило + ухудшило + нейтрально = кейсов.\n"
+        "BUY-веса, Risk Engine и автоторговля не меняются.\n"
+        "Подробнее: /learning_radar | /paper_profile | /error_review | /audit_file"
+    )
+
+
+def v1910_learning_radar_user_report():
+    events = v199_build_learning_dataset()
+    hypotheses = v1910_shadow_backtest_hypotheses(events)
+
+    def key(h):
+        paper_w = _v1911_paper_weight_from_hypothesis(h)
+        risk_penalty = 100 if "🔴" in h.get("risk", "") else (20 if "🟡" in h.get("risk", "") else 0)
+        return (paper_w - risk_penalty, h.get("improved", 0) - h.get("worse", 0), h.get("cases", 0))
+
+    top = sorted(hypotheses, key=key, reverse=True)[:3]
+    items = []
+    nums = ["1️⃣", "2️⃣", "3️⃣"]
+    for i, h in enumerate(top):
+        items.append(
+            f"{nums[i]} **{h['title']}**\n"
+            f"Paper-действие: {v1911_hypothesis_paper_action(h)}\n"
+            f"Что менять: {h['change']}\n"
+            f"Защита: {h['guard']}\n"
+            f"Проверка: **{h['cases']}** кейсов | улучшило **{h['improved']}** | ухудшило **{h['worse']}** | риск: {h['risk']}"
+        )
+    return (
+        "🧭 Радар улучшений v19.11\n\n"
+        f"База опыта: **{len(events)}** кейсов\n"
+        "Цель: усилить только paper-профили, не реальные покупки.\n\n"
+        + "\n\n".join(items) + "\n\n"
+        "📌 Следующая проверка: после закрытия новых 48ч кейсов сравнить paper-веса с /hypotheses."
+    )
+
+
+def improvement_radar_user_report():
+    return v1910_learning_radar_user_report()
+
+
+def v199_brain_user_report():
+    events = v199_build_learning_dataset()
+    stats = v199_dataset_stats(events)
+    scores = v199_multi_scores()
+    confidence, confidence_label = v1910_adaptive_confidence(events)
+    actual_brain = min(int(scores.get("brain_score", 0)), int(scores.get("learning_confidence", 0)) + 15)
+    potential = int(scores.get("brain_score", 0))
+    weights = v1911_paper_profile_weights(events)
+    return (
+        "🧠 Мозг бота\n\n"
+        f"Версия: **{BOT_VERSION}**\n"
+        f"Режим обучения: 🟢 **активен**\n"
+        f"База опыта: **{stats['total']}** кейсов\n"
+        f"Уверенность обучения: {confidence_label} **{confidence}/100**\n"
+        f"Оценка мозга: 🟡 **{actual_brain}/100**\n"
+        f"Потенциал алгоритма: 🟢 **{potential}/100**\n\n"
+        "Paper-профили v19.11:\n"
+        f"🧭 Market Regime: **{weights['market_regime_profile']}/100**\n"
+        f"🛡 Full-Skip: **{weights['full_skip_protection_profile']}/100**\n"
+        f"⚡ Early Strength: **{weights['early_strength_watch_profile']}/100**\n"
+        f"⏱ Short Momentum: **{weights['short_momentum_timing_profile']}/100**\n\n"
+        "Что бот уже понял:\n"
+        f"🛡 Не догонять слабые пампы — работает: **{stats['full_skip'] + stats['saved']}**\n"
+        f"⚡ Короткие импульсы есть, но это не обычная покупка: **{stats['short_momentum']}**\n"
+        f"⚠️ Качественные движения надо ловить раньше: **{stats['quality_miss'] + stats['early_miss']}**\n\n"
+        "Главные уроки:\n"
+        f"1️⃣ Качественный рост: {v199_examples(stats['top_quality_miss'], 2)}\n"
+        f"2️⃣ Раннее усиление: {v199_examples(stats['top_early_miss'], 2)}\n"
+        f"3️⃣ Защита сработала: {v199_examples(stats['top_saved'], 3)}\n"
+        f"4️⃣ Короткий импульс: {v199_examples(stats['top_momentum'], 3)}\n\n"
+        "📌 Следующий шаг: проверять v19.11 paper-профили на новых 48ч закрытиях.\n"
+        "Команды: /hypotheses | /learning_radar | /paper_profile | /audit_file"
+    )
+
+
+def v199_brain_audit_report():
+    events = v199_build_learning_dataset()
+    stats = v199_dataset_stats(events)
+    scores = v199_multi_scores()
+    confidence, confidence_label = v1910_adaptive_confidence(events)
+    actual_brain = min(int(scores.get("brain_score", 0)), int(scores.get("learning_confidence", 0)) + 15)
+    potential = int(scores.get("brain_score", 0))
+    weights = v1911_paper_profile_weights(events)
+    type_lines = []
+    for k, v in sorted(stats.get("by_type", {}).items(), key=lambda x: x[1], reverse=True):
+        type_lines.append(f"• {k}: {v}")
+    wlines = [f"• {k}: {v}/100" for k, v in weights.items()]
+    return (
+        "🧠 SELF-LEARNING BRAIN CORE v19.11\n\n"
+        f"Версия: {BOT_VERSION}\n"
+        "Статус: paper-profile only; BUY-веса, Risk Engine и автоторговля не меняются.\n\n"
+        "Multi-Score Engine:\n"
+        f"• Market Score: {scores['market_score']}/100\n"
+        f"• Danger Score: {scores['danger_score']}/100\n"
+        f"• News Score: {scores['news_score']}/100\n"
+        f"• BTC Pressure: {scores['btc_pressure']}/100\n"
+        f"• Learning Confidence: {confidence}/100 ({confidence_label})\n"
+        f"• Brain Score: {actual_brain}/100\n"
+        f"• Algorithm Potential: {potential}/100\n\n"
+        "Paper Profile Weights:\n" + "\n".join(wlines) + "\n\n"
+        f"Learning Dataset: {stats['total']} событий\n"
+        "Распределение типов:\n" + ("\n".join(type_lines) if type_lines else "• данных пока нет") + "\n\n"
+        "Ключевые уроки:\n"
+        f"• Quality miss: {v199_examples(stats['top_quality_miss'], 5)}\n"
+        f"• Early-strength miss: {v199_examples(stats['top_early_miss'], 5)}\n"
+        f"• Saved/skip: {v199_examples(stats['top_saved'], 8)}\n"
+        f"• Short momentum: {v199_examples(stats['top_momentum'], 8)}\n"
+    )
+
+
+def v1910_adaptive_audit_report():
+    events = v199_build_learning_dataset()
+    hypotheses = v1910_shadow_backtest_hypotheses(events)
+    weights = v1911_paper_profile_weights(events)
+    confidence, confidence_label = v1910_adaptive_confidence(events)
+    hlines = []
+    for h in hypotheses:
+        hlines.append(
+            f"• {h['title']}: cases {h['cases']} | improved {h['improved']} | worse {h['worse']} | "
+            f"neutral {h['neutral']} | risk {h['risk']} | credibility {h.get('credibility','')} | "
+            f"paper_weight {_v1911_paper_weight_from_hypothesis(h)}/100 | action: {v1911_hypothesis_paper_action(h)}"
+        )
+    wlines = [f"• {k}: {v}/100" for k, v in weights.items()]
+    return (
+        "🧪 PAPER PROFILE WEIGHTING v19.11\n\n"
+        f"Версия: {BOT_VERSION}\n"
+        "Статус: paper/shadow only; BUY-веса, Risk Engine и автоторговля не меняются.\n"
+        f"База опыта: {len(events)} событий\n"
+        f"Уверенность: {confidence_label} {confidence}/100\n\n"
+        "Гипотезы и действия:\n" + ("\n".join(hlines) if hlines else "• данных пока нет") + "\n\n"
+        "Paper Profile Weights:\n" + "\n".join(wlines) + "\n"
+    )
+
+
+def learning_user_report():
+    try:
+        data = load_json(RESULTS_FILE)
+        if not isinstance(data, dict):
+            data = {}
+        open_count = _v19101_count_items(data.get("open"))
+        closed_count = _v19101_count_items(data.get("closed"))
+        if open_count == 0:
+            try:
+                open_count = int(_v1982_metrics().get("open", 0) or 0)
+            except Exception:
+                pass
+    except Exception:
+        open_count, closed_count = 0, 0
+    m = _v1982_metrics()
+    brain = v199_multi_scores()
+    confidence, confidence_label = v1910_adaptive_confidence()
+    hypotheses = v1910_shadow_backtest_hypotheses()
+    weights = v1911_paper_profile_weights()
+    active = sum(1 for h in hypotheses if h.get("cases", 0) >= 5)
+    active_paper = sum(1 for k, v in weights.items() if k not in ["live_buy_weight_delta", "autotrading_gate"] and int(v or 0) >= 50)
+    return (
+        "📚 Обучение\n\n"
+        f"Версия: **{BOT_VERSION}**\n"
+        "Статус: 🟢 **работает**\n"
+        f"Открыто наблюдений: **{open_count}**\n"
+        f"Закрыто результатов: **{closed_count}**\n"
+        f"База мозга: **{brain['dataset_total']}** кейсов\n"
+        f"Гипотез в shadow-тесте: **{active}**\n"
+        f"Paper-профилей активных: **{active_paper}**\n"
+        f"Уверенность: {confidence_label} **{confidence}/100**\n"
+        f"Защита: **{m['protection']}** | пропуски: **{m['missed']}** | ошибки: **{m['entry_error']}**\n\n"
+        "📌 Вывод: v19.11 переводит сильные гипотезы только в paper-профили. Реальные BUY-веса и автоторговля не меняются.\n"
+        "Подробнее: /brain | /hypotheses | /paper_profile | /audit_file"
+    )
+
+
+def paper_classifier_user_report():
+    m = _v1982_metrics()
+    weights = v1911_paper_profile_weights()
+    pump_line = _v1983_examples(m["skip_examples"], 3) if m.get("skip_examples") else "данные копятся"
+    saved_line = _v1983_examples(m["saved_examples"], 3) if m.get("saved_examples") else "данные копятся"
+    missed_line = []
+    if m.get("quality_examples"):
+        missed_line.append("качественный рост: " + _v1983_examples(m["quality_examples"], 2))
+    if m.get("early_examples"):
+        missed_line.append("раннее усиление: " + _v1983_examples(m["early_examples"], 2))
+    if not missed_line:
+        missed_line.append("крупных пропусков нет")
+    return (
+        "🧠 Paper-профиль бота\n\n"
+        f"Версия: **{BOT_VERSION}**\n"
+        f"Проверок: **{m['closed']}**\n"
+        f"🛡 Защита сработала: **{m['protection']}** раз\n"
+        f"⚠️ Пропущено движений: **{m['missed']}**\n"
+        f"🔴 Ошибок входа: **{m['entry_error']}**\n\n"
+        "Paper-веса:\n"
+        f"• Market Regime: **{weights['market_regime_profile']}/100**\n"
+        f"• Full-Skip: **{weights['full_skip_protection_profile']}/100**\n"
+        f"• Early Strength: **{weights['early_strength_watch_profile']}/100**\n"
+        f"• Short Momentum: **{weights['short_momentum_timing_profile']}/100**\n\n"
+        "🛡 Защита работает:\n"
+        f"• не догнали пампы: {pump_line}\n"
+        f"• ожидание спасло: {saved_line}\n\n"
+        "⚠️ Что пропустил:\n"
+        + "\n".join([f"• {x}" for x in missed_line[:2]]) + "\n\n"
+        "📌 Правило: это paper-профиль, не live BUY. Подробнее: /hypotheses | /audit_file"
+    )
+
+
+def version_user_report():
+    return (
+        f"✅ Версия: **{BOT_VERSION}**\n\n"
+        "Что добавлено:\n"
+        "• Paper Profile Weighting для 5 гипотез\n"
+        "• Paper-вес каждой гипотезы в /hypotheses\n"
+        "• /paper_profile показывает research-веса профилей\n"
+        "• /learning_radar выбирает следующие действия с учётом риска/достоверности\n"
+        "• /audit_file получил секции v19.11\n\n"
+        "Ограничения:\n"
+        "• live BUY-веса: **+0**\n"
+        "• автоторговля: 🔴 **выключена**\n"
+        "• Risk Engine: **не менялся**\n"
+        "• Quality Growth при высоком риске остаётся только shadow"
+    )
+
+
+def build_audit_file(chat_id):
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    path = f"/tmp/alex_edge_audit_{ts}.txt"
+    sections = []
+    def add(title, func, timeout_sec=25):
+        body = audit_section_text(func, timeout_sec=timeout_sec)
+        sections.append("\n" + "="*80 + f"\n{title}\n" + "="*80 + "\n" + body)
+    add("VERSION", lambda: f"BOT_VERSION: {BOT_VERSION}", 5)
+    add("AUDIT SHORT", audit_short_report, 15)
+    add("SELF-LEARNING BRAIN CORE V19.11", v199_brain_audit_report, 10)
+    add("PAPER PROFILE WEIGHTING V19.11", v1911_paper_profile_report, 10)
+    add("ADAPTIVE LEARNING ENGINE V19.11", v1910_adaptive_audit_report, 10)
+    add("HYPOTHESES V19.11", v1910_hypotheses_user_report, 8)
+    add("ERROR REVIEW V19.11", v199_error_review_report, 8)
+    add("LEARNING RADAR V19.11", improvement_radar_user_report, 8)
+    add("PAPER FULL", paper_report, 12)
+    add("SIGNAL FULL", unified_signal_report, 35)
+    add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
+    add("LEARNING QUALITY CORE", lambda: v190_coin_timing_profile(load_json(RESULTS_FILE)) + v184_learning_quality_summary(load_json(RESULTS_FILE)), 10)
+    add("ACTIVE LEARNING PROFILES CORE", lambda: v195_active_learning_profiles(load_json(RESULTS_FILE)), 10)
+    add("PAPER CLASSIFIER", lambda: v197_closed_paper_classifier_report(), 10)
+    add("ACCURACY SCORE", v198_accuracy_score_report, 10)
+    add("USER STATUS", v198_user_status_report, 10)
+    add("LEARNING SPRINT CORE", lambda: v192_checkpoint_accelerator_summary(load_json(RESULTS_FILE), compact=False), 10)
+    add("ALERTS FULL", lambda: get_fast_pumps()[0] or "Нет alerts", 25)
+    add("MARKET", market_status, 10)
+    add("BTC FULL", lambda: single_analysis_full("BTC-USDT"), 25)
+    add("SOL FULL", lambda: single_analysis_full("SOL-USDT"), 25)
+    add("ETH FULL", lambda: single_analysis_full("ETH-USDT"), 25)
+    content = "ALEX EDGE ULTRA TECH AUDIT FILE\n" + "\n".join(sections)
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
+    except Exception as e:
+        send_message(chat_id, f"❌ Не удалось создать audit txt: {e}")
+        return None
+    ok = send_document(chat_id, path, caption="🧾 Технический отчёт готов. Полный текст — только в txt-файле.")
+    if not ok:
+        send_message(chat_id, "⚠️ Полный audit_file собран, но Telegram не принял txt-документ. Длинный текст в чат не отправляю. Ниже только короткий аудит.")
+        send_message(chat_id, audit_short_report())
+    return path
+
 
 def main():
     last_update = load_last_update_id()
