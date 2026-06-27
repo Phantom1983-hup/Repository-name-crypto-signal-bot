@@ -23130,7 +23130,8 @@
         "3h": -4.22,
         "6h": -4.22,
         "12h": -2.48,
-        "24h": -0.85
+        "24h": -0.85,
+        "48h": -2.2
       },
       "price_points": [
         {
@@ -23344,6 +23345,15 @@
           "checkpoint_pct": -0.85,
           "source": "cache_due_late_estimate",
           "cache_price_time": 1782492550.5719576,
+          "cache_price_source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782580793.3337896,
+          "target_time": 1782581239.5141256,
+          "checkpoint_price": 13.827,
+          "checkpoint_pct": -2.2,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782580793.3337896,
           "cache_price_source": "snapshot"
         }
       },
@@ -35049,7 +35059,7 @@
       }
     }
   },
-  "version": "v19.11.6 AUTO QUALITY PROBE SCHEDULER",
+  "version": "v19.11.6.1 SIGNAL GROWTH RADAR SYNC",
   "learning_guard_note": "v17.5 restored/protected learning data from backup/frozen store",
   "learning_guard_time": 1782276720.389763
 }
