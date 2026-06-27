@@ -2055,6 +2055,170 @@
       "outcome": "missed_move",
       "frozen_at": 1782535588.64944,
       "version": "v19.7.4 MARKET LABEL FINAL QA"
+    },
+    "GRASS:1782366500:0.4967": {
+      "asset": "GRASS",
+      "time": 1782366500.9551926,
+      "price": 0.4967,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": -0.1,
+        "30m": -1.81,
+        "1h": -2.07,
+        "3h": -2.07,
+        "6h": -9.93,
+        "12h": -11.64,
+        "24h": -7.95,
+        "48h": 0.83
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782367998.6484852,
+          "target_time": 1782367400.9551926,
+          "checkpoint_price": 0.4962,
+          "checkpoint_pct": -0.1,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782367998.6484852,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782368577.3381839,
+          "target_time": 1782368300.9551926,
+          "checkpoint_price": 0.4877,
+          "checkpoint_pct": -1.81,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782374948.5874693,
+          "target_time": 1782370100.9551926,
+          "checkpoint_price": 0.4864,
+          "checkpoint_pct": -2.07,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782374948.5874693,
+          "target_time": 1782377300.9551926,
+          "checkpoint_price": 0.4864,
+          "checkpoint_pct": -2.07,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782374948.5874693,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782405787.9941285,
+          "target_time": 1782388100.9551926,
+          "checkpoint_price": 0.4474,
+          "checkpoint_pct": -9.93,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782409710.829803,
+          "target_time": 1782409700.9551926,
+          "checkpoint_price": 0.4389,
+          "checkpoint_pct": -11.64,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782459534.8905706,
+          "target_time": 1782452900.9551926,
+          "checkpoint_price": 0.4572,
+          "checkpoint_pct": -7.95,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782544947.4766493,
+          "target_time": 1782539300.9551926,
+          "checkpoint_price": 0.5008,
+          "checkpoint_pct": 0.83,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "watch_saved",
+      "frozen_at": 1782544947.4766493,
+      "version": "v19.7.4 MARKET LABEL FINAL QA"
+    },
+    "UB:1782370122:0.071558": {
+      "asset": "UB",
+      "time": 1782370122.5585485,
+      "price": 0.071558,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": -3.43,
+        "30m": -3.43,
+        "1h": -3.43,
+        "3h": -4.58,
+        "6h": -8.32,
+        "12h": -7.41,
+        "24h": 0.65,
+        "48h": 8.2
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782373774.8436847,
+          "target_time": 1782371022.5585485,
+          "checkpoint_price": 0.069102,
+          "checkpoint_pct": -3.43,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782373774.8436847,
+          "target_time": 1782371922.5585485,
+          "checkpoint_price": 0.069102,
+          "checkpoint_pct": -3.43,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782373774.8436847,
+          "target_time": 1782373722.5585485,
+          "checkpoint_price": 0.069102,
+          "checkpoint_pct": -3.43,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782374948.5874693,
+          "target_time": 1782380922.5585485,
+          "checkpoint_price": 0.06828,
+          "checkpoint_pct": -4.58,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782374948.5874693,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782405787.9941285,
+          "target_time": 1782391722.5585485,
+          "checkpoint_price": 0.065605,
+          "checkpoint_pct": -8.32,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782413334.4159765,
+          "target_time": 1782413322.5585485,
+          "checkpoint_price": 0.066254,
+          "checkpoint_pct": -7.41,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782459534.8905706,
+          "target_time": 1782456522.5585485,
+          "checkpoint_price": 0.072025,
+          "checkpoint_pct": 0.65,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782544947.4766493,
+          "target_time": 1782542922.5585485,
+          "checkpoint_price": 0.077423,
+          "checkpoint_pct": 8.2,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "spec_watch_pump",
+      "frozen_at": 1782544947.4766493,
+      "version": "v19.7.4 MARKET LABEL FINAL QA"
     }
   }
 }
