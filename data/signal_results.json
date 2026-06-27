@@ -36137,7 +36137,10 @@
       "last_seen": 1782599221.3788817,
       "last_seen_counted": 1782599221.3788817,
       "seen_count": 1,
-      "results": {},
+      "results": {
+        "15m": 0.0,
+        "30m": 0.0
+      },
       "price_points": [
         {
           "time": 1782599221.3788817,
@@ -36181,7 +36184,27 @@
         }
       ],
       "shadow_result_v184": "ждём первые checkpoints",
-      "confidence_v181": 27
+      "confidence_v181": 27,
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782599221.3788817,
+          "target_time": 1782600121.3788817,
+          "checkpoint_price": 0.179,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782599221.3788817,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782599221.3788817,
+          "target_time": 1782601021.3788817,
+          "checkpoint_price": 0.179,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782599221.3788817,
+          "cache_price_source": "snapshot"
+        }
+      }
     }
   },
   "version": "v19.11.6.3 SINGLE COIN NO-BUY SYNC",
