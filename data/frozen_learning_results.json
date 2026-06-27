@@ -1972,6 +1972,89 @@
       "outcome": "missed_move",
       "frozen_at": 1782492307.8727567,
       "version": "v19.7.4 MARKET LABEL FINAL QA"
+    },
+    "BAS:1782336087:0.03983": {
+      "asset": "BAS",
+      "time": 1782336087.7365959,
+      "price": 0.03983,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": -0.9,
+        "30m": 1.88,
+        "1h": 0.53,
+        "3h": 3.26,
+        "6h": 4.27,
+        "12h": 32.39,
+        "24h": 14.06,
+        "48h": -0.13
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782337290.667109,
+          "target_time": 1782336987.7365959,
+          "checkpoint_price": 0.03947,
+          "checkpoint_pct": -0.9,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782338004.2063057,
+          "target_time": 1782337887.7365959,
+          "checkpoint_price": 0.04058,
+          "checkpoint_pct": 1.88,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782339824.9925835,
+          "target_time": 1782339687.7365959,
+          "checkpoint_price": 0.04004,
+          "checkpoint_pct": 0.53,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782346930.4454086,
+          "target_time": 1782346887.7365959,
+          "checkpoint_price": 0.04113,
+          "checkpoint_pct": 3.26,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782358455.7180202,
+          "target_time": 1782357687.7365959,
+          "checkpoint_price": 0.04153,
+          "checkpoint_pct": 4.27,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782381080.4550257,
+          "target_time": 1782379287.7365959,
+          "checkpoint_price": 0.05273,
+          "checkpoint_pct": 32.39,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782383696.7431831,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782431820.3253012,
+          "target_time": 1782422487.7365959,
+          "checkpoint_price": 0.04543,
+          "checkpoint_pct": 14.06,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782439131.4216602,
+          "cache_price_source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782535588.64944,
+          "target_time": 1782508887.7365959,
+          "checkpoint_price": 0.03978,
+          "checkpoint_pct": -0.13,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "missed_move",
+      "frozen_at": 1782535588.64944,
+      "version": "v19.7.4 MARKET LABEL FINAL QA"
     }
   }
 }
