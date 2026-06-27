@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.8.2 REPORT UX CLEANUP"
+BOT_VERSION = "v19.8.3 TRADING REPORT STYLE"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -14706,6 +14706,445 @@ def auto_audit_status_text():
     )
 
 
+
+# =====================================================================
+# v19.8.3 TRADING REPORT STYLE
+# Пользовательские отчёты как торговые карточки:
+# 1) рынок + можно/нельзя покупать; 2) что делать; 3) приоритеты;
+# 4) ключевые цифры жирным; 5) русский язык; 6) техника только /audit_file.
+# =====================================================================
+
+def _v1983_clean_terms(text):
+    s = str(text or "")
+    repl = {
+        "Auto-Audit self-check": "автопроверка",
+        "Auto-Audit": "Автопроверка",
+        "Paper closed": "закрытых проверок",
+        "Paper": "виртуальные проверки",
+        "AVOID PUMP TEST": "проверка “не догонять памп”",
+        "VIRTUAL WATCH ENTRY TEST": "проверка наблюдения",
+        "early-strength miss": "пропущенное раннее усиление",
+        "early-strength": "раннее усиление",
+        "priority-watch": "приоритетное наблюдение",
+        "Priority Watch": "приоритетное наблюдение",
+        "PRIORITY WATCH": "ПРИОРИТЕТНОЕ НАБЛЮДЕНИЕ",
+        "quality-exception": "качественный рост",
+        "short momentum": "короткий импульс",
+        "Short momentum": "короткий импульс",
+        "SHORT MOMENTUM": "КОРОТКИЙ ИМПУЛЬС",
+        "full-skip": "полный пропуск",
+        "entry-error": "ошибка входа",
+        "BUY": "покупка",
+        "WATCH": "наблюдение",
+        "score": "оценка",
+        "Risk Engine": "модуль риска",
+    }
+    for a, b in repl.items():
+        s = s.replace(a, b)
+    return s
+
+
+def _v1983_plain_market(ctx=None):
+    txt = _v1982_market_simple(ctx)
+    if "🔴" in txt:
+        return "🔴 Опасно"
+    if "🟡" in txt:
+        return "🟡 Осторожно"
+    return "🟢 Спокойно"
+
+
+def _v1983_buy_word(ctx=None):
+    b = _v1982_buy_now(ctx)
+    if "🔴" in b:
+        return "🔴 **НЕТ**"
+    if "🟡" in b:
+        return "🟡 **только после подтверждения**"
+    return "🟢 **можно рассматривать**"
+
+
+def _v1983_header(title, ctx=None, m=None):
+    ctx = ctx if isinstance(ctx, dict) else market_context()
+    m = m if isinstance(m, dict) else _v1982_metrics()
+    return (
+        f"{title}\n\n"
+        f"{_v1983_plain_market(ctx).split()[0]} **РЕЖИМ: {_v1983_plain_market(ctx).split(' ',1)[1].upper()}**\n"
+        f"Покупки: {_v1983_buy_word(ctx)}\n"
+        f"{_v1982_num_line(ctx)}\n"
+        f"Оценка бота: 🟢 **{m['score']}/100**"
+    )
+
+
+def _v1983_examples(rows, limit=3):
+    if not rows:
+        return "—"
+    return ", ".join([f"{a} {_v1982_pct(v)}" for a, v in rows[:limit]])
+
+
+def _v1983_eta(limit=2):
+    try:
+        eta = v1962_paper_finalizer_eta_report(paper_store(), limit=max(3, limit), closed_now=0)
+        rows = [ln for ln in eta.splitlines() if ln.startswith("• ")]
+        out = []
+        for ln in rows[:limit]:
+            sym = ln.split(":", 1)[0].replace("•", "").strip()
+            rest = ln.split(":", 1)[1].strip() if ":" in ln else ln
+            when = rest.split("|", 1)[0].strip()
+            pct = ""
+            m = re.search(r"([+-]\d+(?:\.\d+)?)%", ln)
+            if m:
+                pct = f"**{float(m.group(1)):+.1f}%**"
+            typ = "проверка “не догонять”" if "AVOID" in ln or "памп" in ln.lower() else "проверка наблюдения"
+            out.append(f"• {sym} — {pct or '**н/д**'}, **{when}**, {typ}")
+        return "\n".join(out) if out else "• ближайшие проверки не найдены"
+    except Exception:
+        return "• ближайшие проверки не найдены"
+
+
+def version_user_report():
+    return (
+        f"✅ Версия: **{BOT_VERSION}**\n\n"
+        "Что улучшено:\n"
+        "• отчёты сделаны как торговые карточки\n"
+        "• первый блок всегда показывает режим рынка и покупку\n"
+        "• добавлены приоритеты 🥇🥈🥉\n"
+        "• ключевые цифры выделяются жирным\n"
+        "• английские термины убраны из пользовательских отчётов\n"
+        "• промежуточные сообщения убраны из /signal, /coin и /auto_audit_now\n\n"
+        "Автоторговля: 🔴 **выключена**\n"
+        "Покупки без подтверждения: 🔴 **запрещены**"
+    )
+
+
+def v198_momentum_status(c):
+    if not isinstance(c, dict):
+        return None
+    symbol = str(c.get("symbol", "")).upper()
+    if not symbol or symbol in STABLE_SKIP_ASSETS:
+        return None
+    try:
+        change = float(c.get("change_24", c.get("change", 0)) or 0)
+    except Exception:
+        change = 0.0
+    quality = v198_is_quality_asset(symbol)
+    if quality and change >= 8:
+        return {
+            "kind": "short_momentum_quality",
+            "title": "🟠 СИЛЬНЫЙ ИМПУЛЬС",
+            "decision": "с рынка не покупать; ждать откат и удержание",
+            "reason": "актив уже сильно вырос, вход с рынка поздний",
+            "risk": "повышенный: после сильного роста возможен откат",
+        }
+    if quality and (change >= 3 or (symbol == "SOL" and change >= 2)):
+        reason = "SOL уже показывала раннее усиление, но сейчас вход поздний" if symbol == "SOL" else "качественный актив усиливается быстрее рынка"
+        return {
+            "kind": "early_strength_quality",
+            "title": "🟡 ПРИОРИТЕТНОЕ НАБЛЮДЕНИЕ",
+            "decision": "с рынка не покупать; ждать откат, удержание и объём",
+            "reason": reason,
+            "risk": "средний: вход без подтверждения может попасть в откат",
+        }
+    if (not quality) and change >= 8:
+        return {
+            "kind": "short_momentum_spec",
+            "title": "⚡ СПЕКУЛЯТИВНЫЙ ИМПУЛЬС",
+            "decision": "не догонять; только короткая идея после отката",
+            "reason": "памп может продолжиться, но риск резкого отката высокий",
+            "risk": "высокий",
+        }
+    return None
+
+
+def _v1983_target_stop(price):
+    raw = v198_target_stop_text(price)
+    raw = raw.replace("короткая цель: ", "")
+    if "|" in raw:
+        target, stop = [x.strip() for x in raw.split("|", 1)]
+        stop = stop.replace("отмена идеи: ", "")
+        return target, stop
+    return raw, "ниже локального минимума"
+
+
+def v198_accuracy_score_report():
+    m = _v1982_metrics()
+    if m["closed"] == 0:
+        return "📈 Эффективность\n\nДанных пока нет. Нужно дождаться закрытых проверок."
+    buy_total = m["buy_win"] + m["buy_loss"]
+    buy_line = "данных нет, покупок не было" if buy_total == 0 else f"{m['buy_win']} из {buy_total}"
+    q = _v1983_examples(m["quality_examples"], 2)
+    e = _v1983_examples(m["early_examples"], 2)
+    return (
+        "📈 Эффективность\n\n"
+        f"Оценка: 🟢 **{m['score']}/100**\n"
+        "Роль бота: 🛡 **защитный режим**\n"
+        f"Уверенность: 🟡 **{m['confidence']}**\n\n"
+        "✅ Что хорошо:\n"
+        f"• защита от плохих входов: **{m['protection']}**\n"
+        f"• ошибок входа: **{m['entry_error']}**\n"
+        f"• короткие импульсы распознаны: **{m['short_momentum']}**\n\n"
+        "⚠️ Что улучшать:\n"
+        f"• пропущено хороших движений: **{m['missed']}**\n"
+        f"• качественный рост: {q}\n"
+        f"• раннее усиление: {e}\n\n"
+        f"Покупочная точность: **{buy_line}**\n"
+        f"Проверок закрыто: **{m['closed']}**\n\n"
+        "📌 Вывод: бот хорошо защищает от плохих входов, но автоторговлю включать рано."
+    )
+
+
+def v198_user_status_report():
+    ctx = market_context()
+    m = _v1982_metrics()
+    return (
+        _v1983_header("🧭 Статус бота", ctx, m) + "\n\n"
+        f"Проверок закрыто: **{m['closed']}**\n"
+        f"Защита: **{m['protection']}** | пропуски: **{m['missed']}** | ошибки: **{m['entry_error']}**\n\n"
+        "📌 Что делать:\n"
+        "• новые покупки **не открывать**\n"
+        "• сильные монеты **не догонять**\n"
+        "• ждать **откат + удержание + объём**\n\n"
+        "⏱ Ближайшие проверки:\n"
+        f"{_v1983_eta(3)}\n\n"
+        "Подробно: /accuracy | техника: /audit_file"
+    )
+
+
+def format_single_coin_user_report(c):
+    symbol = str(c.get("symbol", "?")).upper()
+    momentum = v198_momentum_status(c)
+    title, decision = _v1982_coin_decision(c, momentum)
+    reason = _v1983_clean_terms((momentum or {}).get("reason") or compact_reason(c))
+    try:
+        change = float(c.get("change_24", 0) or 0)
+    except Exception:
+        change = 0.0
+    price = compact_price(c.get("price"))
+    zone = v198_entry_zone_text(c.get("price")).replace("примерная зона ожидания: ", "")
+    target, stop = _v1983_target_stop(c.get("price"))
+    if momentum:
+        headline = momentum.get("title", title)
+    else:
+        headline = title.replace("НЕ ПОКУПАТЬ", "НЕ ПОКУПАТЬ").replace("Наблюдать", "НАБЛЮДАТЬ")
+    return (
+        f"{symbol} — **{headline}**\n\n"
+        f"Цена: **{price}**\n"
+        f"24ч: **{change:+.2f}%**\n\n"
+        "Решение: 🔴 **с рынка не покупать**\n"
+        f"Причина: {reason}.\n\n"
+        "📌 План:\n"
+        f"1️⃣ Ждать откат: **{zone}**\n"
+        "2️⃣ Вход только при удержании цены и объёме\n"
+        f"3️⃣ 🎯 Цель: **{target}**\n"
+        f"4️⃣ 🧯 Отмена идеи: **{stop}**\n\n"
+        "Вывод: монета интересна, но сейчас только наблюдение.\n\n"
+        "Техника: /audit_file"
+    )
+
+
+def user_signal_report():
+    full = unified_signal_report()
+    ctx = market_context()
+    m = _v1982_metrics()
+    found = []
+    lines = full.splitlines()
+    for idx, ln in enumerate(lines):
+        st = ln.strip()
+        if re.match(r"^\d+\.\s+", st):
+            action = lines[idx + 1].strip() if idx + 1 < len(lines) else ""
+            sym = st.split("—", 1)[0].split(".", 1)[-1].strip().split()[0]
+            low = action.lower()
+            if sym in ["BTC", "ETH"]:
+                label = "ждать подтверждение"
+                rank = 90 if sym == "BTC" else 80
+            elif sym == "SOL":
+                label = "🟡 **приоритетное наблюдение**, ждать объём"
+                rank = 10
+            elif sym == "AAVE":
+                label = "🟠 **сильный импульс, вход поздний**"
+                rank = 20
+            elif sym == "SUI":
+                label = "🟡 наблюдать"
+                rank = 30
+            elif sym == "LINK":
+                label = "🟡 слабое наблюдение"
+                rank = 40
+            elif "не догонять" in low:
+                label = "🟠 памп, не догонять"
+                rank = 60
+            else:
+                label = "🟡 наблюдать"
+                rank = 50
+            found.append((rank, sym, label))
+    # Показываем торговые приоритеты, BTC/ETH оставляем ниже только если мало альтов.
+    ordered = []
+    used = set()
+    for sym in ["SOL", "AAVE", "SUI", "LINK"]:
+        for item in found:
+            if item[1] == sym and sym not in used:
+                ordered.append(item); used.add(sym)
+    for item in sorted(found, key=lambda x: x[0]):
+        if item[1] not in used and len(ordered) < 4:
+            ordered.append(item); used.add(item[1])
+    if not ordered:
+        ordered = [(1, "—", "покупок нет, лучше ждать")]
+    medals = ["🥇", "🥈", "🥉", "4️⃣"]
+    rows = [f"{medals[i]} {sym} — {label}" for i, (_, sym, label) in enumerate(ordered[:4])]
+    return (
+        _v1983_header("📊 Сигнал рынка", ctx, m) + "\n\n"
+        "📌 Что делать:\n"
+        "• с рынка **не покупать**\n"
+        "• ждать **откат + удержание + объём**\n"
+        "• приоритет — только лучшие монеты\n\n"
+        "Что смотреть в первую очередь:\n"
+        + "\n".join(rows) + "\n\n"
+        "Итог: 🔴 **новых покупок нет**\n"
+        "Подробно: /status | /accuracy | /audit_file"
+    )
+
+
+def learning_user_report():
+    data = load_json(RESULTS_FILE)
+    if not isinstance(data, dict):
+        data = {}
+    open_items = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    closed = data.get("closed", []) if isinstance(data.get("closed", []), list) else []
+    m = _v1982_metrics()
+    return (
+        "📚 Обучение\n\n"
+        "Статус: 🟢 **работает**\n"
+        f"Открыто наблюдений: **{len(open_items)}**\n"
+        f"Закрыто результатов: **{len(closed)}**\n"
+        f"Защита: **{m['protection']}** | пропуски: **{m['missed']}** | ошибки: **{m['entry_error']}**\n\n"
+        "📌 Вывод: бот копит статистику, веса покупок не меняются без серии подтверждений.\n"
+        "Техника: /audit_file"
+    )
+
+
+def paper_user_report():
+    m = _v1982_metrics()
+    return (
+        "🧪 Виртуальные проверки\n\n"
+        f"Открыто: **{m['open']}** | закрыто: **{m['closed']}**\n"
+        f"🛡 Защита: **{m['protection']}**\n"
+        f"⚠️ Пропуски: **{m['missed']}**\n"
+        f"🔴 Ошибки входа: **{m['entry_error']}**\n"
+        f"⚡ Короткие импульсы: **{m['short_momentum']}**\n\n"
+        "📌 Вывод: это проверка без реальных денег. Автопокупки выключены.\n"
+        "Подробно: /paper_classifier | техника: /audit_file"
+    )
+
+
+def paper_classifier_user_report():
+    m = _v1982_metrics()
+    protection = []
+    if m["skip_examples"]:
+        protection.append(_v1983_examples(m["skip_examples"], 3))
+    if m["saved_examples"]:
+        protection.append(_v1983_examples(m["saved_examples"], 3))
+    protect_line = "; ".join(protection) if protection else "данные копятся"
+    missed_line = []
+    if m["quality_examples"]:
+        missed_line.append("качественный рост: " + _v1983_examples(m["quality_examples"], 2))
+    if m["early_examples"]:
+        missed_line.append("раннее усиление: " + _v1983_examples(m["early_examples"], 2))
+    if not missed_line:
+        missed_line.append("крупных пропусков нет")
+    return (
+        "🧠 Чему научился бот\n\n"
+        f"Проверок: **{m['closed']}** | защита: **{m['protection']}** | пропуски: **{m['missed']}** | ошибки: **{m['entry_error']}**\n\n"
+        "🛡 Защита работает:\n"
+        f"{protect_line}\n\n"
+        "⚠️ Что пропустил:\n"
+        + "\n".join([f"• {x}" for x in missed_line[:2]]) + "\n\n"
+        "⚡ Короткие импульсы:\n"
+        f"{_v1983_examples(m['momentum_examples'], 4)}\n\n"
+        "📌 Вывод: защита сильная, ранний импульс надо ловить лучше.\n"
+        "Полная техника: /audit_file"
+    )
+
+
+def alerts_user_report():
+    text_alert, _ = get_fast_pumps()
+    if not text_alert:
+        return "⚡ Импульсы\n\nСильных качественных идей сейчас нет. Лучше ждать."
+    rows = []
+    for ln in text_alert.splitlines():
+        st = ln.strip()
+        if re.match(r"^\d+\.\s+", st):
+            sym = st.split("—", 1)[0].split(".", 1)[-1].strip()
+            rows.append(f"• {sym} — 🟠 импульс, с рынка не догонять")
+        if len(rows) >= 4:
+            break
+    return "⚡ Импульсы\n\n" + ("\n".join(rows) if rows else "Сильных качественных входов нет.") + "\n\nТехника: /audit_file"
+
+
+def audit_short_report():
+    ctx = market_context()
+    m = _v1982_metrics()
+    return (
+        _v1983_header("🧾 Короткий аудит", ctx, m) + "\n\n"
+        f"Открыто: **{m['open']}** | закрыто: **{m['closed']}**\n"
+        f"Защита: **{m['protection']}** | пропуски: **{m['missed']}** | ошибки: **{m['entry_error']}**\n\n"
+        "Полный технический файл: /audit_file"
+    )
+
+
+def _v1983_card_to_one_line(card):
+    s = _v1983_clean_terms(card)
+    lines = [x.strip() for x in s.splitlines() if x.strip()]
+    sym = None
+    pct = None
+    verdict = ""
+    for ln in lines:
+        if ln.startswith("•"):
+            sym = ln.replace("•", "").split("—", 1)[0].strip()
+        m = re.search(r"48ч:\s*([+-]\d+(?:\.\d+)?)%", ln)
+        if m:
+            pct = float(m.group(1))
+        if "не догонять было правильно" in ln or "защит" in ln.lower():
+            verdict = "не догонять было правильно"
+        elif "нейтраль" in ln.lower():
+            verdict = "нейтрально"
+    if sym and pct is not None:
+        mark = "🛡" if pct < -3 else ("⚡" if pct > 5 else "🟡")
+        return f"{mark} {sym} **{pct:+.1f}%** — {verdict or 'новое закрытие'}"
+    return _v1983_clean_terms(card)
+
+
+def auto_audit_build_text(reason_lines, ctx, paper, learning, force=False):
+    m = _v1982_metrics()
+    cards = paper.get("new_closed_cards") or []
+    if cards:
+        new_block = "\n".join([_v1983_card_to_one_line(c) for c in cards[:2]])
+    else:
+        cleaned = [_v1983_clean_terms(r) for r in (reason_lines or [])]
+        cleaned = [r for r in cleaned if not any(x in r.lower() for x in ["закрытых проверок вырос", "вырос:", "на подходе"])]
+        new_block = "критических изменений нет" if not cleaned else "\n".join([f"• {r}" for r in cleaned[:2]])
+    return (
+        "🧠 Автопроверка\n\n"
+        f"{_v1983_plain_market(ctx)} | покупки: {_v1983_buy_word(ctx)}\n"
+        f"Оценка: 🟢 **{m['score']}/100**\n"
+        f"Закрыто: **{m['closed']}** | защита: **{m['protection']}** | пропуски: **{m['missed']}** | ошибки: **{m['entry_error']}**\n\n"
+        "🛡 Новое:\n"
+        f"{new_block}\n\n"
+        "📌 Что делать: новых покупок не открывать, ждать подтверждение.\n"
+        "Техника: /audit_file"
+    )
+
+
+def auto_audit_status_text():
+    state = auto_audit_load_state()
+    enabled = "включена" if state.get("enabled") else "выключена"
+    mode, interval_min, min_gap_min, critical_only = auto_audit_effective_settings(state)
+    m = _v1982_metrics()
+    return (
+        "🧠 Автопроверка\n\n"
+        f"Статус: **{enabled}**\n"
+        f"Режим: **{_v1983_clean_terms(auto_audit_mode_label(mode))}**\n"
+        f"Проверка: каждые **{interval_min} мин**\n\n"
+        f"Закрыто: **{m['closed']}** | защита: **{m['protection']}** | пропуски: **{m['missed']}**\n\n"
+        "Команды: /auto_audit_now, /auto_audit_on, /auto_audit_off"
+    )
+
 def main():
     last_update = load_last_update_id()
 
@@ -14871,7 +15310,7 @@ def main():
                         # Защита от дубля: иногда Telegram/Render может прислать одно нажатие дважды.
                         if now_ts - float(last_coin_analysis_time.get(coin_key, 0) or 0) > 8:
                             last_coin_analysis_time[coin_key] = now_ts
-                            send_message(chat_id, coin_analyze_wait_text(coin))
+                            # v19.8.3: без промежуточного "анализирую", сразу торговая карточка.
                             send_message(chat_id, single_analysis(f"{coin}-USDT"))
                     else:
                         send_message(chat_id, "Не понял тикер. Напиши, например: ETH, SOL, SUI или LINK.")
@@ -15013,11 +15452,10 @@ def main():
                     send_message(chat_id, get_top())
 
                 elif text == "/signal":
-                    # v18.2: обычный пользовательский /signal короткий. Полный технический отчёт — /audit_file или /signal_full.
-                    send_message(chat_id, "⏳ Проверяю рынок и даю короткий итог...")
+                    # v19.8.3: обычный /signal без промежуточного сообщения, чтобы не засорять чат.
                     send_message(chat_id, user_signal_report())
-                    background_learning_update("manual_signal_v18_2_short")
-                    background_paper_update("manual_signal_v18_2_short")
+                    background_learning_update("manual_signal_v19_8_3_style")
+                    background_paper_update("manual_signal_v19_8_3_style")
 
                 elif text == "/signal_full":
                     send_message(chat_id, user_signal_report() + "\n\n📄 Полный signal теперь только в /audit_file, чтобы не засорять чат.")
@@ -15062,7 +15500,7 @@ def main():
 
                         if now_ts - float(last_coin_analysis_time.get(coin_key, 0) or 0) > 8:
                             last_coin_analysis_time[coin_key] = now_ts
-                            send_message(chat_id, coin_analyze_wait_text(coin))
+                            # v19.8.3: без промежуточного "анализирую", сразу торговая карточка.
                             send_message(chat_id, single_analysis(f"{coin}-USDT"))
 
                 elif text == "/market" or text == "/macro":
@@ -15108,22 +15546,22 @@ def main():
                     send_message(chat_id, auto_audit_status_text())
 
                 elif text == "/auto_audit_now":
-                    send_message(chat_id, "⏳ Запускаю Auto-Audit self-check сейчас...")
+                    # v19.8.3: автопроверка присылает только итоговую карточку.
                     sent = auto_audit_check_and_send(chat_id=chat_id, force=True)
                     if not sent:
-                        send_message(chat_id, "Auto-Audit проверка выполнена, но отправка была отключена или не было chat_id.")
+                        send_message(chat_id, "🧠 Автопроверка выполнена, важных изменений нет.")
 
                 elif text == "/auto_audit_on":
                     if is_admin(chat_id) or not ADMIN_CHAT_ID:
                         auto_audit_set_enabled(True)
-                        send_message(chat_id, "✅ Auto-Audit включён. Бот будет сам присылать короткий self-check при важных изменениях. Полный файл — вручную /audit_file.")
+                        send_message(chat_id, "✅ Автопроверка включена. Бот будет сам присылать короткий self-check при важных изменениях. Полный файл — вручную /audit_file.")
                     else:
                         send_message(chat_id, "⛔ /auto_audit_on доступен только ADMIN_CHAT_ID.")
 
                 elif text == "/auto_audit_off":
                     if is_admin(chat_id) or not ADMIN_CHAT_ID:
                         auto_audit_set_enabled(False)
-                        send_message(chat_id, "⏸ Auto-Audit выключен. Вручную остаются /paper /learning_full /audit_file.")
+                        send_message(chat_id, "⏸ Автопроверка выключена. Вручную остаются /paper /learning_full /audit_file.")
                     else:
                         send_message(chat_id, "⛔ /auto_audit_off доступен только ADMIN_CHAT_ID.")
 
@@ -15134,7 +15572,7 @@ def main():
                             st = auto_audit_set_mode(parts[1])
                             if st:
                                 mode, interval_min, min_gap_min, critical_only = auto_audit_effective_settings(st)
-                                send_message(chat_id, f"✅ Auto-Audit режим изменён: {auto_audit_mode_label(mode)}\nИнтервал: {interval_min} мин | gap: {min_gap_min} мин")
+                                send_message(chat_id, f"✅ Режим автопроверки изменён: {auto_audit_mode_label(mode)}\nИнтервал: {interval_min} мин | gap: {min_gap_min} мин")
                             else:
                                 send_message(chat_id, auto_audit_mode_help())
                         else:
