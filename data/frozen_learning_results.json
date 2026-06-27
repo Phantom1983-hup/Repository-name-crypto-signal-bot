@@ -2385,6 +2385,85 @@
       "outcome": "watch_saved",
       "frozen_at": 1782554029.9121964,
       "version": "v19.8.2 REPORT UX CLEANUP"
+    },
+    "ADA:1782382906:0.1486": {
+      "asset": "ADA",
+      "time": 1782382906.3325257,
+      "price": 0.1486,
+      "score": 58,
+      "action": "WATCH",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "results": {
+        "15m": -0.2,
+        "30m": -0.2,
+        "1h": -0.67,
+        "3h": -0.27,
+        "6h": -4.04,
+        "12h": -4.58,
+        "24h": -2.83,
+        "48h": -0.94
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782384717.4307003,
+          "target_time": 1782383806.3325257,
+          "checkpoint_price": 0.1483,
+          "checkpoint_pct": -0.2,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782384717.4307003,
+          "target_time": 1782384706.3325257,
+          "checkpoint_price": 0.1483,
+          "checkpoint_pct": -0.2,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782386543.1501932,
+          "target_time": 1782386506.3325257,
+          "checkpoint_price": 0.1476,
+          "checkpoint_pct": -0.67,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782393850.4546309,
+          "target_time": 1782393706.3325257,
+          "checkpoint_price": 0.1482,
+          "checkpoint_pct": -0.27,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782405787.9941285,
+          "target_time": 1782404506.3325257,
+          "checkpoint_price": 0.1426,
+          "checkpoint_pct": -4.04,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782449909.7720783,
+          "target_time": 1782426106.3325257,
+          "checkpoint_price": 0.1418,
+          "checkpoint_pct": -4.58,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782471994.1485043,
+          "target_time": 1782469306.3325257,
+          "checkpoint_price": 0.1444,
+          "checkpoint_pct": -2.83,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782555718.9684656,
+          "target_time": 1782555706.3325257,
+          "checkpoint_price": 0.1472,
+          "checkpoint_pct": -0.94,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782556536.5443068,
+      "version": "v19.8.4 REPORT MICRO-POLISH"
     }
   }
 }
