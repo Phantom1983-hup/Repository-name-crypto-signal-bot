@@ -1,5 +1,5 @@
 {
-  "version": "v19.10.1 HYPOTHESIS QA FIX",
+  "version": "v19.11 PAPER PROFILE WEIGHTING",
   "open": {
     "SUI:VIRTUAL_WATCH_ENTRY_TEST:495109": {
       "id": "SUI:VIRTUAL_WATCH_ENTRY_TEST:495109",
@@ -63,9 +63,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.6992,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": 0.27
+      "last_price": 0.6984,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": 0.16
     },
     "INJ:VIRTUAL_WATCH_ENTRY_TEST:495109": {
       "id": "INJ:VIRTUAL_WATCH_ENTRY_TEST:495109",
@@ -129,9 +129,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 4.823,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": 12.01
+      "last_price": 4.843,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": 12.47
     },
     "XPL:AVOID_PUMP_TEST:495109": {
       "id": "XPL:AVOID_PUMP_TEST:495109",
@@ -615,7 +615,8 @@
         "1h": -3.33,
         "3h": -6.85,
         "6h": -7.39,
-        "12h": -7.39
+        "12h": -7.39,
+        "24h": -14.81
       },
       "result_details": {
         "15m": {
@@ -646,6 +647,11 @@
         "12h": {
           "checkpoint_time": 1782492550.5719576,
           "checkpoint_price": 0.3914,
+          "source": "learning_cache:snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782558798.9724581,
+          "checkpoint_price": 0.36004,
           "source": "learning_cache:snapshot"
         }
       },
@@ -771,9 +777,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.031846,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": -3.69
+      "last_price": 0.032022,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": -3.15
     },
     "FARTCOIN:AVOID_PUMP_TEST:495135": {
       "id": "FARTCOIN:AVOID_PUMP_TEST:495135",
@@ -891,9 +897,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 1.28153,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": 101.67
+      "last_price": 1.26016,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": 98.31
     },
     "BTC:VIRTUAL_WATCH_ENTRY_TEST:495136": {
       "id": "BTC:VIRTUAL_WATCH_ENTRY_TEST:495136",
@@ -951,9 +957,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 60338.8,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": 0.29
+      "last_price": 60260.3,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": 0.16
     },
     "ETH:VIRTUAL_WATCH_ENTRY_TEST:495136": {
       "id": "ETH:VIRTUAL_WATCH_ENTRY_TEST:495136",
@@ -1011,9 +1017,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 1582.01,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": -0.0
+      "last_price": 1580.62,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": -0.09
     },
     "AAVE:VIRTUAL_WATCH_ENTRY_TEST:495136": {
       "id": "AAVE:VIRTUAL_WATCH_ENTRY_TEST:495136",
@@ -1071,9 +1077,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 95.659,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": 0.83
+      "last_price": 95.294,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": 0.45
     },
     "ICNT:AVOID_PUMP_TEST:495139": {
       "id": "ICNT:AVOID_PUMP_TEST:495139",
@@ -1311,9 +1317,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 1.8065,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": -0.01
+      "last_price": 1.8042,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": -0.14
     },
     "LINK:VIRTUAL_WATCH_ENTRY_TEST:495141": {
       "id": "LINK:VIRTUAL_WATCH_ENTRY_TEST:495141",
@@ -1371,9 +1377,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 7.3423,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": 0.5
+      "last_price": 7.3389,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": 0.45
     },
     "TAO:VIRTUAL_WATCH_ENTRY_TEST:495141": {
       "id": "TAO:VIRTUAL_WATCH_ENTRY_TEST:495141",
@@ -1431,9 +1437,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 212.03,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": -0.27
+      "last_price": 212.02,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": -0.28
     },
     "RAVE:AVOID_PUMP_TEST:495141": {
       "id": "RAVE:AVOID_PUMP_TEST:495141",
@@ -1491,9 +1497,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.393,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": 0.26
+      "last_price": 0.396,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": 1.02
     },
     "AVAX:VIRTUAL_WATCH_ENTRY_TEST:495142": {
       "id": "AVAX:VIRTUAL_WATCH_ENTRY_TEST:495142",
@@ -1551,9 +1557,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 6.471,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": 1.68
+      "last_price": 6.457,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": 1.46
     },
     "PUMP:AVOID_PUMP_TEST:495143": {
       "id": "PUMP:AVOID_PUMP_TEST:495143",
@@ -1719,9 +1725,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.1658,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": 4.94
+      "last_price": 0.167,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": 5.7
     },
     "SIREN:AVOID_PUMP_TEST:495147": {
       "id": "SIREN:AVOID_PUMP_TEST:495147",
@@ -1821,9 +1827,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 71.79,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": -0.65
+      "last_price": 71.66,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": -0.83
     },
     "SYN:AVOID_PUMP_TEST:495151": {
       "id": "SYN:AVOID_PUMP_TEST:495151",
@@ -1917,9 +1923,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.7428,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": 2.85
+      "last_price": 0.7437,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": 2.98
     },
     "GRASS:AVOID_PUMP_TEST:495152": {
       "id": "GRASS:AVOID_PUMP_TEST:495152",
@@ -1959,9 +1965,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.503,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": -3.21
+      "last_price": 0.5108,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": -1.71
     },
     "ADA:VIRTUAL_WATCH_ENTRY_TEST:495154": {
       "id": "ADA:VIRTUAL_WATCH_ENTRY_TEST:495154",
@@ -1979,7 +1985,8 @@
       "macro_mod": -2,
       "results": {
         "15m": 0.14,
-        "30m": 0.0
+        "30m": 0.0,
+        "1h": -0.34
       },
       "result_details": {
         "15m": {
@@ -1991,13 +1998,18 @@
           "checkpoint_time": 1782558794.2835598,
           "checkpoint_price": 0.1472,
           "source": "learning_cache:snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782559930.6830492,
+          "checkpoint_price": 0.1467,
+          "source": "learning_cache:snapshot"
         }
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.147,
-      "last_price_time": 1782559543.9444861,
-      "last_pct": -0.14
+      "last_price": 0.1467,
+      "last_price_time": 1782559930.6830492,
+      "last_pct": -0.34
     }
   },
   "closed": [
@@ -5555,5 +5567,5 @@
     }
   ],
   "last_created_at": 1782556534.8438249,
-  "last_update_at": 1782559547.6638696
+  "last_update_at": 1782560649.9456842
 }
