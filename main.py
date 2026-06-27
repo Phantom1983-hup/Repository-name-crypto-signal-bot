@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
+BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16627,7 +16627,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
+BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17735,7 +17735,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
+BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18210,7 +18210,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
+BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18374,7 +18374,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
+BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18719,7 +18719,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
+BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19100,7 +19100,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
+BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19407,7 +19407,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
+BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -19921,7 +19921,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
+BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20062,7 +20062,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
+BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20373,7 +20373,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.5.1 QUALITY PROBE RECORD FIX"
+BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20657,6 +20657,280 @@ def build_audit_file(chat_id):
         send_message(chat_id, audit_short_report())
     return path
 
+
+
+# === v19.11.6 AUTO QUALITY PROBE SCHEDULER ===
+# Цель: бот не ждёт ручную команду /quality_probe.
+# Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
+# и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
+
+BOT_VERSION = "v19.11.6 AUTO QUALITY PROBE SCHEDULER"
+
+try:
+    AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
+except Exception:
+    AUTO_QUALITY_PROBE_STATE_FILE = '/tmp/auto_quality_probe_state.json'
+
+V19116_AUTO_PROBE_INTERVAL_SEC = 30 * 60
+V19116_AUTO_PROBE_SEND_GAP_SEC = 30 * 60
+_v19116_auto_probe_thread_running = False
+
+
+def v19116_probe_assets_from_store():
+    """Активные quality-probe активы в paper-store."""
+    assets = set()
+    try:
+        data = paper_store()
+        open_trades = data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}
+        for t in open_trades.values():
+            if not isinstance(t, dict):
+                continue
+            if str(t.get('virtual_type', '')).upper() == 'VIRTUAL_PROBE_ENTRY_TEST' or t.get('is_probe'):
+                asset = str(t.get('asset', '') or '').upper()
+                if asset:
+                    assets.add(asset)
+    except Exception:
+        pass
+    return assets
+
+
+def v19116_auto_probe_state():
+    try:
+        st = load_json(AUTO_QUALITY_PROBE_STATE_FILE)
+        return st if isinstance(st, dict) else {}
+    except Exception:
+        return {}
+
+
+def v19116_save_auto_probe_state(st, sync=False):
+    try:
+        save_json(AUTO_QUALITY_PROBE_STATE_FILE, st if isinstance(st, dict) else {})
+        if sync:
+            try:
+                background_github_sync([AUTO_QUALITY_PROBE_STATE_FILE, PAPER_TRADES_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+            except Exception:
+                mark_github_dirty(AUTO_QUALITY_PROBE_STATE_FILE)
+        else:
+            try:
+                mark_github_dirty(AUTO_QUALITY_PROBE_STATE_FILE)
+            except Exception:
+                pass
+    except Exception as e:
+        print(f'auto probe state save error: {e}')
+
+
+def v19116_auto_probe_compact_rows(candidates, max_rows=6):
+    rows = []
+    for c in candidates or []:
+        try:
+            rows.append(
+                f"• {str(c.get('symbol','?')).upper()}: {compact_price(c.get('price'))} | "
+                f"24ч {float(c.get('change_24', c.get('change',0)) or 0):+.2f}% | score {int(c.get('score',0) or 0)}/100"
+            )
+        except Exception:
+            continue
+        if len(rows) >= max_rows:
+            break
+    return rows
+
+
+def v19116_auto_probe_message(new_assets, candidates, created, active):
+    rows = v19116_auto_probe_compact_rows([c for c in candidates or [] if str(c.get('symbol','')).upper() in set(new_assets)], 6)
+    if not rows:
+        rows = [f'• {a}: новая виртуальная проба' for a in new_assets[:6]]
+    return (
+        '🟡 Автопроба качества\n\n'
+        f'Версия: {BOT_VERSION}\n'
+        'Бот сам нашёл quality-ситуацию и записал её в paper.\n'
+        'Реальных покупок нет, автоторговля выключена.\n\n'
+        f'Создано новых paper-проб: {created}\n'
+        f'Активных quality-проб: {active}\n\n'
+        'Новые пробы:\n' + '\n'.join(rows) + '\n\n'
+        'Проверка результата: 24ч — предварительно, 48ч — финально.\n'
+        'Команды: /quality_probe | /paper | /quality_score'
+    )
+
+
+def v19116_auto_quality_probe_scheduler(force=False, chat_id=None):
+    """Автономно создаёт quality paper-probe без ручной команды.
+    Возвращает dict со статусом. Не создаёт реальные сделки.
+    """
+    st = v19116_auto_probe_state()
+    now = time.time()
+    last_run = float(st.get('last_run', 0) or 0)
+    if not force and now - last_run < V19116_AUTO_PROBE_INTERVAL_SEC:
+        return {'ran': False, 'reason': 'interval', 'state': st}
+
+    st['last_run'] = now
+    st['version'] = BOT_VERSION
+    before = v19116_probe_assets_from_store()
+    candidates = []
+    created = 0
+    active = len(before)
+    error = None
+    try:
+        candidates = v191151_collect_quality_probe_candidates() if 'v191151_collect_quality_probe_candidates' in globals() else []
+        created, active = v191151_open_quality_probe_trades(candidates, reason='auto_quality_probe_scheduler') if 'v191151_open_quality_probe_trades' in globals() else (0, len(before))
+    except Exception as e:
+        error = str(e)[:180]
+        print(f'auto quality probe scheduler error: {e}')
+
+    after = v19116_probe_assets_from_store()
+    new_assets = sorted(list(after - before))
+    cand_symbols = [str(c.get('symbol','')).upper() for c in candidates or [] if isinstance(c, dict) and c.get('symbol')]
+    st.update({
+        'last_candidates': cand_symbols[:12],
+        'last_created': int(created or 0),
+        'last_active': int(active or len(after) or 0),
+        'last_new_assets': new_assets,
+        'last_error': error,
+    })
+
+    target = chat_id or load_chat_id()
+    sent = False
+    try:
+        last_sent = float(st.get('last_sent', 0) or 0)
+        if target and created and new_assets and (force or now - last_sent >= V19116_AUTO_PROBE_SEND_GAP_SEC):
+            send_message(target, v19116_auto_probe_message(new_assets, candidates, created, active))
+            st['last_sent'] = now
+            sent = True
+    except Exception as e:
+        print(f'auto quality probe send error: {e}')
+        st['last_error'] = str(e)[:180]
+
+    v19116_save_auto_probe_state(st, sync=bool(created))
+    return {'ran': True, 'created': created, 'active': active, 'new_assets': new_assets, 'sent': sent, 'state': st}
+
+
+def v19116_maybe_start_auto_probe_thread():
+    """Запускает автопробу в фоне, без блокировки основного Telegram loop."""
+    global _v19116_auto_probe_thread_running
+    if _v19116_auto_probe_thread_running:
+        return
+    st = v19116_auto_probe_state()
+    now = time.time()
+    if now - float(st.get('last_run', 0) or 0) < V19116_AUTO_PROBE_INTERVAL_SEC:
+        return
+    _v19116_auto_probe_thread_running = True
+
+    def _run():
+        global _v19116_auto_probe_thread_running
+        try:
+            v19116_auto_quality_probe_scheduler(force=False)
+        except Exception as e:
+            print(f'auto quality probe thread error: {e}')
+        finally:
+            _v19116_auto_probe_thread_running = False
+
+    Thread(target=_run, daemon=True).start()
+
+
+try:
+    _v19116_old_run_fast_learning_background_scan = run_fast_learning_background_scan
+except Exception:
+    _v19116_old_run_fast_learning_background_scan = None
+
+
+def run_fast_learning_background_scan():
+    """v19.11.6: сохраняем старый fast-learning и добавляем автономные quality paper-probe."""
+    try:
+        if _v19116_old_run_fast_learning_background_scan:
+            _v19116_old_run_fast_learning_background_scan()
+    except Exception as e:
+        print(f'old fast learning wrapper error: {e}')
+    try:
+        v19116_maybe_start_auto_probe_thread()
+    except Exception as e:
+        print(f'auto quality probe wrapper error: {e}')
+
+
+def auto_quality_probe_status_report():
+    st = v19116_auto_probe_state()
+    assets = sorted(list(v19116_probe_assets_from_store()))
+    now = time.time()
+    last_run = float(st.get('last_run', 0) or 0)
+    mins = int((now - last_run) / 60) if last_run else None
+    last_line = f'{mins} мин назад' if mins is not None else 'ещё не запускался'
+    cand = st.get('last_candidates', []) or []
+    new = st.get('last_new_assets', []) or []
+    err = st.get('last_error')
+    return (
+        '🟡 Авто-пробы качества\n\n'
+        f'Версия: {BOT_VERSION}\n'
+        'Статус: 🟢 включено\n'
+        'Интервал: примерно каждые 30 минут\n'
+        f'Последний запуск: {last_line}\n'
+        f'Активные paper-пробы: {len(assets)}' + (f' — {", ".join(assets[:10])}' if assets else '') + '\n' +
+        f'Последние кандидаты: {", ".join(cand[:10]) if cand else "нет"}\n' +
+        f'Новые за последний запуск: {", ".join(new[:10]) if new else "нет"}\n' +
+        (f'Ошибка: {err}\n' if err else '') +
+        '\nРеальные покупки: 0. Автоторговля выключена. Блок риска не менялся.'
+    )
+
+
+def version_user_report():
+    return (
+        f'✅ Версия: {BOT_VERSION}\n\n'
+        'Что добавлено:\n'
+        '• бот сам каждые ~30 минут ищет quality-ситуации;\n'
+        '• SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like движения могут получить paper-пробу без ручной команды;\n'
+        '• дубли по одной монете не создаются;\n'
+        '• сообщение приходит только если появилась новая важная проба;\n'
+        '• 24ч — предварительная проверка, 48ч — финальная.\n\n'
+        'Ограничения:\n'
+        '• реальные покупки: 0;\n'
+        '• автоторговля: выключена;\n'
+        '• блок риска не менялся.\n\n'
+        'Команды: /auto_probe | /quality_probe | /paper | /audit_file'
+    )
+
+
+try:
+    _v19116_old_build_audit_file = build_audit_file
+except Exception:
+    _v19116_old_build_audit_file = None
+
+
+def build_audit_file(chat_id):
+    ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+    path = f'/tmp/alex_edge_audit_{ts}.txt'
+    sections=[]
+    def add(title, func, timeout_sec=25):
+        body = audit_section_text(func, timeout_sec=timeout_sec)
+        try:
+            body = v191151_normalize_version_text(body)
+        except Exception:
+            body = str(body)
+        sections.append('\n' + '='*80 + f'\n{title}\n' + '='*80 + '\n' + body)
+    add('VERSION', lambda: f'BOT_VERSION: {BOT_VERSION}', 5)
+    add('AUDIT SHORT', audit_short_report, 15)
+    add('AUTO QUALITY PROBE SCHEDULER V19.11.6', auto_quality_probe_status_report, 8)
+    add('QUALITY PAPER PROBE V19.11.6', quality_probe_user_report, 12)
+    add('QUALITY LEARNING ACCELERATOR V19.11.6', quality_accelerator_audit_report, 10)
+    add('SELF-LEARNING BRAIN CORE V19.11.6', v199_brain_audit_report, 10)
+    add('QUALITY WATCH LADDER V19.11.6', quality_watch_ladder_audit_report, 10)
+    add('QUALITY SCORE V19.11.6', quality_score_audit_report, 8)
+    add('CHECKPOINT SCORING V19.11.6', v19112_checkpoint_scoring_user_report, 10)
+    add('TECH: HYPOTHESES', v1910_hypotheses_user_report, 8)
+    add('TECH: PAPER FULL', paper_report, 12)
+    add('TECH: SIGNAL FULL', unified_signal_report, 35)
+    add('TECH: SOL FULL', lambda: single_analysis_full('SOL-USDT'), 25)
+    content = 'ALEX EDGE ULTRA TECH AUDIT FILE\n' + '\n'.join(sections)
+    try:
+        content = v191151_normalize_version_text(content)
+    except Exception:
+        pass
+    try:
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(content)
+    except Exception as e:
+        send_message(chat_id, f'❌ Не удалось создать audit txt: {e}')
+        return None
+    ok = send_document(chat_id, path, caption='🧾 Технический отчёт готов.')
+    if not ok:
+        send_message(chat_id, '⚠️ audit_file собран, но Telegram не принял файл. Ниже короткий аудит.')
+        send_message(chat_id, audit_short_report())
+    return path
 
 def main():
     last_update = load_last_update_id()
@@ -21062,6 +21336,13 @@ def main():
 
                 elif text in ["/quality_boost", "/improve_quality", "/learning_boost", "/boost_learning"]:
                     send_message(chat_id, quality_boost_user_report())
+
+                elif text in ["/auto_probe", "/auto_quality_probe", "/probe_status", "/quality_probe_status"]:
+                    send_message(chat_id, auto_quality_probe_status_report())
+
+                elif text in ["/auto_probe_now", "/quality_probe_now"]:
+                    v19116_auto_quality_probe_scheduler(force=True, chat_id=chat_id)
+                    send_message(chat_id, auto_quality_probe_status_report())
 
                 elif text in ["/quality_probe", "/paper_probe", "/probe", "/virtual_probe"]:
                     send_message(chat_id, quality_probe_user_report())
