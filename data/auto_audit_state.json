@@ -1,25 +1,21 @@
 {
   "enabled": true,
-  "last_check_at": 1782583226.9934762,
-  "last_sent_at": 1782583226.9934762,
+  "last_check_at": 1782587255.0978675,
+  "last_sent_at": 1782587255.0978675,
   "last_forced_at": 1782417005.8693898,
   "last_paper_closed": 55,
   "last_paper_saved": 25,
   "last_paper_open": 37,
-  "last_learning_open": 34,
-  "last_learning_closed": 33,
+  "last_learning_open": 33,
+  "last_learning_closed": 34,
   "last_risk": "caution",
-  "last_btc_bucket": "btc_flat_green",
+  "last_btc_bucket": "btc_green",
   "last_timing_checked": 66,
   "last_reason_lines": [
-    "закрылись новые Paper-сделки: 1",
-    "Paper closed вырос: 53 → 55",
-    "🛡 спасло от входа выросло: 24 → 25",
-    "сменился BTC bucket: btc_green → btc_flat_green",
-    "Timing-сценариев стало больше: 65 → 66",
-    "Learning open изменился: 35 → 34",
-    "Learning closed48 вырос: 32 → 33"
+    "сменился BTC bucket: btc_flat_green → btc_green",
+    "Learning open изменился: 34 → 33",
+    "Learning closed48 вырос: 33 → 34"
   ],
-  "version": "v19.11.6.1 SIGNAL GROWTH RADAR SYNC",
+  "version": "v19.11.6.2 AUTO CHECK SCORE SYNC",
   "mode": "active"
 }
