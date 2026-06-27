@@ -1,21 +1,25 @@
 {
   "enabled": true,
-  "last_check_at": 1782579603.0128436,
-  "last_sent_at": 1782579603.0128436,
+  "last_check_at": 1782583226.9934762,
+  "last_sent_at": 1782583226.9934762,
   "last_forced_at": 1782417005.8693898,
-  "last_paper_closed": 53,
-  "last_paper_saved": 24,
-  "last_paper_open": 39,
-  "last_learning_open": 35,
-  "last_learning_closed": 32,
+  "last_paper_closed": 55,
+  "last_paper_saved": 25,
+  "last_paper_open": 37,
+  "last_learning_open": 34,
+  "last_learning_closed": 33,
   "last_risk": "caution",
-  "last_btc_bucket": "btc_green",
-  "last_timing_checked": 65,
+  "last_btc_bucket": "btc_flat_green",
+  "last_timing_checked": 66,
   "last_reason_lines": [
-    "Paper closed вырос: 52 → 53",
-    "на подходе к 48ч Paper-сделок: 2",
-    "сменился BTC bucket: btc_flat_green → btc_green"
+    "закрылись новые Paper-сделки: 1",
+    "Paper closed вырос: 53 → 55",
+    "🛡 спасло от входа выросло: 24 → 25",
+    "сменился BTC bucket: btc_green → btc_flat_green",
+    "Timing-сценариев стало больше: 65 → 66",
+    "Learning open изменился: 35 → 34",
+    "Learning closed48 вырос: 32 → 33"
   ],
-  "version": "v19.11.6 AUTO QUALITY PROBE SCHEDULER",
+  "version": "v19.11.6.1 SIGNAL GROWTH RADAR SYNC",
   "mode": "active"
 }
