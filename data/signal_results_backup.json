@@ -33779,8 +33779,8 @@
     "INJ_1782568597": {
       "asset": "INJ",
       "price": 4.909,
-      "score": 71,
-      "master_score": 71,
+      "score": 68,
+      "master_score": 68,
       "bucket": "70-79",
       "chance_5": 0,
       "chance_10": 0,
@@ -33816,10 +33816,11 @@
         "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
       },
       "tags": [
-        "quality_alt"
+        "quality_alt",
+        "v12_5_quality_alt_cap"
       ],
       "learning_delta": 0,
-      "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
+      "learning_note": "v12.5 repair: качественный альт оставлен только как наблюдение",
       "time": 1782568597.9954548,
       "last_seen": 1782568626.5633247,
       "last_seen_counted": 1782568597.9954548,
