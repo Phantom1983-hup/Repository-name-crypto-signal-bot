@@ -1,21 +1,23 @@
 {
   "enabled": true,
-  "last_check_at": 1782572379.0986996,
-  "last_sent_at": 1782572379.0986996,
+  "last_check_at": 1782575979.9204416,
+  "last_sent_at": 1782575979.9204416,
   "last_forced_at": 1782417005.8693898,
-  "last_paper_closed": 51,
+  "last_paper_closed": 52,
   "last_paper_saved": 24,
-  "last_paper_open": 38,
-  "last_learning_open": 34,
+  "last_paper_open": 39,
+  "last_learning_open": 35,
   "last_learning_closed": 32,
   "last_risk": "caution",
-  "last_btc_bucket": "btc_green",
-  "last_timing_checked": 64,
+  "last_btc_bucket": "btc_flat_green",
+  "last_timing_checked": 65,
   "last_reason_lines": [
+    "Paper closed вырос: 51 → 52",
     "на подходе к 48ч Paper-сделок: 1",
-    "сменился BTC bucket: btc_flat_green → btc_green",
-    "Timing-сценариев стало больше: 63 → 64"
+    "сменился BTC bucket: btc_green → btc_flat_green",
+    "Timing-сценариев стало больше: 64 → 65",
+    "Learning open изменился: 34 → 35"
   ],
-  "version": "v19.11.5.1 QUALITY PROBE RECORD FIX",
+  "version": "v19.11.6 AUTO QUALITY PROBE SCHEDULER",
   "mode": "active"
 }
