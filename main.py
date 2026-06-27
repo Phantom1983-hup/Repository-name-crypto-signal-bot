@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.3.1 UX REPORT CLEANUP"
+BOT_VERSION = "v19.11.3.2 UX METRICS FIX"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -16625,7 +16625,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.3.1 UX REPORT CLEANUP"
+BOT_VERSION = "v19.11.3.2 UX METRICS FIX"
 
 
 def _v1911_safe_int(v, default=0):
@@ -17735,7 +17735,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.3.1 UX REPORT CLEANUP"
+BOT_VERSION = "v19.11.3.2 UX METRICS FIX"
 
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
@@ -18211,7 +18211,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.3.1 UX REPORT CLEANUP"
+BOT_VERSION = "v19.11.3.2 UX METRICS FIX"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18375,7 +18375,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.3.1 UX REPORT CLEANUP"
+BOT_VERSION = "v19.11.3.2 UX METRICS FIX"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18720,7 +18720,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.3.1 UX REPORT CLEANUP"
+BOT_VERSION = "v19.11.3.2 UX METRICS FIX"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19090,6 +19090,314 @@ def build_audit_file(chat_id):
     ok = send_document(chat_id, path, caption="🧾 Технический отчёт готов. В чате — только короткие команды, полный файл здесь.")
     if not ok:
         send_message(chat_id, "⚠️ Полный audit_file собран, но Telegram не принял txt-документ. Ниже короткий аудит.")
+        send_message(chat_id, audit_short_report())
+    return path
+
+
+# === v19.11.3.2 UX METRICS FIX ===
+# Причина: v19.11.3.1 очистила UX, но сломала отображение:
+# 1) /watch_ladder показывал счётчики 1/3/4, но списки были "пока нет";
+# 2) /quality_score показывал 0/100 и закрытых 48ч = 0 из-за несовпадения имён ключей.
+# Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
+# Меняются только пользовательские отчёты и безопасная нормализация метрик.
+
+BOT_VERSION = "v19.11.3.2 UX METRICS FIX"
+V191132_CANON = "v19.11.3.2"
+try:
+    V191131_CANON = V191132_CANON
+    V19113_CANON = V191132_CANON
+except Exception:
+    pass
+
+
+def _v191132_label_ru(stage):
+    if stage == "paper_entry_ready":
+        return "готов к виртуальной проверке"
+    if stage == "priority_watch":
+        return "приоритетное наблюдение"
+    if stage == "regular_watch":
+        return "обычное наблюдение"
+    if stage == "market_indicator":
+        return "индикатор рынка"
+    return "слабое наблюдение"
+
+
+def _v191132_action_ru(stage):
+    if stage == "paper_entry_ready":
+        return "только виртуально: ждать откат, удержание цены, объём и спокойный BTC"
+    if stage == "priority_watch":
+        return "поднять в приоритет наблюдения; входа нет"
+    if stage == "regular_watch":
+        return "оставить в обычном наблюдении"
+    if stage == "market_indicator":
+        return "следить за фоном рынка; это не вход по альтам"
+    return "не усиливать, ждать новых проверок"
+
+
+def _v191132_ladder_payload_safe():
+    """Совместимость v19.11.3.1 UX-отчётов с базовым payload v19.11.3.
+    Базовый расчёт возвращает rows/stage/score/best/last, а UX-слой ждал items/level/ladder_score.
+    """
+    try:
+        base = _v19113_quality_watch_ladder_payload()
+    except Exception:
+        return {"items": [], "rows": [], "counts": {}, "records": 0}
+    rows = base.get("rows", []) if isinstance(base, dict) else []
+    counts = base.get("counts", {}) if isinstance(base, dict) and isinstance(base.get("counts", {}), dict) else {}
+    items = []
+    for r in rows:
+        if not isinstance(r, dict):
+            continue
+        stage = r.get("stage") or r.get("level") or "background_watch"
+        item = dict(r)
+        item["level"] = stage
+        item["ladder_score"] = int(r.get("score", r.get("ladder_score", 0)) or 0)
+        item["best_val"] = r.get("best", r.get("best_val", 0))
+        item["last_val"] = r.get("last", r.get("last_val", 0))
+        item["label_ru"] = _v191132_label_ru(stage)
+        item["action"] = _v191132_action_ru(stage)
+        items.append(item)
+    # Если counts по какой-то причине не пришли, пересобираем по items.
+    if not counts:
+        counts = {"paper_entry_ready": 0, "priority_watch": 0, "regular_watch": 0, "market_indicator": 0, "background_watch": 0}
+        for x in items:
+            lvl = x.get("level", "background_watch")
+            counts[lvl] = counts.get(lvl, 0) + 1
+    return {"items": items, "rows": rows, "counts": counts, "records": base.get("records", 0) if isinstance(base, dict) else 0}
+
+
+# Переопределяем безопасный helper, которым уже пользуются /watch_ladder, /brain, /learning.
+def _v191131_ladder_payload_safe():
+    return _v191132_ladder_payload_safe()
+
+
+def _v191132_quality_score_payload():
+    """Нормализует старые и новые имена ключей quality-score.
+    v19.11.3.1 читала alex_quality_score/closed_total, но базовая функция возвращает alex_quality/closed.
+    """
+    try:
+        q = _v191121_quality_score_payload()
+        if not isinstance(q, dict):
+            q = {}
+    except Exception:
+        q = {}
+    try:
+        m = _v1982_metrics()
+        if not isinstance(m, dict):
+            m = {}
+    except Exception:
+        m = {}
+    try:
+        scoring = _v19112_checkpoint_scoring(_v19111_open_records())
+        rows = scoring.get("rows", []) if isinstance(scoring, dict) else []
+        best = max(rows, key=lambda x: x.get("score", 0)) if rows else {"key": "н/д", "score": 0}
+        quality_candidates = len(scoring.get("quality", []) or []) if isinstance(scoring, dict) else 0
+    except Exception:
+        best = {"key": "н/д", "score": 0}
+        quality_candidates = 0
+
+    closed = int(q.get("closed", q.get("closed_total", m.get("closed", 0))) or 0)
+    protection = int(q.get("protection", m.get("protection", 0)) or 0)
+    missed = int(q.get("missed", m.get("missed", 0)) or 0)
+    entry_error = int(q.get("entry_error", m.get("entry_error", 0)) or 0)
+    protection_accuracy = float(q.get("protection_accuracy", round(100 * protection / max(1, protection + missed + entry_error), 1)) or 0)
+    miss_rate = float(q.get("miss_rate", round(100 * missed / max(1, closed), 1)) or 0)
+    false_entry_rate = float(q.get("false_entry_rate", round(100 * entry_error / max(1, closed), 1)) or 0)
+    checkpoint_reliability = int(q.get("checkpoint_reliability", best.get("score", 0)) or 0)
+    best_window = q.get("best_window", q.get("best_checkpoint_window", best.get("key", "н/д")))
+    if not quality_candidates:
+        quality_candidates = int(q.get("quality_candidates", 0) or 0)
+    quality_watch_recall = float(q.get("quality_watch_recall", round(100 * quality_candidates / max(1, quality_candidates + missed), 1)) or 0)
+    alex_quality = int(q.get("alex_quality", q.get("alex_quality_score", 0)) or 0)
+    if alex_quality <= 0 and (closed or protection or missed or checkpoint_reliability):
+        raw = 50 + min(20, protection * 0.7) - missed * 4 - entry_error * 8 + checkpoint_reliability * 0.15 + quality_watch_recall * 0.10
+        alex_quality = int(max(0, min(100, round(raw))))
+    if alex_quality >= 85:
+        label = "очень сильный защитный фильтр"
+    elif alex_quality >= 75:
+        label = "хороший защитный фильтр"
+    elif alex_quality >= 60:
+        label = "рабочий защитный фильтр"
+    else:
+        label = "качество ещё копится"
+    confidence_label = "🟡 средняя" if closed < 100 else "🟢 высокая"
+    return {
+        "alex_quality": alex_quality,
+        "quality_label": label,
+        "closed": closed,
+        "confidence_label": confidence_label,
+        "protection": protection,
+        "missed": missed,
+        "entry_error": entry_error,
+        "protection_accuracy": protection_accuracy,
+        "miss_rate": miss_rate,
+        "false_entry_rate": false_entry_rate,
+        "checkpoint_reliability": checkpoint_reliability,
+        "best_window": best_window,
+        "quality_watch_recall": quality_watch_recall,
+        "quality_candidates": quality_candidates,
+    }
+
+
+def version_user_report():
+    return (
+        f"✅ Версия: **{BOT_VERSION}**\n\n"
+        "Что исправлено:\n"
+        "• /watch_ladder теперь показывает не только счётчики, но и сами монеты;\n"
+        "• /quality_score снова показывает реальную оценку, а не 0/100;\n"
+        "• закрытые 48ч проверки снова считаются корректно;\n"
+        "• стиль v19.11.3.1 сохранён: коротко, по-русски, без лишней техники.\n\n"
+        "Ограничения не менялись:\n"
+        "• реальные покупки: 0;\n"
+        "• автоторговля: выключена;\n"
+        "• блок риска не менялся;\n"
+        "• 48ч остаётся финальной проверкой."
+    )
+
+
+def quality_score_user_report():
+    q = _v191132_quality_score_payload()
+    payload = _v191132_ladder_payload_safe()
+    c = payload.get("counts", {}) or {}
+    return (
+        "📊 Оценка качества ALEX\n\n"
+        f"Версия: **{BOT_VERSION}**\n"
+        f"Итог: **{q['alex_quality']}/100** — {q['quality_label']}\n"
+        f"Уверенность: {q['confidence_label']} | закрытых 48ч: **{q['closed']}**\n\n"
+        "Главные метрики:\n"
+        f"1️⃣ Защита от плохих входов: **{q['protection_accuracy']:.1f}%**\n"
+        f"2️⃣ Пропущенные хорошие движения: **{q['miss_rate']:.1f}%**\n"
+        f"3️⃣ Ошибочные виртуальные входы: **{q['false_entry_rate']:.1f}%**\n"
+        f"4️⃣ Лучшее раннее окно: **{q['best_window']} / {q['checkpoint_reliability']}/100**\n"
+        f"5️⃣ Поиск качественных движений: **{q['quality_watch_recall']:.1f}%**\n\n"
+        "Лестница качества:\n"
+        f"🟢 виртуальная проверка: **{c.get('paper_entry_ready',0)}** | 🟡 приоритет: **{c.get('priority_watch',0)}** | ⚪ обычное наблюдение: **{c.get('regular_watch',0)}**\n\n"
+        "Что это значит: бот хорошо защищает от плохих входов, но реальные покупки пока не разрешены. Нужно меньше пропускать AAVE/SOL/INJ-подобные движения и не догонять пампы."
+    )
+
+
+def quality_score_audit_report():
+    return quality_score_user_report()
+
+
+def quality_watch_ladder_user_report():
+    payload = _v191132_ladder_payload_safe()
+    items = payload.get("items", []) or []
+    c = payload.get("counts", {}) or {}
+    ready = [x for x in items if x.get("level") == "paper_entry_ready"]
+    priority = [x for x in items if x.get("level") == "priority_watch"]
+    regular = [x for x in items if x.get("level") == "regular_watch"]
+    market = [x for x in items if x.get("level") == "market_indicator"]
+
+    lines = [
+        "🪜 Лестница наблюдения качественных монет",
+        "",
+        f"Версия: **{BOT_VERSION}**",
+        "Режим: только виртуальная проверка. Это не сигнал покупать.",
+        "",
+        "Коротко сейчас:",
+        f"🟢 готов к виртуальной проверке: **{c.get('paper_entry_ready',0)}** — {_v191131_ladder_names(items, 'paper_entry_ready')}",
+        f"🟡 приоритетное наблюдение: **{c.get('priority_watch',0)}** — {_v191131_ladder_names(items, 'priority_watch')}",
+        f"⚪ обычное наблюдение: **{c.get('regular_watch',0)}** — {_v191131_ladder_names(items, 'regular_watch')}",
+    ]
+    if market:
+        lines.append(f"⚪ индикаторы рынка: {', '.join(str(x.get('asset','?')) for x in market[:3])}")
+    lines += ["", "🟢 Готовы к виртуальной проверке:"]
+    lines += ([_v191131_simple_ladder_line(x) for x in ready[:3]] if ready else ["• пока нет"])
+    lines += ["", "🟡 Поднять в приоритет наблюдения:"]
+    lines += ([_v191131_simple_ladder_line(x) for x in priority[:5]] if priority else ["• пока нет"])
+    lines += ["", "⚪ Оставить обычным наблюдением:"]
+    lines += ([_v191131_simple_ladder_line(x) for x in regular[:5]] if regular else ["• пока нет"])
+    lines += [
+        "",
+        "Правило: даже если монета поднялась по лестнице, реальной покупки нет. Нужны откат, удержание цены, объём и нормальный BTC/новости."
+    ]
+    return "\n".join(lines)
+
+
+def quality_watch_ladder_audit_report():
+    return quality_watch_ladder_user_report()
+
+
+def v199_brain_audit_report():
+    # Та же логика, что в v19.11.3.1, но с актуальной версией и исправленным payload ladder.
+    events = v199_build_learning_dataset()
+    stats = v199_dataset_stats(events)
+    scores = v199_multi_scores()
+    confidence, confidence_label = v1910_adaptive_confidence(events)
+    actual_brain = min(int(scores.get("brain_score", 0)), int(scores.get("learning_confidence", 0)) + 15)
+    potential = int(scores.get("brain_score", 0))
+    weights = v1911_paper_profile_weights(events)
+    try:
+        scoring = _v19112_checkpoint_scoring(_v19111_open_records())
+        best = max(scoring.get("rows", []), key=lambda x: x["score"]) if scoring.get("rows") else {"key":"н/д","score":0}
+    except Exception:
+        best = {"key":"н/д","score":0}
+    payload = _v191132_ladder_payload_safe()
+    c = payload.get("counts", {}) or {}
+    return (
+        f"🧠 SELF-LEARNING BRAIN CORE {V191132_CANON}\n\n"
+        f"Версия: {BOT_VERSION}\n"
+        "Статус: UX-метрики исправлены; алгоритм, блок риска и автоторговля не менялись.\n\n"
+        "Scores:\n"
+        f"• Market: {scores.get('market_score', 0)}/100\n"
+        f"• Danger: {scores.get('danger_score', 0)}/100\n"
+        f"• News: {scores.get('news_score', 0)}/100\n"
+        f"• BTC Pressure: {scores.get('btc_pressure', 0)}/100\n"
+        f"• Learning Confidence: {confidence}/100 ({confidence_label})\n"
+        f"• Brain Score: {actual_brain}/100\n"
+        f"• Algorithm Potential: {potential}/100\n\n"
+        "Paper Profile Weights:\n"
+        f"• market_regime_profile: {weights['market_regime_profile']}/100\n"
+        f"• full_skip_protection_profile: {weights['full_skip_protection_profile']}/100\n"
+        f"• early_strength_watch_profile: {weights['early_strength_watch_profile']}/100\n"
+        f"• short_momentum_timing_profile: {weights['short_momentum_timing_profile']}/100\n"
+        f"• live_buy_weight_delta: {weights['live_buy_weight_delta']}/100\n"
+        f"• autotrading_gate: {weights['autotrading_gate']}/100\n\n"
+        f"Dataset: {stats['total']} событий | quality {stats['quality_alt']} | pump {stats['danger_pump']} | momentum {stats['short_momentum']} | base {stats['base_asset']} | unknown {stats['unknown_alt']}\n"
+        f"Checkpoint best: {best['key']} / {best['score']}/100\n"
+        f"Quality ladder: ready {c.get('paper_entry_ready',0)} | priority {c.get('priority_watch',0)} | watch {c.get('regular_watch',0)}\n\n"
+        "Ключевые уроки:\n"
+        f"• Quality miss: {v199_examples(stats['top_quality_miss'], 3)}\n"
+        f"• Early-strength miss: {v199_examples(stats['top_early_miss'], 2)}\n"
+        f"• Saved/skip: {v199_examples(stats['top_saved'], 8)}\n"
+        f"• Short momentum: {v199_examples(stats['top_momentum'], 7)}\n"
+    )
+
+
+def build_audit_file(chat_id):
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    path = f"/tmp/alex_edge_audit_{ts}.txt"
+    sections = []
+    def add(title, func, timeout_sec=25):
+        body = audit_section_text(func, timeout_sec=timeout_sec)
+        sections.append("\n" + "="*80 + f"\n{title}\n" + "="*80 + "\n" + body)
+    add("VERSION", lambda: f"BOT_VERSION: {BOT_VERSION}", 5)
+    add("AUDIT SHORT", audit_short_report, 15)
+    add("SELF-LEARNING BRAIN CORE V19.11.3.2", v199_brain_audit_report, 10)
+    add("QUALITY WATCH LADDER V19.11.3.2", quality_watch_ladder_audit_report, 10)
+    add("QUALITY SCORE V19.11.3.2", quality_score_audit_report, 8)
+    add("CHECKPOINT SCORING V19.11.3.2", v19112_checkpoint_scoring_user_report, 10)
+    add("LEARNING PLAN V19.11.3.2", v19111_acceleration_plan_user_report, 8)
+    add("TECH: HYPOTHESES", v1910_hypotheses_user_report, 8)
+    add("TECH: ERROR REVIEW", v199_error_review_report, 8)
+    add("TECH: PAPER FULL", paper_report, 12)
+    add("TECH: SIGNAL FULL", unified_signal_report, 35)
+    add("TECH: LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
+    add("TECH: MARKET", market_status, 10)
+    add("TECH: BTC FULL", lambda: single_analysis_full("BTC-USDT"), 25)
+    add("TECH: SOL FULL", lambda: single_analysis_full("SOL-USDT"), 25)
+    add("TECH: ETH FULL", lambda: single_analysis_full("ETH-USDT"), 25)
+    content = "ALEX EDGE ULTRA TECH AUDIT FILE\n" + "\n".join(sections)
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
+    except Exception as e:
+        send_message(chat_id, f"❌ Не удалось создать audit txt: {e}")
+        return None
+    ok = send_document(chat_id, path, caption="🧾 Технический отчёт готов. В чате — только короткие команды, полный файл здесь.")
+    if not ok:
+        send_message(chat_id, "⚠️ Полный audit_file собран, но Telegram не принял txt-документ. Длинный текст в чат не отправляю. Ниже только короткий аудит.")
         send_message(chat_id, audit_short_report())
     return path
 
