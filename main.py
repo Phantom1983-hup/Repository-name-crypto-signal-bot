@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.2 CHECKPOINT SCORING"
+BOT_VERSION = "v19.11.2.1 AUDIT CORE FIX + QUALITY SCORE FOUNDATION"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -13734,7 +13734,7 @@ def v19111_checkpoint_radar_user_report():
         f"{_v19111_format_case_rows(saved, 5)}\n\n"
         "📈 Short Momentum Timing, не обычный BUY:\n"
         f"{_v19111_format_case_rows(spec_momentum, 5)}\n\n"
-        "📌 Правило v19.11.1: 15м–24ч дают ранний paper-урок каждый час, 48ч — финальный вердикт. "
+        "📌 Правило v19.11.2.1: 15м–24ч дают ранний paper-урок каждый час, 48ч — финальный вердикт. "
         "Live BUY +0, автоторговля 0, Risk Engine не меняется."
     )
 
@@ -15820,7 +15820,7 @@ def v199_brain_audit_report():
         best = {"key":"н/д","score":0}
         score_text = "• данные копятся"
     return (
-        "🧠 SELF-LEARNING BRAIN CORE v19.11.2\n\n"
+        "🧠 SELF-LEARNING BRAIN CORE v19.11.2.1\n\n"
         f"Версия: {BOT_VERSION}\n"
         "Статус: paper-profile/checkpoint-scoring only; BUY-веса, Risk Engine и автоторговля не меняются.\n\n"
         "Multi-Score Engine:\n"
@@ -16625,7 +16625,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.2 CHECKPOINT SCORING"
+BOT_VERSION = "v19.11.2.1 AUDIT CORE FIX + QUALITY SCORE FOUNDATION"
 
 
 def _v1911_safe_int(v, default=0):
@@ -16801,7 +16801,7 @@ def v1910_learning_radar_user_report():
             f"Проверка: **{h['cases']}** кейсов | улучшило **{h['improved']}** | ухудшило **{h['worse']}** | риск: {h['risk']}"
         )
     return (
-        "🧭 Радар улучшений v19.11\n\n"
+        "🧭 Радар улучшений v19.11.2.1\n\n"
         f"База опыта: **{len(events)}** кейсов\n"
         "Цель: усилить только paper-профили, не реальные покупки.\n\n"
         + "\n\n".join(items) + "\n\n"
@@ -16897,7 +16897,7 @@ def v1910_adaptive_audit_report():
         )
     wlines = [f"• {k}: {v}/100" for k, v in weights.items()]
     return (
-        "🧪 PAPER PROFILE WEIGHTING v19.11\n\n"
+        "🧪 PAPER PROFILE WEIGHTING v19.11.2.1\n\n"
         f"Версия: {BOT_VERSION}\n"
         "Статус: paper/shadow only; BUY-веса, Risk Engine и автоторговля не меняются.\n"
         f"База опыта: {len(events)} событий\n"
@@ -17313,7 +17313,7 @@ def v19112_checkpoint_scoring_user_report():
         f"{_v19112_format_flags(scoring['momentum'], 'best', 4)}\n\n"
         "🧯 Noise / не переобучаться:\n"
         f"{_v19112_format_flags(scoring['noise'], 'best', 4)}\n\n"
-        "📌 Правило v19.11.2: 1ч/3ч дают ранний warning, 6ч/12ч помогают timing, 24ч — предфинальный урок, 48ч — финальный контроль."
+        "📌 Правило v19.11.2.1: 1ч/3ч дают ранний warning, 6ч/12ч помогают timing, 24ч — предфинальный урок, 48ч — финальный контроль."
     )
 
 
@@ -17421,14 +17421,14 @@ def v199_brain_user_report():
         f"🛡 Full-Skip: **{weights['full_skip_protection_profile']}/100**\n"
         f"⚡ Early Strength: **{weights['early_strength_watch_profile']}/100**\n"
         f"⏱ Short Momentum: **{weights['short_momentum_timing_profile']}/100**\n\n"
-        "Checkpoint Scoring v19.11.2:\n"
+        "Checkpoint Scoring v19.11.2.1:\n"
         f"🎚 лучшее окно: **{best['key']} {best['score']}/100**\n"
         f"🛡 защита: **{len(saved)}** | ⚠️ quality-watch: **{len(too_cautious)}** | 📈 timing: **{len(spec_momentum)}** | 🟡 спорно: **{len(neutral)}**\n\n"
         "Что бот уже понял:\n"
         f"🛡 Не догонять слабые пампы — работает: **{stats['full_skip'] + stats['saved']}**\n"
         f"⚡ Короткие импульсы есть, но это не обычная покупка: **{stats['short_momentum']}**\n"
         f"⚠️ Качественные движения надо ловить раньше: **{stats['quality_miss'] + stats['early_miss']}**\n\n"
-        "📌 Следующий шаг: v19.11.3 QUALITY WATCH LADDER после проверки /checkpoint_scoring.\n"
+        "📌 Следующий шаг: v19.11.3 QUALITY SCORE + WATCH LADDER после проверки /checkpoint_scoring.\n"
         "Команды: /checkpoint_radar | /checkpoint_scoring | /learning_plan | /audit_file"
     )
 
@@ -17439,6 +17439,7 @@ def version_user_report():
         "Что добавлено:\n"
         "• Checkpoint Scoring для 1ч/3ч/6ч/12ч/24ч\n"
         "• /checkpoint_scoring показывает paper-score каждого окна\n"
+        "• /quality_score показывает ALEX QUALITY SCORE\n"
         "• /learning показывает best checkpoint window\n"
         "• /learning_plan строит следующий шаг по лучшему окну\n"
         "• /audit_file получил секцию v19.11.2\n\n"
@@ -17474,7 +17475,7 @@ def v199_brain_audit_report():
         best = {"key":"н/д","score":0}
         score_text = "• данные копятся"
     return (
-        "🧠 SELF-LEARNING BRAIN CORE v19.11.2\n\n"
+        "🧠 SELF-LEARNING BRAIN CORE v19.11.2.1\n\n"
         f"Версия: {BOT_VERSION}\n"
         "Статус: paper-profile/checkpoint-scoring only; BUY-веса, Risk Engine и автоторговля не меняются.\n\n"
         "Multi-Score Engine:\n"
@@ -17510,6 +17511,179 @@ def v199_brain_audit_report():
         f"• Short momentum: {v199_examples(stats['top_momentum'], 7)}\n"
     )
 
+
+# === v19.11.2.1 AUDIT CORE FIX + QUALITY SCORE FOUNDATION ===
+# Цель hotfix: audit_file не должен падать из-за новых coin_type вроде quality_alt.
+# Дополнительно добавлен /quality_score как фундамент измерения качества/точности бота.
+
+V191121_COIN_TYPE_ALIASES = {
+    "quality_alt": "quality_alt",
+    "quality": "quality_alt",
+    "quality_growth": "quality_alt",
+    "качественный альт": "quality_alt",
+    "quality coin": "quality_alt",
+    "large_cap": "base_asset",
+    "base_asset": "base_asset",
+    "base": "base_asset",
+    "btc_eth": "base_asset",
+    "опасный памп": "danger_pump",
+    "danger_pump": "danger_pump",
+    "pump": "danger_pump",
+    "speculative": "danger_pump",
+    "spec_pump": "danger_pump",
+    "short_momentum": "short_momentum",
+    "momentum": "short_momentum",
+    "короткий импульс": "short_momentum",
+    "unknown": "unknown_alt",
+    "unknown_alt": "unknown_alt",
+    "alt": "unknown_alt",
+    "средний/неизвестный альт": "unknown_alt",
+    "?": "unknown_alt",
+    "": "unknown_alt",
+}
+
+
+def v191121_normalize_coin_type(value):
+    try:
+        key = str(value or "").strip().lower().replace(" ", "_").replace("-", "_")
+    except Exception:
+        key = ""
+    return V191121_COIN_TYPE_ALIASES.get(key, "unknown_alt")
+
+
+def v199_dataset_stats(events=None):
+    """v19.11.2.1 safe override.
+    Возвращает старые поля + плоские счетчики типов, чтобы audit не падал на KeyError.
+    """
+    events = events if isinstance(events, list) else v199_build_learning_dataset()
+    stats = {
+        "total": len(events),
+        "quality_miss": 0,
+        "early_miss": 0,
+        "saved": 0,
+        "full_skip": 0,
+        "short_momentum": 0,
+        "neutral": 0,
+        "by_type": {},
+        "quality_alt": 0,
+        "danger_pump": 0,
+        "unknown_alt": 0,
+        "base_asset": 0,
+        "top_quality_miss": [],
+        "top_early_miss": [],
+        "top_saved": [],
+        "top_momentum": [],
+    }
+    for e in events:
+        if not isinstance(e, dict):
+            continue
+        typ = v191121_normalize_coin_type(e.get("coin_type", "unknown_alt"))
+        stats[typ] = int(stats.get(typ, 0) or 0) + 1
+        stats["by_type"][typ] = int(stats["by_type"].get(typ, 0) or 0) + 1
+        lesson = str(e.get("lesson", "") or "")
+        row = (str(e.get("asset", "?")), _v199_float(e.get("r48"), 0.0))
+        if "качественный рост" in lesson:
+            stats["quality_miss"] += 1
+            stats["top_quality_miss"].append(row)
+        elif "раннее усиление" in lesson:
+            stats["early_miss"] += 1
+            stats["top_early_miss"].append(row)
+        elif "ожидание спасло" in lesson:
+            stats["saved"] += 1
+            stats["top_saved"].append(row)
+        elif "не догонять" in lesson or "защитный пропуск" in lesson:
+            stats["full_skip"] += 1
+            stats["top_saved"].append(row)
+        elif "короткий импульс" in lesson or "спекулятив" in lesson:
+            stats["short_momentum"] += 1
+            stats["top_momentum"].append(row)
+        else:
+            stats["neutral"] += 1
+    for k in ["top_quality_miss", "top_early_miss", "top_momentum"]:
+        stats[k] = sorted(stats[k], key=lambda x: x[1], reverse=True)
+    stats["top_saved"] = sorted(stats["top_saved"], key=lambda x: x[1])
+    # Safe defaults: audit sections may request these keys directly.
+    for k in ["quality_alt", "danger_pump", "unknown_alt", "short_momentum", "base_asset"]:
+        stats.setdefault(k, 0)
+    return stats
+
+
+def _v191121_pct(value):
+    try:
+        return f"{float(value):.1f}%"
+    except Exception:
+        return "н/д"
+
+
+def _v191121_quality_score_payload():
+    m = _v1982_metrics()
+    closed = max(1, int(m.get("closed", 0) or 0))
+    protection = int(m.get("protection", 0) or 0)
+    missed = int(m.get("missed", 0) or 0)
+    entry_error = int(m.get("entry_error", 0) or 0)
+    try:
+        scoring = _v19112_checkpoint_scoring(_v19111_open_records())
+        best = max(scoring.get("rows", []), key=lambda x: x.get("score", 0)) if scoring.get("rows") else {"key": "н/д", "score": 0}
+        quality_candidates = len(scoring.get("quality", []) or [])
+    except Exception:
+        best = {"key": "н/д", "score": 0}
+        quality_candidates = 0
+    protection_accuracy = round(100 * protection / max(1, protection + missed + entry_error), 1)
+    miss_rate = round(100 * missed / closed, 1)
+    false_entry_rate = round(100 * entry_error / closed, 1)
+    checkpoint_reliability = int(best.get("score", 0) or 0)
+    quality_watch_recall = round(100 * quality_candidates / max(1, quality_candidates + missed), 1)
+    raw = 50 + min(20, protection * 0.7) - missed * 4 - entry_error * 8 + checkpoint_reliability * 0.15 + quality_watch_recall * 0.10
+    alex_quality = int(max(0, min(100, round(raw))))
+    return {
+        "alex_quality": alex_quality,
+        "closed": closed,
+        "protection": protection,
+        "missed": missed,
+        "entry_error": entry_error,
+        "protection_accuracy": protection_accuracy,
+        "miss_rate": miss_rate,
+        "false_entry_rate": false_entry_rate,
+        "checkpoint_reliability": checkpoint_reliability,
+        "best_window": best.get("key", "н/д"),
+        "quality_watch_recall": quality_watch_recall,
+        "quality_candidates": quality_candidates,
+    }
+
+
+def quality_score_user_report():
+    q = _v191121_quality_score_payload()
+    confidence_note = "средняя" if q["closed"] < 100 else "высокая"
+    status = "рабочий защитный фильтр"
+    if q["alex_quality"] >= 85:
+        status = "готов к агрессивным paper-тестам"
+    elif q["alex_quality"] >= 75:
+        status = "хороший защитный фильтр"
+    elif q["alex_quality"] < 60:
+        status = "данных мало / качество слабое"
+    return (
+        "📊 ALEX QUALITY SCORE\n\n"
+        f"Версия: **{BOT_VERSION}**\n"
+        f"Итоговая оценка качества: **{q['alex_quality']}/100** — {status}\n"
+        f"Уверенность оценки: 🟡 **{confidence_note}** | закрытых 48ч: **{q['closed']}**\n\n"
+        "Метрики качества:\n"
+        f"1️⃣ Protection Accuracy: **{_v191121_pct(q['protection_accuracy'])}** | защита {q['protection']} / пропуски {q['missed']} / ошибки {q['entry_error']}\n"
+        f"2️⃣ Miss Rate: **{_v191121_pct(q['miss_rate'])}** | цель: меньше 10–15%\n"
+        f"3️⃣ False Entry Rate: **{_v191121_pct(q['false_entry_rate'])}** | цель: около 0–10%\n"
+        f"4️⃣ Checkpoint Reliability: **{q['checkpoint_reliability']}/100** | лучшее окно: **{q['best_window']}**\n"
+        f"5️⃣ Quality Watch Recall: **{_v191121_pct(q['quality_watch_recall'])}** | кандидатов quality-watch: **{q['quality_candidates']}**\n\n"
+        "📌 Как понимать:\n"
+        "• качество растёт, если бот меньше пропускает AAVE/SOL-like движения;\n"
+        "• не догоняет CAP/VELVET-like пампы;\n"
+        "• 12ч/24ч checkpoints всё чаще совпадают с 48ч финалом;\n"
+        "• ошибки входа остаются около нуля.\n\n"
+        "🔒 Это оценка paper/shadow-качества, не разрешение на live BUY и не автоторговля."
+    )
+
+
+def quality_score_audit_report():
+    return quality_score_user_report()
+
 def build_audit_file(chat_id):
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
     path = f"/tmp/alex_edge_audit_{ts}.txt"
@@ -17519,15 +17693,16 @@ def build_audit_file(chat_id):
         sections.append("\n" + "="*80 + f"\n{title}\n" + "="*80 + "\n" + body)
     add("VERSION", lambda: f"BOT_VERSION: {BOT_VERSION}", 5)
     add("AUDIT SHORT", audit_short_report, 15)
-    add("SELF-LEARNING BRAIN CORE V19.11.2", v199_brain_audit_report, 10)
-    add("FAST PAPER CHECKPOINTS V19.11.2", v1911_paper_profile_report, 10)
-    add("CHECKPOINT RADAR V19.11.2", v19111_checkpoint_radar_user_report, 10)
-    add("CHECKPOINT SCORING V19.11.2", v19112_checkpoint_scoring_user_report, 10)
-    add("LEARNING ACCELERATION PLAN V19.11.2", v19111_acceleration_plan_user_report, 8)
-    add("ADAPTIVE LEARNING ENGINE V19.11.2", v1910_adaptive_audit_report, 10)
-    add("HYPOTHESES V19.11.2", v1910_hypotheses_user_report, 8)
-    add("ERROR REVIEW V19.11.2", v199_error_review_report, 8)
-    add("LEARNING RADAR V19.11.2", improvement_radar_user_report, 8)
+    add("SELF-LEARNING BRAIN CORE V19.11.2.1", v199_brain_audit_report, 10)
+    add("FAST PAPER CHECKPOINTS V19.11.2.1", v1911_paper_profile_report, 10)
+    add("CHECKPOINT RADAR V19.11.2.1", v19111_checkpoint_radar_user_report, 10)
+    add("CHECKPOINT SCORING V19.11.2.1", v19112_checkpoint_scoring_user_report, 10)
+    add("QUALITY SCORE V19.11.2.1", quality_score_audit_report, 8)
+    add("LEARNING ACCELERATION PLAN V19.11.2.1", v19111_acceleration_plan_user_report, 8)
+    add("ADAPTIVE LEARNING ENGINE V19.11.2.1", v1910_adaptive_audit_report, 10)
+    add("HYPOTHESES V19.11.2.1", v1910_hypotheses_user_report, 8)
+    add("ERROR REVIEW V19.11.2.1", v199_error_review_report, 8)
+    add("LEARNING RADAR V19.11.2.1", improvement_radar_user_report, 8)
     add("PAPER FULL", paper_report, 12)
     add("SIGNAL FULL", unified_signal_report, 35)
     add("LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
@@ -17948,6 +18123,9 @@ def main():
 
                 elif text in ["/checkpoint_scoring", "/checkpoint_score", "/score_checkpoints", "/cp_score"]:
                     send_message(chat_id, v19112_checkpoint_scoring_user_report())
+
+                elif text in ["/quality_score", "/quality", "/score_quality", "/bot_quality"]:
+                    send_message(chat_id, quality_score_user_report())
 
                 elif text in ["/learning_plan", "/acceleration_plan", "/next_steps"]:
                     send_message(chat_id, v19111_acceleration_plan_user_report())
