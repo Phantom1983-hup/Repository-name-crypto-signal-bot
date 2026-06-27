@@ -32243,7 +32243,8 @@
         "1h": -1.6,
         "3h": -2.18,
         "6h": -6.9,
-        "12h": -5.57
+        "12h": -5.57,
+        "24h": -5.75
       },
       "price_points": [
         {
@@ -32475,6 +32476,15 @@
           "checkpoint_price": 0.23611,
           "checkpoint_pct": -5.57,
           "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782583679.6577957,
+          "target_time": 1782587334.848705,
+          "checkpoint_price": 0.23566,
+          "checkpoint_pct": -5.75,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782583679.6577957,
+          "cache_price_source": "snapshot"
         }
       }
     },
@@ -32533,7 +32543,8 @@
         "1h": 0.32,
         "3h": -0.1,
         "6h": -0.1,
-        "12h": 0.54
+        "12h": 0.54,
+        "24h": 0.26
       },
       "price_points": [
         {
@@ -32697,6 +32708,15 @@
           "checkpoint_price": 0.03146,
           "checkpoint_pct": 0.54,
           "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782583679.6577957,
+          "target_time": 1782587334.848705,
+          "checkpoint_price": 0.03137,
+          "checkpoint_pct": 0.26,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782583679.6577957,
+          "cache_price_source": "snapshot"
         }
       }
     },
@@ -34241,7 +34261,8 @@
         "30m": -3.26,
         "1h": -5.81,
         "3h": -3.82,
-        "6h": -2.21
+        "6h": -2.21,
+        "12h": -19.59
       },
       "price_points": [
         {
@@ -34383,6 +34404,15 @@
           "checkpoint_pct": -2.21,
           "source": "cache_due_late_estimate",
           "cache_price_time": 1782558798.9724581,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782583679.6577957,
+          "target_time": 1782587959.9456055,
+          "checkpoint_price": 0.2989,
+          "checkpoint_pct": -19.59,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782583679.6577957,
           "cache_price_source": "snapshot"
         }
       },
@@ -35463,7 +35493,8 @@
         "15m": 0.06,
         "30m": 0.43,
         "1h": -0.2,
-        "3h": -1.87
+        "3h": -1.87,
+        "6h": -2.04
       },
       "price_points": [
         {
@@ -35600,6 +35631,15 @@
           "checkpoint_price": 4.817,
           "checkpoint_pct": -1.87,
           "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782585435.6633039,
+          "target_time": 1782590197.9954548,
+          "checkpoint_price": 4.809,
+          "checkpoint_pct": -2.04,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782585435.6633039,
+          "cache_price_source": "snapshot"
         }
       },
       "last_price": 4.809,
