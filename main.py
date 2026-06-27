@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.3.2 UX METRICS FIX"
+BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
 
 # === v11.0 persistent storage ===
 # Для Render Persistent Disk лучше указать DATA_DIR=/var/data.
@@ -16625,7 +16625,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.3.2 UX METRICS FIX"
+BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
 
 
 def _v1911_safe_int(v, default=0):
@@ -17735,7 +17735,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.3.2 UX METRICS FIX"
+BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
 
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
@@ -18211,7 +18211,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.3.2 UX METRICS FIX"
+BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18375,7 +18375,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.3.2 UX METRICS FIX"
+BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18720,7 +18720,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.3.2 UX METRICS FIX"
+BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19101,7 +19101,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.3.2 UX METRICS FIX"
+BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19379,6 +19379,522 @@ def build_audit_file(chat_id):
     add("QUALITY SCORE V19.11.3.2", quality_score_audit_report, 8)
     add("CHECKPOINT SCORING V19.11.3.2", v19112_checkpoint_scoring_user_report, 10)
     add("LEARNING PLAN V19.11.3.2", v19111_acceleration_plan_user_report, 8)
+    add("TECH: HYPOTHESES", v1910_hypotheses_user_report, 8)
+    add("TECH: ERROR REVIEW", v199_error_review_report, 8)
+    add("TECH: PAPER FULL", paper_report, 12)
+    add("TECH: SIGNAL FULL", unified_signal_report, 35)
+    add("TECH: LEARNING FULL", lambda: learning_report(sync_github=False, full=True), 25)
+    add("TECH: MARKET", market_status, 10)
+    add("TECH: BTC FULL", lambda: single_analysis_full("BTC-USDT"), 25)
+    add("TECH: SOL FULL", lambda: single_analysis_full("SOL-USDT"), 25)
+    add("TECH: ETH FULL", lambda: single_analysis_full("ETH-USDT"), 25)
+    content = "ALEX EDGE ULTRA TECH AUDIT FILE\n" + "\n".join(sections)
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
+    except Exception as e:
+        send_message(chat_id, f"❌ Не удалось создать audit txt: {e}")
+        return None
+    ok = send_document(chat_id, path, caption="🧾 Технический отчёт готов. В чате — только короткие команды, полный файл здесь.")
+    if not ok:
+        send_message(chat_id, "⚠️ Полный audit_file собран, но Telegram не принял txt-документ. Длинный текст в чат не отправляю. Ниже только короткий аудит.")
+        send_message(chat_id, audit_short_report())
+    return path
+
+
+# === v19.11.4 QUALITY LEARNING ACCELERATOR ===
+# Комплекс мер для улучшения качества и ускорения обучения.
+# Важно: эта версия НЕ включает реальные покупки, НЕ меняет боевой риск-блок и НЕ включает автоторговлю.
+# Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
+# а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
+
+BOT_VERSION = "v19.11.4 QUALITY LEARNING ACCELERATOR"
+V19114_CANON = "v19.11.4"
+try:
+    V191132_CANON = V19114_CANON
+    V191131_CANON = V19114_CANON
+    V19113_CANON = V19114_CANON
+except Exception:
+    pass
+
+
+def _v19114_asset_type(asset):
+    asset = str(asset or "").upper().replace("-USDT", "")
+    try:
+        return v191122_type_by_asset(asset)
+    except Exception:
+        return _v19113_quality_asset_type(asset) if "_v19113_quality_asset_type" in globals() else "unknown_alt"
+
+
+def _v19114_pct(v):
+    try:
+        return f"{float(v):+.2f}%"
+    except Exception:
+        return "н/д"
+
+
+def _v19114_quality_miss_memory():
+    """Закрытые 48ч уроки: какие качественные монеты бот душил слишком сильно."""
+    mem = {}
+    try:
+        events = v199_build_learning_dataset()
+    except Exception:
+        events = []
+    for e in events:
+        if not isinstance(e, dict):
+            continue
+        asset = str(e.get("asset", "?")).upper().replace("-USDT", "")
+        typ = _v19114_asset_type(asset)
+        lesson = str(e.get("lesson", "") or "").lower()
+        r48 = _v199_float(e.get("r48"), 0.0) if "_v199_float" in globals() else float(e.get("r48", 0) or 0)
+        if typ == "quality_alt" and ("качественный рост" in lesson or "раннее усиление" in lesson or r48 >= 5.0):
+            row = mem.setdefault(asset, {"asset": asset, "misses": 0, "best": -999.0, "last": 0.0})
+            row["misses"] += 1
+            row["best"] = max(float(row.get("best", -999.0)), float(r48))
+            row["last"] = float(r48)
+    return mem
+
+
+def _v19114_enhanced_ladder_payload(records=None):
+    """Усиленная paper-лестница качества.
+    В отличие от v19.11.3, учитывает память пропусков AAVE/INJ/SOL-like монет и не даёт общему страху полностью душить quality-watch.
+    """
+    records = records if isinstance(records, list) else _v19111_open_records()
+    miss_mem = _v19114_quality_miss_memory()
+    rows = []
+    for rec in records:
+        if not isinstance(rec, dict):
+            continue
+        asset = str(rec.get("asset", "?")).upper().replace("-USDT", "")
+        asset_type = _v19114_asset_type(asset)
+        if asset_type not in ["quality_alt", "base_asset"] and asset not in globals().get("QUALITY_LEARNING_ASSETS", set()):
+            continue
+        rm = _v19112_result_map(rec)
+        if not rm:
+            continue
+        vals = list(rm.items())
+        best_key, best_val = max(vals, key=lambda kv: kv[1])
+        worst_key, worst_val = min(vals, key=lambda kv: kv[1])
+        last_key, last_val = vals[-1]
+        cp1 = rm.get("1h")
+        cp3 = rm.get("3h")
+        cp6 = rm.get("6h")
+        cp12 = rm.get("12h")
+        cp24 = rm.get("24h")
+        maturity = len(rm)
+        base_score = _v19113_num(rec.get("score"), 55) if "_v19113_num" in globals() else float(rec.get("score", 55) or 55)
+        memory = miss_mem.get(asset, {})
+        memory_boost = min(14, int(memory.get("misses", 0) or 0) * 5)
+        convergence = 0
+        if cp12 is not None and cp24 is not None and cp12 >= 2.0 and cp24 >= 2.0:
+            convergence += 10
+        elif cp12 is not None and cp12 >= 3.0:
+            convergence += 6
+        elif cp24 is not None and cp24 >= 3.0:
+            convergence += 8
+        early_strength = 0
+        for val in [cp1, cp3, cp6]:
+            if val is not None and val >= 2.0:
+                early_strength += 3
+        drawdown_penalty = min(24, abs(float(worst_val)) * 1.9) if worst_val <= -4.0 else 0
+        raw = 34 + min(22, max(0.0, best_val) * 2.0) + min(18, max(0.0, last_val) * 2.3) + min(12, maturity * 1.6)
+        raw += memory_boost + convergence + min(9, early_strength)
+        raw -= drawdown_penalty
+        if asset_type == "base_asset":
+            raw = min(raw, 62)
+        if asset_type == "quality_alt" and base_score >= 64:
+            raw += 4
+        score = int(max(0, min(100, round(raw))))
+        # Новые paper-only уровни. Они повышают только наблюдение, не покупку.
+        if asset_type == "base_asset":
+            stage = "market_indicator"
+        elif score >= 82 and maturity >= 5 and worst_val > -5.5 and (last_val >= 3.0 or best_val >= 7.0 or convergence >= 8):
+            stage = "paper_entry_ready"
+        elif score >= 64 and maturity >= 4 and worst_val > -7.0 and (best_val >= 3.5 or last_val >= 2.0 or memory_boost >= 5):
+            stage = "priority_watch"
+        elif score >= 44 or best_val >= 1.0 or last_val >= 0:
+            stage = "regular_watch"
+        else:
+            stage = "background_watch"
+        row = {
+            "asset": asset,
+            "asset_type": asset_type,
+            "score": score,
+            "ladder_score": score,
+            "stage": stage,
+            "level": stage,
+            "best_key": best_key,
+            "best": float(best_val),
+            "best_val": float(best_val),
+            "worst_key": worst_key,
+            "worst": float(worst_val),
+            "last_key": last_key,
+            "last": float(last_val),
+            "last_val": float(last_val),
+            "12h": cp12,
+            "24h": cp24,
+            "maturity": maturity,
+            "memory_boost": memory_boost,
+            "convergence": convergence,
+            "label_ru": _v191132_label_ru(stage) if "_v191132_label_ru" in globals() else stage,
+            "action": _v191132_action_ru(stage) if "_v191132_action_ru" in globals() else "наблюдать",
+        }
+        rows.append(row)
+    rank = {"paper_entry_ready": 4, "priority_watch": 3, "regular_watch": 2, "market_indicator": 1, "background_watch": 0}
+    rows = sorted(rows, key=lambda r: (rank.get(r.get("stage"), 0), r.get("score", 0), r.get("best", 0), r.get("last", 0)), reverse=True)
+    counts = {"paper_entry_ready": 0, "priority_watch": 0, "regular_watch": 0, "market_indicator": 0, "background_watch": 0}
+    for r in rows:
+        counts[r.get("stage", "background_watch")] = counts.get(r.get("stage", "background_watch"), 0) + 1
+    return {"rows": rows, "items": rows, "counts": counts, "records": len(records), "miss_memory": miss_mem}
+
+
+# Подменяем payload лестницы: все отчёты получают более умную paper-only логику.
+def _v191132_ladder_payload_safe():
+    return _v19114_enhanced_ladder_payload()
+
+
+def _v191131_ladder_payload_safe():
+    return _v19114_enhanced_ladder_payload()
+
+
+def _v19113_quality_watch_ladder_payload(records=None):
+    return _v19114_enhanced_ladder_payload(records)
+
+
+def _v19114_spec_timing_map(records=None):
+    """Карта спекулятивных пампов: где был быстрый рост, а где потом откат.
+    Это нужно, чтобы XPL/VELVET-like движения не смешивались с AAVE/INJ-like quality.
+    """
+    records = records if isinstance(records, list) else _v19111_open_records()
+    rows = []
+    for rec in records:
+        if not isinstance(rec, dict):
+            continue
+        asset = str(rec.get("asset", "?")).upper().replace("-USDT", "")
+        typ = _v19114_asset_type(asset)
+        verdict = str(rec.get("verdict", "") or "")
+        is_spec = typ in ["danger_pump", "short_momentum"] or ("СПЕКУЛЯТИВ" in verdict) or ("НЕ ДОГОНЯТЬ" in verdict)
+        if not is_spec:
+            continue
+        rm = _v19112_result_map(rec)
+        if not rm:
+            continue
+        vals = list(rm.items())
+        best_key, best = max(vals, key=lambda kv: kv[1])
+        worst_key, worst = min(vals, key=lambda kv: kv[1])
+        last_key, last = vals[-1]
+        spread = float(best) - float(worst)
+        if best >= 5 and worst <= -5:
+            mode = "разносит в обе стороны — только карта тайминга"
+        elif best >= 8 and last >= 5:
+            mode = "памп продолжается — не BUY, а отдельный timing-урок"
+        elif worst <= -5:
+            mode = "пропуск защищает"
+        else:
+            mode = "спорно, ждать 24/48ч"
+        rows.append({"asset": asset, "type": typ, "best_key": best_key, "best": float(best), "worst_key": worst_key, "worst": float(worst), "last_key": last_key, "last": float(last), "spread": spread, "mode": mode})
+    rows = sorted(rows, key=lambda r: (abs(r.get("spread", 0)), r.get("best", 0)), reverse=True)
+    return rows
+
+
+def _v19114_learning_accelerator_payload():
+    try:
+        q = _v191132_quality_score_payload()
+    except Exception:
+        q = {}
+    try:
+        ladder = _v19114_enhanced_ladder_payload()
+    except Exception:
+        ladder = {"items": [], "counts": {}}
+    try:
+        scoring = _v19112_checkpoint_scoring(_v19111_open_records())
+    except Exception:
+        scoring = {"rows": [], "quality": [], "protection": [], "momentum": [], "noise": []}
+    try:
+        events = v199_build_learning_dataset()
+        stats = v199_dataset_stats(events)
+    except Exception:
+        events, stats = [], {"total": 0, "quality_miss": 0, "early_miss": 0, "saved": 0, "full_skip": 0, "short_momentum": 0, "top_quality_miss": [], "top_early_miss": [], "top_saved": [], "top_momentum": []}
+    try:
+        best = max(scoring.get("rows", []), key=lambda x: x.get("score", 0)) if scoring.get("rows") else {"key": "н/д", "score": 0}
+    except Exception:
+        best = {"key": "н/д", "score": 0}
+    spec_rows = _v19114_spec_timing_map()
+    c = ladder.get("counts", {}) or {}
+    measures = [
+        {"name": "Разделить качество монеты и страх рынка", "status": "включено", "effect": "AAVE/INJ/SOL-like монеты поднимаются в приоритет наблюдения, но без реальной покупки"},
+        {"name": "Пампы отдельно от качественных монет", "status": "включено", "effect": "XPL/VELVET/RAVE-like рост идёт в карту тайминга, а не в BUY"},
+        {"name": "Ранние контрольные точки", "status": "включено", "effect": "15м–24ч дают быстрые уроки, 48ч остаётся финальным судом"},
+        {"name": "Память пропущенных quality-движений", "status": "включено", "effect": "после AAVE/INJ похожие движения получают более высокий paper-приоритет"},
+        {"name": "Защита от переобучения", "status": "включено", "effect": "1–2 удачных пампа не включают реальные покупки и не ослабляют запрет догонять"},
+    ]
+    return {"quality": q, "ladder": ladder, "counts": c, "scoring": scoring, "best": best, "stats": stats, "events": events, "spec_rows": spec_rows, "measures": measures}
+
+
+def _v19114_format_assets(items, level=None, limit=5):
+    if level:
+        items = [x for x in items if x.get("level") == level or x.get("stage") == level]
+    if not items:
+        return "нет"
+    return ", ".join(str(x.get("asset", "?")).upper() for x in items[:limit])
+
+
+def quality_boost_user_report():
+    p = _v19114_learning_accelerator_payload()
+    q = p.get("quality", {})
+    c = p.get("counts", {}) or {}
+    best = p.get("best", {})
+    stats = p.get("stats", {}) or {}
+    items = p.get("ladder", {}).get("items", []) or []
+    spec_rows = p.get("spec_rows", []) or []
+    top_spec = ", ".join([r.get("asset", "?") for r in spec_rows[:4]]) if spec_rows else "нет"
+    return (
+        "🚀 Ускорение обучения и качества\n\n"
+        f"Версия: **{BOT_VERSION}**\n"
+        "Режим: только виртуальное обучение. Реальных покупок нет.\n\n"
+        "Что включено:\n"
+        "1️⃣ Качественные монеты больше не душатся одним общим страхом рынка.\n"
+        "2️⃣ AAVE/INJ/SOL/AVAX-подобные движения идут в отдельную лестницу наблюдения.\n"
+        "3️⃣ Пампы XPL/VELVET/RAVE считаются отдельно — это карта тайминга, не покупка.\n"
+        "4️⃣ 15м/30м/1ч/3ч/6ч/12ч/24ч дают быстрые уроки до финальных 48ч.\n"
+        "5️⃣ Добавлена память пропущенных quality-движений: похожие случаи поднимаются выше в наблюдении.\n\n"
+        "Текущее состояние:\n"
+        f"• качество: **{q.get('alex_quality',0)}/100**\n"
+        f"• закрытых 48ч: **{q.get('closed',0)}**\n"
+        f"• пропусков quality-роста: **{q.get('missed', stats.get('quality_miss',0))}**\n"
+        f"• лучшее раннее окно: **{best.get('key','н/д')} / {best.get('score',0)}/100**\n"
+        f"• лестница: 🟢 {c.get('paper_entry_ready',0)} | 🟡 {c.get('priority_watch',0)} | ⚪ {c.get('regular_watch',0)}\n\n"
+        "Кого теперь контролируем внимательнее:\n"
+        f"🟢 виртуальная проверка: {_v19114_format_assets(items, 'paper_entry_ready')}\n"
+        f"🟡 приоритет: {_v19114_format_assets(items, 'priority_watch')}\n"
+        f"🟣 пампы для карты тайминга: {top_spec}\n\n"
+        "Правило безопасности: это улучшает обучение и качество отбора, но не включает реальные покупки."
+    )
+
+
+def version_user_report():
+    return (
+        f"✅ Версия: **{BOT_VERSION}**\n\n"
+        "Главное изменение: добавлен комплекс ускорения обучения и качества.\n\n"
+        "Что улучшено:\n"
+        "• качественные монеты отделяются от общего страха рынка;\n"
+        "• AAVE/INJ/SOL/AVAX-подобные движения поднимаются в отдельное наблюдение раньше;\n"
+        "• пампы XPL/VELVET/RAVE не смешиваются с качественными монетами;\n"
+        "• быстрые проверки 15м–24ч дают уроки каждый час;\n"
+        "• 48ч остаётся финальной проверкой;\n"
+        "• отчёты остаются короткими и по-русски.\n\n"
+        "Ограничения:\n"
+        "• реальные покупки: 0;\n"
+        "• автоторговля: выключена;\n"
+        "• блок риска не менялся.\n\n"
+        "Новая команда: /quality_boost"
+    )
+
+
+def quality_score_user_report():
+    q = _v191132_quality_score_payload()
+    p = _v19114_learning_accelerator_payload()
+    c = p.get("counts", {}) or {}
+    return (
+        "📊 Оценка качества ALEX\n\n"
+        f"Версия: **{BOT_VERSION}**\n"
+        f"Итог: **{q.get('alex_quality',0)}/100** — {q.get('quality_label','оценка копится')}\n"
+        f"Уверенность: {q.get('confidence_label','🟡 средняя')} | закрытых 48ч: **{q.get('closed',0)}**\n\n"
+        "Главные метрики:\n"
+        f"1️⃣ Защита от плохих входов: **{q.get('protection_accuracy',0):.1f}%**\n"
+        f"2️⃣ Пропущенные хорошие движения: **{q.get('miss_rate',0):.1f}%**\n"
+        f"3️⃣ Ошибочные виртуальные входы: **{q.get('false_entry_rate',0):.1f}%**\n"
+        f"4️⃣ Лучшее раннее окно: **{q.get('best_window','н/д')} / {q.get('checkpoint_reliability',0)}/100**\n"
+        f"5️⃣ Поиск качественных движений: **{q.get('quality_watch_recall',0):.1f}%**\n\n"
+        "Что изменено для роста качества:\n"
+        "• AAVE/INJ-подобные пропуски теперь усиливают не покупку, а приоритет наблюдения;\n"
+        "• quality-активы не режутся одним общим страхом рынка;\n"
+        "• пампы отделены от качественного роста.\n\n"
+        "Лестница качества:\n"
+        f"🟢 виртуальная проверка: **{c.get('paper_entry_ready',0)}** | 🟡 приоритет: **{c.get('priority_watch',0)}** | ⚪ обычное наблюдение: **{c.get('regular_watch',0)}**\n\n"
+        "Вывод: качество улучшаем через обучение, но реальные покупки пока запрещены."
+    )
+
+
+def quality_score_audit_report():
+    return quality_score_user_report()
+
+
+def quality_watch_ladder_user_report():
+    payload = _v19114_enhanced_ladder_payload()
+    items = payload.get("items", []) or []
+    c = payload.get("counts", {}) or {}
+    ready = [x for x in items if x.get("level") == "paper_entry_ready"]
+    priority = [x for x in items if x.get("level") == "priority_watch"]
+    regular = [x for x in items if x.get("level") == "regular_watch"]
+    market = [x for x in items if x.get("level") == "market_indicator"]
+    def line(x):
+        return f"• {x.get('asset','?')}: {x.get('label_ru','наблюдение')} | сила {x.get('score',0)}/100 | лучше {x.get('best_key','?')} {_v19114_pct(x.get('best'))} | сейчас {x.get('last_key','?')} {_v19114_pct(x.get('last'))}"
+    lines = [
+        "🪜 Лестница наблюдения качественных монет",
+        "",
+        f"Версия: **{BOT_VERSION}**",
+        "Режим: только виртуальная проверка. Это не сигнал покупать.",
+        "",
+        "Коротко сейчас:",
+        f"🟢 готов к виртуальной проверке: **{c.get('paper_entry_ready',0)}** — {_v19114_format_assets(items, 'paper_entry_ready')}",
+        f"🟡 приоритетное наблюдение: **{c.get('priority_watch',0)}** — {_v19114_format_assets(items, 'priority_watch')}",
+        f"⚪ обычное наблюдение: **{c.get('regular_watch',0)}** — {_v19114_format_assets(items, 'regular_watch')}",
+    ]
+    if market:
+        lines.append(f"⚪ индикаторы рынка: {', '.join(str(x.get('asset','?')) for x in market[:3])}")
+    lines += ["", "🟢 Готовы к виртуальной проверке:"]
+    lines += ([line(x) for x in ready[:4]] if ready else ["• пока нет"])
+    lines += ["", "🟡 Поднять в приоритет наблюдения:"]
+    lines += ([line(x) for x in priority[:6]] if priority else ["• пока нет"])
+    lines += ["", "⚪ Оставить обычным наблюдением:"]
+    lines += ([line(x) for x in regular[:6]] if regular else ["• пока нет"])
+    lines += ["", "Правило: реальной покупки нет. Для виртуального входа нужны откат, удержание цены, объём и нормальный BTC/новости."]
+    return "\n".join(lines)
+
+
+def quality_watch_ladder_audit_report():
+    return quality_watch_ladder_user_report()
+
+
+def v199_brain_user_report():
+    try:
+        events = v199_build_learning_dataset()
+        stats = v199_dataset_stats(events)
+        scores = v199_multi_scores()
+    except Exception:
+        stats, scores = {"total": 0, "quality_miss": 0, "early_miss": 0, "saved": 0, "full_skip": 0, "short_momentum": 0}, {"learning_confidence": 0, "brain_score": 0}
+    p = _v19114_learning_accelerator_payload()
+    c = p.get("counts", {}) or {}
+    q = p.get("quality", {}) or {}
+    best = p.get("best", {}) or {}
+    return (
+        "🧠 Мозг бота\n\n"
+        f"Версия: **{BOT_VERSION}**\n"
+        f"Обучение: 🟢 работает | база: **{stats.get('total',0)}** кейсов | уверенность: **{scores.get('learning_confidence',0)}/100**\n"
+        f"Оценка качества: **{q.get('alex_quality',0)}/100** | оценка мозга: **{scores.get('brain_score',0)}/100**\n\n"
+        "Что улучшено сейчас:\n"
+        "1️⃣ quality-активы больше не смешиваются с пампами;\n"
+        "2️⃣ страх рынка не давит AAVE/INJ/SOL одинаково с мусорными пампами;\n"
+        "3️⃣ быстрые точки 15м–24ч дают уроки до финала 48ч;\n"
+        "4️⃣ пампы идут в отдельную карту тайминга;\n"
+        "5️⃣ реальные покупки всё ещё запрещены.\n\n"
+        "Текущее состояние:\n"
+        f"🟢 готов к виртуальной проверке: **{c.get('paper_entry_ready',0)}**\n"
+        f"🟡 приоритетное наблюдение: **{c.get('priority_watch',0)}**\n"
+        f"⚪ обычное наблюдение: **{c.get('regular_watch',0)}**\n"
+        f"Лучшее раннее окно: **{best.get('key','н/д')} / {best.get('score',0)}/100**\n\n"
+        "Вывод: качество повышаем через более умное наблюдение, а не через включение покупок.\n"
+        "Команды: /quality_boost | /watch_ladder | /quality_score"
+    )
+
+
+def v199_brain_audit_report():
+    p = _v19114_learning_accelerator_payload()
+    stats = p.get("stats", {}) or {}
+    q = p.get("quality", {}) or {}
+    c = p.get("counts", {}) or {}
+    best = p.get("best", {}) or {}
+    try:
+        scores = v199_multi_scores()
+        weights = v1911_paper_profile_weights(p.get("events", []))
+    except Exception:
+        scores, weights = {}, {}
+    return (
+        f"🧠 SELF-LEARNING BRAIN CORE {V19114_CANON}\n\n"
+        f"Версия: {BOT_VERSION}\n"
+        "Статус: включён комплекс ускорения обучения; реальные покупки, блок риска и автоторговля не менялись.\n\n"
+        f"Quality score: {q.get('alex_quality',0)}/100 | closed 48h: {q.get('closed',0)} | misses: {q.get('missed',0)} | errors: {q.get('entry_error',0)}\n"
+        f"Dataset: {stats.get('total',0)} | quality miss {stats.get('quality_miss',0)} | early miss {stats.get('early_miss',0)} | saved {stats.get('saved',0)+stats.get('full_skip',0)} | momentum {stats.get('short_momentum',0)}\n"
+        f"Ladder: ready {c.get('paper_entry_ready',0)} | priority {c.get('priority_watch',0)} | watch {c.get('regular_watch',0)}\n"
+        f"Best checkpoint: {best.get('key','н/д')} / {best.get('score',0)}/100\n\n"
+        "Меры:\n"
+        "• Quality Pressure Relief: quality-активы не душатся общим страхом рынка.\n"
+        "• Miss Memory: AAVE/INJ/SOL-like пропуски повышают paper-приоритет похожих случаев.\n"
+        "• Spec Pump Timing Map: XPL/VELVET/RAVE-like пампы идут отдельно от quality.\n"
+        "• Fast Checkpoint Learning: 15м–24ч дают быстрые уроки, 48ч финализирует.\n"
+        "• Overfit Guard: ни один урок не меняет live BUY и автоторговлю.\n\n"
+        "Paper Profile Weights:\n"
+        f"• market_regime_profile: {weights.get('market_regime_profile',0)}/100\n"
+        f"• full_skip_protection_profile: {weights.get('full_skip_protection_profile',0)}/100\n"
+        f"• early_strength_watch_profile: {weights.get('early_strength_watch_profile',0)}/100\n"
+        f"• short_momentum_timing_profile: {weights.get('short_momentum_timing_profile',0)}/100\n"
+        f"• live_buy_weight_delta: {weights.get('live_buy_weight_delta',0)}/100\n"
+        f"• autotrading_gate: {weights.get('autotrading_gate',0)}/100\n"
+    )
+
+
+def learning_user_report():
+    p = _v19114_learning_accelerator_payload()
+    q = p.get("quality", {}) or {}
+    c = p.get("counts", {}) or {}
+    best = p.get("best", {}) or {}
+    stats = p.get("stats", {}) or {}
+    return (
+        "📚 Самообучение — коротко\n\n"
+        f"Версия: **{BOT_VERSION}**\n"
+        f"База опыта: **{stats.get('total',0)}** кейсов | закрытых 48ч: **{q.get('closed',0)}**\n"
+        f"Качество: **{q.get('alex_quality',0)}/100** | лучшее раннее окно: **{best.get('key','н/д')} / {best.get('score',0)}/100**\n"
+        f"Защита: **{q.get('protection',0)}** | пропуски роста: **{q.get('missed',0)}** | ошибки входа: **{q.get('entry_error',0)}**\n"
+        f"Лестница качества: 🟢 {c.get('paper_entry_ready',0)} | 🟡 {c.get('priority_watch',0)} | ⚪ {c.get('regular_watch',0)}\n\n"
+        "Что бот учит быстрее:\n"
+        "• качественные монеты — отдельно;\n"
+        "• пампы — отдельно;\n"
+        "• ранние точки 15м–24ч — как быстрые уроки;\n"
+        "• 48ч — финальный контроль.\n\n"
+        "Что дальше: собрать ещё несколько закрытых 48ч и строить v19.11.5 по реальным урокам, без включения покупок.\n"
+        "Подробнее: /quality_boost | /watch_ladder | /audit_file"
+    )
+
+
+def v19111_acceleration_plan_user_report():
+    p = _v19114_learning_accelerator_payload()
+    best = p.get("best", {}) or {}
+    c = p.get("counts", {}) or {}
+    return (
+        "🚀 План ускорения обучения\n\n"
+        f"Версия: **{BOT_VERSION}**\n"
+        f"Лучшее раннее окно сейчас: **{best.get('key','н/д')} / {best.get('score',0)}/100**\n"
+        f"Лестница качества: 🟢 **{c.get('paper_entry_ready',0)}** | 🟡 **{c.get('priority_watch',0)}** | ⚪ **{c.get('regular_watch',0)}**\n\n"
+        "Комплекс мер включён:\n"
+        "1️⃣ quality-активы получают отдельное наблюдение;\n"
+        "2️⃣ пампы не превращаются в обычный BUY;\n"
+        "3️⃣ 15м–24ч ускоряют обучение;\n"
+        "4️⃣ память пропусков AAVE/INJ/SOL повышает paper-приоритет;\n"
+        "5️⃣ защита от переобучения не даёт включить покупки по единичному кейсу.\n\n"
+        "Следующий шаг: наблюдать ближайшие 48ч закрытия и усилить только те правила, которые подтвердятся серией, а не одним пампом."
+    )
+
+
+def quality_accelerator_audit_report():
+    p = _v19114_learning_accelerator_payload()
+    spec_rows = p.get("spec_rows", []) or []
+    spec_text = "\n".join([f"• {r['asset']}: {r['mode']} | best {r['best_key']} {_v19114_pct(r['best'])} | worst {r['worst_key']} {_v19114_pct(r['worst'])} | last {r['last_key']} {_v19114_pct(r['last'])}" for r in spec_rows[:8]]) or "• данных пока нет"
+    measures = "\n".join([f"• {m['name']}: {m['status']} — {m['effect']}" for m in p.get("measures", [])])
+    return (
+        "🚀 QUALITY LEARNING ACCELERATOR\n\n"
+        f"Версия: {BOT_VERSION}\n"
+        "Режим: paper/shadow only; live BUY +0; автоторговля OFF; блок риска unchanged.\n\n"
+        "Меры:\n" + measures + "\n\n"
+        "Spec Pump Timing Map:\n" + spec_text
+    )
+
+
+def build_audit_file(chat_id):
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    path = f"/tmp/alex_edge_audit_{ts}.txt"
+    sections = []
+    def add(title, func, timeout_sec=25):
+        body = audit_section_text(func, timeout_sec=timeout_sec)
+        sections.append("\n" + "="*80 + f"\n{title}\n" + "="*80 + "\n" + body)
+    add("VERSION", lambda: f"BOT_VERSION: {BOT_VERSION}", 5)
+    add("AUDIT SHORT", audit_short_report, 15)
+    add("QUALITY LEARNING ACCELERATOR V19.11.4", quality_accelerator_audit_report, 10)
+    add("SELF-LEARNING BRAIN CORE V19.11.4", v199_brain_audit_report, 10)
+    add("QUALITY WATCH LADDER V19.11.4", quality_watch_ladder_audit_report, 10)
+    add("QUALITY SCORE V19.11.4", quality_score_audit_report, 8)
+    add("CHECKPOINT SCORING V19.11.4", v19112_checkpoint_scoring_user_report, 10)
+    add("LEARNING PLAN V19.11.4", v19111_acceleration_plan_user_report, 8)
     add("TECH: HYPOTHESES", v1910_hypotheses_user_report, 8)
     add("TECH: ERROR REVIEW", v199_error_review_report, 8)
     add("TECH: PAPER FULL", paper_report, 12)
@@ -19802,6 +20318,9 @@ def main():
 
                 elif text in ["/learning_plan", "/acceleration_plan", "/next_steps"]:
                     send_message(chat_id, v19111_acceleration_plan_user_report())
+
+                elif text in ["/quality_boost", "/improve_quality", "/learning_boost", "/boost_learning"]:
+                    send_message(chat_id, quality_boost_user_report())
 
                 elif text in ["/improvement_radar", "/learning_radar", "/radar"]:
                     send_message(chat_id, improvement_radar_user_report())
