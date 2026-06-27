@@ -21472,10 +21472,8 @@
       "frozen_at": 1782554029.9121964,
       "outcome": "watch_saved",
       "frozen_outcome": "watch_saved"
-    }
-  ],
-  "open": {
-    "ADA_1782382906": {
+    },
+    {
       "asset": "ADA",
       "price": 0.1486,
       "score": 58,
@@ -21522,7 +21520,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782382906.3325257,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782553777.1442964,
       "seen_count": 24,
       "results": {
@@ -21532,7 +21530,8 @@
         "3h": -0.27,
         "6h": -4.04,
         "12h": -4.58,
-        "24h": -2.83
+        "24h": -2.83,
+        "48h": -0.94
       },
       "price_points": [
         {
@@ -21918,9 +21917,90 @@
           "checkpoint_price": 0.1444,
           "checkpoint_pct": -2.83,
           "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782555718.9684656,
+          "target_time": 1782555706.3325257,
+          "checkpoint_price": 0.1472,
+          "checkpoint_pct": -0.94,
+          "source": "snapshot"
         }
-      }
-    },
+      },
+      "closed_time": 1782556536.5443068,
+      "frozen_results": {
+        "15m": -0.2,
+        "30m": -0.2,
+        "1h": -0.67,
+        "3h": -0.27,
+        "6h": -4.04,
+        "12h": -4.58,
+        "24h": -2.83,
+        "48h": -0.94
+      },
+      "frozen_result_details": {
+        "15m": {
+          "checkpoint_time": 1782384717.4307003,
+          "target_time": 1782383806.3325257,
+          "checkpoint_price": 0.1483,
+          "checkpoint_pct": -0.2,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782384717.4307003,
+          "target_time": 1782384706.3325257,
+          "checkpoint_price": 0.1483,
+          "checkpoint_pct": -0.2,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782386543.1501932,
+          "target_time": 1782386506.3325257,
+          "checkpoint_price": 0.1476,
+          "checkpoint_pct": -0.67,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782393850.4546309,
+          "target_time": 1782393706.3325257,
+          "checkpoint_price": 0.1482,
+          "checkpoint_pct": -0.27,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782405787.9941285,
+          "target_time": 1782404506.3325257,
+          "checkpoint_price": 0.1426,
+          "checkpoint_pct": -4.04,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782449909.7720783,
+          "target_time": 1782426106.3325257,
+          "checkpoint_price": 0.1418,
+          "checkpoint_pct": -4.58,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782471994.1485043,
+          "target_time": 1782469306.3325257,
+          "checkpoint_price": 0.1444,
+          "checkpoint_pct": -2.83,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782555718.9684656,
+          "target_time": 1782555706.3325257,
+          "checkpoint_price": 0.1472,
+          "checkpoint_pct": -0.94,
+          "source": "snapshot"
+        }
+      },
+      "frozen_at": 1782556536.5443068,
+      "outcome": "neutral",
+      "frozen_outcome": "neutral"
+    }
+  ],
+  "open": {
     "INJ_1782393850": {
       "asset": "INJ",
       "price": 4.306,
@@ -21968,7 +22048,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782393850.4546309,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782553777.1442964,
       "seen_count": 24,
       "results": {
@@ -22658,6 +22738,10 @@
         {
           "time": 1782554029.9121964,
           "price": 0.1059
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.107
         }
       ],
       "risk_reward": 0.0,
@@ -22910,6 +22994,10 @@
         {
           "time": 1782554029.9121964,
           "price": 13.356
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 13.375
         }
       ],
       "risk_reward": 0.0,
@@ -23235,6 +23323,10 @@
         {
           "time": 1782554029.9121964,
           "price": 0.31047
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.31203
         }
       ],
       "risk_reward": 0.0,
@@ -23467,6 +23559,10 @@
         {
           "time": 1782554029.9121964,
           "price": 0.059318
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.059846
         }
       ],
       "risk_reward": 0.0,
@@ -23611,7 +23707,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782444609.7239852,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782555373.7008758,
       "seen_count": 4,
       "results": {
@@ -23715,6 +23811,10 @@
         {
           "time": 1782556513.8504407,
           "price": 0.29272
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.29456
         }
       ],
       "risk_reward": 0.0,
@@ -23859,7 +23959,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782450431.1957524,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782553777.1442964,
       "seen_count": 24,
       "results": {
@@ -24314,7 +24414,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782450431.1957524,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782553777.1442964,
       "seen_count": 24,
       "results": {
@@ -25073,6 +25173,10 @@
         {
           "time": 1782554029.9121964,
           "price": 0.0625
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.0538
         }
       ],
       "risk_reward": 0.0,
@@ -25481,6 +25585,10 @@
         {
           "time": 1782554029.9121964,
           "price": 2.0534
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 2.3478
         }
       ],
       "risk_reward": 0.0,
@@ -25629,7 +25737,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782460241.364221,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782553777.1442964,
       "seen_count": 24,
       "results": {
@@ -26060,7 +26168,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782460241.364221,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782553777.1442964,
       "seen_count": 24,
       "results": {
@@ -26683,6 +26791,10 @@
         {
           "time": 1782554025.7718122,
           "price": 564.377
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 564.255
         }
       ],
       "risk_reward": 0.0,
@@ -26885,6 +26997,10 @@
         {
           "time": 1782554029.9121964,
           "price": 0.35082
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.3632
         }
       ],
       "risk_reward": 0.0,
@@ -27167,6 +27283,10 @@
         {
           "time": 1782554029.9121964,
           "price": 0.0001744
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.0001743
         }
       ],
       "risk_reward": 0.0,
@@ -27307,7 +27427,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782482381.9768496,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782553777.1442964,
       "seen_count": 20,
       "results": {
@@ -27530,6 +27650,10 @@
         {
           "time": 1782556513.8504407,
           "price": 7.3655
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 7.3617
         }
       ],
       "risk_reward": 0.0,
@@ -27661,7 +27785,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782482381.9768496,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782553777.1442964,
       "seen_count": 20,
       "results": {
@@ -28019,7 +28143,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782482381.9768496,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782553777.1442964,
       "seen_count": 19,
       "results": {
@@ -28365,7 +28489,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782482381.9768496,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782553777.1442964,
       "seen_count": 20,
       "results": {
@@ -28838,6 +28962,10 @@
         {
           "time": 1782555718.9684656,
           "price": 1.8002
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 1.8018
         }
       ],
       "risk_reward": 0.0,
@@ -28969,7 +29097,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782482629.057396,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782553777.1442964,
       "seen_count": 20,
       "results": {
@@ -29200,6 +29328,10 @@
         {
           "time": 1782556513.8504407,
           "price": 0.026669
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.026696
         }
       ],
       "risk_reward": 0.0,
@@ -29383,6 +29515,10 @@
         {
           "time": 1782554029.9121964,
           "price": 0.1298
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.1294
         }
       ],
       "risk_reward": 0.0,
@@ -29518,7 +29654,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782492319.9833424,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782553777.1442964,
       "seen_count": 17,
       "results": {
@@ -29721,6 +29857,10 @@
         {
           "time": 1782556513.8504407,
           "price": 1.26306
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 1.26129
         }
       ],
       "risk_reward": 0.0,
@@ -29985,6 +30125,10 @@
         {
           "time": 1782554029.9121964,
           "price": 0.23281
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.23273
         }
       ],
       "risk_reward": 0.0,
@@ -30175,6 +30319,10 @@
         {
           "time": 1782554029.9121964,
           "price": 0.03083
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.03083
         }
       ],
       "risk_reward": 0.0,
@@ -30310,7 +30458,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782508250.0493772,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782553777.1442964,
       "seen_count": 12,
       "results": {
@@ -30634,6 +30782,10 @@
         {
           "time": 1782554029.9121964,
           "price": 0.001314
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.00131
         }
       ],
       "risk_reward": 0.0,
@@ -30808,6 +30960,10 @@
         {
           "time": 1782554029.9121964,
           "price": 19.32985
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 19.16058
         }
       ],
       "risk_reward": 0.0,
@@ -30936,7 +31092,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782526469.9457312,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782555718.9684656,
       "seen_count": 8,
       "results": {
@@ -31252,6 +31408,10 @@
         {
           "time": 1782554029.9121964,
           "price": 0.11704
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.11835
         }
       ],
       "risk_reward": 0.0,
@@ -31387,7 +31547,8 @@
       "results": {
         "15m": -3.39,
         "30m": -3.26,
-        "1h": -5.81
+        "1h": -5.81,
+        "3h": -3.82
       },
       "price_points": [
         {
@@ -31421,6 +31582,10 @@
         {
           "time": 1782554029.9121964,
           "price": 0.3621
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.3575
         }
       ],
       "risk_reward": 0.0,
@@ -31482,6 +31647,13 @@
           "checkpoint_price": 0.3501,
           "checkpoint_pct": -5.81,
           "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782556536.5443068,
+          "target_time": 1782555559.9456055,
+          "checkpoint_price": 0.3575,
+          "checkpoint_pct": -3.82,
+          "source": "snapshot"
         }
       },
       "last_price": 0.3596,
@@ -31534,7 +31706,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782548137.0713103,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782555373.7008758,
       "seen_count": 2,
       "results": {
@@ -31570,6 +31742,10 @@
         {
           "time": 1782556513.8504407,
           "price": 0.721
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.7203
         }
       ],
       "risk_reward": 0.0,
@@ -31683,7 +31859,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782549963.574256,
-      "last_seen": 1782556513.8504407,
+      "last_seen": 1782556530.8490138,
       "last_seen_counted": 1782553777.1442964,
       "seen_count": 2,
       "results": {
@@ -31731,6 +31907,10 @@
         {
           "time": 1782556513.8504407,
           "price": 0.5149
+        },
+        {
+          "time": 1782556536.5443068,
+          "price": 0.5142
         }
       ],
       "risk_reward": 0.0,
