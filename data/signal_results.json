@@ -34502,7 +34502,8 @@
         "30m": -3.14,
         "1h": -2.01,
         "3h": 2.85,
-        "6h": 9.06
+        "6h": 9.06,
+        "12h": 11.81
       },
       "price_points": [
         {
@@ -34762,6 +34763,15 @@
           "checkpoint_pct": 9.06,
           "source": "cache_due_late_estimate",
           "cache_price_time": 1782568626.5633247,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782590898.5753813,
+          "target_time": 1782591337.0713103,
+          "checkpoint_price": 0.8075,
+          "checkpoint_pct": 11.81,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782590898.5753813,
           "cache_price_source": "snapshot"
         }
       },
@@ -35867,7 +35877,7 @@
       }
     }
   },
-  "version": "v19.11.6.2 AUTO CHECK SCORE SYNC",
+  "version": "v19.11.6.3 SINGLE COIN NO-BUY SYNC",
   "learning_guard_note": "v17.5 restored/protected learning data from backup/frozen store",
   "learning_guard_time": 1782276720.389763
 }
