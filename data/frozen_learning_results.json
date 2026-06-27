@@ -2302,6 +2302,89 @@
       "outcome": "watch_saved",
       "frozen_at": 1782551232.1291566,
       "version": "v19.8 GLOBAL QA + SIMPLE USER REPORTS + ACCURACY SCORE"
+    },
+    "SEI:1782381080:0.05931": {
+      "asset": "SEI",
+      "time": 1782381080.4550257,
+      "price": 0.05931,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": 0.15,
+        "30m": 0.15,
+        "1h": 0.1,
+        "3h": -3.84,
+        "6h": -3.84,
+        "12h": -7.54,
+        "24h": -11.11,
+        "48h": -12.78
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782382906.3325257,
+          "target_time": 1782381980.4550257,
+          "checkpoint_price": 0.0594,
+          "checkpoint_pct": 0.15,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782383696.7431831,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782382906.3325257,
+          "target_time": 1782382880.4550257,
+          "checkpoint_price": 0.0594,
+          "checkpoint_pct": 0.15,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782383696.7431831,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782384717.4307003,
+          "target_time": 1782384680.4550257,
+          "checkpoint_price": 0.05937,
+          "checkpoint_pct": 0.1,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782405787.9941285,
+          "target_time": 1782391880.4550257,
+          "checkpoint_price": 0.05703,
+          "checkpoint_pct": -3.84,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782405787.9941285,
+          "target_time": 1782402680.4550257,
+          "checkpoint_price": 0.05703,
+          "checkpoint_pct": -3.84,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782449909.7720783,
+          "target_time": 1782424280.4550257,
+          "checkpoint_price": 0.05484,
+          "checkpoint_pct": -7.54,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782471994.1485043,
+          "target_time": 1782467480.4550257,
+          "checkpoint_price": 0.05272,
+          "checkpoint_pct": -11.11,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782554029.9121964,
+          "target_time": 1782553880.4550257,
+          "checkpoint_price": 0.05173,
+          "checkpoint_pct": -12.78,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "watch_saved",
+      "frozen_at": 1782554029.9121964,
+      "version": "v19.8.2 REPORT UX CLEANUP"
     }
   }
 }
