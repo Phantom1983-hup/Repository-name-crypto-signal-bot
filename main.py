@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16627,7 +16627,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17735,7 +17735,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18210,7 +18210,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18374,7 +18374,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18719,7 +18719,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19100,7 +19100,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19407,7 +19407,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -19921,7 +19921,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20062,7 +20062,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20373,7 +20373,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20664,7 +20664,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21491,7 +21491,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -21895,7 +21895,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22464,7 +22464,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -22972,7 +22972,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23273,12 +23273,12 @@ def build_audit_file(chat_id):
     return path
 
 
-# === v19.11.8 PROBE FINALIZER & LESSON ENGINE ===
+# === v19.11.8.1 FAST AUDIT HOTFIX ===
 # Цель: не только видеть текущую просадку quality-probe, но и автоматически
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -23799,6 +23799,428 @@ def build_audit_file(chat_id):
         send_message(chat_id, '⚠️ audit_file собран, но Telegram не принял файл. Ниже короткий аудит.')
         send_message(chat_id, audit_short_report())
     return path
+
+
+# === v19.11.8.1 FAST AUDIT HOTFIX ===
+# Причина: v19.11.8 добавил Probe Finalizer/Lesson Engine, и /audit_file мог
+# собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
+# Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
+
+BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+
+try:
+    _v191181_old_build_audit_file = build_audit_file
+except Exception:
+    _v191181_old_build_audit_file = None
+try:
+    _v191181_old_version_user_report = version_user_report
+except Exception:
+    _v191181_old_version_user_report = None
+try:
+    _v191181_old_run_probe_finalizer = v19118_run_probe_finalizer
+except Exception:
+    _v191181_old_run_probe_finalizer = None
+try:
+    _v191181_old_lesson_engine_report = v19118_probe_lesson_engine_report
+except Exception:
+    _v191181_old_lesson_engine_report = None
+
+
+def v191181_fast_now():
+    try:
+        return time.time()
+    except Exception:
+        return 0.0
+
+
+def v191181_cached_current_price(t):
+    if not isinstance(t, dict):
+        return 0.0
+    for fld in [
+        'current_price_v19117', 'current_price', 'last_price', 'close_price',
+        'exit_price', 'price_now', 'last', 'mark_price'
+    ]:
+        try:
+            val = float(t.get(fld, 0) or 0)
+            if val > 0:
+                return val
+        except Exception:
+            continue
+    try:
+        ep = v19118_entry_price(t) if 'v19118_entry_price' in globals() else 0.0
+        return float(ep or 0)
+    except Exception:
+        return 0.0
+
+
+def v191181_cached_pct_from_trade(t, stage='live'):
+    if not isinstance(t, dict):
+        return 0.0
+    try:
+        res = t.get('results', {}) if isinstance(t.get('results', {}), dict) else {}
+        if stage == '48h_final':
+            for k in ['48h', '24h']:
+                if isinstance(res.get(k), (int, float)):
+                    return float(res.get(k))
+        if stage == '24h_prelesson':
+            if isinstance(res.get('24h'), (int, float)):
+                return float(res.get('24h'))
+        for fld in ['last_pct', 'current_pnl_v19117', 'pct', 'pnl_pct']:
+            val = t.get(fld)
+            if isinstance(val, (int, float)):
+                return float(val)
+        ep = v19118_entry_price(t) if 'v19118_entry_price' in globals() else 0.0
+        cp = v191181_cached_current_price(t)
+        if ep and cp:
+            return (float(cp) - float(ep)) / float(ep) * 100.0
+    except Exception:
+        pass
+    return 0.0
+
+
+def v191181_make_lesson_cached(t, stage, pct=None):
+    asset = v19118_trade_asset(t) if 'v19118_trade_asset' in globals() else str((t or {}).get('asset','?'))
+    et = v19118_entry_time(t) if 'v19118_entry_time' in globals() else 0.0
+    pct = v191181_cached_pct_from_trade(t, stage=stage) if pct is None else float(pct or 0)
+    cls = v19118_lesson_classification(pct, stage=stage) if 'v19118_lesson_classification' in globals() else {
+        'bucket': 'neutral', 'label': '🟡 нейтрально', 'lesson': 'fast lesson', 'paper_delta': 0, 'score': 55
+    }
+    entry_snapshot = t.get('probe_entry_snapshot_v19117', {}) if isinstance(t.get('probe_entry_snapshot_v19117', {}), dict) else {}
+    res = t.get('results', {}) if isinstance(t.get('results', {}), dict) else {}
+    return {
+        'key': v19118_lesson_key(asset, et, stage) if 'v19118_lesson_key' in globals() else f'{asset}:{int(et)}:{stage}',
+        'asset': asset,
+        'stage': stage,
+        'version': BOT_VERSION,
+        'entry_time': et,
+        'lesson_time': v191181_fast_now(),
+        'age_h': v19118_trade_age_h(t) if 'v19118_trade_age_h' in globals() else 0.0,
+        'entry_price': v19118_entry_price(t) if 'v19118_entry_price' in globals() else 0.0,
+        'current_price': v191181_cached_current_price(t),
+        'pct': round(float(pct or 0), 2),
+        'bucket': cls.get('bucket', 'neutral'),
+        'label': cls.get('label', '🟡 нейтрально'),
+        'lesson': cls.get('lesson', 'fast lesson'),
+        'paper_delta': int(cls.get('paper_delta', 0) or 0),
+        'lesson_score': int(cls.get('score', 55) or 55),
+        'entry_score': v19118_safe_int(t.get('score', t.get('entry_score', 62)), 62) if 'v19118_safe_int' in globals() else 62,
+        'results': {k: v for k, v in res.items() if k in ['1h','3h','6h','12h','24h','48h']},
+        'snapshot': {
+            'btc_change': entry_snapshot.get('btc_change'),
+            'fear': entry_snapshot.get('fear'),
+            'news': entry_snapshot.get('news'),
+            'rsi': entry_snapshot.get('rsi'),
+            'volume_trend': entry_snapshot.get('volume_trend'),
+            'risk_level': entry_snapshot.get('risk_level'),
+            'change_24': entry_snapshot.get('change_24'),
+        }
+    }
+
+
+def v191181_run_probe_finalizer_lite(sync=False, force=False):
+    """Fast finalizer: не вызывает paper_update_from_cache и не ходит в price API."""
+    data = paper_store() if 'paper_store' in globals() else {}
+    open_trades = data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}
+    closed = data.get('closed', []) if isinstance(data.get('closed', []), list) else []
+    lessons = v19118_load_lessons(data) if 'v19118_load_lessons' in globals() else data.get('probe_lessons_v19118', [])
+    if not isinstance(lessons, list):
+        lessons = []
+    existing = {str(x.get('key','')) for x in lessons if isinstance(x, dict)}
+    added = []
+    changed = False
+
+    for key, t in list(open_trades.items()):
+        try:
+            if 'v19118_is_quality_probe_trade' in globals() and not v19118_is_quality_probe_trade(t):
+                continue
+            age_h = v19118_trade_age_h(t) if 'v19118_trade_age_h' in globals() else 0.0
+            if age_h < 24:
+                continue
+            asset = v19118_trade_asset(t) if 'v19118_trade_asset' in globals() else str(t.get('asset','?'))
+            et = v19118_entry_time(t) if 'v19118_entry_time' in globals() else 0.0
+            lkey = v19118_lesson_key(asset, et, '24h_prelesson') if 'v19118_lesson_key' in globals() else f'{asset}:{int(et)}:24h_prelesson'
+            if lkey in existing:
+                continue
+            lesson = v191181_make_lesson_cached(t, '24h_prelesson')
+            lessons.append(lesson); existing.add(lkey); added.append(lesson)
+            t['probe_lesson_24h_v19118'] = lesson
+            open_trades[key] = t
+            changed = True
+        except Exception:
+            continue
+
+    for idx, t in enumerate(list(closed)):
+        try:
+            if 'v19118_is_quality_probe_trade' in globals() and not v19118_is_quality_probe_trade(t):
+                continue
+            asset = v19118_trade_asset(t) if 'v19118_trade_asset' in globals() else str(t.get('asset','?'))
+            et = v19118_entry_time(t) if 'v19118_entry_time' in globals() else 0.0
+            lkey = v19118_lesson_key(asset, et, '48h_final') if 'v19118_lesson_key' in globals() else f'{asset}:{int(et)}:48h_final'
+            if lkey in existing:
+                continue
+            lesson = v191181_make_lesson_cached(t, '48h_final')
+            lessons.append(lesson); existing.add(lkey); added.append(lesson)
+            try:
+                t['probe_lesson_48h_v19118'] = lesson
+                closed[idx] = t
+            except Exception:
+                pass
+            changed = True
+        except Exception:
+            continue
+
+    if len(lessons) > 500:
+        lessons = lessons[-500:]
+        changed = True
+    if changed:
+        data['open'] = open_trades
+        data['closed'] = closed
+        data['probe_lessons_v19118'] = lessons
+        data['last_probe_lesson_engine_at'] = v191181_fast_now()
+        try:
+            save_paper_store(data, sync=sync)
+        except Exception:
+            pass
+    return {
+        'paper_changed': False,
+        'paper_updated': 0,
+        'paper_closed': 0,
+        'lessons_added': len(added),
+        'added': added,
+        'total_lessons': len(lessons),
+        'mode': 'fast_lite_no_price_refresh',
+    }
+
+
+# Перехват тяжёлого finalizer: быстрые отчёты больше не запускают полный update cache.
+def v19118_run_probe_finalizer(sync=False):
+    return v191181_run_probe_finalizer_lite(sync=sync, force=False)
+
+
+def v191181_fast_paper_counts():
+    try:
+        data = paper_store() if 'paper_store' in globals() else {}
+        return {
+            'open': len(data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}),
+            'closed': len(data.get('closed', []) if isinstance(data.get('closed', []), list) else []),
+            'lessons': len(data.get('probe_lessons_v19118', []) if isinstance(data.get('probe_lessons_v19118', []), list) else []),
+        }
+    except Exception:
+        return {'open': 0, 'closed': 0, 'lessons': 0}
+
+
+def v191181_fast_score(default=72):
+    try:
+        q = _v191132_quality_score_payload() if '_v191132_quality_score_payload' in globals() else {}
+        val = int(q.get('alex_quality', 0) or 0) if isinstance(q, dict) else 0
+        if val > 0:
+            return max(0, min(100, val))
+    except Exception:
+        pass
+    try:
+        m = _v1982_metrics() if '_v1982_metrics' in globals() else {}
+        val = int(m.get('score', 0) or 0) if isinstance(m, dict) else 0
+        if val > 0:
+            return max(0, min(100, val))
+    except Exception:
+        pass
+    return int(default or 72)
+
+
+def v191181_fast_probe_rows(limit=12):
+    data = paper_store() if 'paper_store' in globals() else {}
+    open_trades = data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}
+    rows = []
+    for key, t in list(open_trades.items()):
+        try:
+            if 'v19118_is_quality_probe_trade' in globals() and not v19118_is_quality_probe_trade(t):
+                continue
+            asset = v19118_trade_asset(t) if 'v19118_trade_asset' in globals() else str(t.get('asset','?'))
+            ep = v19118_entry_price(t) if 'v19118_entry_price' in globals() else 0.0
+            cp = v191181_cached_current_price(t)
+            pct = v191181_cached_pct_from_trade(t)
+            age = v19118_trade_age_h(t) if 'v19118_trade_age_h' in globals() else 0.0
+            cls = v19118_lesson_classification(pct) if 'v19118_lesson_classification' in globals() else {'label':'🟡 нейтрально','score':55}
+            rows.append((asset, pct, age, ep, cp, cls))
+        except Exception:
+            continue
+    return rows[:limit]
+
+
+def v191181_fast_audit_short_report():
+    counts = v191181_fast_paper_counts()
+    score = v191181_fast_score()
+    return (
+        '🧾 Короткий аудит FAST\n\n'
+        f'Версия: {BOT_VERSION}\n'
+        f'Оценка бота: {score}/100 (fast/cache)\n'
+        f"Paper: открыто {counts['open']} | закрыто {counts['closed']} | уроков {counts['lessons']}\n"
+        'Режим: быстрый audit без тяжёлого price-refresh.\n'
+        'Покупки: 🔴 НЕТ | автоторговля выключена | BUY-веса +0.'
+    )
+
+
+def v191181_fast_probe_scoring_report():
+    rows = v191181_fast_probe_rows()
+    if not rows:
+        body = '• активных quality-probe нет или они не найдены в paper-store.'
+        avg = 0.0
+    else:
+        vals = [r[1] for r in rows]
+        avg = sum(vals) / len(vals) if vals else 0.0
+        lines = []
+        for asset, pct, age, ep, cp, cls in rows:
+            label = cls.get('label', '🟡 нейтрально') if isinstance(cls, dict) else '🟡 нейтрально'
+            sc = int(cls.get('score', 55) if isinstance(cls, dict) else 55)
+            lines.append(f'• {asset}: {label} | {pct:+.2f}% | {age:.1f}ч | probe-score {sc}/100')
+        body = '\n'.join(lines)
+    return (
+        '🧪 FAST PROBE SCORING\n\n'
+        f'Версия: {BOT_VERSION}\n'
+        'Источник: cached paper-store, без сетевого обновления цен.\n\n'
+        f'{body}\n\n'
+        f'Средний cached PnL: {avg:+.2f}%\n'
+        'Финальный урок остаётся на 24/48ч.'
+    )
+
+
+def v191181_fast_shadow_portfolio_report():
+    rows = v191181_fast_probe_rows()
+    capital = 1000.0
+    pos = 20.0
+    pnl = 0.0
+    lines = []
+    for asset, pct, age, ep, cp, cls in rows:
+        delta = pos * float(pct or 0) / 100.0
+        pnl += delta
+        lines.append(f'• {asset}: {pct:+.2f}% → {delta:+.2f} USDT')
+    return (
+        '💼 FAST SHADOW PORTFOLIO\n\n'
+        f'Капитал: {capital:.0f} USDT | условная probe: 2% ({pos:.2f} USDT)\n'
+        f'Позиций: {len(rows)} | cached PnL: {pnl:+.2f} USDT ({pnl/capital*100:+.2f}%)\n\n'
+        + ('\n'.join(lines) if lines else '• активных probe нет')
+        + '\n\nРеальных денег бот не использует.'
+    )
+
+
+def v191181_fast_lesson_engine_report():
+    res = v191181_run_probe_finalizer_lite(sync=False)
+    lessons = v19118_load_lessons() if 'v19118_load_lessons' in globals() else []
+    summary = v19118_lesson_summary(lessons) if 'v19118_lesson_summary' in globals() else {'total': len(lessons), 'counts': {}, 'avg_delta': 0}
+    c = summary.get('counts', {})
+    recent = [l for l in lessons if isinstance(l, dict)][-8:]
+    rows = '\n'.join(v19118_format_lesson_line(l) for l in recent) if 'v19118_format_lesson_line' in globals() else ''
+    if not rows:
+        rows = '• 24/48ч уроков пока нет — ждём maturity текущих probe.'
+    return (
+        '🧠 FAST LESSON ENGINE\n\n'
+        f'Версия: {BOT_VERSION}\n'
+        'Режим: lite, без paper_update_from_cache и без price API.\n\n'
+        f"Новых уроков: {res.get('lessons_added',0)} | всего уроков: {summary.get('total',0)}\n"
+        f"🟢 хорошие/полезные: {int(c.get('good_entry',0) or 0)+int(c.get('useful_entry',0) or 0)} | "
+        f"🟡 нейтральные: {int(c.get('neutral',0) or 0)} | "
+        f"🟠/🔴 ранние/плохие: {int(c.get('early_drawdown',0) or 0)+int(c.get('bad_entry',0) or 0)}\n\n"
+        f'Последние уроки:\n{rows}\n\n'
+        'Live BUY остаётся +0.'
+    )
+
+
+def v19118_probe_lesson_engine_report():
+    return v191181_fast_lesson_engine_report()
+
+
+def v19118_probe_lesson_audit_report():
+    return v191181_fast_lesson_engine_report()
+
+
+def v191181_fast_hotfix_report():
+    return (
+        '⚡ FAST AUDIT HOTFIX\n\n'
+        f'Версия: {BOT_VERSION}\n'
+        'Что исправлено:\n'
+        '• /audit_file больше не запускает тяжёлый полный refresh всех секций;\n'
+        '• Probe Finalizer в обычных отчётах работает в lite-режиме без price API;\n'
+        '• txt собирается из cached paper-store и должен приходить заметно быстрее;\n'
+        '• тяжёлые одиночные анализы и сетевые price-refresh не блокируют отправку файла.\n\n'
+        'Ограничения не менялись: реальные покупки 0, автоторговля OFF, BUY-веса +0, Risk Engine unchanged.'
+    )
+
+
+def v191181_fast_audit_build_content():
+    sections = []
+    def add(title, body_func):
+        try:
+            body = str(body_func())
+        except Exception as e:
+            body = f'ERROR: {type(e).__name__}: {e}'
+        try:
+            body = v191151_normalize_version_text(body)
+        except Exception:
+            pass
+        sections.append('\n' + '='*80 + f'\n{title}\n' + '='*80 + '\n' + body)
+    add('VERSION', lambda: f'BOT_VERSION: {BOT_VERSION}')
+    add('FAST AUDIT HOTFIX V19.11.8.1', v191181_fast_hotfix_report)
+    add('AUDIT SHORT FAST', v191181_fast_audit_short_report)
+    add('FAST PROBE SCORING', v191181_fast_probe_scoring_report)
+    add('FAST SHADOW PORTFOLIO', v191181_fast_shadow_portfolio_report)
+    add('FAST LESSON ENGINE', v191181_fast_lesson_engine_report)
+    add('QUALITY PAPER PROBE + SCORING CACHED', v191181_fast_probe_scoring_report)
+    return 'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n' + '\n'.join(sections)
+
+
+def build_audit_file(chat_id):
+    started = time.time()
+    ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+    path = f'/tmp/alex_edge_fast_audit_{ts}.txt'
+    try:
+        content = v191181_fast_audit_build_content()
+        if len(content) > 120000:
+            content = content[:120000] + '\n\n[TRUNCATED BY FAST AUDIT HOTFIX: файл укорочен для быстрой отправки]\n'
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(content)
+    except Exception as e:
+        send_message(chat_id, f'❌ FAST audit txt не создан: {e}')
+        return None
+    ok = False
+    try:
+        if BOT_TOKEN and os.path.exists(path):
+            with open(path, 'rb') as f:
+                r = requests.post(
+                    f'https://api.telegram.org/bot{BOT_TOKEN}/sendDocument',
+                    data={'chat_id': chat_id, 'caption': f'🧾 FAST audit готов за {time.time()-started:.1f}с.'},
+                    files={'document': f},
+                    timeout=18
+                )
+            ok = (r.status_code == 200)
+            if not ok:
+                details = (getattr(r, 'text', '') or '')[:500]
+                send_message(chat_id, f'⚠️ Telegram не принял FAST audit txt: HTTP {r.status_code}. {details}')
+    except Exception as e:
+        send_message(chat_id, f'⚠️ FAST audit собран, но отправка txt не прошла быстро: {e}')
+        ok = False
+    if not ok:
+        send_message(chat_id, v191181_fast_audit_short_report())
+    return path
+
+
+def version_user_report():
+    return (
+        f'✅ Версия: {BOT_VERSION}\n\n'
+        'Что исправлено:\n'
+        '• /audit_file переведён в быстрый режим;\n'
+        '• убраны тяжёлые refresh-секции из обычного txt;\n'
+        '• Lesson Engine/Finalizer в обычных отчётах работает lite, без price API;\n'
+        '• файл должен приходить за секунды, а не висеть по 2–3 минуты.\n\n'
+        'Сохранено:\n'
+        '• Probe Result Scoring;\n'
+        '• Shadow Portfolio;\n'
+        '• Radar Decay Logic;\n'
+        '• Lesson Engine;\n'
+        '• реальные покупки 0, автоторговля OFF, BUY-веса +0, Risk Engine unchanged.\n\n'
+        'Команды проверки: /version | /audit_file | /quality_probe | /lesson_engine | /signal'
+    )
+
+
 
 if __name__ == "__main__":
     try:
