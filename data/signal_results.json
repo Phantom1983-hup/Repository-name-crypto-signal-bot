@@ -1373,7 +1373,10 @@
       "last_seen": 1782677670.841845,
       "last_seen_counted": 1782677670.841845,
       "seen_count": 1,
-      "results": {},
+      "results": {
+        "15m": 0.0,
+        "30m": 0.0
+      },
       "price_points": [
         {
           "time": 1782677670.841845,
@@ -1412,7 +1415,27 @@
         }
       ],
       "shadow_result_v184": "ждём первые checkpoints",
-      "confidence_v181": 15
+      "confidence_v181": 15,
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782677670.841845,
+          "target_time": 1782678570.841845,
+          "checkpoint_price": 71.1,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782677670.841845,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782677670.841845,
+          "target_time": 1782679470.841845,
+          "checkpoint_price": 71.1,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782677670.841845,
+          "cache_price_source": "snapshot"
+        }
+      }
     },
     "AVAX_1782679497": {
       "asset": "AVAX",
@@ -1464,7 +1487,9 @@
       "last_seen": 1782679497.0331764,
       "last_seen_counted": 1782679497.0331764,
       "seen_count": 1,
-      "results": {},
+      "results": {
+        "15m": 0.0
+      },
       "price_points": [
         {
           "time": 1782679497.0331764,
@@ -1503,7 +1528,18 @@
         }
       ],
       "shadow_result_v184": "ждём первые checkpoints",
-      "confidence_v181": 15
+      "confidence_v181": 15,
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782679497.0331764,
+          "target_time": 1782680397.0331764,
+          "checkpoint_price": 6.443,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782679497.0331764,
+          "cache_price_source": "snapshot"
+        }
+      }
     }
   },
   "closed": [
