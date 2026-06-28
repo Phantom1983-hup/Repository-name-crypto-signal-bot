@@ -38114,7 +38114,8 @@
       "seen_count": 1,
       "results": {
         "15m": 0.01,
-        "30m": 0.01
+        "30m": 0.01,
+        "1h": 0.16
       },
       "price_points": [
         {
@@ -38185,6 +38186,15 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782631929.0827513,
           "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782633537.19939,
+          "target_time": 1782633702.572292,
+          "checkpoint_price": 60207.6,
+          "checkpoint_pct": 0.16,
+          "source": "cache_due_near_snapshot",
+          "cache_price_time": 1782633537.19939,
+          "cache_price_source": "snapshot"
         }
       }
     },
@@ -38239,7 +38249,8 @@
       "seen_count": 1,
       "results": {
         "15m": 0.02,
-        "30m": 0.02
+        "30m": 0.02,
+        "1h": 0.28
       },
       "price_points": [
         {
@@ -38310,6 +38321,15 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782631929.0827513,
           "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782633537.19939,
+          "target_time": 1782633702.572292,
+          "checkpoint_price": 1575.65,
+          "checkpoint_pct": 0.28,
+          "source": "cache_due_near_snapshot",
+          "cache_price_time": 1782633537.19939,
+          "cache_price_source": "snapshot"
         }
       }
     },
@@ -38364,7 +38384,8 @@
       "seen_count": 1,
       "results": {
         "15m": 2.72,
-        "30m": 2.72
+        "30m": 2.72,
+        "1h": 5.74
       },
       "price_points": [
         {
@@ -38444,6 +38465,15 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782631929.0827513,
           "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782633594.2991416,
+          "target_time": 1782633702.572292,
+          "checkpoint_price": 2.8541,
+          "checkpoint_pct": 5.74,
+          "source": "cache_due_near_snapshot",
+          "cache_price_time": 1782633594.2991416,
+          "cache_price_source": "snapshot"
         }
       }
     },
@@ -38497,7 +38527,8 @@
       "last_seen_counted": 1782631929.0827513,
       "seen_count": 1,
       "results": {
-        "15m": 0.0
+        "15m": 0.0,
+        "30m": -13.14
       },
       "price_points": [
         {
@@ -38560,6 +38591,15 @@
           "source": "cache_due_late_estimate",
           "cache_price_time": 1782631929.0827513,
           "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782633594.2991416,
+          "target_time": 1782633729.0827513,
+          "checkpoint_price": 0.04343,
+          "checkpoint_pct": -13.14,
+          "source": "cache_due_near_snapshot",
+          "cache_price_time": 1782633594.2991416,
+          "cache_price_source": "snapshot"
         }
       },
       "last_price": 0.04343,
@@ -38568,7 +38608,7 @@
       "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ"
     }
   },
-  "version": "v19.11.7 PROBE RESULT SCORING",
+  "version": "v19.11.7.1 SCORE REFRESH SYNC",
   "learning_guard_note": "v17.5 restored/protected learning data from backup/frozen store",
   "learning_guard_time": 1782276720.389763
 }
