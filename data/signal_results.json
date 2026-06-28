@@ -23898,10 +23898,8 @@
       "frozen_at": 1782583679.6577957,
       "outcome": "watch_saved",
       "frozen_outcome": "watch_saved"
-    }
-  ],
-  "open": {
-    "H_1782435476": {
+    },
+    {
       "asset": "H",
       "price": 0.058236,
       "score": 55,
@@ -23957,7 +23955,8 @@
         "3h": -0.47,
         "6h": -2.8,
         "12h": 1.86,
-        "24h": 3.46
+        "24h": 3.46,
+        "48h": 0.45
       },
       "price_points": [
         {
@@ -24059,6 +24058,10 @@
         {
           "time": 1782583679.6577957,
           "price": 0.057662
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.058499
         }
       ],
       "risk_reward": 0.0,
@@ -24150,14 +24153,95 @@
           "checkpoint_price": 0.060251,
           "checkpoint_pct": 3.46,
           "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782608276.9232688,
+          "checkpoint_price": 0.058499,
+          "checkpoint_pct": 0.45,
+          "source": "snapshot"
         }
       },
       "last_price": 0.063607,
       "last_score": 55,
       "last_action": "WATCH",
-      "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ"
+      "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "closed_time": 1782629285.1269789,
+      "frozen_results": {
+        "15m": -0.47,
+        "30m": -0.47,
+        "1h": -0.47,
+        "3h": -0.47,
+        "6h": -2.8,
+        "12h": 1.86,
+        "24h": 3.46,
+        "48h": 0.45
+      },
+      "frozen_result_details": {
+        "15m": {
+          "checkpoint_time": 1782449909.7720783,
+          "target_time": 1782436376.9232688,
+          "checkpoint_price": 0.057965,
+          "checkpoint_pct": -0.47,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782449909.7720783,
+          "target_time": 1782437276.9232688,
+          "checkpoint_price": 0.057965,
+          "checkpoint_pct": -0.47,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782449909.7720783,
+          "target_time": 1782439076.9232688,
+          "checkpoint_price": 0.057965,
+          "checkpoint_pct": -0.47,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782449909.7720783,
+          "target_time": 1782446276.9232688,
+          "checkpoint_price": 0.057965,
+          "checkpoint_pct": -0.47,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782459534.8905706,
+          "target_time": 1782457076.9232688,
+          "checkpoint_price": 0.056607,
+          "checkpoint_pct": -2.8,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782471994.1485043,
+          "target_time": 1782478676.9232688,
+          "checkpoint_price": 0.059318,
+          "checkpoint_pct": 1.86,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782471994.1485043,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782535588.64944,
+          "target_time": 1782521876.9232688,
+          "checkpoint_price": 0.060251,
+          "checkpoint_pct": 3.46,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782608276.9232688,
+          "checkpoint_price": 0.058499,
+          "checkpoint_pct": 0.45,
+          "source": "snapshot"
+        }
+      },
+      "frozen_at": 1782629285.1269789,
+      "outcome": "neutral",
+      "frozen_outcome": "neutral"
     },
-    "ARX_1782444609": {
+    {
       "asset": "ARX",
       "price": 0.27897,
       "score": 55,
@@ -24213,7 +24297,8 @@
         "3h": 1.14,
         "6h": -7.36,
         "12h": -9.09,
-        "24h": 10.96
+        "24h": 10.96,
+        "48h": -3.08
       },
       "price_points": [
         {
@@ -24435,6 +24520,10 @@
         {
           "time": 1782608300.4702497,
           "price": 0.29323
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.27037
         }
       ],
       "risk_reward": 0.0,
@@ -24530,10 +24619,91 @@
           "checkpoint_price": 0.30955,
           "checkpoint_pct": 10.96,
           "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782617409.7239852,
+          "checkpoint_price": 0.27037,
+          "checkpoint_pct": -3.08,
+          "source": "snapshot"
         }
-      }
+      },
+      "closed_time": 1782629285.1269789,
+      "frozen_results": {
+        "15m": -0.62,
+        "30m": -0.27,
+        "1h": -1.91,
+        "3h": 1.14,
+        "6h": -7.36,
+        "12h": -9.09,
+        "24h": 10.96,
+        "48h": -3.08
+      },
+      "frozen_result_details": {
+        "15m": {
+          "checkpoint_time": 1782446375.3898506,
+          "target_time": 1782445509.7239852,
+          "checkpoint_price": 0.27723,
+          "checkpoint_pct": -0.62,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782446375.3898506,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782448204.8674736,
+          "target_time": 1782446409.7239852,
+          "checkpoint_price": 0.27821,
+          "checkpoint_pct": -0.27,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782449909.7720783,
+          "target_time": 1782448209.7239852,
+          "checkpoint_price": 0.27363,
+          "checkpoint_pct": -1.91,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782459534.8905706,
+          "target_time": 1782455409.7239852,
+          "checkpoint_price": 0.28215,
+          "checkpoint_pct": 1.14,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782471994.1485043,
+          "target_time": 1782466209.7239852,
+          "checkpoint_price": 0.25843,
+          "checkpoint_pct": -7.36,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782492307.8727567,
+          "target_time": 1782487809.7239852,
+          "checkpoint_price": 0.25362,
+          "checkpoint_pct": -9.09,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782535588.64944,
+          "target_time": 1782531009.7239852,
+          "checkpoint_price": 0.30955,
+          "checkpoint_pct": 10.96,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782617409.7239852,
+          "checkpoint_price": 0.27037,
+          "checkpoint_pct": -3.08,
+          "source": "snapshot"
+        }
+      },
+      "frozen_at": 1782629285.1269789,
+      "outcome": "missed_move",
+      "frozen_outcome": "missed_move"
     },
-    "BTC_1782450431": {
+    {
       "asset": "BTC",
       "price": 59877.5,
       "score": 55,
@@ -24559,14 +24729,14 @@
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": -0.36,
+        "btc_change": -0.59,
         "fg_value": 18,
-        "news_score": 8,
+        "news_score": 0,
         "market_mod": -7,
         "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": -0.36,
+        "change_24": -0.59,
         "signal_type": "WATCH",
         "action": "WATCH",
         "score": 59,
@@ -24579,7 +24749,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782450431.1957524,
-      "last_seen": 1782626492.484573,
+      "last_seen": 1782628291.8789427,
       "last_seen_counted": 1782626492.484573,
       "seen_count": 24,
       "results": {
@@ -25096,6 +25266,14 @@
         {
           "time": 1782626492.484573,
           "price": 60008.7
+        },
+        {
+          "time": 1782628291.8789427,
+          "price": 59940.4
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 59983.7
         }
       ],
       "risk_reward": 0.0,
@@ -25131,7 +25309,7 @@
       ],
       "shadow_result_v184": "WATCH нейтрально: 48h +0.44%",
       "confidence_v181": 29,
-      "last_price": 60008.7,
+      "last_price": 59940.4,
       "last_score": 59,
       "last_action": "WATCH",
       "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
@@ -25200,9 +25378,89 @@
           "cache_price_time": 1782622835.4792454,
           "cache_price_source": "snapshot"
         }
-      }
+      },
+      "closed_time": 1782629285.1269789,
+      "frozen_results": {
+        "15m": -0.21,
+        "30m": -0.14,
+        "1h": -0.17,
+        "3h": 0.63,
+        "6h": -0.69,
+        "12h": 0.43,
+        "24h": 0.63,
+        "48h": 0.44
+      },
+      "frozen_result_details": {
+        "15m": {
+          "checkpoint_time": 1782451440.8606164,
+          "target_time": 1782451331.1957524,
+          "checkpoint_price": 59753.0,
+          "checkpoint_pct": -0.21,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782451440.8606164,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782452891.353075,
+          "target_time": 1782452231.1957524,
+          "checkpoint_price": 59796.6,
+          "checkpoint_pct": -0.14,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782454721.5466,
+          "target_time": 1782454031.1957524,
+          "checkpoint_price": 59775.9,
+          "checkpoint_pct": -0.17,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782463136.5551798,
+          "target_time": 1782461231.1957524,
+          "checkpoint_price": 60257.2,
+          "checkpoint_pct": 0.63,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782473648.4496725,
+          "target_time": 1782472031.1957524,
+          "checkpoint_price": 59462.8,
+          "checkpoint_pct": -0.69,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782482381.9768496,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782493685.4462054,
+          "target_time": 1782493631.1957524,
+          "checkpoint_price": 60135.3,
+          "checkpoint_pct": 0.43,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782498794.739978,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782537446.7469509,
+          "target_time": 1782536831.1957524,
+          "checkpoint_price": 60252.7,
+          "checkpoint_pct": 0.63,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782622835.4792454,
+          "target_time": 1782623231.1957524,
+          "checkpoint_price": 60138.1,
+          "checkpoint_pct": 0.44,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782622835.4792454,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "frozen_at": 1782629285.1269789,
+      "outcome": "neutral",
+      "frozen_outcome": "neutral"
     },
-    "ETH_1782450431": {
+    {
       "asset": "ETH",
       "price": 1550.76,
       "score": 53,
@@ -25228,17 +25486,17 @@
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": -0.36,
+        "btc_change": -0.59,
         "fg_value": 18,
-        "news_score": 8,
+        "news_score": 0,
         "market_mod": -7,
         "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": -0.56,
+        "change_24": -0.88,
         "signal_type": "WATCH",
         "action": "WATCH",
-        "score": 58,
+        "score": 57,
         "verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ"
       },
       "tags": [
@@ -25248,7 +25506,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782450431.1957524,
-      "last_seen": 1782626492.484573,
+      "last_seen": 1782628291.8789427,
       "last_seen_counted": 1782626492.484573,
       "seen_count": 24,
       "results": {
@@ -25773,6 +26031,14 @@
         {
           "time": 1782626492.484573,
           "price": 1570.08
+        },
+        {
+          "time": 1782628291.8789427,
+          "price": 1566.99
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 1567.37
         }
       ],
       "risk_reward": 0.0,
@@ -25807,9 +26073,9 @@
         }
       ],
       "shadow_result_v184": "WATCH нейтрально: 48h +1.53%",
-      "confidence_v181": 29,
-      "last_price": 1570.08,
-      "last_score": 58,
+      "confidence_v181": 28,
+      "last_price": 1566.99,
+      "last_score": 57,
       "last_action": "WATCH",
       "last_verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
       "result_details": {
@@ -25877,9 +26143,89 @@
           "cache_price_time": 1782622835.4792454,
           "cache_price_source": "snapshot"
         }
-      }
+      },
+      "closed_time": 1782629285.1269789,
+      "frozen_results": {
+        "15m": 0.06,
+        "30m": 0.11,
+        "1h": -0.2,
+        "3h": 1.19,
+        "6h": -0.17,
+        "12h": 1.98,
+        "24h": 1.86,
+        "48h": 1.53
+      },
+      "frozen_result_details": {
+        "15m": {
+          "checkpoint_time": 1782451440.8606164,
+          "target_time": 1782451331.1957524,
+          "checkpoint_price": 1551.63,
+          "checkpoint_pct": 0.06,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782451440.8606164,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782452891.353075,
+          "target_time": 1782452231.1957524,
+          "checkpoint_price": 1552.51,
+          "checkpoint_pct": 0.11,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782454721.5466,
+          "target_time": 1782454031.1957524,
+          "checkpoint_price": 1547.63,
+          "checkpoint_pct": -0.2,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782463136.5551798,
+          "target_time": 1782461231.1957524,
+          "checkpoint_price": 1569.29,
+          "checkpoint_pct": 1.19,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782473648.4496725,
+          "target_time": 1782472031.1957524,
+          "checkpoint_price": 1548.11,
+          "checkpoint_pct": -0.17,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782482381.9768496,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782493685.4462054,
+          "target_time": 1782493631.1957524,
+          "checkpoint_price": 1581.39,
+          "checkpoint_pct": 1.98,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782498794.739978,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782537446.7469509,
+          "target_time": 1782536831.1957524,
+          "checkpoint_price": 1579.54,
+          "checkpoint_pct": 1.86,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782622835.4792454,
+          "target_time": 1782623231.1957524,
+          "checkpoint_price": 1574.43,
+          "checkpoint_pct": 1.53,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782622835.4792454,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "frozen_at": 1782629285.1269789,
+      "outcome": "neutral",
+      "frozen_outcome": "neutral"
     },
-    "ESPORTS_1782450431": {
+    {
       "asset": "ESPORTS",
       "price": 0.0547,
       "score": 55,
@@ -25935,7 +26281,8 @@
         "3h": 14.81,
         "6h": 19.01,
         "12h": 86.47,
-        "24h": 70.02
+        "24h": 70.02,
+        "48h": -11.52
       },
       "price_points": [
         {
@@ -26257,6 +26604,10 @@
         {
           "time": 1782583679.6577957,
           "price": 0.0413
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.0484
         }
       ],
       "risk_reward": 0.0,
@@ -26356,10 +26707,95 @@
           "checkpoint_price": 0.093,
           "checkpoint_pct": 70.02,
           "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782623231.1957524,
+          "checkpoint_price": 0.0484,
+          "checkpoint_pct": -11.52,
+          "source": "snapshot"
         }
-      }
+      },
+      "closed_time": 1782629285.1269789,
+      "frozen_results": {
+        "15m": 14.26,
+        "30m": 17.0,
+        "1h": 17.92,
+        "3h": 14.81,
+        "6h": 19.01,
+        "12h": 86.47,
+        "24h": 70.02,
+        "48h": -11.52
+      },
+      "frozen_result_details": {
+        "15m": {
+          "checkpoint_time": 1782451440.8606164,
+          "target_time": 1782451331.1957524,
+          "checkpoint_price": 0.0625,
+          "checkpoint_pct": 14.26,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782451440.8606164,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782452891.353075,
+          "target_time": 1782452231.1957524,
+          "checkpoint_price": 0.064,
+          "checkpoint_pct": 17.0,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782454721.5466,
+          "target_time": 1782454031.1957524,
+          "checkpoint_price": 0.0645,
+          "checkpoint_pct": 17.92,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782463136.5551798,
+          "target_time": 1782461231.1957524,
+          "checkpoint_price": 0.0628,
+          "checkpoint_pct": 14.81,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782473648.4496725,
+          "target_time": 1782472031.1957524,
+          "checkpoint_price": 0.0651,
+          "checkpoint_pct": 19.01,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782482381.9768496,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782493685.4462054,
+          "target_time": 1782493631.1957524,
+          "checkpoint_price": 0.102,
+          "checkpoint_pct": 86.47,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782498794.739978,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782537446.7469509,
+          "target_time": 1782536831.1957524,
+          "checkpoint_price": 0.093,
+          "checkpoint_pct": 70.02,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782623231.1957524,
+          "checkpoint_price": 0.0484,
+          "checkpoint_pct": -11.52,
+          "source": "snapshot"
+        }
+      },
+      "frozen_at": 1782629285.1269789,
+      "outcome": "watch_saved",
+      "frozen_outcome": "watch_saved"
     },
-    "BEAT_1782450431": {
+    {
       "asset": "BEAT",
       "price": 2.357,
       "score": 55,
@@ -26378,21 +26814,21 @@
       "change_24": 44.04,
       "btc_change": -2.72,
       "macro_mod": -1,
-      "fg_value": 15,
+      "fg_value": 18,
       "risk_level": "caution",
       "market_regime": "caution",
       "market_bucket": "caution",
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": 2.31,
-        "fg_value": 15,
-        "news_score": -2,
-        "market_mod": 3,
-        "btc_text": "BTC нейтральный",
+        "btc_change": -0.59,
+        "fg_value": 18,
+        "news_score": 0,
+        "market_mod": -7,
+        "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": 12.87,
+        "change_24": 14.26,
         "signal_type": "WATCH",
         "action": "WATCH",
         "score": 55,
@@ -26405,9 +26841,9 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782450431.1957524,
-      "last_seen": 1782567548.8029044,
-      "last_seen_counted": 1782567548.8029044,
-      "seen_count": 23,
+      "last_seen": 1782628291.8789427,
+      "last_seen_counted": 1782628291.8789427,
+      "seen_count": 24,
       "results": {
         "15m": -0.84,
         "30m": 3.13,
@@ -26415,7 +26851,8 @@
         "3h": 2.81,
         "6h": 2.94,
         "12h": 4.04,
-        "24h": -10.79
+        "24h": -10.79,
+        "48h": 12.19
       },
       "price_points": [
         {
@@ -26701,6 +27138,14 @@
         {
           "time": 1782583679.6577957,
           "price": 2.3837
+        },
+        {
+          "time": 1782628291.8789427,
+          "price": 2.6444
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 2.7055
         }
       ],
       "risk_reward": 0.0,
@@ -26740,8 +27185,8 @@
         }
       ],
       "shadow_result_v184": "запрет догонять пока полезен: просадка 24h -10.79%",
-      "confidence_v181": 19,
-      "last_price": 2.6587,
+      "confidence_v181": 27,
+      "last_price": 2.6444,
       "last_score": 55,
       "last_action": "WATCH",
       "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
@@ -26800,9 +27245,100 @@
           "checkpoint_price": 2.1027,
           "checkpoint_pct": -10.79,
           "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782628291.8789427,
+          "target_time": 1782623231.1957524,
+          "checkpoint_price": 2.6444,
+          "checkpoint_pct": 12.19,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782628291.8789427,
+          "cache_price_source": "snapshot"
         }
-      }
-    },
+      },
+      "closed_time": 1782629285.1269789,
+      "frozen_results": {
+        "15m": -0.84,
+        "30m": 3.13,
+        "1h": 3.07,
+        "3h": 2.81,
+        "6h": 2.94,
+        "12h": 4.04,
+        "24h": -10.79,
+        "48h": 12.19
+      },
+      "frozen_result_details": {
+        "15m": {
+          "checkpoint_time": 1782451440.8606164,
+          "target_time": 1782451331.1957524,
+          "checkpoint_price": 2.3373,
+          "checkpoint_pct": -0.84,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782451440.8606164,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782452891.353075,
+          "target_time": 1782452231.1957524,
+          "checkpoint_price": 2.4308,
+          "checkpoint_pct": 3.13,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782454721.5466,
+          "target_time": 1782454031.1957524,
+          "checkpoint_price": 2.4294,
+          "checkpoint_pct": 3.07,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782463136.5551798,
+          "target_time": 1782461231.1957524,
+          "checkpoint_price": 2.4233,
+          "checkpoint_pct": 2.81,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782473648.4496725,
+          "target_time": 1782472031.1957524,
+          "checkpoint_price": 2.4263,
+          "checkpoint_pct": 2.94,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782482381.9768496,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782493685.4462054,
+          "target_time": 1782493631.1957524,
+          "checkpoint_price": 2.4522,
+          "checkpoint_pct": 4.04,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782498794.739978,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782544947.4766493,
+          "target_time": 1782536831.1957524,
+          "checkpoint_price": 2.1027,
+          "checkpoint_pct": -10.79,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782628291.8789427,
+          "target_time": 1782623231.1957524,
+          "checkpoint_price": 2.6444,
+          "checkpoint_pct": 12.19,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782628291.8789427,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "frozen_at": 1782629285.1269789,
+      "outcome": "spec_watch_pump",
+      "frozen_outcome": "spec_watch_pump"
+    }
+  ],
+  "open": {
     "AAVE_1782460241": {
       "asset": "AAVE",
       "price": 87.073,
@@ -26829,17 +27365,17 @@
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": -0.16,
+        "btc_change": -0.59,
         "fg_value": 18,
-        "news_score": 16,
-        "market_mod": 9,
+        "news_score": 0,
+        "market_mod": -7,
         "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": 0.55,
+        "change_24": 0.07,
         "signal_type": "WATCH",
         "action": "WATCH",
-        "score": 57,
+        "score": 56,
         "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
       },
       "tags": [
@@ -26849,8 +27385,8 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782460241.364221,
-      "last_seen": 1782622835.4792454,
-      "last_seen_counted": 1782621008.9734411,
+      "last_seen": 1782628291.8789427,
+      "last_seen_counted": 1782628291.8789427,
       "seen_count": 24,
       "results": {
         "15m": -1.62,
@@ -27301,6 +27837,14 @@
         {
           "time": 1782622835.4792454,
           "price": 94.615
+        },
+        {
+          "time": 1782628291.8789427,
+          "price": 93.815
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 93.616
         }
       ],
       "risk_reward": 0.0,
@@ -27336,8 +27880,8 @@
       ],
       "shadow_result_v184": "бот мог быть слишком осторожен: рост 24h +10.09%",
       "confidence_v181": 28,
-      "last_price": 94.615,
-      "last_score": 57,
+      "last_price": 93.815,
+      "last_score": 56,
       "last_action": "WATCH",
       "last_verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
       "result_details": {
@@ -27820,6 +28364,10 @@
         {
           "time": 1782583679.6577957,
           "price": 72.06
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 70.45
         }
       ],
       "risk_reward": 0.0,
@@ -28240,6 +28788,10 @@
         {
           "time": 1782583679.6577957,
           "price": 563.078
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 554.897
         }
       ],
       "risk_reward": 0.0,
@@ -28482,6 +29034,10 @@
         {
           "time": 1782583679.6577957,
           "price": 0.32865
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.31963
         }
       ],
       "risk_reward": 0.0,
@@ -28806,6 +29362,10 @@
         {
           "time": 1782583679.6577957,
           "price": 0.0001844
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.0001789
         }
       ],
       "risk_reward": 0.0,
@@ -29299,6 +29859,10 @@
         {
           "time": 1782595595.48259,
           "price": 7.3356
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 7.2554
         }
       ],
       "risk_reward": 0.0,
@@ -29799,6 +30363,10 @@
         {
           "time": 1782587269.8939812,
           "price": 0.7006
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.6799
         }
       ],
       "risk_reward": 0.0,
@@ -30251,6 +30819,10 @@
         {
           "time": 1782583679.6577957,
           "price": 210.95
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 207.35
         }
       ],
       "risk_reward": 0.0,
@@ -30771,6 +31343,10 @@
         {
           "time": 1782599221.3788817,
           "price": 6.366
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 6.331
         }
       ],
       "risk_reward": 0.0,
@@ -30892,17 +31468,17 @@
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": -0.36,
+        "btc_change": -0.59,
         "fg_value": 18,
-        "news_score": 8,
+        "news_score": 0,
         "market_mod": -7,
         "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": 4.14,
+        "change_24": 2.66,
         "signal_type": "WATCH",
         "action": "WATCH",
-        "score": 64,
+        "score": 61,
         "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
       },
       "tags": [
@@ -30911,7 +31487,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782482629.057396,
-      "last_seen": 1782626492.484573,
+      "last_seen": 1782628291.8789427,
       "last_seen_counted": 1782626492.484573,
       "seen_count": 24,
       "results": {
@@ -31247,6 +31823,14 @@
         {
           "time": 1782626492.484573,
           "price": 1.8872
+        },
+        {
+          "time": 1782628291.8789427,
+          "price": 1.8531
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 1.8561
         }
       ],
       "risk_reward": 0.0,
@@ -31281,7 +31865,7 @@
         }
       ],
       "shadow_result_v184": "WATCH нейтрально: 24h +3.08%",
-      "confidence_v181": 32,
+      "confidence_v181": 31,
       "result_details": {
         "15m": {
           "checkpoint_time": 1782483687.4362404,
@@ -31337,8 +31921,8 @@
           "cache_price_source": "snapshot"
         }
       },
-      "last_price": 1.8872,
-      "last_score": 64,
+      "last_price": 1.8531,
+      "last_score": 61,
       "last_action": "WATCH",
       "last_verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC"
     },
@@ -31703,6 +32287,10 @@
         {
           "time": 1782583679.6577957,
           "price": 0.026361
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.02914
         }
       ],
       "risk_reward": 0.0,
@@ -31928,6 +32516,10 @@
         {
           "time": 1782583679.6577957,
           "price": 0.1314
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.1283
         }
       ],
       "risk_reward": 0.0,
@@ -32050,14 +32642,14 @@
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": -0.36,
+        "btc_change": -0.59,
         "fg_value": 18,
-        "news_score": 8,
+        "news_score": 0,
         "market_mod": -7,
         "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": 69.36,
+        "change_24": 67.9,
         "signal_type": "WATCH",
         "action": "WATCH",
         "score": 55,
@@ -32070,7 +32662,7 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782492319.9833424,
-      "last_seen": 1782626492.484573,
+      "last_seen": 1782628291.8789427,
       "last_seen_counted": 1782626492.484573,
       "seen_count": 24,
       "results": {
@@ -32518,6 +33110,14 @@
         {
           "time": 1782626492.484573,
           "price": 1.56236
+        },
+        {
+          "time": 1782628291.8789427,
+          "price": 1.58358
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 1.55423
         }
       ],
       "risk_reward": 0.0,
@@ -32615,7 +33215,7 @@
           "source": "snapshot"
         }
       },
-      "last_price": 1.56236,
+      "last_price": 1.58358,
       "last_score": 55,
       "last_action": "WATCH",
       "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ"
@@ -32822,6 +33422,10 @@
         {
           "time": 1782583679.6577957,
           "price": 0.23566
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.25175
         }
       ],
       "risk_reward": 0.0,
@@ -33054,6 +33658,10 @@
         {
           "time": 1782583679.6577957,
           "price": 0.03137
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.03064
         }
       ],
       "risk_reward": 0.0,
@@ -33178,14 +33786,14 @@
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": -0.16,
+        "btc_change": -0.59,
         "fg_value": 18,
-        "news_score": 16,
-        "market_mod": 9,
+        "news_score": 0,
+        "market_mod": -7,
         "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": 19.93,
+        "change_24": 18.34,
         "signal_type": "WATCH",
         "action": "WATCH",
         "score": 55,
@@ -33198,9 +33806,9 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782508250.0493772,
-      "last_seen": 1782622835.4792454,
-      "last_seen_counted": 1782622835.4792454,
-      "seen_count": 22,
+      "last_seen": 1782628291.8789427,
+      "last_seen_counted": 1782628291.8789427,
+      "seen_count": 23,
       "results": {
         "15m": 2.04,
         "30m": 2.04,
@@ -33518,6 +34126,14 @@
         {
           "time": 1782622835.4792454,
           "price": 0.355
+        },
+        {
+          "time": 1782628291.8789427,
+          "price": 0.387
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.375
         }
       ],
       "risk_reward": 0.0,
@@ -33558,7 +34174,7 @@
       ],
       "shadow_result_v184": "запрет догонять пока полезен: просадка 6h -16.84%",
       "confidence_v181": 19,
-      "last_price": 0.355,
+      "last_price": 0.387,
       "last_score": 55,
       "last_action": "WATCH",
       "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
@@ -33671,7 +34287,8 @@
         "1h": -3.22,
         "3h": -3.22,
         "6h": -4.31,
-        "12h": -4.46
+        "12h": -4.46,
+        "24h": 2.19
       },
       "price_points": [
         {
@@ -33733,6 +34350,10 @@
         {
           "time": 1782583679.6577957,
           "price": 0.001383
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.001398
         }
       ],
       "risk_reward": 0.0,
@@ -33819,6 +34440,13 @@
           "checkpoint_price": 0.001307,
           "checkpoint_pct": -4.46,
           "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782601932.75212,
+          "checkpoint_price": 0.001398,
+          "checkpoint_pct": 2.19,
+          "source": "snapshot"
         }
       }
     },
@@ -33877,7 +34505,8 @@
         "1h": 1.86,
         "3h": 0.61,
         "6h": 0.49,
-        "12h": -4.59
+        "12h": -4.59,
+        "24h": -10.97
       },
       "price_points": [
         {
@@ -33947,6 +34576,10 @@
         {
           "time": 1782583679.6577957,
           "price": 15.64239
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 17.98708
         }
       ],
       "risk_reward": 0.0,
@@ -34035,6 +34668,13 @@
           "source": "cache_due_late_estimate",
           "cache_price_time": 1782558798.9724581,
           "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782605557.7522275,
+          "checkpoint_price": 17.98708,
+          "checkpoint_pct": -10.97,
+          "source": "snapshot"
         }
       }
     },
@@ -34093,7 +34733,8 @@
         "1h": 3.42,
         "3h": 3.99,
         "6h": 6.14,
-        "12h": 8.54
+        "12h": 8.54,
+        "24h": 5.63
       },
       "price_points": [
         {
@@ -34327,6 +34968,10 @@
         {
           "time": 1782585435.6633039,
           "price": 0.1725
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.1669
         }
       ],
       "risk_reward": 0.0,
@@ -34415,6 +35060,13 @@
           "source": "cache_due_late_estimate",
           "cache_price_time": 1782568597.9954548,
           "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782612869.9457312,
+          "checkpoint_price": 0.1669,
+          "checkpoint_pct": 5.63,
+          "source": "snapshot"
         }
       }
     },
@@ -34473,7 +35125,8 @@
         "1h": 13.45,
         "3h": 6.32,
         "6h": -0.77,
-        "12h": 0.7
+        "12h": 0.7,
+        "24h": 0.72
       },
       "price_points": [
         {
@@ -34575,6 +35228,10 @@
         {
           "time": 1782583679.6577957,
           "price": 0.11758
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.1188
         }
       ],
       "risk_reward": 0.0,
@@ -34660,6 +35317,13 @@
           "target_time": 1782575157.5581133,
           "checkpoint_price": 0.11877,
           "checkpoint_pct": 0.7,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782618357.5581133,
+          "checkpoint_price": 0.1188,
+          "checkpoint_pct": 0.72,
           "source": "snapshot"
         }
       }
@@ -34786,6 +35450,10 @@
         {
           "time": 1782583679.6577957,
           "price": 0.2989
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.3398
         }
       ],
       "risk_reward": 0.0,
@@ -35195,6 +35863,10 @@
         {
           "time": 1782626492.484573,
           "price": 0.7708
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.7681
         }
       ],
       "risk_reward": 0.0,
@@ -35343,7 +36015,8 @@
         "30m": -1.15,
         "1h": -0.35,
         "3h": -2.31,
-        "6h": 0.25
+        "6h": 0.25,
+        "12h": -3.6
       },
       "price_points": [
         {
@@ -35477,6 +36150,10 @@
         {
           "time": 1782583679.6577957,
           "price": 0.5195
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.501
         }
       ],
       "risk_reward": 0.0,
@@ -35558,6 +36235,13 @@
           "checkpoint_price": 0.521,
           "checkpoint_pct": 0.25,
           "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782593163.574256,
+          "checkpoint_price": 0.501,
+          "checkpoint_pct": -3.6,
+          "source": "snapshot"
         }
       }
     },
@@ -35614,7 +36298,8 @@
         "30m": -0.47,
         "1h": -0.34,
         "3h": 0.41,
-        "6h": 0.0
+        "6h": 0.0,
+        "12h": -2.31
       },
       "price_points": [
         {
@@ -35716,6 +36401,10 @@
         {
           "time": 1782583679.6577957,
           "price": 0.1467
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.144
         }
       ],
       "risk_reward": 0.0,
@@ -35796,6 +36485,13 @@
           "checkpoint_price": 0.1474,
           "checkpoint_pct": 0.0,
           "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782601062.9392414,
+          "checkpoint_price": 0.144,
+          "checkpoint_pct": -2.31,
+          "source": "snapshot"
         }
       }
     },
@@ -35852,7 +36548,8 @@
         "30m": 1.36,
         "1h": 1.94,
         "3h": -6.44,
-        "6h": -10.25
+        "6h": -10.25,
+        "12h": 1.61
       },
       "price_points": [
         {
@@ -35902,6 +36599,10 @@
         {
           "time": 1782583679.6577957,
           "price": 0.0742
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.084003
         }
       ],
       "risk_reward": 0.0,
@@ -35985,6 +36686,13 @@
           "source": "cache_due_late_estimate",
           "cache_price_time": 1782583679.6577957,
           "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782606453.469849,
+          "checkpoint_price": 0.084003,
+          "checkpoint_pct": 1.61,
+          "source": "snapshot"
         }
       },
       "last_price": 0.084279,
@@ -36046,7 +36754,8 @@
         "30m": 0.43,
         "1h": -0.2,
         "3h": -1.87,
-        "6h": -2.04
+        "6h": -2.04,
+        "12h": -4.79
       },
       "price_points": [
         {
@@ -36124,6 +36833,10 @@
         {
           "time": 1782595595.48259,
           "price": 4.774
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 4.674
         }
       ],
       "risk_reward": 0.0,
@@ -36200,6 +36913,13 @@
           "source": "cache_due_late_estimate",
           "cache_price_time": 1782585435.6633039,
           "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782611797.9954548,
+          "checkpoint_price": 4.674,
+          "checkpoint_pct": -4.79,
+          "source": "snapshot"
         }
       },
       "last_price": 4.774,
@@ -36379,6 +37099,10 @@
         {
           "time": 1782619209.0760565,
           "price": 0.63284
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.61145
         }
       ],
       "risk_reward": 0.0,
@@ -36500,14 +37224,14 @@
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": -0.16,
+        "btc_change": -0.59,
         "fg_value": 18,
-        "news_score": 16,
-        "market_mod": 9,
+        "news_score": 0,
+        "market_mod": -7,
         "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": 13.28,
+        "change_24": 12.33,
         "signal_type": "WATCH",
         "action": "WATCH",
         "score": 55,
@@ -36520,9 +37244,9 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782599221.3788817,
-      "last_seen": 1782622835.4792454,
-      "last_seen_counted": 1782621008.9734411,
-      "seen_count": 3,
+      "last_seen": 1782628291.8789427,
+      "last_seen_counted": 1782628291.8789427,
+      "seen_count": 4,
       "results": {
         "15m": 0.0,
         "30m": 0.0,
@@ -36550,6 +37274,14 @@
         {
           "time": 1782622835.4792454,
           "price": 0.1748
+        },
+        {
+          "time": 1782628291.8789427,
+          "price": 0.1712
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.1733
         }
       ],
       "risk_reward": 0.0,
@@ -36637,7 +37369,7 @@
           "cache_price_source": "snapshot"
         }
       },
-      "last_price": 0.1748,
+      "last_price": 0.1712,
       "last_score": 55,
       "last_action": "WATCH",
       "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ"
@@ -36668,14 +37400,14 @@
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": -0.36,
+        "btc_change": -0.59,
         "fg_value": 18,
-        "news_score": 8,
+        "news_score": 0,
         "market_mod": -7,
         "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": 18.75,
+        "change_24": 17.25,
         "signal_type": "WATCH",
         "action": "WATCH",
         "score": 55,
@@ -36687,9 +37419,9 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782611956.9846082,
-      "last_seen": 1782626492.484573,
-      "last_seen_counted": 1782624665.3771758,
-      "seen_count": 4,
+      "last_seen": 1782628291.8789427,
+      "last_seen_counted": 1782628291.8789427,
+      "seen_count": 5,
       "results": {
         "15m": 0.0,
         "30m": 0.0,
@@ -36724,6 +37456,14 @@
         {
           "time": 1782626492.484573,
           "price": 0.02393
+        },
+        {
+          "time": 1782628291.8789427,
+          "price": 0.02358
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.02367
         }
       ],
       "risk_reward": 0.0,
@@ -36802,7 +37542,7 @@
           "cache_price_source": "snapshot"
         }
       },
-      "last_price": 0.02393,
+      "last_price": 0.02358,
       "last_score": 55,
       "last_action": "WATCH",
       "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ"
@@ -36833,14 +37573,14 @@
       "learning_context": {
         "market_regime": "caution",
         "risk_level": "caution",
-        "btc_change": -0.36,
+        "btc_change": -0.59,
         "fg_value": 18,
-        "news_score": 8,
+        "news_score": 0,
         "market_mod": -7,
         "btc_text": "BTC слегка давит",
         "rsi": 50,
         "volume_trend": 1.0,
-        "change_24": 13.91,
+        "change_24": 16.67,
         "signal_type": "WATCH",
         "action": "WATCH",
         "score": 55,
@@ -36853,14 +37593,25 @@
       "learning_delta": 0,
       "learning_note": "fast-learning: теневое наблюдение, не сигнал на вход",
       "time": 1782626492.484573,
-      "last_seen": 1782626492.484573,
+      "last_seen": 1782628291.8789427,
       "last_seen_counted": 1782626492.484573,
       "seen_count": 1,
-      "results": {},
+      "results": {
+        "15m": 0.0,
+        "30m": 2.04
+      },
       "price_points": [
         {
           "time": 1782626492.484573,
           "price": 0.4865
+        },
+        {
+          "time": 1782628291.8789427,
+          "price": 0.49642
+        },
+        {
+          "time": 1782629285.1269789,
+          "price": 0.59811
         }
       ],
       "risk_reward": 0.0,
@@ -36899,8 +37650,32 @@
           "purpose": "проверить, спас ли режим рынка от плохого входа"
         }
       ],
-      "shadow_result_v184": "ждём первые checkpoints",
-      "confidence_v181": 27
+      "shadow_result_v184": "памп под наблюдением: текущий checkpoint 15m +0.00%",
+      "confidence_v181": 27,
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782626492.484573,
+          "target_time": 1782627392.484573,
+          "checkpoint_price": 0.4865,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782626492.484573,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782628291.8789427,
+          "target_time": 1782628292.484573,
+          "checkpoint_price": 0.49642,
+          "checkpoint_pct": 2.04,
+          "source": "cache_due_near_snapshot",
+          "cache_price_time": 1782628291.8789427,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "last_price": 0.49642,
+      "last_score": 55,
+      "last_action": "WATCH",
+      "last_verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ"
     }
   },
   "version": "v19.11.6.3 SINGLE COIN NO-BUY SYNC",
