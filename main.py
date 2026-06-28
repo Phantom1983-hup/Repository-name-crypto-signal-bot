@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -1186,6 +1186,129 @@ def github_put_file(path, content_bytes, message, sha=None):
 
     raise Exception(last_error or "GitHub PUT failed")
 
+
+
+# === v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX ===
+def _v191182_safe_backup_version_tag(version):
+    """Make BOT_VERSION safe for GitHub backup filename."""
+    try:
+        tag = (version or "unknown").strip()
+        tag = re.sub(r"[^A-Za-z0-9._-]+", "_", tag)
+        tag = tag.strip("._-") or "unknown"
+        return tag[:80]
+    except Exception:
+        return "unknown"
+
+
+def _v191182_backup_path_for_current_main(current_text):
+    """Create deterministic backup path for the currently deployed main.py."""
+    old_version = extract_bot_version_from_text(current_text or "") or "unknown"
+    stamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    return f"backups/main_backup_{stamp}_{_v191182_safe_backup_version_tag(old_version)}.py"
+
+
+def github_api_url(path):
+    return f"https://api.github.com/repos/{GITHUB_REPO}/{path.lstrip('/')}"
+
+
+def github_create_blob(content_bytes):
+    """Create a Git blob and return its sha."""
+    r = requests.post(
+        github_api_url("git/blobs"),
+        headers=github_headers(),
+        json={
+            "content": base64.b64encode(content_bytes or b"").decode("ascii"),
+            "encoding": "base64",
+        },
+        timeout=40,
+    )
+    if r.status_code >= 300:
+        raise Exception(f"GitHub blob error {r.status_code}: {r.text[:600]}")
+    return r.json().get("sha")
+
+
+def github_put_files_atomic(file_map, message):
+    """
+    v19.11.8.2:
+    Commit several files in one Git commit.
+    This creates backups/<old>.py and updates main.py atomically, so Render Auto Deploy
+    never sees a separate backup-only commit with the old main.py.
+    file_map: {repo_path: bytes}
+    """
+    if not github_ready():
+        raise Exception("GitHub ENV не заполнены: GITHUB_TOKEN, GITHUB_REPO, GITHUB_BRANCH, GITHUB_PATH")
+    if not isinstance(file_map, dict) or not file_map:
+        raise Exception("Нет файлов для atomic GitHub commit")
+
+    ref_url = github_api_url(f"git/ref/heads/{GITHUB_BRANCH}")
+    r = requests.get(ref_url, headers=github_headers(), timeout=30)
+    if r.status_code >= 300:
+        raise Exception(f"GitHub ref GET error {r.status_code}: {r.text[:600]}")
+    base_commit_sha = ((r.json().get("object") or {}).get("sha") or "").strip()
+    if not base_commit_sha:
+        raise Exception("GitHub ref не вернул sha последнего commit")
+
+    r = requests.get(github_api_url(f"git/commits/{base_commit_sha}"), headers=github_headers(), timeout=30)
+    if r.status_code >= 300:
+        raise Exception(f"GitHub commit GET error {r.status_code}: {r.text[:600]}")
+    base_tree_sha = ((r.json().get("tree") or {}).get("sha") or "").strip()
+    if not base_tree_sha:
+        raise Exception("GitHub commit не вернул tree sha")
+
+    tree_items = []
+    for path, content_bytes in file_map.items():
+        repo_path = str(path or "").strip().lstrip("/")
+        if not repo_path:
+            continue
+        blob_sha = github_create_blob(content_bytes if isinstance(content_bytes, (bytes, bytearray)) else bytes(content_bytes))
+        tree_items.append({
+            "path": repo_path,
+            "mode": "100644",
+            "type": "blob",
+            "sha": blob_sha,
+        })
+
+    if not tree_items:
+        raise Exception("Atomic commit: нет валидных путей файлов")
+
+    r = requests.post(
+        github_api_url("git/trees"),
+        headers=github_headers(),
+        json={"base_tree": base_tree_sha, "tree": tree_items},
+        timeout=40,
+    )
+    if r.status_code >= 300:
+        raise Exception(f"GitHub tree error {r.status_code}: {r.text[:600]}")
+    new_tree_sha = r.json().get("sha")
+
+    r = requests.post(
+        github_api_url("git/commits"),
+        headers=github_headers(),
+        json={"message": message, "tree": new_tree_sha, "parents": [base_commit_sha]},
+        timeout=40,
+    )
+    if r.status_code >= 300:
+        raise Exception(f"GitHub commit create error {r.status_code}: {r.text[:600]}")
+    new_commit = r.json()
+    new_commit_sha = new_commit.get("sha")
+    if not new_commit_sha:
+        raise Exception("GitHub commit create не вернул sha")
+
+    r = requests.patch(
+        ref_url,
+        headers=github_headers(),
+        json={"sha": new_commit_sha, "force": False},
+        timeout=40,
+    )
+    if r.status_code >= 300:
+        raise Exception(f"GitHub ref update error {r.status_code}: {r.text[:600]}")
+
+    return {
+        "commit": new_commit,
+        "sha": new_commit_sha,
+        "files": list(file_map.keys()),
+    }
+
 def trigger_render_deploy():
     """
     v18.2.2:
@@ -1652,10 +1775,14 @@ def admin_handle_document(chat_id, msg):
 
         current = github_get_file(GITHUB_PATH)
         backup_path = ""
+        backup_status = "не создан"
+        current_bytes = b""
+        current_text = ""
 
         new_bytes = open(ADMIN_UPLOAD_FILE, "rb").read()
         if current and current.get("content"):
             current_bytes = base64.b64decode(current["content"])
+            current_text = current_bytes.decode("utf-8", errors="ignore")
             if current_bytes == new_bytes:
                 mark_admin_upload_processed(doc, upload_version)
                 release_admin_upload_lock("skipped_same_content")
@@ -1665,22 +1792,30 @@ def admin_handle_document(chat_id, msg):
                     "Deploy не запускаю повторно. Проверь /version."
                 )
 
-            # v18.4.2 ADMIN ONE-COMMIT DEPLOY FIX:
-            # Старый updater сначала коммитил backup-файл в ту же ветку GitHub, которую смотрит Render.
-            # Render Auto Deploy реагирует на ЛЮБОЙ commit в ветке, поэтому запускал deploy со старым main.py,
-            # а уже следующим commit приходила новая версия. Отсюда скачки v18.4 -> v18.4.1.
-            # Теперь при Auto Deploy не создаём отдельный backup commit перед заменой main.py.
-            # Backup остаётся в истории GitHub/Render commits; rollback лучше делать через GitHub history.
-            backup_path = "GitHub history / Render previous deploy"
+            # v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX:
+            # Backup снова создаётся как файл backups/main_backup_*.py, но НЕ отдельным commit.
+            # main.py и backup-файл уходят в GitHub одним atomic commit через Git Data API.
+            # Поэтому Render Auto Deploy не может стартовать backup-only commit со старым main.py.
+            backup_path = _v191182_backup_path_for_current_main(current_text)
 
-        current_sha = current.get("sha") if current else None
-
-        github_put_file(
-            GITHUB_PATH,
-            new_bytes,
-            f"deploy {upload_version} single-main-commit",
-            sha=current_sha
-        )
+        if backup_path:
+            github_put_files_atomic(
+                {
+                    backup_path: current_bytes,
+                    GITHUB_PATH: new_bytes,
+                },
+                f"deploy {upload_version} with atomic backup"
+            )
+            backup_status = f"создан\nФайл: {backup_path}"
+        else:
+            # Первый commit в пустой repo: backup создать не из чего.
+            current_sha = current.get("sha") if current else None
+            github_put_file(
+                GITHUB_PATH,
+                new_bytes,
+                f"deploy {upload_version} single-main-commit",
+                sha=current_sha
+            )
 
         mark_admin_upload_processed(doc, upload_version)
 
@@ -1713,7 +1848,7 @@ def admin_handle_document(chat_id, msg):
                 f"✅ main.py принят и отправлен в GitHub.\n"
                 f"Версия файла: {upload_version}\n"
                 f"Проверка синтаксиса: OK\n"
-                f"Backup: {backup_path or 'не создан'}\n\n"
+                f"Backup: {backup_status}\n\n"
                 "Теперь нажми одну кнопку: 🚀 Запустить деплой.\n"
                 "После запуска проверь /version через 1–2 минуты.\n\n"
                 "Важно: для режима ручного деплоя лучше выключить Render Auto Deploy, иначе Render может начать deploy сразу после GitHub commit."
@@ -16627,7 +16762,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17735,7 +17870,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18210,7 +18345,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18374,7 +18509,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18719,7 +18854,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19100,7 +19235,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19407,7 +19542,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -19921,7 +20056,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20062,7 +20197,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20373,7 +20508,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20664,7 +20799,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21491,7 +21626,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -21895,7 +22030,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22464,7 +22599,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -22972,7 +23107,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23273,12 +23408,12 @@ def build_audit_file(chat_id):
     return path
 
 
-# === v19.11.8.1 FAST AUDIT HOTFIX ===
+# === v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX ===
 # Цель: не только видеть текущую просадку quality-probe, но и автоматически
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -23801,12 +23936,12 @@ def build_audit_file(chat_id):
     return path
 
 
-# === v19.11.8.1 FAST AUDIT HOTFIX ===
+# === v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX ===
 # Причина: v19.11.8 добавил Probe Finalizer/Lesson Engine, и /audit_file мог
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.11.8.1 FAST AUDIT HOTFIX"
+BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -24207,10 +24342,13 @@ def version_user_report():
     return (
         f'✅ Версия: {BOT_VERSION}\n\n'
         'Что исправлено:\n'
-        '• /audit_file переведён в быстрый режим;\n'
-        '• убраны тяжёлые refresh-секции из обычного txt;\n'
-        '• Lesson Engine/Finalizer в обычных отчётах работает lite, без price API;\n'
-        '• файл должен приходить за секунды, а не висеть по 2–3 минуты.\n\n'
+        '• восстановлено создание backup-файла перед обновлением main.py;\n'
+        '• backup и новый main.py теперь уходят в GitHub одним atomic commit;\n'
+        '• Render больше не должен запускать отдельный backup-only commit со старой версией;\n'
+        '• /audit_file остаётся в быстром режиме из v19.11.8.1.\n\n'
+        'Backup теперь должен выглядеть так:\n'
+        'Backup: создан\n'
+        'Файл: backups/main_backup_YYYYMMDD_HHMMSS_<old_version>.py\n\n'
         'Сохранено:\n'
         '• Probe Result Scoring;\n'
         '• Shadow Portfolio;\n'
