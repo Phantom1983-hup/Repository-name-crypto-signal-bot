@@ -37748,7 +37748,8 @@
         "15m": 0.0,
         "30m": 0.0,
         "1h": 0.0,
-        "3h": 1.13
+        "3h": 1.13,
+        "6h": 12.82
       },
       "price_points": [
         {
@@ -37873,6 +37874,15 @@
           "checkpoint_pct": 1.13,
           "source": "cache_due_snapshot",
           "cache_price_time": 1782622835.4792454,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782633537.19939,
+          "target_time": 1782633556.9846082,
+          "checkpoint_price": 0.02587,
+          "checkpoint_pct": 12.82,
+          "source": "cache_due_near_snapshot",
+          "cache_price_time": 1782633537.19939,
           "cache_price_source": "snapshot"
         }
       },
