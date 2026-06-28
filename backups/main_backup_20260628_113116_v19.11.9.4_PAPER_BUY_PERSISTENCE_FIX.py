@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16825,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17933,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18408,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18572,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18917,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19298,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19605,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20119,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20260,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20571,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20862,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21719,7 +21719,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22123,7 +22123,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22692,7 +22692,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23200,7 +23200,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23506,7 +23506,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24034,7 +24034,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25251,7 +25251,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 
 
 def _v191191_branch_ref_name():
@@ -25396,7 +25396,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25684,7 +25684,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25904,7 +25904,7 @@ def version_user_report():
     )
 
 
-# === v19.11.9.5 PAPER BUY DURABLE STATE FIX ===
+# === v19.11.9.4 PAPER BUY PERSISTENCE FIX ===
 # Причина: PAPER BUY сделки NEAR/LINK создавались в локальном paper_store,
 # но save_paper_store(sync=False) только помечал файл dirty. Если сразу после этого
 # запускался deploy/restart, GitHub-копия paper_trades.json не успевала обновиться,
@@ -25913,7 +25913,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26297,307 +26297,3 @@ if __name__ == "__main__":
 # === v17.3 BTC DROP WORDING GUARD ===
 # BTC около -2% + страх: single BTC не пишет СРЕДНЕСРОЧНЫЙ НАБОР / первая часть.
 # Market news summary не путает деэскалацию с давлением из headline-строк.
-
-
-# === v19.11.9.5 PAPER BUY DURABLE STATE FIX ===
-# Причина: v19.11.9.4 сохранял PAPER BUY в paper_trades.json, но после Render restart
-# активные BUY всё равно пропадали. Вероятная причина: общий paper_trades.json/локальный
-# repo state после deploy мог подняться без свежих BUY, а восстановление из GitHub не имело
-# отдельного маленького источника истины именно для PAPER BUY.
-# Fix: дополнительно пишем минимальный durable-state файл paper_buy_state.json и при отчётах
-# восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
-# Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
-
-BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
-
-V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
-V191195_STATE_KEY = "paper_buy_durable_state_v191195"
-V191195_RESTORE_META_KEY = "paper_buy_restore_v191195"
-
-try:
-    PROTECTED_STATE_BASENAMES.add("paper_buy_state.json")
-except Exception:
-    pass
-
-# Storage read fallback for data/*.json too: Contents API can return no content for larger files.
-try:
-    _v191195_old_github_storage_get_raw = github_storage_get_raw
-except Exception:
-    _v191195_old_github_storage_get_raw = None
-
-
-def github_storage_get_raw(local_path):
-    """Read GitHub data storage with raw/blob fallback, not content-only."""
-    if not github_storage_enabled():
-        return None, None
-    # First try legacy path for small files.
-    try:
-        if _v191195_old_github_storage_get_raw:
-            raw, sha = _v191195_old_github_storage_get_raw(local_path)
-            if raw:
-                return raw, sha
-    except Exception:
-        pass
-    # Fallback: use generic GitHub raw/blob reader on data/<basename>.
-    try:
-        repo_path = github_storage_repo_path(local_path)
-        raw, meta = github_get_file_bytes(repo_path)
-        if raw:
-            return raw, (meta or {}).get("sha")
-    except Exception as e:
-        print(f"v191195 github_storage_get_raw fallback error {local_path}: {e}")
-    return None, None
-
-
-def v191195_trade_to_state_record(key, trade):
-    try:
-        if not isinstance(trade, dict) or not v19119_is_paper_buy_decision(trade):
-            return None
-        asset = v19119_trade_asset(trade)
-        if not asset:
-            return None
-        rec = dict(trade)
-        rec.setdefault("id", key)
-        rec.setdefault("asset", asset)
-        rec.setdefault("status", "open")
-        rec["durable_saved_by"] = BOT_VERSION
-        rec["durable_saved_at"] = time.time()
-        return rec
-    except Exception:
-        return None
-
-
-def v191195_build_buy_state(data=None):
-    if not isinstance(data, dict):
-        data = paper_store()
-    open_trades = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
-    active = []
-    for key, trade in list(open_trades.items()):
-        rec = v191195_trade_to_state_record(key, trade)
-        if rec:
-            active.append(rec)
-    journal = data.get(V191194_PAPER_BUY_JOURNAL_KEY, []) if isinstance(data.get(V191194_PAPER_BUY_JOURNAL_KEY, []), list) else []
-    state = {
-        "version": BOT_VERSION,
-        "created_at": time.time(),
-        "active_count": len(active),
-        "active_buys": active,
-        "journal": journal[-80:],
-        "source": "paper_trades.json",
-        "note": "Durable minimal PAPER BUY state. Real buys remain 0; autotrading OFF.",
-    }
-    return state
-
-
-def v191195_save_buy_state_now(data=None, reason="paper_buy_durable_save"):
-    status = {"ok": False, "mode": "not-run", "active": 0, "synced_files": 0, "error": "", "at": time.time(), "reason": reason}
-    try:
-        state = v191195_build_buy_state(data)
-        status["active"] = int(state.get("active_count", 0) or 0)
-        # Always write the small durable file locally.
-        save_json(V191195_PAPER_BUY_STATE_FILE, state)
-        status.update({"ok": True, "mode": "local"})
-        # Force immediate GitHub storage sync for the durable state plus full paper store.
-        if github_storage_enabled():
-            try:
-                n = sync_github_storage_now([V191195_PAPER_BUY_STATE_FILE, PAPER_TRADES_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
-                status.update({"mode": "github-durable-immediate", "synced_files": int(n or 0), "ok": int(n or 0) >= 1})
-            except Exception as e:
-                status.update({"mode": "github-durable-failed", "ok": False, "error": str(e)[:180]})
-        return status
-    except Exception as e:
-        status.update({"ok": False, "mode": "error", "error": str(e)[:180]})
-        return status
-
-
-def v191195_load_buy_state():
-    data = load_json(V191195_PAPER_BUY_STATE_FILE)
-    if isinstance(data, dict) and data:
-        return data
-    # Direct raw fallback if load_json did not get it.
-    try:
-        raw, _sha = github_storage_get_raw(V191195_PAPER_BUY_STATE_FILE)
-        if raw:
-            js = json.loads(raw.decode("utf-8", errors="ignore"))
-            if isinstance(js, dict):
-                try:
-                    with open(V191195_PAPER_BUY_STATE_FILE, "w", encoding="utf-8") as f:
-                        json.dump(js, f, ensure_ascii=False, indent=2)
-                except Exception:
-                    pass
-                return js
-    except Exception:
-        pass
-    return {}
-
-
-def v191195_restore_paper_buys_from_state(data=None, reason="status_restore"):
-    """If paper_trades.json lost active PAPER BUY after restart, restore from paper_buy_state.json."""
-    result = {"restored": 0, "available": 0, "mode": "not-needed", "error": "", "at": time.time()}
-    try:
-        if not isinstance(data, dict):
-            data = paper_store()
-        open_trades = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
-        active_now = v191194_count_active_buy_in_data(data)
-        if active_now > 0:
-            result.update({"available": active_now, "mode": "already-active"})
-            return data, result
-
-        state = v191195_load_buy_state()
-        active = state.get("active_buys", []) if isinstance(state, dict) else []
-        if not isinstance(active, list) or not active:
-            result.update({"mode": "no-durable-state"})
-            return data, result
-        result["available"] = len(active)
-
-        now = time.time()
-        restored = 0
-        existing_assets = set(str(t.get("asset", "")).upper() for t in open_trades.values() if isinstance(t, dict))
-        for trade in active:
-            if not isinstance(trade, dict):
-                continue
-            if not v19119_is_paper_buy_decision(trade):
-                continue
-            asset = str(trade.get("asset") or v19119_trade_asset(trade)).upper().strip()
-            if not asset or asset in existing_assets:
-                continue
-            try:
-                age_h = (now - float(trade.get("entry_time", now) or now)) / 3600.0
-            except Exception:
-                age_h = 0
-            # Do not restore ancient paper buys; 60h covers 48h finalizer + buffer.
-            if age_h > 60:
-                continue
-            key = trade.get("id") or paper_trade_key(asset, V19119_PAPER_BUY_TYPE, trade.get("entry_time", now))
-            if key in open_trades:
-                continue
-            rec = dict(trade)
-            rec["id"] = key
-            rec["status"] = "open"
-            rec["restored_from"] = "paper_buy_state.json"
-            rec["restored_at"] = now
-            rec["restored_by"] = BOT_VERSION
-            open_trades[key] = rec
-            existing_assets.add(asset)
-            restored += 1
-
-        if restored:
-            data["open"] = open_trades
-            meta = data.get(V191195_RESTORE_META_KEY)
-            if not isinstance(meta, dict):
-                meta = {}
-            meta.update({"last_restore_at": now, "restored": restored, "reason": reason, "version": BOT_VERSION})
-            data[V191195_RESTORE_META_KEY] = meta
-            save_paper_store(data, sync=False)
-            v191195_save_buy_state_now(data, reason="restore_after_restart")
-            result.update({"restored": restored, "mode": "restored-from-durable-state"})
-        else:
-            result.update({"mode": "durable-state-empty-or-stale"})
-        return data, result
-    except Exception as e:
-        result.update({"mode": "restore-error", "error": str(e)[:180]})
-        return (data if isinstance(data, dict) else paper_store()), result
-
-
-try:
-    _v191195_old_v19119_open_paper_buy_decisions = v19119_open_paper_buy_decisions
-except Exception:
-    _v191195_old_v19119_open_paper_buy_decisions = None
-
-
-def v19119_open_paper_buy_decisions(create=True, max_new=2, force_one=False):
-    # Before status/checking, restore active BUY if paper_trades lost them after restart.
-    try:
-        if not create:
-            v191195_restore_paper_buys_from_state(reason="paper_buy_status")
-    except Exception:
-        pass
-    if _v191195_old_v19119_open_paper_buy_decisions:
-        res = _v191195_old_v19119_open_paper_buy_decisions(create=create, max_new=max_new, force_one=force_one)
-    else:
-        res = {"created": [], "skipped": [], "active": 0, "decisions": []}
-    try:
-        data = paper_store()
-        active = v191194_count_active_buy_in_data(data)
-        if active > 0:
-            st = v191195_save_buy_state_now(data, reason="paper_buy_create_or_status")
-            if isinstance(res, dict):
-                res["durable_state"] = st
-    except Exception as e:
-        if isinstance(res, dict):
-            res["durable_state"] = {"ok": False, "mode": "error", "error": str(e)[:120]}
-    return res
-
-
-try:
-    _v191195_old_v191194_paper_buy_persistence_lines = v191194_paper_buy_persistence_lines
-except Exception:
-    _v191195_old_v191194_paper_buy_persistence_lines = None
-
-
-def v191195_durable_state_lines():
-    try:
-        state = v191195_load_buy_state()
-        active = state.get("active_buys", []) if isinstance(state, dict) else []
-        if not isinstance(active, list):
-            active = []
-        created_at = state.get("created_at") if isinstance(state, dict) else None
-        age = ""
-        try:
-            if created_at:
-                age = f" | {v191183_fmt_age(created_at)}"
-        except Exception:
-            age = ""
-        data = paper_store()
-        restore_meta = data.get(V191195_RESTORE_META_KEY, {}) if isinstance(data, dict) else {}
-        restored_line = "нет"
-        if isinstance(restore_meta, dict) and restore_meta.get("last_restore_at"):
-            restored_line = f"{restore_meta.get('restored', 0)} | {v191183_fmt_age(restore_meta.get('last_restore_at'))}"
-        return [
-            "Durable state:",
-            f"• файл: {os.path.basename(V191195_PAPER_BUY_STATE_FILE)}",
-            f"• active BUY в durable-state: {len(active)}{age}",
-            f"• last restore: {restored_line}",
-        ]
-    except Exception as e:
-        return ["Durable state:", f"• ⚠️ error: {str(e)[:120]}"]
-
-
-def v191194_paper_buy_persistence_lines():
-    base = []
-    try:
-        if _v191195_old_v191194_paper_buy_persistence_lines:
-            base = list(_v191195_old_v191194_paper_buy_persistence_lines())
-    except Exception:
-        base = []
-    return base + v191195_durable_state_lines()
-
-
-try:
-    _v191195_old_v191181_fast_audit_build_content = v191181_fast_audit_build_content
-except Exception:
-    _v191195_old_v191181_fast_audit_build_content = None
-
-
-def v191181_fast_audit_build_content():
-    base = str(_v191195_old_v191181_fast_audit_build_content()) if _v191195_old_v191181_fast_audit_build_content else f"VERSION\n{BOT_VERSION}"
-    return base + "\n\n" + "="*80 + "\nPAPER BUY DURABLE STATE V19.11.9.5\n" + "="*80 + "\n" + "\n".join(v191195_durable_state_lines())
-
-
-def version_user_report():
-    return (
-        f"✅ Версия: {BOT_VERSION}\n\n"
-        "Что исправлено:\n"
-        "• PAPER BUY теперь сохраняется не только в paper_trades.json, но и в отдельный durable-state файл;\n"
-        "• после deploy/restart бот восстанавливает активные PAPER BUY из paper_buy_state.json;\n"
-        "• storage-read для data/*.json получил raw/blob fallback;\n"
-        "• /paper_buy_status и /audit_file показывают Durable state;\n"
-        "• Backup Verify fix, Paper BUY score sync и GitHub ref fix сохранены.\n\n"
-        "Сохранено:\n"
-        "• реальные покупки 0;\n"
-        "• автоторговля OFF;\n"
-        "• BUY-веса +0;\n"
-        "• Risk Engine unchanged;\n"
-        "• /audit_file fast/cache.\n\n"
-        "Команды проверки: /version | /paper_buy | /paper_buy_status | /audit_file | /deploy_latest"
-    )
