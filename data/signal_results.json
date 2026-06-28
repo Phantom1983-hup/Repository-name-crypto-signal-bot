@@ -36372,7 +36372,8 @@
         "1h": -0.35,
         "3h": -2.31,
         "6h": 0.25,
-        "12h": -3.6
+        "12h": -3.6,
+        "24h": -4.58
       },
       "price_points": [
         {
@@ -36602,6 +36603,15 @@
           "checkpoint_price": 0.501,
           "checkpoint_pct": -3.6,
           "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782633537.19939,
+          "target_time": 1782636363.574256,
+          "checkpoint_price": 0.4959,
+          "checkpoint_pct": -4.58,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782633537.19939,
+          "cache_price_source": "snapshot"
         }
       }
     },
@@ -38863,7 +38873,8 @@
         }
       ],
       "shadow_result_v184": "ждём первые checkpoints",
-      "confidence_v181": 28
+      "confidence_v181": 28,
+      "result_details": {}
     }
   },
   "version": "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX",
