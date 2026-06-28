@@ -52,7 +52,8 @@
       "seen_count": 2,
       "results": {
         "15m": -0.24,
-        "30m": -0.24
+        "30m": -0.24,
+        "1h": -0.36
       },
       "price_points": [
         {
@@ -127,6 +128,15 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782674019.8334239,
           "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782675827.6298964,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 59436.9,
+          "checkpoint_pct": -0.36,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782675827.6298964,
+          "cache_price_source": "snapshot"
         }
       }
     },
@@ -182,7 +192,8 @@
       "seen_count": 2,
       "results": {
         "15m": -0.03,
-        "30m": -0.03
+        "30m": -0.03,
+        "1h": -0.14
       },
       "price_points": [
         {
@@ -257,6 +268,15 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782674019.8334239,
           "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782675827.6298964,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 1567.85,
+          "checkpoint_pct": -0.14,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782675827.6298964,
+          "cache_price_source": "snapshot"
         }
       }
     },
@@ -312,7 +332,8 @@
       "seen_count": 2,
       "results": {
         "15m": 1.23,
-        "30m": 1.23
+        "30m": 1.23,
+        "1h": 0.75
       },
       "price_points": [
         {
@@ -392,6 +413,15 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782674019.8334239,
           "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782675827.6298964,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 1.82386,
+          "checkpoint_pct": 0.75,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782675827.6298964,
+          "cache_price_source": "snapshot"
         }
       }
     },
@@ -447,7 +477,8 @@
       "seen_count": 2,
       "results": {
         "15m": 1.34,
-        "30m": 1.34
+        "30m": 1.34,
+        "1h": -0.15
       },
       "price_points": [
         {
@@ -527,6 +558,15 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782674019.8334239,
           "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782675827.6298964,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 0.160593,
+          "checkpoint_pct": -0.15,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782675827.6298964,
+          "cache_price_source": "snapshot"
         }
       }
     },
@@ -582,7 +622,8 @@
       "seen_count": 1,
       "results": {
         "15m": -2.75,
-        "30m": -2.75
+        "30m": -2.75,
+        "1h": -2.75
       },
       "price_points": [
         {
@@ -654,6 +695,15 @@
           "source": "cache_due_late_estimate",
           "cache_price_time": 1782672215.327445,
           "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782672215.327445,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 0.51981,
+          "checkpoint_pct": -2.75,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782672215.327445,
+          "cache_price_source": "snapshot"
         }
       }
     },
@@ -709,7 +759,8 @@
       "seen_count": 2,
       "results": {
         "15m": 2.25,
-        "30m": 2.25
+        "30m": 2.25,
+        "1h": 0.78
       },
       "price_points": [
         {
@@ -789,6 +840,15 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782674019.8334239,
           "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782675827.6298964,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 0.3491,
+          "checkpoint_pct": 0.78,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782675827.6298964,
+          "cache_price_source": "snapshot"
         }
       }
     },
@@ -844,7 +904,8 @@
       "seen_count": 1,
       "results": {
         "15m": 0.0,
-        "30m": 0.0
+        "30m": 0.0,
+        "1h": 0.0
       },
       "price_points": [
         {
@@ -908,6 +969,15 @@
           "source": "cache_due_late_estimate",
           "cache_price_time": 1782671455.3635085,
           "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782671455.3635085,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 0.02632,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782671455.3635085,
+          "cache_price_source": "snapshot"
         }
       }
     },
@@ -963,7 +1033,8 @@
       "seen_count": 2,
       "results": {
         "15m": 5.11,
-        "30m": 5.11
+        "30m": 5.11,
+        "1h": 2.29
       },
       "price_points": [
         {
@@ -1043,6 +1114,15 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782674019.8334239,
           "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782675827.6298964,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 0.0981,
+          "checkpoint_pct": 2.29,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782675827.6298964,
+          "cache_price_source": "snapshot"
         }
       }
     },
@@ -1098,7 +1178,8 @@
       "seen_count": 2,
       "results": {
         "15m": 0.89,
-        "30m": 0.89
+        "30m": 0.89,
+        "1h": 1.25
       },
       "price_points": [
         {
@@ -1177,6 +1258,15 @@
           "checkpoint_pct": 0.89,
           "source": "cache_due_snapshot",
           "cache_price_time": 1782674019.8334239,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782675827.6298964,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 0.083961,
+          "checkpoint_pct": 1.25,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782675827.6298964,
           "cache_price_source": "snapshot"
         }
       }
