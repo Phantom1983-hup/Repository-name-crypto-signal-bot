@@ -35907,7 +35907,8 @@
         "1h": -2.01,
         "3h": 2.85,
         "6h": 9.06,
-        "12h": 11.81
+        "12h": 11.81,
+        "24h": 4.64
       },
       "price_points": [
         {
@@ -36264,6 +36265,15 @@
           "checkpoint_pct": 11.81,
           "source": "cache_due_late_estimate",
           "cache_price_time": 1782590898.5753813,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782633537.19939,
+          "target_time": 1782634537.0713103,
+          "checkpoint_price": 0.7557,
+          "checkpoint_pct": 4.64,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782633537.19939,
           "cache_price_source": "snapshot"
         }
       },
