@@ -27336,10 +27336,8 @@
       "frozen_at": 1782629285.1269789,
       "outcome": "spec_watch_pump",
       "frozen_outcome": "spec_watch_pump"
-    }
-  ],
-  "open": {
-    "AAVE_1782460241": {
+    },
+    {
       "asset": "AAVE",
       "price": 87.073,
       "score": 68,
@@ -27846,6 +27844,10 @@
         {
           "time": 1782629285.1269789,
           "price": 93.616
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 90.896
         }
       ],
       "risk_reward": 0.0,
@@ -27946,9 +27948,85 @@
           "cache_price_time": 1782629285.1269789,
           "cache_price_source": "snapshot"
         }
-      }
+      },
+      "closed_time": 1782633537.19939,
+      "frozen_results": {
+        "15m": -1.62,
+        "30m": -1.62,
+        "1h": -1.45,
+        "3h": -2.09,
+        "6h": 1.34,
+        "12h": 9.27,
+        "24h": 10.09,
+        "48h": 7.51
+      },
+      "frozen_result_details": {
+        "15m": {
+          "checkpoint_time": 1782463136.5551798,
+          "target_time": 1782461141.364221,
+          "checkpoint_price": 85.663,
+          "checkpoint_pct": -1.62,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782463136.5551798,
+          "target_time": 1782462041.364221,
+          "checkpoint_price": 85.663,
+          "checkpoint_pct": -1.62,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782464523.2599328,
+          "target_time": 1782463841.364221,
+          "checkpoint_price": 85.812,
+          "checkpoint_pct": -1.45,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782471839.841004,
+          "target_time": 1782471041.364221,
+          "checkpoint_price": 85.249,
+          "checkpoint_pct": -2.09,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782482381.9768496,
+          "target_time": 1782481841.364221,
+          "checkpoint_price": 88.244,
+          "checkpoint_pct": 1.34,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782482381.9768496,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782504591.4527726,
+          "target_time": 1782503441.364221,
+          "checkpoint_price": 95.149,
+          "checkpoint_pct": 9.27,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782548137.0713103,
+          "target_time": 1782546641.364221,
+          "checkpoint_price": 95.86,
+          "checkpoint_pct": 10.09,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782633041.364221,
+          "checkpoint_price": 93.616,
+          "checkpoint_pct": 7.51,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782629285.1269789,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "frozen_at": 1782633537.19939,
+      "outcome": "missed_move",
+      "frozen_outcome": "missed_move"
     },
-    "SOL_1782460241": {
+    {
       "asset": "SOL",
       "price": 70.66,
       "score": 61,
@@ -28379,6 +28457,10 @@
         {
           "time": 1782629285.1269789,
           "price": 70.45
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 71.06
         }
       ],
       "risk_reward": 0.0,
@@ -28479,8 +28561,86 @@
           "cache_price_time": 1782629285.1269789,
           "cache_price_source": "snapshot"
         }
-      }
-    },
+      },
+      "closed_time": 1782633537.19939,
+      "frozen_results": {
+        "15m": -1.12,
+        "30m": -1.12,
+        "1h": -1.1,
+        "3h": -2.31,
+        "6h": -0.01,
+        "12h": 3.37,
+        "24h": 2.26,
+        "48h": -0.3
+      },
+      "frozen_result_details": {
+        "15m": {
+          "checkpoint_time": 1782463136.5551798,
+          "target_time": 1782461141.364221,
+          "checkpoint_price": 69.87,
+          "checkpoint_pct": -1.12,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782463136.5551798,
+          "target_time": 1782462041.364221,
+          "checkpoint_price": 69.87,
+          "checkpoint_pct": -1.12,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782464523.2599328,
+          "target_time": 1782463841.364221,
+          "checkpoint_price": 69.88,
+          "checkpoint_pct": -1.1,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782471839.841004,
+          "target_time": 1782471041.364221,
+          "checkpoint_price": 69.03,
+          "checkpoint_pct": -2.31,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782482381.9768496,
+          "target_time": 1782481841.364221,
+          "checkpoint_price": 70.65,
+          "checkpoint_pct": -0.01,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782482381.9768496,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782504591.4527726,
+          "target_time": 1782503441.364221,
+          "checkpoint_price": 73.04,
+          "checkpoint_pct": 3.37,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782548137.0713103,
+          "target_time": 1782546641.364221,
+          "checkpoint_price": 72.26,
+          "checkpoint_pct": 2.26,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782629285.1269789,
+          "target_time": 1782633041.364221,
+          "checkpoint_price": 70.45,
+          "checkpoint_pct": -0.3,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782629285.1269789,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "frozen_at": 1782633537.19939,
+      "outcome": "neutral",
+      "frozen_outcome": "neutral"
+    }
+  ],
+  "open": {
     "BNB_1782471839": {
       "asset": "BNB",
       "price": 565.311,
@@ -28812,6 +28972,10 @@
         {
           "time": 1782629285.1269789,
           "price": 554.897
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 556.375
         }
       ],
       "risk_reward": 0.0,
@@ -29058,6 +29222,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.31963
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.31947
         }
       ],
       "risk_reward": 0.0,
@@ -29386,6 +29554,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.0001789
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.0001782
         }
       ],
       "risk_reward": 0.0,
@@ -29883,6 +30055,10 @@
         {
           "time": 1782629285.1269789,
           "price": 7.2554
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 7.3031
         }
       ],
       "risk_reward": 0.0,
@@ -30387,6 +30563,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.6799
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.6856
         }
       ],
       "risk_reward": 0.0,
@@ -30847,6 +31027,10 @@
         {
           "time": 1782631929.0827513,
           "price": 207.84
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 208.52
         }
       ],
       "risk_reward": 0.0,
@@ -31371,6 +31555,10 @@
         {
           "time": 1782629285.1269789,
           "price": 6.331
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 6.341
         }
       ],
       "risk_reward": 0.0,
@@ -31863,6 +32051,10 @@
         {
           "time": 1782631929.0827513,
           "price": 1.8623
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 1.8727
         }
       ],
       "risk_reward": 0.0,
@@ -32323,6 +32515,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.02914
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.028403
         }
       ],
       "risk_reward": 0.0,
@@ -32552,6 +32748,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.1283
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.1292
         }
       ],
       "risk_reward": 0.0,
@@ -33158,6 +33358,10 @@
         {
           "time": 1782631929.0827513,
           "price": 1.56003
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 1.55285
         }
       ],
       "risk_reward": 0.0,
@@ -33466,6 +33670,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.25175
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.24342
         }
       ],
       "risk_reward": 0.0,
@@ -33702,6 +33910,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.03064
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.03114
         }
       ],
       "risk_reward": 0.0,
@@ -34174,6 +34386,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.375
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.368
         }
       ],
       "risk_reward": 0.0,
@@ -34394,6 +34610,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.001398
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.001499
         }
       ],
       "risk_reward": 0.0,
@@ -34620,6 +34840,10 @@
         {
           "time": 1782629285.1269789,
           "price": 17.98708
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 17.89809
         }
       ],
       "risk_reward": 0.0,
@@ -35012,6 +35236,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.1669
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.1703
         }
       ],
       "risk_reward": 0.0,
@@ -35272,6 +35500,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.1188
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.11829
         }
       ],
       "risk_reward": 0.0,
@@ -35495,6 +35727,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.3398
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.3599
         }
       ],
       "risk_reward": 0.0,
@@ -35917,6 +36153,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.7681
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.7557
         }
       ],
       "risk_reward": 0.0,
@@ -36204,6 +36444,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.501
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.4959
         }
       ],
       "risk_reward": 0.0,
@@ -36455,6 +36699,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.144
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.1452
         }
       ],
       "risk_reward": 0.0,
@@ -36653,6 +36901,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.084003
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.085248
         }
       ],
       "risk_reward": 0.0,
@@ -36887,6 +37139,10 @@
         {
           "time": 1782629285.1269789,
           "price": 4.674
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 4.735
         }
       ],
       "risk_reward": 0.0,
@@ -37153,6 +37409,10 @@
         {
           "time": 1782629285.1269789,
           "price": 0.61145
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.61503
         }
       ],
       "risk_reward": 0.0,
@@ -37340,6 +37600,10 @@
         {
           "time": 1782631929.0827513,
           "price": 0.176
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.1799
         }
       ],
       "risk_reward": 0.0,
@@ -37530,6 +37794,10 @@
         {
           "time": 1782631929.0827513,
           "price": 0.02458
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.02587
         }
       ],
       "risk_reward": 0.0,
@@ -37687,6 +37955,10 @@
         {
           "time": 1782631929.0827513,
           "price": 0.54619
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.56026
         }
       ],
       "risk_reward": 0.0,
@@ -37822,6 +38094,10 @@
         {
           "time": 1782631929.0827513,
           "price": 60116.6
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 60207.6
         }
       ],
       "risk_reward": 0.0,
@@ -37943,6 +38219,10 @@
         {
           "time": 1782631929.0827513,
           "price": 1571.67
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 1575.65
         }
       ],
       "risk_reward": 0.0,
@@ -38064,6 +38344,10 @@
         {
           "time": 1782631929.0827513,
           "price": 2.7725
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 2.858
         }
       ],
       "risk_reward": 0.0,
@@ -38185,6 +38469,10 @@
         {
           "time": 1782631929.0827513,
           "price": 0.05
+        },
+        {
+          "time": 1782633537.19939,
+          "price": 0.04361
         }
       ],
       "risk_reward": 0.0,
