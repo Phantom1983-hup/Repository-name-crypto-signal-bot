@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16825,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17933,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18408,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18572,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18917,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19298,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19605,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20119,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20260,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20571,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20862,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21719,7 +21719,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22123,7 +22123,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22692,7 +22692,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23200,7 +23200,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23506,7 +23506,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24034,7 +24034,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25251,7 +25251,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
+BOT_VERSION = "v19.11.9.1 GITHUB REF UPDATE FIX"
 
 
 def _v191191_branch_ref_name():
@@ -25387,293 +25387,6 @@ def version_user_report():
         "• Probe Result Scoring, Shadow Portfolio, Radar Decay Logic, Lesson Engine;\n"
         "• paper BUY training без реальных денег.\n\n"
         "Команды проверки: /version | /paper_buy | /paper_buy_status | /backup_verify | /audit_file"
-    )
-
-
-# === v19.11.9.2 PAPER BUY SCORE SYNC ===
-# Причина: Paper BUY candidate-score мог показывать 🟢 82/100 для монеты,
-# у которой текущий Probe Result Scoring уже показывает раннюю просадку 35/100.
-# Fix: decision_score теперь синхронизирован с live probe-score/bucket.
-# Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-
-BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
-
-
-def v191192_probe_sync_classification(pnl):
-    """Возвращает текущий drawdown-aware probe bucket/score по той же шкале, что FAST PROBE SCORING."""
-    try:
-        if 'v19118_lesson_classification' in globals():
-            cls = v19118_lesson_classification(float(pnl or 0), stage='paper_buy_sync')
-            if isinstance(cls, dict):
-                return {
-                    'bucket': str(cls.get('bucket', 'neutral')),
-                    'label': str(cls.get('label', '🟡 нейтрально')),
-                    'score': int(cls.get('score', 55) or 55),
-                }
-    except Exception:
-        pass
-    try:
-        p = float(pnl or 0)
-    except Exception:
-        p = 0.0
-    if p >= 3.0:
-        return {'bucket':'good_entry', 'label':'🟢 хороший вход', 'score':82}
-    if p >= 1.0:
-        return {'bucket':'useful_entry', 'label':'🟢 полезная проба', 'score':68}
-    if p > -1.5:
-        return {'bucket':'neutral', 'label':'🟡 нейтрально', 'score':55}
-    if p > -4.0:
-        return {'bucket':'early_drawdown', 'label':'🟠 ранний вход / просадка', 'score':35}
-    return {'bucket':'bad_entry', 'label':'🔴 плохой вход / сильная просадка', 'score':18}
-
-
-def v19119_decision_from_probe(t):
-    """
-    v19.11.9.2:
-    Paper BUY decision no longer ignores current Probe Result Scoring.
-    If probe-score is 35/18, candidate cannot be green 82.
-    """
-    asset = v19119_trade_asset(t)
-    price = v19119_entry_price(t)
-    pnl = v19119_pnl_pct(t)
-    entry_score = v19119_safe_int(t.get('score', t.get('entry_score', 55)), 55)
-    btc = v19119_safe_float(t.get('btc_change'), 0)
-    macro = v19119_safe_float(t.get('macro_mod'), 0)
-    change24 = v19119_safe_float(t.get('change_24'), 0)
-    age_h = v19119_trade_age_h(t)
-    is_quality = bool(t.get('is_quality')) or asset in globals().get('QUALITY_LEARNING_ASSETS', set())
-    probe_cls = v191192_probe_sync_classification(pnl)
-    probe_score = int(probe_cls.get('score', 55) or 55)
-    probe_bucket = str(probe_cls.get('bucket', 'neutral'))
-    probe_label = str(probe_cls.get('label', '🟡 нейтрально'))
-
-    score = 45
-    reasons = []
-    risks = []
-
-    if is_quality:
-        score += 8
-        reasons.append('quality-актив из белого списка')
-
-    # Исходный score учитываем, но не даём ему перекрыть факт текущей просадки.
-    if entry_score >= 68:
-        score += 10; reasons.append('сильный исходный probe-score')
-    elif entry_score >= 55:
-        score += 6; reasons.append('нормальный исходный probe-score')
-    elif entry_score >= 35:
-        score -= 5; risks.append('исходный probe-score слабый')
-    else:
-        score -= 12; risks.append('исходный probe-score очень слабый')
-
-    # Основной sync: текущий probe-score важнее красивого entry-score.
-    if probe_bucket in ('good_entry',):
-        score += 14; reasons.append('probe-score подтверждает хороший вход')
-    elif probe_bucket in ('useful_entry', 'useful'):
-        score += 10; reasons.append('probe-score подтверждает полезную пробу')
-    elif probe_bucket == 'neutral':
-        score += 3; reasons.append('текущий probe-score нейтральный, без подтверждённого преимущества')
-    elif probe_bucket == 'mild_drawdown':
-        score -= 9; risks.append('лёгкая просадка: только micro после подтверждения')
-    elif probe_bucket == 'early_drawdown':
-        score -= 18; risks.append('probe-score 35/100: ранняя просадка, BUY ждать')
-    elif probe_bucket == 'bad_entry':
-        score -= 28; risks.append('probe-score 18/100: глубокая просадка, BUY запрещён')
-
-    # Не догоняем сильную свечу и не усредняем глубокую просадку.
-    if -1.5 < float(pnl or 0) <= 1.8:
-        score += 6
-        reasons.append('точка не выглядит погоней за свечой')
-    elif -3.2 <= float(pnl or 0) <= -1.5:
-        score -= 8
-        risks.append('есть ранняя просадка — не повышать до зелёного BUY')
-    elif float(pnl or 0) < -3.2:
-        score -= 16
-        risks.append('глубокая ранняя просадка — не ловить падающий нож')
-    elif 1.8 < float(pnl or 0) <= 4.0:
-        score += 1
-        reasons.append('есть импульс, но без сильной погони')
-    else:
-        score -= 8
-        risks.append('риск догонять перегретое движение')
-
-    if btc >= 0.2:
-        score += 4; reasons.append('BTC не давит')
-    elif btc <= -1.5:
-        score -= 8; risks.append('BTC давит на альты')
-    if macro <= -8:
-        score -= 10; risks.append('фон рынка против альтов')
-    elif macro >= -2:
-        score += 2
-
-    if -2 <= change24 <= 6:
-        score += 2
-    elif change24 > 10:
-        score -= 8; risks.append('24ч движение похоже на погоню за пампом')
-
-    if age_h >= 12:
-        score += 2; reasons.append('probe уже прошла раннюю фазу')
-
-    # Жёсткие caps по текущему Probe Result Scoring.
-    # Это и есть главный fix: 35/18 больше не могут стать 🟢 82.
-    if probe_score <= 18:
-        score = min(score, 44)
-    elif probe_score <= 35:
-        # Ранняя просадка = WATCH, не зелёный BUY и не micro-auto-open.
-        score = max(45, min(score, 51))
-    elif probe_score <= 48:
-        score = min(score, 58)
-    elif probe_score <= 55:
-        score = min(score, 68)
-    elif probe_score <= 68:
-        score = min(score, 78)
-
-    score = max(0, min(100, int(round(score))))
-
-    if score >= 66:
-        decision = '🟢 PAPER BUY'
-        size = '2.0% paper-capital'
-        tier = 'quality_buy_test'
-    elif score >= V19119_PAPER_BUY_MIN_SCORE:
-        decision = '🟡 PAPER MICRO-BUY'
-        size = '1.0% paper-capital'
-        tier = 'micro_buy_test'
-    elif score >= 45:
-        decision = '🟠 PAPER WATCH, BUY ЖДАТЬ'
-        size = '0%'
-        tier = 'watch_only'
-    else:
-        decision = '🔴 PAPER BUY ЗАПРЕЩЁН'
-        size = '0%'
-        tier = 'reject'
-
-    # Для ранней/глубокой просадки не открываем новые paper BUY до подтверждения, даже если общий score близок.
-    if probe_score <= 35 and tier in ('quality_buy_test', 'micro_buy_test'):
-        decision = '🟠 PAPER WATCH, BUY ЖДАТЬ'
-        size = '0%'
-        tier = 'watch_only'
-
-    try:
-        stop_pct = -3.0 if tier == 'quality_buy_test' else -2.2
-        target1_pct = 2.5 if tier == 'quality_buy_test' else 1.8
-        target2_pct = 5.0 if tier == 'quality_buy_test' else 3.5
-        stop = price * (1 + stop_pct/100.0)
-        target1 = price * (1 + target1_pct/100.0)
-        target2 = price * (1 + target2_pct/100.0)
-    except Exception:
-        stop = target1 = target2 = 0
-        stop_pct = target1_pct = target2_pct = 0
-
-    return {
-        'asset': asset,
-        'price': price,
-        'pnl': round(float(pnl or 0), 2),
-        'age_h': round(float(age_h or 0), 1),
-        'entry_score': entry_score,
-        'probe_score': probe_score,
-        'probe_bucket': probe_bucket,
-        'probe_label': probe_label,
-        'decision_score': score,
-        'decision': decision,
-        'tier': tier,
-        'paper_size': size,
-        'reasons': reasons[:4] or ['paper BUY training candidate'],
-        'risks': risks[:4] or ['без критичных блокеров'],
-        'stop': round(stop, 10),
-        'target1': round(target1, 10),
-        'target2': round(target2, 10),
-        'stop_pct': stop_pct,
-        'target1_pct': target1_pct,
-        'target2_pct': target2_pct,
-        'btc_change': btc,
-        'macro_mod': macro,
-        'change_24': change24,
-        'source_probe_key': t.get('_paper_key') or t.get('id',''),
-        'probe_reason': t.get('probe_reason') or t.get('verdict') or 'quality probe',
-    }
-
-
-# Report override: кандидатам показываем и paper-score, и sync probe-score.
-def v19119_paper_buy_decision_report(create=False):
-    try:
-        res = v19119_open_paper_buy_decisions(create=bool(create), max_new=2, force_one=False)
-    except Exception as e:
-        return (
-            '🟢 Paper BUY Decision Layer\n\n'
-            f'Версия: {BOT_VERSION}\n'
-            f'⚠️ Не смог построить paper BUY слой: {str(e)[:180]}\n\n'
-            'Реальные покупки 0, автоторговля OFF.'
-        )
-
-    created = res.get('created', []) or []
-    decisions = res.get('decisions', []) or []
-    active_rows = v19119_active_paper_buy_rows(limit=6)
-    lines = [
-        '🟢 Paper BUY Decision Layer',
-        f'Версия: {BOT_VERSION}',
-        '',
-        'Режим: только paper BUY. Реальные покупки 0, автоторговля OFF, BUY-веса +0.',
-        'Fix v19.11.9.2: Paper BUY score синхронизирован с текущим probe-score.',
-        '',
-        f'Создано новых paper BUY: {len(created)}',
-        f'Активных paper BUY: {len(active_rows)}',
-    ]
-    if created:
-        lines += ['', 'Новые paper BUY:']
-        for d in created:
-            lines.append(
-                f"• {d.get('asset')}: {d.get('decision')} | paper-score {d.get('decision_score')}/100 | probe-score {d.get('probe_score', '?')}/100 | вход {v19119_format_price(d.get('price'))} | размер {d.get('paper_size')}"
-            )
-            lines.append(
-                f"  План: T1 {v19119_format_price(d.get('target1'))} / T2 {v19119_format_price(d.get('target2'))} / stop {v19119_format_price(d.get('stop'))}"
-            )
-            lines.append('  Причина: ' + '; '.join(d.get('reasons', [])[:3]))
-    elif create:
-        lines += ['', 'Новые paper BUY не созданы: уже есть активные BUY или кандидаты не прошли sync по probe-score.']
-
-    if active_rows:
-        lines += ['', 'Открытые paper BUY:'] + active_rows
-    else:
-        lines += ['', 'Открытых paper BUY пока нет. Сначала нужны активные quality-probe: /quality_probe.']
-
-    if decisions:
-        lines += ['', 'Кандидаты/отсев сейчас:']
-        for d in decisions[:6]:
-            lines.append(
-                f"• {d.get('asset')}: {d.get('decision')} | paper-score {d.get('decision_score')}/100 | probe-score {d.get('probe_score','?')}/100 | probe {d.get('pnl'):+.2f}% | риск: {'; '.join(d.get('risks', [])[:2])}"
-            )
-    else:
-        lines += ['', 'Кандидатов нет: нет активных quality-probe в paper-store.']
-
-    lines += [
-        '',
-        'Правило sync: probe-score 35/18 больше не может стать зелёным PAPER BUY 82/100.',
-        'Проверка результата: 6ч/24ч/48ч через обычный paper finalizer.',
-        'Команды: /paper_buy | /paper_buy_status | /paper | /lesson_engine | /audit_file',
-    ]
-    return '\n'.join(lines)
-
-
-def v19119_paper_buy_audit_report():
-    return v19119_paper_buy_decision_report(create=False)
-
-
-def version_user_report():
-    return (
-        f'✅ Версия: {BOT_VERSION}\n\n'
-        'Что исправлено:\n'
-        '• Paper BUY score теперь синхронизирован с Probe Result Scoring;\n'
-        '• кандидат с probe-score 35/100 больше не показывается как 🟢 82/100;\n'
-        '• SOL/SUI при ранней просадке уходят в WATCH/ожидание, а не в зелёный BUY;\n'
-        '• AAVE/AVAX при глубокой просадке не открываются как BUY;\n'
-        '• NEAR/LINK paper BUY training сохранены;\n'
-        '• /audit_file остаётся быстрым fast/cache.\n\n'
-        'Сохранено:\n'
-        '• реальные покупки 0;\n'
-        '• автоторговля OFF;\n'
-        '• BUY-веса +0;\n'
-        '• Risk Engine unchanged;\n'
-        '• GitHub ref update fix из v19.11.9.1 сохранён.\n\n'
-        'Команды проверки: /version | /paper_buy_status | /paper_buy | /audit_file'
     )
 
 
