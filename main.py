@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
+BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16627,7 +16627,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
+BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17735,7 +17735,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
+BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18210,7 +18210,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
+BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18374,7 +18374,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
+BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18719,7 +18719,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
+BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19100,7 +19100,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
+BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19407,7 +19407,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
+BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -19921,7 +19921,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
+BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20062,7 +20062,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
+BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20373,7 +20373,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
+BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20664,7 +20664,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
+BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21488,7 +21488,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
+BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -21892,7 +21892,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.6.3 SINGLE COIN NO-BUY SYNC"
+BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22449,6 +22449,518 @@ def build_audit_file(chat_id):
         send_message(chat_id, audit_short_report())
     return path
 
+
+
+# === v19.11.7 PROBE RESULT SCORING + DRAWDOWN-AWARE RADAR ===
+# Цель: не ждать 24/48ч пассивно, а уже сейчас улучшить качество самообучения.
+# Добавлено:
+# 1) drawdown-aware scoring для активных quality paper-проб;
+# 2) оценка каждой пробы: хороший/нейтральный/ранний/плохой вход;
+# 3) shadow portfolio без реальных денег;
+# 4) snapshot условий входа для будущего обучения;
+# 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
+# Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
+
+BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+
+try:
+    _v19117_old_quality_probe_user_report = quality_probe_user_report
+except Exception:
+    _v19117_old_quality_probe_user_report = None
+try:
+    _v19117_old_unified_signal_report = unified_signal_report
+except Exception:
+    _v19117_old_unified_signal_report = None
+try:
+    _v19117_old_user_signal_report = user_signal_report
+except Exception:
+    _v19117_old_user_signal_report = None
+try:
+    _v19117_old_build_audit_file = build_audit_file
+except Exception:
+    _v19117_old_build_audit_file = None
+try:
+    _v19117_old_v191161_growth_label = v191161_growth_label
+except Exception:
+    _v19117_old_v191161_growth_label = None
+try:
+    _v19117_old_v191161_probe_report_line = v191161_probe_report_line
+except Exception:
+    _v19117_old_v191161_probe_report_line = None
+try:
+    _v19117_old_v191151_open_quality_probe_trades = v191151_open_quality_probe_trades
+except Exception:
+    _v19117_old_v191151_open_quality_probe_trades = None
+
+
+def v19117_float(x, default=0.0):
+    try:
+        return float(x)
+    except Exception:
+        return default
+
+
+def v19117_int(x, default=0):
+    try:
+        return int(float(x))
+    except Exception:
+        return default
+
+
+def v19117_asset(symbol):
+    return str(symbol or '').upper().replace('-USDT', '').strip()
+
+
+def v19117_now():
+    try:
+        return time.time()
+    except Exception:
+        return 0.0
+
+
+def v19117_probe_records():
+    """Активные quality-probe с актуальным PnL. Использует уже исправленный v19.11.6.2 источник возраста."""
+    try:
+        rows = v191161_probe_records() if 'v191161_probe_records' in globals() else []
+        if isinstance(rows, list):
+            return rows
+    except Exception as e:
+        print(f'v19117 probe records error: {e}')
+    return []
+
+
+def v19117_probe_by_asset():
+    out = {}
+    for r in v19117_probe_records():
+        a = v19117_asset(r.get('asset'))
+        if a and a not in out:
+            out[a] = r
+    return out
+
+
+def v19117_market_snapshot_for_asset(asset):
+    """Снимок условий для будущего обучения. Не влияет на BUY."""
+    snap = {'asset': v19117_asset(asset), 'version': BOT_VERSION, 'snapshot_ts': v19117_now()}
+    c = {}
+    try:
+        c = analyze_symbol_for_signal(f"{snap['asset']}-USDT") if 'analyze_symbol_for_signal' in globals() and snap['asset'] else {}
+        if not isinstance(c, dict):
+            c = {}
+    except Exception as e:
+        print(f'v19117 snapshot analyze skip {asset}: {e}')
+        c = {}
+    ctx = c.get('ctx', {}) if isinstance(c.get('ctx', {}), dict) else {}
+    try:
+        snap.update({
+            'price': v19117_float(c.get('price'), 0.0),
+            'score': v19117_int(c.get('score', c.get('_master_score', 0)), 0),
+            'rsi': v19117_float(c.get('rsi'), 0.0),
+            'volume_trend': v19117_float(c.get('volume_trend', c.get('vol_power', 1)), 1.0),
+            'change_24': v19117_float(c.get('change_24', c.get('change', 0)), 0.0),
+            'btc_change': v19117_float(ctx.get('btc_change'), 0.0),
+            'fear': ctx.get('fg_value', None),
+            'news': v19117_int(ctx.get('macro_mod', ctx.get('geo_mod', 0)), 0),
+            'risk_level': str(ctx.get('risk_level', '')),
+            'btc_text': str(ctx.get('btc_text', '')),
+        })
+    except Exception:
+        pass
+    return snap
+
+
+def v19117_annotate_open_probe_snapshots(sync=False):
+    """Ретрофит и будущая разметка: добавляет snapshot входа/условий в open paper probes."""
+    changed = False
+    try:
+        data = paper_store()
+        open_trades = data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}
+        for _key, t in open_trades.items():
+            if not isinstance(t, dict):
+                continue
+            vt = str(t.get('virtual_type', '') or '').upper()
+            if not (t.get('is_probe') or vt == 'VIRTUAL_PROBE_ENTRY_TEST'):
+                continue
+            asset = v19117_asset(t.get('asset') or t.get('symbol'))
+            if not asset:
+                continue
+            snap = t.get('probe_entry_snapshot_v19117')
+            if not isinstance(snap, dict) or not snap:
+                snap = v19117_market_snapshot_for_asset(asset)
+                # Сохраняем также исходные entry-поля, чтобы будущий scoring понимал контекст входа.
+                snap['entry_price'] = v19117_float(t.get('entry_price', t.get('entry', t.get('price', 0))), 0.0)
+                snap['entry_time'] = v19117_float(t.get('entry_time', t.get('created_at', t.get('ts', 0))), 0.0)
+                snap['entry_score'] = v19117_int(t.get('score', t.get('entry_score', 62)), 62)
+                t['probe_entry_snapshot_v19117'] = snap
+                changed = True
+            t['probe_scoring_version'] = BOT_VERSION
+            # Текущий score/PnL обновляем мягко, чтобы отчёты могли учиться до 24/48ч.
+            try:
+                entry = v19117_float(t.get('entry_price', t.get('entry', t.get('price', 0))), 0.0)
+                cur = _safe_price(f'{asset}-USDT') if '_safe_price' in globals() else 0.0
+                if entry and cur:
+                    t['current_price_v19117'] = cur
+                    t['current_pnl_v19117'] = (cur - entry) / entry * 100
+            except Exception:
+                pass
+        if changed:
+            data['open'] = open_trades
+            data['last_probe_scoring_snapshot_at'] = v19117_now()
+            save_paper_store(data, sync=sync)
+    except Exception as e:
+        print(f'v19117 annotate snapshots error: {e}')
+    return changed
+
+
+def v191151_open_quality_probe_trades(candidates=None, reason='quality_probe'):
+    """Wrapper: создание probe как раньше + snapshot условий для будущего обучения."""
+    if _v19117_old_v191151_open_quality_probe_trades:
+        created, active = _v19117_old_v191151_open_quality_probe_trades(candidates, reason=reason)
+    else:
+        created, active = (0, 0)
+    try:
+        v19117_annotate_open_probe_snapshots(sync=bool(created))
+    except Exception as e:
+        print(f'v19117 post-open annotate error: {e}')
+    return created, active
+
+
+def v19117_probe_eval(r):
+    """Оценка качества активной paper-пробы до финального 48ч закрытия."""
+    pct = v19117_float(r.get('pct', r.get('pnl_pct', 0)), 0.0)
+    age = v19117_float(r.get('age_h', 0), 0.0)
+    entry_score = v19117_int(r.get('score', 62), 62)
+    # Drawdown-aware: пока нет полноценного min/max path, используем текущий PnL как текущую просадку/результат.
+    # Для будущего v19.11.7+ snapshot будет расширяться до max_adverse_excursion.
+    if pct <= -4.0:
+        label = '🔴 плохой ранний вход / сильная просадка'
+        verdict = 'проверка показывает, что вход без подтверждения был бы плохим'
+        score = 18
+        bucket = 'bad_entry'
+    elif pct <= -2.0:
+        label = '🟠 ранний/сомнительный вход — просадка'
+        verdict = 'нужно было ждать удержание цены, а не входить сразу'
+        score = 35
+        bucket = 'early_drawdown'
+    elif pct <= -0.75:
+        label = '🟡 лёгкая просадка — ждать 24/48ч'
+        verdict = 'пока не ошибка, но вход слабый'
+        score = 48
+        bucket = 'mild_drawdown'
+    elif pct < 1.0:
+        label = '🟡 нейтрально — результата ещё нет'
+        verdict = 'проба пока не дала преимущества'
+        score = 55
+        bucket = 'neutral'
+    elif pct < 3.0:
+        label = '🟢 полезная проба — небольшой плюс'
+        verdict = 'идея живая, но нужен 24/48ч контроль'
+        score = 68
+        bucket = 'useful'
+    else:
+        label = '🟢 хороший paper-вход'
+        verdict = 'ранний вход был бы полезным, проверить 24/48ч'
+        score = 82
+        bucket = 'good_entry'
+    # Возраст: до 24ч не финализируем.
+    if age < 6:
+        stage = 'ранний шум'
+        score = max(0, score - 4)
+    elif age < 12:
+        stage = 'ранняя проверка'
+    elif age < 24:
+        stage = 'предварительный 12–24ч урок'
+    elif age < 48:
+        stage = 'предфинал 24–48ч'
+    else:
+        stage = '48ч+ финал/закрытие скоро'
+    # Входной score 62 без подтверждения не должен повышать оценку при просадке.
+    if pct < 0 and entry_score >= 60:
+        verdict += '; высокий entry-score без удержания не подтверждён рынком'
+    return {
+        'asset': v19117_asset(r.get('asset')),
+        'pct': pct,
+        'age_h': age,
+        'entry_score': entry_score,
+        'probe_score': max(0, min(100, int(score))),
+        'label': label,
+        'verdict': verdict,
+        'bucket': bucket,
+        'stage': stage,
+    }
+
+
+def v19117_probe_eval_line(r):
+    e = v19117_probe_eval(r)
+    try:
+        entry = compact_price(r.get('entry')) if 'compact_price' in globals() else str(round(v19117_float(r.get('entry')), 6))
+        cur = compact_price(r.get('current')) if 'compact_price' in globals() else str(round(v19117_float(r.get('current')), 6))
+    except Exception:
+        entry, cur = str(r.get('entry','?')), str(r.get('current','?'))
+    age = e['age_h']
+    age_txt = f'{age:.1f}ч' if age >= 1 else f'{int(age*60)}м'
+    return (
+        f"• {e['asset']}: {e['label']} | {entry} → {cur} ({e['pct']:+.2f}%) | "
+        f"{age_txt} | probe-score {e['probe_score']}/100 | {e['stage']}"
+    )
+
+
+def v19117_probe_result_summary(records=None):
+    records = records if records is not None else v19117_probe_records()
+    evals = [v19117_probe_eval(r) for r in records]
+    counts = {'good_entry':0, 'useful':0, 'neutral':0, 'mild_drawdown':0, 'early_drawdown':0, 'bad_entry':0}
+    for e in evals:
+        counts[e['bucket']] = counts.get(e['bucket'], 0) + 1
+    if not evals:
+        return {
+            'count': 0, 'avg_pnl': 0.0, 'avg_score': 0,
+            'counts': counts, 'evals': [], 'worst': None, 'best': None,
+        }
+    avg_pnl = sum(e['pct'] for e in evals) / len(evals)
+    avg_score = int(sum(e['probe_score'] for e in evals) / len(evals))
+    worst = min(evals, key=lambda x: x['pct'])
+    best = max(evals, key=lambda x: x['pct'])
+    return {
+        'count': len(evals), 'avg_pnl': avg_pnl, 'avg_score': avg_score,
+        'counts': counts, 'evals': evals, 'worst': worst, 'best': best,
+    }
+
+
+def v19117_shadow_portfolio(records=None, capital=1000.0, position_pct=0.02):
+    records = records if records is not None else v19117_probe_records()
+    alloc = float(capital) * float(position_pct)
+    total_pnl = 0.0
+    rows = []
+    for r in records:
+        asset = v19117_asset(r.get('asset'))
+        pct = v19117_float(r.get('pct', 0), 0.0)
+        usd = alloc * pct / 100.0
+        total_pnl += usd
+        rows.append((asset, pct, usd))
+    used = alloc * len(rows)
+    return {
+        'capital': float(capital), 'position_pct': float(position_pct), 'alloc': alloc,
+        'positions': len(rows), 'used': used, 'pnl_usd': total_pnl,
+        'pnl_pct_capital': (total_pnl / float(capital) * 100.0) if capital else 0.0,
+        'rows': rows,
+    }
+
+
+def v19117_probe_result_scoring_report():
+    try:
+        v19117_annotate_open_probe_snapshots(sync=False)
+    except Exception:
+        pass
+    records = v19117_probe_records()
+    summary = v19117_probe_result_summary(records)
+    shadow = v19117_shadow_portfolio(records)
+    if not records:
+        body = '• активных quality paper-проб сейчас нет'
+    else:
+        body = '\n'.join(v19117_probe_eval_line(r) for r in records[:12])
+    c = summary['counts']
+    worst = summary.get('worst') or {}
+    best = summary.get('best') or {}
+    shadow_rows = '\n'.join(
+        f"• {a}: {pct:+.2f}% → {usd:+.2f} USDT" for a, pct, usd in shadow.get('rows', [])[:8]
+    ) or '• позиций нет'
+    return (
+        '🧪 PROBE RESULT SCORING\n\n'
+        f'Версия: {BOT_VERSION}\n'
+        'Режим: paper/shadow only. Реальные покупки, BUY-веса, Risk Engine и автоторговля не менялись.\n\n'
+        'Активные quality-пробы:\n'
+        f'{body}\n\n'
+        'Сводка качества входов:\n'
+        f"• всего активных проб: {summary['count']}\n"
+        f"• средний текущий результат: {summary['avg_pnl']:+.2f}%\n"
+        f"• средний probe-score: {summary['avg_score']}/100\n"
+        f"• хорошие/полезные: {c.get('good_entry',0)+c.get('useful',0)} | нейтральные: {c.get('neutral',0)} | просадка: {c.get('mild_drawdown',0)+c.get('early_drawdown',0)+c.get('bad_entry',0)}\n"
+        f"• худшая проба: {worst.get('asset','н/д')} {worst.get('pct',0):+.2f}%\n"
+        f"• лучшая проба: {best.get('asset','н/д')} {best.get('pct',0):+.2f}%\n\n"
+        'Shadow portfolio, если бы каждая probe была входом на 2% от 1000 USDT:\n'
+        f"• занято: {shadow['used']:.2f} USDT | итог: {shadow['pnl_usd']:+.2f} USDT ({shadow['pnl_pct_capital']:+.2f}% к капиталу)\n"
+        f'{shadow_rows}\n\n'
+        'Вывод: scoring уже учит бота отличать ранний плохой вход от полезной quality-пробы, но финальный вывод остаётся на 24/48ч.'
+    )
+
+
+def v19117_radar_decay_label_for_probe(asset, c, active_assets=None):
+    records = v19117_probe_by_asset()
+    r = records.get(v19117_asset(asset))
+    if not r:
+        return None
+    e = v19117_probe_eval(r)
+    pct = e['pct']
+    # Drawdown-aware radar: отрицательная активная probe не может называться "рост уже сильный".
+    if pct <= -4.0:
+        return '🔴 paper-проба сильно просела — новый вход запрещён', 75
+    if pct <= -2.0:
+        return '🟦 paper-проба просела — ждать 24/48ч', 80
+    if pct <= -0.75:
+        return '🟦 paper-проба в лёгкой просадке — наблюдать итог', 72
+    if pct < 1.0:
+        return '🟡 paper-проба почти в нуле — ждать подтверждение', 78
+    return None
+
+
+def v191161_growth_label(c, active_assets=None):
+    asset = v19117_asset(c.get('symbol') or c.get('_growth_asset')) if isinstance(c, dict) else ''
+    active_assets = active_assets or set()
+    if asset in active_assets:
+        decay = v19117_radar_decay_label_for_probe(asset, c, active_assets)
+        if decay:
+            return decay
+    if _v19117_old_v191161_growth_label:
+        return _v19117_old_v191161_growth_label(c, active_assets)
+    return '🟦 обычное наблюдение', 20
+
+
+def v191161_probe_report_line(r):
+    # Старый line + новый drawdown-aware score.
+    return v19117_probe_eval_line(r)
+
+
+def quality_probe_user_report():
+    created = 0
+    active_count = 0
+    candidates = []
+    try:
+        candidates = v191151_collect_quality_probe_candidates() if 'v191151_collect_quality_probe_candidates' in globals() else []
+        created, active_count = v191151_open_quality_probe_trades(candidates, reason='quality_probe_command_v19117') if 'v191151_open_quality_probe_trades' in globals() else (0, 0)
+    except Exception as e:
+        print(f'quality probe command collect error v19117: {e}')
+    try:
+        v19117_annotate_open_probe_snapshots(sync=bool(created))
+    except Exception:
+        pass
+    records = v19117_probe_records()
+    if not active_count:
+        active_count = len(records)
+    body = '\n'.join(v19117_probe_eval_line(r) for r in records[:12]) if records else '• активных paper-проб сейчас нет'
+    summary = v19117_probe_result_summary(records)
+    cand_symbols = []
+    try:
+        cand_symbols = [v19117_asset(c.get('symbol','')) for c in candidates if isinstance(c, dict) and c.get('symbol')]
+    except Exception:
+        cand_symbols = []
+    cand_line = f"\nПоследние кандидаты: {', '.join([x for x in cand_symbols[:10] if x])}" if cand_symbols else ''
+    c = summary['counts']
+    return (
+        '🟡 Виртуальные пробы качества + scoring\n\n'
+        f'Версия: {BOT_VERSION}\n'
+        'Задача: не пропускать SOL/AAVE/INJ-like quality-движения, но не включать реальные покупки.\n'
+        'Режим: только виртуально. Реальные покупки и автоторговля выключены.\n\n'
+        f'Создано новых paper-записей: {int(created or 0)} | активных probe: {int(active_count or len(records))}\n'
+        f'{cand_line}\n\n'
+        'Активные пробы в paper-журнале:\n' + body + '\n\n'
+        'Scoring сейчас:\n'
+        f"• средний результат: {summary['avg_pnl']:+.2f}% | средний probe-score: {summary['avg_score']}/100\n"
+        f"• полезные: {c.get('good_entry',0)+c.get('useful',0)} | нейтральные: {c.get('neutral',0)} | просадка: {c.get('mild_drawdown',0)+c.get('early_drawdown',0)+c.get('bad_entry',0)}\n\n"
+        'Правило: просадка в первые часы не меняет live BUY, но учит бота ждать подтверждение. Финальный вывод — 24/48ч.'
+    )
+
+
+def v19117_quality_score_with_probe_scoring():
+    try:
+        base = quality_score_audit_report() if 'quality_score_audit_report' in globals() else ''
+    except Exception:
+        base = ''
+    summary = v19117_probe_result_summary()
+    c = summary['counts']
+    extra = (
+        '\n\nProbe Result Scoring v19.11.7:\n'
+        f"• активных quality-проб: {summary['count']}\n"
+        f"• средний текущий PnL: {summary['avg_pnl']:+.2f}%\n"
+        f"• средний probe-score: {summary['avg_score']}/100\n"
+        f"• полезные: {c.get('good_entry',0)+c.get('useful',0)} | нейтральные: {c.get('neutral',0)} | просадка: {c.get('mild_drawdown',0)+c.get('early_drawdown',0)+c.get('bad_entry',0)}\n"
+        '• live BUY +0; scoring влияет только на обучение и будущую оценку входа.'
+    )
+    return str(base) + extra
+
+
+def v19117_shadow_portfolio_report():
+    records = v19117_probe_records()
+    sh = v19117_shadow_portfolio(records)
+    rows = '\n'.join(f"• {a}: {pct:+.2f}% → {usd:+.2f} USDT" for a, pct, usd in sh.get('rows', [])[:12]) or '• активных shadow-позиций нет'
+    return (
+        '💼 SHADOW PORTFOLIO\n\n'
+        f'Версия: {BOT_VERSION}\n'
+        'Режим: виртуальный портфель без реальных денег.\n\n'
+        f"Капитал: {sh['capital']:.0f} USDT | размер одной probe: {sh['position_pct']*100:.1f}% ({sh['alloc']:.2f} USDT)\n"
+        f"Позиций: {sh['positions']} | занято: {sh['used']:.2f} USDT\n"
+        f"Текущий результат: {sh['pnl_usd']:+.2f} USDT ({sh['pnl_pct_capital']:+.2f}% к капиталу)\n\n"
+        f'{rows}\n\n'
+        'Вывод: этот блок показывает, что было бы при механическом входе по probe, но реальные покупки остаются выключены.'
+    )
+
+
+def probe_result_scoring_audit_report():
+    return v19117_probe_result_scoring_report()
+
+
+def version_user_report():
+    return (
+        f'✅ Версия: {BOT_VERSION}\n\n'
+        'Что добавлено:\n'
+        '• Probe Result Scoring: каждая quality paper-проба получает оценку входа;\n'
+        '• Drawdown-aware scoring: просадка после виртуального входа учитывается отдельно;\n'
+        '• Radar Decay Logic: /signal больше не называет просевшую probe “рост уже сильный”;\n'
+        '• Entry Quality Snapshot: для probe сохраняются условия входа — BTC, новости, RSI, объём, режим;\n'
+        '• Shadow Portfolio: виртуальный капитал 1000 USDT и вход по 2% на probe;\n'
+        '• /quality_probe теперь показывает probe-score, стадию и качество входа.\n\n'
+        'Ограничения:\n'
+        '• реальные покупки: 0;\n'
+        '• автоторговля: выключена;\n'
+        '• BUY-веса: +0;\n'
+        '• Risk Engine не менялся;\n'
+        '• 24/48ч остаются финальным контролем.\n\n'
+        'Команды проверки: /signal | /quality_probe | /paper | /checkpoint_scoring | /audit_file'
+    )
+
+
+def build_audit_file(chat_id):
+    ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+    path = f'/tmp/alex_edge_audit_{ts}.txt'
+    sections=[]
+    def add(title, func, timeout_sec=25):
+        body = audit_section_text(func, timeout_sec=timeout_sec)
+        try:
+            body = v191151_normalize_version_text(body)
+        except Exception:
+            body = str(body)
+        sections.append('\n' + '='*80 + f'\n{title}\n' + '='*80 + '\n' + body)
+    add('VERSION', lambda: f'BOT_VERSION: {BOT_VERSION}', 5)
+    add('AUDIT SHORT', audit_short_report, 15)
+    add('PROBE RESULT SCORING V19.11.7', probe_result_scoring_audit_report, 15)
+    add('SHADOW PORTFOLIO V19.11.7', v19117_shadow_portfolio_report, 8)
+    add('AUTO CHECK SCORE SYNC V19.11.7', auto_check_score_sync_report, 8)
+    add('SINGLE COIN NO-BUY SYNC V19.11.7', single_coin_no_buy_sync_report, 8)
+    add('SIGNAL GROWTH RADAR + DECAY V19.11.7', unified_signal_report, 35)
+    add('AUTO QUALITY PROBE SCHEDULER V19.11.7', auto_quality_probe_status_report, 8)
+    add('QUALITY PAPER PROBE + SCORING V19.11.7', quality_probe_user_report, 12)
+    add('QUALITY LEARNING ACCELERATOR V19.11.7', quality_accelerator_audit_report, 10)
+    add('SELF-LEARNING BRAIN CORE V19.11.7', v199_brain_audit_report, 10)
+    add('QUALITY WATCH LADDER V19.11.7', quality_watch_ladder_audit_report, 10)
+    add('QUALITY SCORE V19.11.7', quality_score_audit_report, 8)
+    add('CHECKPOINT SCORING V19.11.7', v19112_checkpoint_scoring_user_report, 10)
+    add('TECH: HYPOTHESES', v1910_hypotheses_user_report, 8)
+    add('TECH: PAPER FULL', paper_report, 12)
+    add('TECH: SOL FULL', lambda: single_analysis_full('SOL-USDT'), 25)
+    content = 'ALEX EDGE ULTRA TECH AUDIT FILE\n' + '\n'.join(sections)
+    try:
+        content = v191151_normalize_version_text(content)
+    except Exception:
+        pass
+    try:
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(content)
+    except Exception as e:
+        send_message(chat_id, f'❌ Не удалось создать audit txt: {e}')
+        return None
+    ok = send_document(chat_id, path, caption='🧾 Технический отчёт готов.')
+    if not ok:
+        send_message(chat_id, '⚠️ audit_file собран, но Telegram не принял файл. Ниже короткий аудит.')
+        send_message(chat_id, audit_short_report())
+    return path
 
 if __name__ == "__main__":
     try:
