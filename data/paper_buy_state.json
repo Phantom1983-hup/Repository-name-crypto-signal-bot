@@ -1,0 +1,211 @@
+{
+  "version": "v19.11.10.2 DURABLE STATE & AUDIT POLISH",
+  "created_at": 1782672244.6065178,
+  "active_count": 2,
+  "active_buys": [
+    {
+      "id": "NEAR:PAPER_BUY_DECISION_TEST:495179",
+      "asset": "NEAR",
+      "entry_time": 1782646362.306717,
+      "entry_price": 1.8596,
+      "last_price": 1.8273,
+      "last_pct": -1.74,
+      "score": 68,
+      "entry_score": 62,
+      "probe_score_at_decision": 55,
+      "probe_bucket_at_decision": "neutral",
+      "master_score": 68,
+      "source_action": "PAPER_BUY_DECISION",
+      "virtual_type": "PAPER_BUY_DECISION_TEST",
+      "verdict": "🟢 PAPER BUY",
+      "is_quality": true,
+      "is_paper_buy_decision": true,
+      "paper_buy_tier": "quality_buy_test",
+      "paper_size": "2.0% paper-capital",
+      "entry_plan": {
+        "target1": 1.90609,
+        "target2": 1.95258,
+        "stop": 1.803812,
+        "target1_pct": 2.5,
+        "target2_pct": 5.0,
+        "stop_pct": -3.0,
+        "cancel_rule": "если BTC резко давит или цена уходит ниже stop — paper BUY считается плохим/ранним"
+      },
+      "decision_reasons": [
+        "quality-актив из белого списка",
+        "нормальный исходный probe-score",
+        "текущий probe-score нейтральный, без подтверждённого преимущества",
+        "точка не выглядит погоней за свечой"
+      ],
+      "decision_risks": [
+        "без критичных блокеров"
+      ],
+      "source_probe_key": "NEAR:VIRTUAL_PROBE_ENTRY_TEST:495158",
+      "probe_pnl_at_decision": -0.43,
+      "probe_age_h_at_decision": 20.8,
+      "btc_change": 1.72,
+      "macro_mod": -2.0,
+      "change_24": 4.9,
+      "results": {
+        "15m": 0.32,
+        "30m": 0.32,
+        "1h": -0.01,
+        "3h": 1.12,
+        "6h": -1.08
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782648394.1767888,
+          "checkpoint_price": 1.8655,
+          "source": "learning_cache:snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782648394.1767888,
+          "checkpoint_price": 1.8655,
+          "source": "learning_cache:snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782650204.5676918,
+          "checkpoint_price": 1.8595,
+          "source": "learning_cache:snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782657519.3670166,
+          "checkpoint_price": 1.8804,
+          "source": "learning_cache:snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782666630.2755895,
+          "checkpoint_price": 1.8395,
+          "source": "learning_cache:snapshot"
+        }
+      },
+      "status": "open",
+      "persistence_required": true,
+      "persistence_version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
+      "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
+      "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
+      "last_price_time": 1782669895.8735402,
+      "durable_saved_by": "v19.11.10.2 DURABLE STATE & AUDIT POLISH",
+      "durable_saved_at": 1782672244.6065023
+    },
+    {
+      "id": "LINK:PAPER_BUY_DECISION_TEST:495179",
+      "asset": "LINK",
+      "entry_time": 1782646362.306717,
+      "entry_price": 7.3031,
+      "last_price": 7.2819,
+      "last_pct": -0.29,
+      "score": 68,
+      "entry_score": 62,
+      "probe_score_at_decision": 55,
+      "probe_bucket_at_decision": "neutral",
+      "master_score": 68,
+      "source_action": "PAPER_BUY_DECISION",
+      "virtual_type": "PAPER_BUY_DECISION_TEST",
+      "verdict": "🟢 PAPER BUY",
+      "is_quality": true,
+      "is_paper_buy_decision": true,
+      "paper_buy_tier": "quality_buy_test",
+      "paper_size": "2.0% paper-capital",
+      "entry_plan": {
+        "target1": 7.4856775,
+        "target2": 7.668255,
+        "stop": 7.084007,
+        "target1_pct": 2.5,
+        "target2_pct": 5.0,
+        "stop_pct": -3.0,
+        "cancel_rule": "если BTC резко давит или цена уходит ниже stop — paper BUY считается плохим/ранним"
+      },
+      "decision_reasons": [
+        "quality-актив из белого списка",
+        "нормальный исходный probe-score",
+        "текущий probe-score нейтральный, без подтверждённого преимущества",
+        "точка не выглядит погоней за свечой"
+      ],
+      "decision_risks": [
+        "без критичных блокеров"
+      ],
+      "source_probe_key": "LINK:VIRTUAL_PROBE_ENTRY_TEST:495158",
+      "probe_pnl_at_decision": -1.48,
+      "probe_age_h_at_decision": 20.8,
+      "btc_change": 1.72,
+      "macro_mod": -2.0,
+      "change_24": 2.61,
+      "results": {
+        "15m": 0.0,
+        "30m": 0.0,
+        "1h": -0.29,
+        "3h": -0.29,
+        "6h": -0.29
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782633537.19939,
+          "checkpoint_price": 7.3031,
+          "source": "learning_cache:snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782633537.19939,
+          "checkpoint_price": 7.3031,
+          "source": "learning_cache:snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782648756.8752608,
+          "checkpoint_price": 7.2819,
+          "source": "learning_cache:snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782648756.8752608,
+          "checkpoint_price": 7.2819,
+          "source": "learning_cache:snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782648756.8752608,
+          "checkpoint_price": 7.2819,
+          "source": "learning_cache:paper_last_price_fallback"
+        }
+      },
+      "status": "open",
+      "persistence_required": true,
+      "persistence_version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
+      "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
+      "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
+      "last_price_time": 1782648756.8752608,
+      "durable_saved_by": "v19.11.10.2 DURABLE STATE & AUDIT POLISH",
+      "durable_saved_at": 1782672244.6065085
+    }
+  ],
+  "journal": [
+    {
+      "key": "NEAR:PAPER_BUY_DECISION_TEST:495179",
+      "asset": "NEAR",
+      "created_at": 1782646362.306717,
+      "entry_price": 1.8596,
+      "last_price": 1.8596,
+      "paper_score": 68,
+      "probe_score": 55,
+      "tier": "quality_buy_test",
+      "status": "open",
+      "source_probe_key": "NEAR:VIRTUAL_PROBE_ENTRY_TEST:495158",
+      "version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
+      "saved_at": 1782646362.3067544
+    },
+    {
+      "key": "LINK:PAPER_BUY_DECISION_TEST:495179",
+      "asset": "LINK",
+      "created_at": 1782646362.306717,
+      "entry_price": 7.3031,
+      "last_price": 7.3031,
+      "paper_score": 68,
+      "probe_score": 55,
+      "tier": "quality_buy_test",
+      "status": "open",
+      "source_probe_key": "LINK:VIRTUAL_PROBE_ENTRY_TEST:495158",
+      "version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
+      "saved_at": 1782646362.3067756
+    }
+  ],
+  "source": "paper_trades.json",
+  "note": "Durable minimal PAPER BUY state. Real buys remain 0; autotrading OFF."
+}
