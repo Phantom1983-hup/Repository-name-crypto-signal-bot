@@ -2199,7 +2199,8 @@
         "30m": -0.79,
         "1h": -0.32,
         "3h": -1.69,
-        "6h": -2.79
+        "6h": -2.79,
+        "12h": -1.37
       },
       "result_details": {
         "15m": {
@@ -2226,6 +2227,11 @@
           "checkpoint_time": 1782597421.8844144,
           "checkpoint_price": 93.387,
           "source": "learning_cache:snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782619209.0760565,
+          "checkpoint_price": 94.752,
+          "source": "learning_cache:snapshot"
         }
       },
       "status": "open",
@@ -2251,7 +2257,8 @@
         "15m": 0.0,
         "30m": 0.0,
         "1h": 0.0,
-        "3h": 0.0
+        "3h": 0.0,
+        "6h": -0.89
       },
       "result_details": {
         "15m": {
@@ -2272,6 +2279,11 @@
         "3h": {
           "checkpoint_time": 1782599221.3788817,
           "checkpoint_price": 0.179,
+          "source": "learning_cache:snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782619209.0760565,
+          "checkpoint_price": 0.1774,
           "source": "learning_cache:snapshot"
         }
       },
@@ -6545,6 +6557,6 @@
     }
   ],
   "last_created_at": 1782611961.1228402,
-  "last_update_at": 1782619212.4731805,
+  "last_update_at": 1782620933.3988454,
   "last_quality_probe_created_at": 1782576393.2249265
 }
