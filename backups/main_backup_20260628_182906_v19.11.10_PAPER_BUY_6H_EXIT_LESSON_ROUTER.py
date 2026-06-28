@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16825,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17933,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18408,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18572,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18917,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19298,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19605,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20119,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20260,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20571,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20862,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21719,7 +21719,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22123,7 +22123,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22692,7 +22692,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23200,7 +23200,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23506,7 +23506,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24034,7 +24034,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25251,7 +25251,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 
 
 def _v191191_branch_ref_name():
@@ -25396,7 +25396,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25684,7 +25684,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25913,7 +25913,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26278,899 +26278,6 @@ def version_user_report():
     )
 
 
-
-
-# === v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX ===
-# Critical wiring fix: the previous v19.11.10 block was appended after __main__,
-# so production runtime used the old PAPER BUY report. This block is intentionally
-# inserted before __main__ and also appended at EOF for import/smoke parity.
-# It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
-
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
-
-V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
-V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
-V1911101_RESTORE_META_KEY = "paper_buy_restore_v1911101"
-
-try:
-    PROTECTED_STATE_BASENAMES.add("paper_buy_state.json")
-except Exception:
-    pass
-
-
-def v1911101_now():
-    try:
-        return time.time()
-    except Exception:
-        return 0
-
-
-def v1911101_read_storage_json(local_path):
-    """Read data/*.json from local or GitHub with raw/blob fallback."""
-    try:
-        data = load_json(local_path)
-        if isinstance(data, dict) and data:
-            return data
-    except Exception:
-        pass
-    try:
-        if github_storage_enabled():
-            repo_path = github_storage_repo_path(local_path)
-            raw, meta = github_get_file_bytes(repo_path)
-            if raw:
-                js = json.loads(raw.decode("utf-8", errors="ignore"))
-                if isinstance(js, dict):
-                    try:
-                        save_json(local_path, js)
-                    except Exception:
-                        pass
-                    return js
-    except Exception as e:
-        try:
-            print(f"v1911101 read storage fallback error {local_path}: {e}")
-        except Exception:
-            pass
-    return {}
-
-
-def v1911101_trade_to_state_record(key, trade):
-    try:
-        if not isinstance(trade, dict) or not v19119_is_paper_buy_decision(trade):
-            return None
-        asset = v19119_trade_asset(trade)
-        if not asset:
-            return None
-        rec = dict(trade)
-        rec.setdefault("id", key)
-        rec.setdefault("asset", asset)
-        rec.setdefault("status", "open")
-        rec["durable_saved_by"] = BOT_VERSION
-        rec["durable_saved_at"] = v1911101_now()
-        return rec
-    except Exception:
-        return None
-
-
-def v1911101_build_buy_state(data=None):
-    if not isinstance(data, dict):
-        data = paper_store()
-    open_trades = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
-    active = []
-    for key, trade in list(open_trades.items()):
-        rec = v1911101_trade_to_state_record(key, trade)
-        if rec:
-            active.append(rec)
-    journal = data.get(V191194_PAPER_BUY_JOURNAL_KEY, []) if isinstance(data.get(V191194_PAPER_BUY_JOURNAL_KEY, []), list) else []
-    return {
-        "version": BOT_VERSION,
-        "created_at": v1911101_now(),
-        "active_count": len(active),
-        "active_buys": active,
-        "journal": journal[-80:],
-        "source": "paper_trades.json",
-        "note": "Durable minimal PAPER BUY state. Real buys remain 0; autotrading OFF.",
-    }
-
-
-def v1911101_save_buy_state_now(data=None, reason="paper_buy_durable_save"):
-    status = {"ok": False, "mode": "not-run", "active": 0, "synced_files": 0, "error": "", "at": v1911101_now(), "reason": reason}
-    try:
-        state = v1911101_build_buy_state(data)
-        status["active"] = int(state.get("active_count", 0) or 0)
-        save_json(V1911101_PAPER_BUY_STATE_FILE, state)
-        status.update({"ok": True, "mode": "local"})
-        if github_storage_enabled():
-            try:
-                n = sync_github_storage_now([V1911101_PAPER_BUY_STATE_FILE, PAPER_TRADES_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
-                status.update({"mode": "github-durable-immediate", "synced_files": int(n or 0), "ok": int(n or 0) >= 1})
-            except Exception as e:
-                status.update({"mode": "github-durable-failed", "ok": False, "error": str(e)[:180]})
-        return status
-    except Exception as e:
-        status.update({"ok": False, "mode": "error", "error": str(e)[:180]})
-        return status
-
-
-def v1911101_load_buy_state():
-    return v1911101_read_storage_json(V1911101_PAPER_BUY_STATE_FILE)
-
-
-def v1911101_restore_paper_buys_from_state(data=None, reason="status_restore"):
-    result = {"restored": 0, "available": 0, "mode": "not-needed", "error": "", "at": v1911101_now()}
-    try:
-        if not isinstance(data, dict):
-            data = paper_store()
-        open_trades = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
-        active_now = v191194_count_active_buy_in_data(data)
-        if active_now > 0:
-            result.update({"available": active_now, "mode": "already-active"})
-            return data, result
-        state = v1911101_load_buy_state()
-        active = state.get("active_buys", []) if isinstance(state, dict) else []
-        if not isinstance(active, list) or not active:
-            result.update({"mode": "no-durable-state"})
-            return data, result
-        result["available"] = len(active)
-        now = v1911101_now()
-        restored = 0
-        existing_assets = set(str(t.get("asset", "")).upper() for t in open_trades.values() if isinstance(t, dict))
-        for trade in active:
-            if not isinstance(trade, dict) or not v19119_is_paper_buy_decision(trade):
-                continue
-            asset = str(trade.get("asset") or v19119_trade_asset(trade)).upper().strip()
-            if not asset or asset in existing_assets:
-                continue
-            try:
-                age_h = (now - float(trade.get("entry_time", now) or now)) / 3600.0
-            except Exception:
-                age_h = 0
-            if age_h > 60:
-                continue
-            key = trade.get("id") or paper_trade_key(asset, V19119_PAPER_BUY_TYPE, trade.get("entry_time", now))
-            if key in open_trades:
-                continue
-            rec = dict(trade)
-            rec["id"] = key
-            rec["status"] = "open"
-            rec["restored_from"] = "paper_buy_state.json"
-            rec["restored_at"] = now
-            rec["restored_by"] = BOT_VERSION
-            open_trades[key] = rec
-            existing_assets.add(asset)
-            restored += 1
-        if restored:
-            data["open"] = open_trades
-            meta = data.get(V1911101_RESTORE_META_KEY)
-            if not isinstance(meta, dict):
-                meta = {}
-            meta.update({"last_restore_at": now, "restored": restored, "reason": reason, "version": BOT_VERSION})
-            data[V1911101_RESTORE_META_KEY] = meta
-            save_paper_store(data, sync=False)
-            v1911101_save_buy_state_now(data, reason="restore_after_restart")
-            result.update({"restored": restored, "mode": "restored-from-durable-state"})
-        else:
-            result.update({"mode": "durable-state-empty-or-stale"})
-        return data, result
-    except Exception as e:
-        result.update({"mode": "restore-error", "error": str(e)[:180]})
-        return (data if isinstance(data, dict) else paper_store()), result
-
-
-try:
-    _v1911101_old_v19119_open_paper_buy_decisions = v19119_open_paper_buy_decisions
-except Exception:
-    _v1911101_old_v19119_open_paper_buy_decisions = None
-
-try:
-    _v1911101_old_v19119_ranked_paper_buy_decisions = v19119_ranked_paper_buy_decisions
-except Exception:
-    _v1911101_old_v19119_ranked_paper_buy_decisions = None
-
-
-def v1911101_lessons():
-    try:
-        ls = v19118_load_lessons()
-        return ls if isinstance(ls, list) else []
-    except Exception:
-        return []
-
-
-def v1911101_lesson_router_adjustment(asset):
-    asset = str(asset or '').upper().strip()
-    rows = [l for l in v1911101_lessons() if isinstance(l, dict) and str(l.get('asset','')).upper().strip() == asset]
-    st = {"total": len(rows), "good": 0, "neutral": 0, "bad": 0, "avg_pct": 0.0, "paper_delta": 0}
-    if not rows:
-        return {"asset": asset, "adj": 0, "cap": 100, "asset_stats": st, "reason": "no lessons"}
-    vals = []
-    delta = 0
-    for r in rows:
-        cls = str(r.get('classification') or r.get('label') or r.get('status') or '').lower()
-        try:
-            vals.append(float(r.get('pct') if r.get('pct') is not None else r.get('pnl_pct', 0) or 0))
-        except Exception:
-            pass
-        try:
-            delta += int(r.get('paper_delta') or r.get('paperΔ') or 0)
-        except Exception:
-            pass
-        if any(x in cls for x in ['good', 'useful', 'полез', 'хорош']):
-            st['good'] += 1
-        elif any(x in cls for x in ['bad', 'early', 'drawdown', 'плох', 'ранн', 'просад']):
-            st['bad'] += 1
-        else:
-            st['neutral'] += 1
-    st['paper_delta'] = delta
-    st['avg_pct'] = round(sum(vals)/len(vals), 2) if vals else 0.0
-    adj = 0
-    cap = 100
-    reason = 'neutral lessons'
-    if st['bad'] >= 1 and st['good'] == 0:
-        adj -= 12
-        cap = 45
-        reason = 'bad/early lessons penalty'
-    if delta <= -4:
-        adj -= 8
-        cap = min(cap, 35)
-        reason = 'heavy paperΔ penalty'
-    if st['good'] >= 1:
-        adj += 6
-        reason = 'good lesson bonus, paper-only'
-    return {"asset": asset, "adj": adj, "cap": cap, "asset_stats": st, "reason": reason}
-
-
-def v1911101_global_lesson_router_state():
-    ls = v1911101_lessons()
-    good = neutral = bad = delta = 0
-    for r in ls:
-        if not isinstance(r, dict):
-            continue
-        cls = str(r.get('classification') or r.get('label') or r.get('status') or '').lower()
-        try:
-            delta += int(r.get('paper_delta') or r.get('paperΔ') or 0)
-        except Exception:
-            pass
-        if any(x in cls for x in ['good','useful','полез','хорош']):
-            good += 1
-        elif any(x in cls for x in ['bad','early','drawdown','плох','ранн','просад']):
-            bad += 1
-        else:
-            neutral += 1
-    total = good + neutral + bad
-    label = '🟡 нет уроков'
-    cap = V19119_PAPER_BUY_MAX_ACTIVE if 'V19119_PAPER_BUY_MAX_ACTIVE' in globals() else 2
-    if total:
-        if good == 0 and bad >= max(2, neutral):
-            label = '🟠 cautious / lesson penalty'
-            cap = min(cap, 2)
-        elif good > bad:
-            label = '🟢 paper priority only'
-        else:
-            label = '🟡 neutral / wait 48h'
-    return {"total": total, "good": good, "neutral": neutral, "bad": bad, "paper_delta": delta, "label": label, "max_active_paper_buy": cap}
-
-
-def v19119_ranked_paper_buy_decisions():
-    base = []
-    if _v1911101_old_v19119_ranked_paper_buy_decisions:
-        try:
-            base = _v1911101_old_v19119_ranked_paper_buy_decisions()
-        except Exception:
-            base = []
-    out = []
-    for d in base or []:
-        if not isinstance(d, dict):
-            continue
-        nd = dict(d)
-        asset = str(nd.get('asset') or '').upper().strip()
-        r = v1911101_lesson_router_adjustment(asset)
-        try:
-            score = int(nd.get('decision_score', 0) or 0)
-        except Exception:
-            score = 0
-        score = max(0, min(int(r.get('cap',100)), score + int(r.get('adj',0))))
-        nd['decision_score'] = score
-        nd['lesson_router_adj'] = int(r.get('adj',0))
-        nd['lesson_router_cap'] = int(r.get('cap',100))
-        nd['lesson_router_reason'] = r.get('reason')
-        if score < 50 and str(nd.get('decision','')).startswith('🟢'):
-            nd['decision'] = '🟠 PAPER WATCH, BUY ЖДАТЬ'
-            nd['tier'] = 'watch_only'
-            risk = str(nd.get('risk') or '')
-            nd['risk'] = (risk + '; ' if risk else '') + f"Lesson Router: {r.get('reason')}"
-        out.append(nd)
-    try:
-        out.sort(key=lambda x: int(x.get('decision_score',0) or 0), reverse=True)
-    except Exception:
-        pass
-    return out
-
-
-def v19119_open_paper_buy_decisions(create=True, max_new=2, force_one=False):
-    try:
-        if not create:
-            v1911101_restore_paper_buys_from_state(reason="paper_buy_status")
-    except Exception:
-        pass
-    if _v1911101_old_v19119_open_paper_buy_decisions:
-        res = _v1911101_old_v19119_open_paper_buy_decisions(create=create, max_new=max_new, force_one=force_one)
-    else:
-        res = {"created": [], "skipped": [], "active": 0, "decisions": []}
-    try:
-        data = paper_store()
-        active = v191194_count_active_buy_in_data(data)
-        if isinstance(res, dict):
-            res['active'] = active
-        if active > 0:
-            st = v1911101_save_buy_state_now(data, reason="paper_buy_create_or_status")
-            if isinstance(res, dict):
-                res["durable_state"] = st
-    except Exception as e:
-        if isinstance(res, dict):
-            res["durable_state"] = {"ok": False, "mode": "error", "error": str(e)[:120]}
-    return res
-
-
-try:
-    _v1911101_old_v191194_paper_buy_persistence_lines = v191194_paper_buy_persistence_lines
-except Exception:
-    _v1911101_old_v191194_paper_buy_persistence_lines = None
-
-
-def v1911101_durable_state_lines():
-    try:
-        state = v1911101_load_buy_state()
-        active = state.get("active_buys", []) if isinstance(state, dict) else []
-        if not isinstance(active, list):
-            active = []
-        created_at = state.get("created_at") if isinstance(state, dict) else None
-        age = ""
-        try:
-            if created_at:
-                age = f" | {v191183_fmt_age(created_at)}"
-        except Exception:
-            age = ""
-        data = paper_store()
-        restore_meta = data.get(V1911101_RESTORE_META_KEY, {}) if isinstance(data, dict) else {}
-        restored_line = "нет"
-        if isinstance(restore_meta, dict) and restore_meta.get("last_restore_at"):
-            restored_line = f"{restore_meta.get('restored', 0)} | {v191183_fmt_age(restore_meta.get('last_restore_at'))}"
-        return [
-            "Durable state:",
-            f"• файл: {os.path.basename(V1911101_PAPER_BUY_STATE_FILE)}",
-            f"• active BUY в durable-state: {len(active)}{age}",
-            f"• last restore: {restored_line}",
-        ]
-    except Exception as e:
-        return ["Durable state:", f"• ⚠️ error: {str(e)[:120]}"]
-
-
-def v191194_paper_buy_persistence_lines():
-    base = []
-    try:
-        if _v1911101_old_v191194_paper_buy_persistence_lines:
-            base = list(_v1911101_old_v191194_paper_buy_persistence_lines())
-    except Exception:
-        base = []
-    return base + v1911101_durable_state_lines()
-
-
-def v1911101_decision_map():
-    mp = {}
-    try:
-        for d in v19119_ranked_paper_buy_decisions() or []:
-            if not isinstance(d, dict):
-                continue
-            a = str(d.get('asset') or '').upper().strip()
-            if a and a not in mp:
-                mp[a] = d
-    except Exception:
-        pass
-    return mp
-
-
-def v1911101_active_buy_checkpoint(t, decision_map=None):
-    decision_map = decision_map if isinstance(decision_map, dict) else v1911101_decision_map()
-    asset = v19119_trade_asset(t)
-    entry = v19119_safe_float(t.get('entry_price'), 0)
-    last = v19119_safe_float(t.get('last_price'), entry) or entry
-    try:
-        pct = t.get('last_pct')
-        if not isinstance(pct, (int, float)):
-            pct = ((last - entry) / entry * 100.0) if entry and last else 0.0
-        pct = float(pct or 0.0)
-    except Exception:
-        pct = 0.0
-    age_h = v19119_trade_age_h(t)
-    plan = t.get('entry_plan', {}) if isinstance(t.get('entry_plan', {}), dict) else {}
-    stop = v19119_safe_float(plan.get('stop'), 0)
-    t1 = v19119_safe_float(plan.get('target1'), 0)
-    d = decision_map.get(asset, {})
-    probe_score = int(d.get('probe_score', t.get('probe_score', 55)) or 55)
-    current_decision = str(d.get('decision') or '')
-    paper_score = int(d.get('decision_score', t.get('decision_score', t.get('score', 0))) or 0)
-    try:
-        stop_distance_pct = ((last - stop) / last * 100.0) if last and stop else 99.0
-    except Exception:
-        stop_distance_pct = 99.0
-    try:
-        to_t1_pct = ((t1 - last) / last * 100.0) if last and t1 else 99.0
-    except Exception:
-        to_t1_pct = 99.0
-    status = '🟢 PAPER BUY active'
-    action = 'держать paper-наблюдение'
-    severity = 0
-    checkpoint = 'pre-6h' if age_h < 6 else '6h'
-    if age_h >= 6:
-        if stop and last <= stop:
-            status = '🔴 STOP HIT / paper exit'
-            action = 'фиксировать как ошибку paper-входа, новые BUY запретить'
-            severity = 4
-        elif pct <= -1.0 and probe_score <= 35:
-            status = '🟠 6ч ранний PAPER BUY'
-            action = 'не усиливать, новых BUY не открывать, ждать 24ч/48ч'
-            severity = 3
-        elif 'WATCH' in current_decision or probe_score <= 35:
-            status = '🟠 6ч ослабла / WATCH'
-            action = 'оставить только контроль, без новых BUY'
-            severity = 2
-        elif pct >= 1.8 or (t1 and last >= t1):
-            status = '🟢 6ч сильный paper BUY'
-            action = 'зафиксировать полезную модель, ждать 24ч'
-            severity = -2
-        elif pct >= 0.3:
-            status = '🟢 6ч умеренно полезно'
-            action = 'держать до 24ч без усиления live BUY'
-            severity = -1
-        elif pct > -0.5:
-            status = '🟡 6ч нейтрально'
-            action = 'не усиливать веса, ждать 24ч'
-            severity = 1
-        else:
-            status = '🟠 6ч слабый BUY'
-            action = 'считать ранним входом, новых BUY не открывать'
-            severity = 2
-    else:
-        if pct <= -1.0 or ('WATCH' in current_decision and pct < 0):
-            status = '🟠 до 6ч слабость / WATCH'
-            action = 'ждать 6ч checkpoint'
-            severity = 1
-        elif pct >= 1.0:
-            status = '🟢 до 6ч полезно'
-            action = 'ждать 6ч checkpoint'
-            severity = -1
-    risk_tags = []
-    if stop_distance_pct <= 1.2:
-        risk_tags.append('близко к stop')
-        if severity < 3:
-            severity = 3
-    if to_t1_pct <= 0.8 and pct > 0:
-        risk_tags.append('близко к T1')
-    if probe_score <= 35:
-        risk_tags.append(f'probe-score {probe_score}/100')
-    return {
-        'asset': asset, 'entry': entry, 'last': last, 'pct': round(pct, 2), 'age_h': round(age_h, 1),
-        'stop': stop, 'target1': t1, 'probe_score': probe_score, 'paper_score': paper_score,
-        'current_decision': current_decision, 'checkpoint': checkpoint, 'status': status, 'action': action,
-        'severity': severity, 'risk_tags': risk_tags, 'stop_distance_pct': round(stop_distance_pct, 2), 'to_t1_pct': round(to_t1_pct, 2),
-    }
-
-
-def v1911101_active_checkpoints(limit=8):
-    try:
-        data, open_trades = v19119_open_trades()
-    except Exception:
-        open_trades = {}
-    decision_map = v1911101_decision_map()
-    rows = []
-    for t in list((open_trades or {}).values()):
-        if not v19119_is_paper_buy_decision(t):
-            continue
-        rows.append(v1911101_active_buy_checkpoint(t, decision_map=decision_map))
-        if len(rows) >= int(limit or 8):
-            break
-    return rows
-
-
-try:
-    _v1911101_old_v19119_active_paper_buy_rows = v19119_active_paper_buy_rows
-except Exception:
-    _v1911101_old_v19119_active_paper_buy_rows = None
-
-
-def v19119_active_paper_buy_rows(limit=8):
-    rows = []
-    for c in v1911101_active_checkpoints(limit=limit):
-        tags = ''
-        if c.get('risk_tags'):
-            tags = ' | ' + ', '.join(c.get('risk_tags')[:3])
-        rows.append(
-            f"• {c.get('asset')}: {c.get('status')} | {v19119_format_price(c.get('entry'))} → {v19119_format_price(c.get('last'))} ({float(c.get('pct',0)):+.2f}%) | {float(c.get('age_h',0)):.1f}ч | stop {v19119_format_price(c.get('stop'))} | T1 {v19119_format_price(c.get('target1'))}{tags}\n"
-            f"  Действие: {c.get('action')}"
-        )
-    return rows
-
-
-def v1911101_paper_buy_6h_lines():
-    cps = v1911101_active_checkpoints(limit=8)
-    lines = ['🧭 PAPER BUY 6H CHECKPOINT']
-    if not cps:
-        lines.append('• активных PAPER BUY нет')
-        return lines
-    for c in cps:
-        lines.append(f"• {c.get('asset')}: {c.get('status')} | {float(c.get('pct',0)):+.2f}% | {float(c.get('age_h',0)):.1f}ч | probe-score {c.get('probe_score')}/100")
-        lines.append(f"  Что делать: {c.get('action')}")
-    weak = [c for c in cps if int(c.get('severity',0) or 0) >= 2]
-    strong = [c for c in cps if int(c.get('severity',0) or 0) < 0]
-    lines.append('')
-    if weak:
-        lines.append(f"Итог 6ч: 🟠 слабых/ранних BUY: {len(weak)} — новые paper BUY не добавлять до 24ч.")
-    elif strong:
-        lines.append(f"Итог 6ч: 🟢 полезных BUY: {len(strong)} — ждать 24ч, live BUY всё равно +0.")
-    else:
-        lines.append('Итог 6ч: 🟡 нейтрально — ждать 24ч, веса не усиливать.')
-    return lines
-
-
-def v1911101_lesson_router_lines():
-    g = v1911101_global_lesson_router_state()
-    lines = ['🧠 LESSON WEIGHT ROUTER']
-    lines.append(f"• режим: {g.get('label')} | lessons {g.get('total')} | good {g.get('good')} | neutral {g.get('neutral')} | bad {g.get('bad')}")
-    lines.append(f"• paperΔ total: {g.get('paper_delta')} | max active paper BUY: {g.get('max_active_paper_buy')}")
-    try:
-        assets = sorted(set(str(l.get('asset','')).upper() for l in v1911101_lessons() if isinstance(l, dict) and l.get('asset')))
-    except Exception:
-        assets = []
-    if assets:
-        lines.append('• asset routing:')
-        for a in assets[:8]:
-            r = v1911101_lesson_router_adjustment(a)
-            st = r.get('asset_stats', {})
-            if st.get('total',0) <= 0:
-                continue
-            verdict = '🟡 neutral'
-            if st.get('bad',0) >= 1 and st.get('good',0) == 0:
-                verdict = '🟠 wait/penalty'
-            elif st.get('good',0) >= 1:
-                verdict = '🟢 paper-priority only'
-            lines.append(f"  - {a}: {verdict} | good {st.get('good')} neutral {st.get('neutral')} bad {st.get('bad')} | avg {st.get('avg_pct'):+.2f}% | adj {r.get('adj')} cap {r.get('cap')}")
-    lines.append('• live BUY: +0, автоторговля OFF.')
-    return lines
-
-
-try:
-    _v1911101_old_v19119_paper_buy_decision_report = v19119_paper_buy_decision_report
-except Exception:
-    _v1911101_old_v19119_paper_buy_decision_report = None
-
-
-def v19119_paper_buy_decision_report(create=False):
-    if _v1911101_old_v19119_paper_buy_decision_report:
-        base = str(_v1911101_old_v19119_paper_buy_decision_report(create=create))
-    else:
-        base = '🟢 Paper BUY Decision Layer\n'
-    for old in [
-        'Fix v19.11.9.4: PAPER BUY теперь сохраняется в GitHub storage сразу после создания.',
-        'Fix v19.11.10: активные PAPER BUY получили 6ч checkpoint + Lesson Router.'
-    ]:
-        base = base.replace(old, 'Fix v19.11.10.1: active PAPER BUY status реально подключён до runtime.')
-    return base + '\n\n' + '\n'.join(v1911101_paper_buy_6h_lines()) + '\n\n' + '\n'.join(v1911101_lesson_router_lines())
-
-
-def v19119_paper_buy_audit_report():
-    return v19119_paper_buy_decision_report(create=False)
-
-
-try:
-    _v1911101_old_v191181_fast_audit_build_content = v191181_fast_audit_build_content
-except Exception:
-    _v1911101_old_v191181_fast_audit_build_content = None
-
-
-def v191181_fast_audit_build_content():
-    base = str(_v1911101_old_v191181_fast_audit_build_content()) if _v1911101_old_v191181_fast_audit_build_content else f"VERSION\n{BOT_VERSION}"
-    return (
-        base +
-        "\n\n" + "="*80 + "\nPAPER BUY DURABLE STATE V19.11.10.1\n" + "="*80 + "\n" + "\n".join(v1911101_durable_state_lines()) +
-        "\n\n" + "="*80 + "\nPAPER BUY 6H CHECKPOINT V19.11.10.1\n" + "="*80 + "\n" + "\n".join(v1911101_paper_buy_6h_lines()) +
-        "\n\n" + "="*80 + "\nLESSON WEIGHT ROUTER V19.11.10.1\n" + "="*80 + "\n" + "\n".join(v1911101_lesson_router_lines())
-    )
-
-
-def version_user_report():
-    return (
-        f"✅ Версия: {BOT_VERSION}\n\n"
-        "Что исправлено:\n"
-        "• v19.11.10 wiring подключён ДО запуска runtime, а не после __main__;\n"
-        "• открытые NEAR/LINK больше не отображаются как просто 🟢 PAPER BUY, если 6ч/probe-score уже ухудшились;\n"
-        "• /paper_buy_status получил active 6h checkpoint прямо в строках открытых сделок;\n"
-        "• /audit_file получил секции PAPER BUY 6H CHECKPOINT и LESSON WEIGHT ROUTER;\n"
-        "• Lesson Router теперь режет будущий paper-score по слабым 24ч урокам;\n"
-        "• durable-state paper_buy_state.json подключён до runtime.\n\n"
-        "Сохранено:\n"
-        "• реальные покупки 0;\n"
-        "• автоторговля OFF;\n"
-        "• BUY-веса +0;\n"
-        "• Risk Engine unchanged;\n"
-        "• backup/persistence fixes сохранены.\n\n"
-        "Команды проверки: /version | /paper_buy_status | /paper | /lesson_engine | /audit_file"
-    )
-
-
-
-
-# === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
-# Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
-
-
-def v1911101_section(title, body):
-    return "\n\n" + "="*80 + "\n" + str(title) + "\n" + "="*80 + "\n" + str(body or "")
-
-
-def v1911101_safe_call(fn_name, fallback=''):
-    try:
-        fn = globals().get(fn_name)
-        if callable(fn):
-            return str(fn())
-    except Exception as e:
-        return f"⚠️ {fn_name} error: {str(e)[:180]}"
-    return fallback
-
-
-def v1911101_safe_audit_short():
-    try:
-        data = paper_store()
-        op = data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}
-        closed = data.get('closed', []) if isinstance(data.get('closed', []), list) else []
-        active_buy = v191194_count_active_buy_in_data(data)
-        lessons = v1911101_lessons() if 'v1911101_lessons' in globals() else []
-        return (
-            "🧾 Короткий аудит FAST\n\n"
-            f"Версия: {BOT_VERSION}\n"
-            "Оценка бота: fast/cache\n"
-            f"Paper: открыто {len(op)} | закрыто {len(closed)} | уроков {len(lessons)} | active PAPER BUY {active_buy}\n"
-            "Режим: быстрый audit без тяжёлого price-refresh.\n"
-            "Покупки: 🔴 НЕТ | автоторговля выключена | BUY-веса +0."
-        )
-    except Exception as e:
-        return f"🧾 Короткий аудит FAST\n⚠️ error: {str(e)[:180]}"
-
-
-def v191181_fast_audit_build_content():
-    parts = []
-    parts.append("ALEX EDGE ULTRA FAST TECH AUDIT FILE")
-    parts.append(v1911101_section("VERSION", f"BOT_VERSION: {BOT_VERSION}"))
-    parts.append(v1911101_section("AUDIT SHORT FAST", v1911101_safe_audit_short()))
-    parts.append(v1911101_section("FAST PROBE SCORING", v1911101_safe_call('v191181_fast_probe_scoring_report')))
-    parts.append(v1911101_section("FAST SHADOW PORTFOLIO", v1911101_safe_call('v191181_fast_shadow_report')))
-    parts.append(v1911101_section("FAST LESSON ENGINE", v1911101_safe_call('v191181_fast_lesson_engine_report')))
-    parts.append(v1911101_section("PAPER BUY DECISION LAYER V19.11.10.1", v1911101_safe_call('v19119_paper_buy_audit_report')))
-    parts.append(v1911101_section("PAPER BUY DURABLE STATE V19.11.10.1", "\n".join(v1911101_durable_state_lines()) if 'v1911101_durable_state_lines' in globals() else 'Durable state: no data'))
-    parts.append(v1911101_section("PAPER BUY 6H CHECKPOINT V19.11.10.1", "\n".join(v1911101_paper_buy_6h_lines()) if 'v1911101_paper_buy_6h_lines' in globals() else 'no checkpoint data'))
-    parts.append(v1911101_section("LESSON WEIGHT ROUTER V19.11.10.1", "\n".join(v1911101_lesson_router_lines()) if 'v1911101_lesson_router_lines' in globals() else 'no router data'))
-    return "".join(parts)
-
-
-
-
-# === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
-# Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
-
-
-def v1911101_fmt_created_paper_buy(trade):
-    try:
-        asset = v19119_trade_asset(trade)
-        plan = trade.get('entry_plan', {}) if isinstance(trade.get('entry_plan', {}), dict) else {}
-        reasons = trade.get('reasons') if isinstance(trade.get('reasons'), list) else []
-        reason = '; '.join(str(x) for x in reasons[:3]) if reasons else str(trade.get('reason') or 'paper BUY training')
-        return (
-            f"• {asset}: 🟢 PAPER BUY | paper-score {int(trade.get('score',0) or 0)}/100 | "
-            f"вход {v19119_format_price(trade.get('entry_price'))} | размер {float(trade.get('paper_size_pct',2.0) or 2.0):.1f}% paper-capital\n"
-            f"  План: T1 {v19119_format_price(plan.get('target1'))} / T2 {v19119_format_price(plan.get('target2'))} / stop {v19119_format_price(plan.get('stop'))}\n"
-            f"  Причина: {reason}"
-        )
-    except Exception as e:
-        return f"• ⚠️ created trade format error: {str(e)[:120]}"
-
-
-def v1911101_candidate_lines(decisions, limit=8):
-    lines = []
-    for d in list(decisions or [])[:int(limit or 8)]:
-        if not isinstance(d, dict):
-            continue
-        try:
-            asset = str(d.get('asset') or '?').upper()
-            dec = str(d.get('decision') or d.get('tier') or 'PAPER WATCH')
-            ps = int(d.get('decision_score', 0) or 0)
-            prs = int(d.get('probe_score', 0) or 0)
-            pnl = float(d.get('probe_pnl', 0) or 0)
-            risk = str(d.get('risk') or 'без критичных блокеров')
-            adj = d.get('lesson_router_adj')
-            adj_txt = f" | router {int(adj):+d}" if isinstance(adj, int) and adj != 0 else ''
-            lines.append(f"• {asset}: {dec} | paper-score {ps}/100 | probe-score {prs}/100 | probe {pnl:+.2f}%{adj_txt} | риск: {risk}")
-        except Exception as e:
-            lines.append(f"• ⚠️ candidate format error: {str(e)[:120]}")
-    return lines
-
-
-def v19119_paper_buy_decision_report(create=False):
-    try:
-        res = v19119_open_paper_buy_decisions(create=bool(create), max_new=2, force_one=False)
-    except Exception as e:
-        res = {'created': [], 'skipped': [], 'active': 0, 'decisions': [], 'error': str(e)[:180]}
-    created = res.get('created', []) if isinstance(res, dict) and isinstance(res.get('created', []), list) else []
-    decisions = res.get('decisions', []) if isinstance(res, dict) and isinstance(res.get('decisions', []), list) else []
-    if not decisions:
-        try:
-            decisions = v19119_ranked_paper_buy_decisions()
-        except Exception:
-            decisions = []
-    try:
-        active_count = int(res.get('active', 0) or 0) if isinstance(res, dict) else 0
-    except Exception:
-        active_count = 0
-    active_rows = v19119_active_paper_buy_rows(limit=8)
-    if active_rows:
-        active_count = max(active_count, len(active_rows))
-    lines = [
-        '🟢 Paper BUY Decision Layer',
-        f'Версия: {BOT_VERSION}',
-        '',
-        'Режим: только paper BUY. Реальные покупки 0, автоторговля OFF, BUY-веса +0.',
-        'Fix v19.11.10.1: active PAPER BUY status подключён до runtime; 6ч checkpoint виден в открытых сделках.',
-        '',
-        f'Создано новых paper BUY: {len(created)}',
-        f'Активных paper BUY: {active_count}',
-    ]
-    if isinstance(res, dict) and res.get('error'):
-        lines += ['', f"⚠️ Ошибка слоя: {res.get('error')}"]
-    if created:
-        lines += ['', 'Новые paper BUY:']
-        lines += [v1911101_fmt_created_paper_buy(t) for t in created]
-    if active_rows:
-        lines += ['', 'Открытые paper BUY:'] + active_rows
-    else:
-        lines += ['', 'Открытых paper BUY пока нет. Если кандидаты ниже проходят зелёный BUY — отправь /paper_buy для открытия и мгновенного сохранения.']
-    try:
-        lines += [''] + v191194_paper_buy_persistence_lines()
-    except Exception as e:
-        lines += ['', f'Persistence: ⚠️ {str(e)[:120]}']
-    lines += ['', 'Кандидаты/отсев сейчас:']
-    cand = v1911101_candidate_lines(decisions, limit=8)
-    lines += cand if cand else ['• нет кандидатов']
-    lines += ['', 'Правило 6ч: если active BUY ослаб до WATCH или ушёл ниже -1%, новые paper BUY не добавлять до 24ч.']
-    try:
-        lines += ['', *v1911101_paper_buy_6h_lines(), '', *v1911101_lesson_router_lines()]
-    except Exception as e:
-        lines += ['', f'⚠️ 6h/router section error: {str(e)[:160]}']
-    lines += ['', 'Проверка результата: 6ч/24ч/48ч через обычный paper finalizer.', 'Команды: /paper_buy | /paper_buy_status | /paper | /lesson_engine | /audit_file']
-    return '\n'.join(lines)
-
-
-def v19119_paper_buy_audit_report():
-    return v19119_paper_buy_decision_report(create=False)
-
-
-
-
-# === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
-# Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
-
-
-def v1911101_load_buy_state():
-    try:
-        if os.path.exists(V1911101_PAPER_BUY_STATE_FILE):
-            with open(V1911101_PAPER_BUY_STATE_FILE, 'r', encoding='utf-8') as f:
-                js = json.load(f)
-            if isinstance(js, dict):
-                return js
-    except Exception:
-        pass
-    try:
-        if github_storage_enabled():
-            repo_path = github_storage_repo_path(V1911101_PAPER_BUY_STATE_FILE)
-            raw, meta = github_get_file_bytes(repo_path)
-            if raw:
-                js = json.loads(raw.decode('utf-8', errors='ignore'))
-                if isinstance(js, dict):
-                    try:
-                        with open(V1911101_PAPER_BUY_STATE_FILE, 'w', encoding='utf-8') as f:
-                            json.dump(js, f, ensure_ascii=False, indent=2)
-                    except Exception:
-                        pass
-                    return js
-    except Exception:
-        pass
-    return {}
-
-
-def v1911101_status_snapshot():
-    try:
-        data, open_trades = v19119_open_trades()
-    except Exception:
-        data, open_trades = {'open': {}, 'closed': []}, {}
-    if not isinstance(data, dict):
-        data = {'open': {}, 'closed': []}
-    if not isinstance(open_trades, dict):
-        open_trades = {}
-    active = 0
-    try:
-        active = sum(1 for t in open_trades.values() if v19119_is_paper_buy_decision(t))
-    except Exception:
-        active = 0
-    try:
-        decisions = v19119_ranked_paper_buy_decisions()
-        if not isinstance(decisions, list):
-            decisions = []
-    except Exception:
-        decisions = []
-    return data, open_trades, active, decisions
-
-
-def v19119_paper_buy_decision_report(create=False):
-    created = []
-    res_error = ''
-    if create:
-        try:
-            # Creation is delegated to the pre-existing creator. If an old chain fails, report it but do not break status.
-            res = _v1911101_old_v19119_open_paper_buy_decisions(create=True, max_new=2, force_one=False) if '_v1911101_old_v19119_open_paper_buy_decisions' in globals() and _v1911101_old_v19119_open_paper_buy_decisions else None
-            if isinstance(res, dict):
-                created = res.get('created', []) if isinstance(res.get('created', []), list) else []
-                if created:
-                    try:
-                        data = paper_store()
-                        v1911101_save_buy_state_now(data, reason='paper_buy_create_final_override')
-                    except Exception:
-                        pass
-        except Exception as e:
-            res_error = str(e)[:180]
-    data, open_trades, active_count, decisions = v1911101_status_snapshot()
-    active_rows = v19119_active_paper_buy_rows(limit=8)
-    if active_rows:
-        active_count = max(active_count, len(active_rows))
-    lines = [
-        '🟢 Paper BUY Decision Layer',
-        f'Версия: {BOT_VERSION}',
-        '',
-        'Режим: только paper BUY. Реальные покупки 0, автоторговля OFF, BUY-веса +0.',
-        'Fix v19.11.10.1: active PAPER BUY status подключён до runtime; 6ч checkpoint виден в открытых сделках.',
-        '',
-        f'Создано новых paper BUY: {len(created)}',
-        f'Активных paper BUY: {active_count}',
-    ]
-    if res_error:
-        lines += ['', f'⚠️ create-layer warning: {res_error}']
-    if created:
-        lines += ['', 'Новые paper BUY:'] + [v1911101_fmt_created_paper_buy(t) for t in created]
-    if active_rows:
-        lines += ['', 'Открытые paper BUY:'] + active_rows
-    else:
-        lines += ['', 'Открытых paper BUY пока нет. Если кандидаты ниже проходят зелёный BUY — отправь /paper_buy для открытия и мгновенного сохранения.']
-    try:
-        # Compact persistence to avoid duplicate old durable lines.
-        journal = data.get(V191194_PAPER_BUY_JOURNAL_KEY, []) if isinstance(data.get(V191194_PAPER_BUY_JOURNAL_KEY, []), list) else []
-        state = v1911101_load_buy_state()
-        durable_active = state.get('active_buys', []) if isinstance(state, dict) else []
-        if not isinstance(durable_active, list):
-            durable_active = []
-        lines += ['', 'Persistence:', f'• active paper BUY в store: {active_count}', f'• journal записей: {len(journal)}', f'• active BUY в durable-state: {len(durable_active)}']
-    except Exception as e:
-        lines += ['', f'Persistence: ⚠️ {str(e)[:120]}']
-    lines += ['', 'Кандидаты/отсев сейчас:']
-    cand = v1911101_candidate_lines(decisions, limit=8)
-    lines += cand if cand else ['• нет кандидатов']
-    lines += ['', 'Правило 6ч: если active BUY ослаб до WATCH или ушёл ниже -1%, новые paper BUY не добавлять до 24ч.']
-    lines += ['', *v1911101_paper_buy_6h_lines(), '', *v1911101_lesson_router_lines()]
-    lines += ['', 'Проверка результата: 6ч/24ч/48ч через обычный paper finalizer.', 'Команды: /paper_buy | /paper_buy_status | /paper | /lesson_engine | /audit_file']
-    return '\n'.join(lines)
-
-
-def v19119_paper_buy_audit_report():
-    return v19119_paper_buy_decision_report(create=False)
-
-
 if __name__ == "__main__":
     try:
         restore_state_from_github_if_richer()
@@ -27201,7 +26308,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -27502,7 +26609,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
+BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -27932,896 +27039,3 @@ def version_user_report():
         "• durable-state и backup fixes сохранены.\n\n"
         "Команды проверки: /version | /paper_buy_status | /paper | /lesson_engine | /audit_file"
     )
-
-
-
-# === v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX ===
-# Critical wiring fix: the previous v19.11.10 block was appended after __main__,
-# so production runtime used the old PAPER BUY report. This block is intentionally
-# inserted before __main__ and also appended at EOF for import/smoke parity.
-# It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
-
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
-
-V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
-V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
-V1911101_RESTORE_META_KEY = "paper_buy_restore_v1911101"
-
-try:
-    PROTECTED_STATE_BASENAMES.add("paper_buy_state.json")
-except Exception:
-    pass
-
-
-def v1911101_now():
-    try:
-        return time.time()
-    except Exception:
-        return 0
-
-
-def v1911101_read_storage_json(local_path):
-    """Read data/*.json from local or GitHub with raw/blob fallback."""
-    try:
-        data = load_json(local_path)
-        if isinstance(data, dict) and data:
-            return data
-    except Exception:
-        pass
-    try:
-        if github_storage_enabled():
-            repo_path = github_storage_repo_path(local_path)
-            raw, meta = github_get_file_bytes(repo_path)
-            if raw:
-                js = json.loads(raw.decode("utf-8", errors="ignore"))
-                if isinstance(js, dict):
-                    try:
-                        save_json(local_path, js)
-                    except Exception:
-                        pass
-                    return js
-    except Exception as e:
-        try:
-            print(f"v1911101 read storage fallback error {local_path}: {e}")
-        except Exception:
-            pass
-    return {}
-
-
-def v1911101_trade_to_state_record(key, trade):
-    try:
-        if not isinstance(trade, dict) or not v19119_is_paper_buy_decision(trade):
-            return None
-        asset = v19119_trade_asset(trade)
-        if not asset:
-            return None
-        rec = dict(trade)
-        rec.setdefault("id", key)
-        rec.setdefault("asset", asset)
-        rec.setdefault("status", "open")
-        rec["durable_saved_by"] = BOT_VERSION
-        rec["durable_saved_at"] = v1911101_now()
-        return rec
-    except Exception:
-        return None
-
-
-def v1911101_build_buy_state(data=None):
-    if not isinstance(data, dict):
-        data = paper_store()
-    open_trades = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
-    active = []
-    for key, trade in list(open_trades.items()):
-        rec = v1911101_trade_to_state_record(key, trade)
-        if rec:
-            active.append(rec)
-    journal = data.get(V191194_PAPER_BUY_JOURNAL_KEY, []) if isinstance(data.get(V191194_PAPER_BUY_JOURNAL_KEY, []), list) else []
-    return {
-        "version": BOT_VERSION,
-        "created_at": v1911101_now(),
-        "active_count": len(active),
-        "active_buys": active,
-        "journal": journal[-80:],
-        "source": "paper_trades.json",
-        "note": "Durable minimal PAPER BUY state. Real buys remain 0; autotrading OFF.",
-    }
-
-
-def v1911101_save_buy_state_now(data=None, reason="paper_buy_durable_save"):
-    status = {"ok": False, "mode": "not-run", "active": 0, "synced_files": 0, "error": "", "at": v1911101_now(), "reason": reason}
-    try:
-        state = v1911101_build_buy_state(data)
-        status["active"] = int(state.get("active_count", 0) or 0)
-        save_json(V1911101_PAPER_BUY_STATE_FILE, state)
-        status.update({"ok": True, "mode": "local"})
-        if github_storage_enabled():
-            try:
-                n = sync_github_storage_now([V1911101_PAPER_BUY_STATE_FILE, PAPER_TRADES_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
-                status.update({"mode": "github-durable-immediate", "synced_files": int(n or 0), "ok": int(n or 0) >= 1})
-            except Exception as e:
-                status.update({"mode": "github-durable-failed", "ok": False, "error": str(e)[:180]})
-        return status
-    except Exception as e:
-        status.update({"ok": False, "mode": "error", "error": str(e)[:180]})
-        return status
-
-
-def v1911101_load_buy_state():
-    return v1911101_read_storage_json(V1911101_PAPER_BUY_STATE_FILE)
-
-
-def v1911101_restore_paper_buys_from_state(data=None, reason="status_restore"):
-    result = {"restored": 0, "available": 0, "mode": "not-needed", "error": "", "at": v1911101_now()}
-    try:
-        if not isinstance(data, dict):
-            data = paper_store()
-        open_trades = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
-        active_now = v191194_count_active_buy_in_data(data)
-        if active_now > 0:
-            result.update({"available": active_now, "mode": "already-active"})
-            return data, result
-        state = v1911101_load_buy_state()
-        active = state.get("active_buys", []) if isinstance(state, dict) else []
-        if not isinstance(active, list) or not active:
-            result.update({"mode": "no-durable-state"})
-            return data, result
-        result["available"] = len(active)
-        now = v1911101_now()
-        restored = 0
-        existing_assets = set(str(t.get("asset", "")).upper() for t in open_trades.values() if isinstance(t, dict))
-        for trade in active:
-            if not isinstance(trade, dict) or not v19119_is_paper_buy_decision(trade):
-                continue
-            asset = str(trade.get("asset") or v19119_trade_asset(trade)).upper().strip()
-            if not asset or asset in existing_assets:
-                continue
-            try:
-                age_h = (now - float(trade.get("entry_time", now) or now)) / 3600.0
-            except Exception:
-                age_h = 0
-            if age_h > 60:
-                continue
-            key = trade.get("id") or paper_trade_key(asset, V19119_PAPER_BUY_TYPE, trade.get("entry_time", now))
-            if key in open_trades:
-                continue
-            rec = dict(trade)
-            rec["id"] = key
-            rec["status"] = "open"
-            rec["restored_from"] = "paper_buy_state.json"
-            rec["restored_at"] = now
-            rec["restored_by"] = BOT_VERSION
-            open_trades[key] = rec
-            existing_assets.add(asset)
-            restored += 1
-        if restored:
-            data["open"] = open_trades
-            meta = data.get(V1911101_RESTORE_META_KEY)
-            if not isinstance(meta, dict):
-                meta = {}
-            meta.update({"last_restore_at": now, "restored": restored, "reason": reason, "version": BOT_VERSION})
-            data[V1911101_RESTORE_META_KEY] = meta
-            save_paper_store(data, sync=False)
-            v1911101_save_buy_state_now(data, reason="restore_after_restart")
-            result.update({"restored": restored, "mode": "restored-from-durable-state"})
-        else:
-            result.update({"mode": "durable-state-empty-or-stale"})
-        return data, result
-    except Exception as e:
-        result.update({"mode": "restore-error", "error": str(e)[:180]})
-        return (data if isinstance(data, dict) else paper_store()), result
-
-
-try:
-    _v1911101_old_v19119_open_paper_buy_decisions = v19119_open_paper_buy_decisions
-except Exception:
-    _v1911101_old_v19119_open_paper_buy_decisions = None
-
-try:
-    _v1911101_old_v19119_ranked_paper_buy_decisions = v19119_ranked_paper_buy_decisions
-except Exception:
-    _v1911101_old_v19119_ranked_paper_buy_decisions = None
-
-
-def v1911101_lessons():
-    try:
-        ls = v19118_load_lessons()
-        return ls if isinstance(ls, list) else []
-    except Exception:
-        return []
-
-
-def v1911101_lesson_router_adjustment(asset):
-    asset = str(asset or '').upper().strip()
-    rows = [l for l in v1911101_lessons() if isinstance(l, dict) and str(l.get('asset','')).upper().strip() == asset]
-    st = {"total": len(rows), "good": 0, "neutral": 0, "bad": 0, "avg_pct": 0.0, "paper_delta": 0}
-    if not rows:
-        return {"asset": asset, "adj": 0, "cap": 100, "asset_stats": st, "reason": "no lessons"}
-    vals = []
-    delta = 0
-    for r in rows:
-        cls = str(r.get('classification') or r.get('label') or r.get('status') or '').lower()
-        try:
-            vals.append(float(r.get('pct') if r.get('pct') is not None else r.get('pnl_pct', 0) or 0))
-        except Exception:
-            pass
-        try:
-            delta += int(r.get('paper_delta') or r.get('paperΔ') or 0)
-        except Exception:
-            pass
-        if any(x in cls for x in ['good', 'useful', 'полез', 'хорош']):
-            st['good'] += 1
-        elif any(x in cls for x in ['bad', 'early', 'drawdown', 'плох', 'ранн', 'просад']):
-            st['bad'] += 1
-        else:
-            st['neutral'] += 1
-    st['paper_delta'] = delta
-    st['avg_pct'] = round(sum(vals)/len(vals), 2) if vals else 0.0
-    adj = 0
-    cap = 100
-    reason = 'neutral lessons'
-    if st['bad'] >= 1 and st['good'] == 0:
-        adj -= 12
-        cap = 45
-        reason = 'bad/early lessons penalty'
-    if delta <= -4:
-        adj -= 8
-        cap = min(cap, 35)
-        reason = 'heavy paperΔ penalty'
-    if st['good'] >= 1:
-        adj += 6
-        reason = 'good lesson bonus, paper-only'
-    return {"asset": asset, "adj": adj, "cap": cap, "asset_stats": st, "reason": reason}
-
-
-def v1911101_global_lesson_router_state():
-    ls = v1911101_lessons()
-    good = neutral = bad = delta = 0
-    for r in ls:
-        if not isinstance(r, dict):
-            continue
-        cls = str(r.get('classification') or r.get('label') or r.get('status') or '').lower()
-        try:
-            delta += int(r.get('paper_delta') or r.get('paperΔ') or 0)
-        except Exception:
-            pass
-        if any(x in cls for x in ['good','useful','полез','хорош']):
-            good += 1
-        elif any(x in cls for x in ['bad','early','drawdown','плох','ранн','просад']):
-            bad += 1
-        else:
-            neutral += 1
-    total = good + neutral + bad
-    label = '🟡 нет уроков'
-    cap = V19119_PAPER_BUY_MAX_ACTIVE if 'V19119_PAPER_BUY_MAX_ACTIVE' in globals() else 2
-    if total:
-        if good == 0 and bad >= max(2, neutral):
-            label = '🟠 cautious / lesson penalty'
-            cap = min(cap, 2)
-        elif good > bad:
-            label = '🟢 paper priority only'
-        else:
-            label = '🟡 neutral / wait 48h'
-    return {"total": total, "good": good, "neutral": neutral, "bad": bad, "paper_delta": delta, "label": label, "max_active_paper_buy": cap}
-
-
-def v19119_ranked_paper_buy_decisions():
-    base = []
-    if _v1911101_old_v19119_ranked_paper_buy_decisions:
-        try:
-            base = _v1911101_old_v19119_ranked_paper_buy_decisions()
-        except Exception:
-            base = []
-    out = []
-    for d in base or []:
-        if not isinstance(d, dict):
-            continue
-        nd = dict(d)
-        asset = str(nd.get('asset') or '').upper().strip()
-        r = v1911101_lesson_router_adjustment(asset)
-        try:
-            score = int(nd.get('decision_score', 0) or 0)
-        except Exception:
-            score = 0
-        score = max(0, min(int(r.get('cap',100)), score + int(r.get('adj',0))))
-        nd['decision_score'] = score
-        nd['lesson_router_adj'] = int(r.get('adj',0))
-        nd['lesson_router_cap'] = int(r.get('cap',100))
-        nd['lesson_router_reason'] = r.get('reason')
-        if score < 50 and str(nd.get('decision','')).startswith('🟢'):
-            nd['decision'] = '🟠 PAPER WATCH, BUY ЖДАТЬ'
-            nd['tier'] = 'watch_only'
-            risk = str(nd.get('risk') or '')
-            nd['risk'] = (risk + '; ' if risk else '') + f"Lesson Router: {r.get('reason')}"
-        out.append(nd)
-    try:
-        out.sort(key=lambda x: int(x.get('decision_score',0) or 0), reverse=True)
-    except Exception:
-        pass
-    return out
-
-
-def v19119_open_paper_buy_decisions(create=True, max_new=2, force_one=False):
-    try:
-        if not create:
-            v1911101_restore_paper_buys_from_state(reason="paper_buy_status")
-    except Exception:
-        pass
-    if _v1911101_old_v19119_open_paper_buy_decisions:
-        res = _v1911101_old_v19119_open_paper_buy_decisions(create=create, max_new=max_new, force_one=force_one)
-    else:
-        res = {"created": [], "skipped": [], "active": 0, "decisions": []}
-    try:
-        data = paper_store()
-        active = v191194_count_active_buy_in_data(data)
-        if isinstance(res, dict):
-            res['active'] = active
-        if active > 0:
-            st = v1911101_save_buy_state_now(data, reason="paper_buy_create_or_status")
-            if isinstance(res, dict):
-                res["durable_state"] = st
-    except Exception as e:
-        if isinstance(res, dict):
-            res["durable_state"] = {"ok": False, "mode": "error", "error": str(e)[:120]}
-    return res
-
-
-try:
-    _v1911101_old_v191194_paper_buy_persistence_lines = v191194_paper_buy_persistence_lines
-except Exception:
-    _v1911101_old_v191194_paper_buy_persistence_lines = None
-
-
-def v1911101_durable_state_lines():
-    try:
-        state = v1911101_load_buy_state()
-        active = state.get("active_buys", []) if isinstance(state, dict) else []
-        if not isinstance(active, list):
-            active = []
-        created_at = state.get("created_at") if isinstance(state, dict) else None
-        age = ""
-        try:
-            if created_at:
-                age = f" | {v191183_fmt_age(created_at)}"
-        except Exception:
-            age = ""
-        data = paper_store()
-        restore_meta = data.get(V1911101_RESTORE_META_KEY, {}) if isinstance(data, dict) else {}
-        restored_line = "нет"
-        if isinstance(restore_meta, dict) and restore_meta.get("last_restore_at"):
-            restored_line = f"{restore_meta.get('restored', 0)} | {v191183_fmt_age(restore_meta.get('last_restore_at'))}"
-        return [
-            "Durable state:",
-            f"• файл: {os.path.basename(V1911101_PAPER_BUY_STATE_FILE)}",
-            f"• active BUY в durable-state: {len(active)}{age}",
-            f"• last restore: {restored_line}",
-        ]
-    except Exception as e:
-        return ["Durable state:", f"• ⚠️ error: {str(e)[:120]}"]
-
-
-def v191194_paper_buy_persistence_lines():
-    base = []
-    try:
-        if _v1911101_old_v191194_paper_buy_persistence_lines:
-            base = list(_v1911101_old_v191194_paper_buy_persistence_lines())
-    except Exception:
-        base = []
-    return base + v1911101_durable_state_lines()
-
-
-def v1911101_decision_map():
-    mp = {}
-    try:
-        for d in v19119_ranked_paper_buy_decisions() or []:
-            if not isinstance(d, dict):
-                continue
-            a = str(d.get('asset') or '').upper().strip()
-            if a and a not in mp:
-                mp[a] = d
-    except Exception:
-        pass
-    return mp
-
-
-def v1911101_active_buy_checkpoint(t, decision_map=None):
-    decision_map = decision_map if isinstance(decision_map, dict) else v1911101_decision_map()
-    asset = v19119_trade_asset(t)
-    entry = v19119_safe_float(t.get('entry_price'), 0)
-    last = v19119_safe_float(t.get('last_price'), entry) or entry
-    try:
-        pct = t.get('last_pct')
-        if not isinstance(pct, (int, float)):
-            pct = ((last - entry) / entry * 100.0) if entry and last else 0.0
-        pct = float(pct or 0.0)
-    except Exception:
-        pct = 0.0
-    age_h = v19119_trade_age_h(t)
-    plan = t.get('entry_plan', {}) if isinstance(t.get('entry_plan', {}), dict) else {}
-    stop = v19119_safe_float(plan.get('stop'), 0)
-    t1 = v19119_safe_float(plan.get('target1'), 0)
-    d = decision_map.get(asset, {})
-    probe_score = int(d.get('probe_score', t.get('probe_score', 55)) or 55)
-    current_decision = str(d.get('decision') or '')
-    paper_score = int(d.get('decision_score', t.get('decision_score', t.get('score', 0))) or 0)
-    try:
-        stop_distance_pct = ((last - stop) / last * 100.0) if last and stop else 99.0
-    except Exception:
-        stop_distance_pct = 99.0
-    try:
-        to_t1_pct = ((t1 - last) / last * 100.0) if last and t1 else 99.0
-    except Exception:
-        to_t1_pct = 99.0
-    status = '🟢 PAPER BUY active'
-    action = 'держать paper-наблюдение'
-    severity = 0
-    checkpoint = 'pre-6h' if age_h < 6 else '6h'
-    if age_h >= 6:
-        if stop and last <= stop:
-            status = '🔴 STOP HIT / paper exit'
-            action = 'фиксировать как ошибку paper-входа, новые BUY запретить'
-            severity = 4
-        elif pct <= -1.0 and probe_score <= 35:
-            status = '🟠 6ч ранний PAPER BUY'
-            action = 'не усиливать, новых BUY не открывать, ждать 24ч/48ч'
-            severity = 3
-        elif 'WATCH' in current_decision or probe_score <= 35:
-            status = '🟠 6ч ослабла / WATCH'
-            action = 'оставить только контроль, без новых BUY'
-            severity = 2
-        elif pct >= 1.8 or (t1 and last >= t1):
-            status = '🟢 6ч сильный paper BUY'
-            action = 'зафиксировать полезную модель, ждать 24ч'
-            severity = -2
-        elif pct >= 0.3:
-            status = '🟢 6ч умеренно полезно'
-            action = 'держать до 24ч без усиления live BUY'
-            severity = -1
-        elif pct > -0.5:
-            status = '🟡 6ч нейтрально'
-            action = 'не усиливать веса, ждать 24ч'
-            severity = 1
-        else:
-            status = '🟠 6ч слабый BUY'
-            action = 'считать ранним входом, новых BUY не открывать'
-            severity = 2
-    else:
-        if pct <= -1.0 or ('WATCH' in current_decision and pct < 0):
-            status = '🟠 до 6ч слабость / WATCH'
-            action = 'ждать 6ч checkpoint'
-            severity = 1
-        elif pct >= 1.0:
-            status = '🟢 до 6ч полезно'
-            action = 'ждать 6ч checkpoint'
-            severity = -1
-    risk_tags = []
-    if stop_distance_pct <= 1.2:
-        risk_tags.append('близко к stop')
-        if severity < 3:
-            severity = 3
-    if to_t1_pct <= 0.8 and pct > 0:
-        risk_tags.append('близко к T1')
-    if probe_score <= 35:
-        risk_tags.append(f'probe-score {probe_score}/100')
-    return {
-        'asset': asset, 'entry': entry, 'last': last, 'pct': round(pct, 2), 'age_h': round(age_h, 1),
-        'stop': stop, 'target1': t1, 'probe_score': probe_score, 'paper_score': paper_score,
-        'current_decision': current_decision, 'checkpoint': checkpoint, 'status': status, 'action': action,
-        'severity': severity, 'risk_tags': risk_tags, 'stop_distance_pct': round(stop_distance_pct, 2), 'to_t1_pct': round(to_t1_pct, 2),
-    }
-
-
-def v1911101_active_checkpoints(limit=8):
-    try:
-        data, open_trades = v19119_open_trades()
-    except Exception:
-        open_trades = {}
-    decision_map = v1911101_decision_map()
-    rows = []
-    for t in list((open_trades or {}).values()):
-        if not v19119_is_paper_buy_decision(t):
-            continue
-        rows.append(v1911101_active_buy_checkpoint(t, decision_map=decision_map))
-        if len(rows) >= int(limit or 8):
-            break
-    return rows
-
-
-try:
-    _v1911101_old_v19119_active_paper_buy_rows = v19119_active_paper_buy_rows
-except Exception:
-    _v1911101_old_v19119_active_paper_buy_rows = None
-
-
-def v19119_active_paper_buy_rows(limit=8):
-    rows = []
-    for c in v1911101_active_checkpoints(limit=limit):
-        tags = ''
-        if c.get('risk_tags'):
-            tags = ' | ' + ', '.join(c.get('risk_tags')[:3])
-        rows.append(
-            f"• {c.get('asset')}: {c.get('status')} | {v19119_format_price(c.get('entry'))} → {v19119_format_price(c.get('last'))} ({float(c.get('pct',0)):+.2f}%) | {float(c.get('age_h',0)):.1f}ч | stop {v19119_format_price(c.get('stop'))} | T1 {v19119_format_price(c.get('target1'))}{tags}\n"
-            f"  Действие: {c.get('action')}"
-        )
-    return rows
-
-
-def v1911101_paper_buy_6h_lines():
-    cps = v1911101_active_checkpoints(limit=8)
-    lines = ['🧭 PAPER BUY 6H CHECKPOINT']
-    if not cps:
-        lines.append('• активных PAPER BUY нет')
-        return lines
-    for c in cps:
-        lines.append(f"• {c.get('asset')}: {c.get('status')} | {float(c.get('pct',0)):+.2f}% | {float(c.get('age_h',0)):.1f}ч | probe-score {c.get('probe_score')}/100")
-        lines.append(f"  Что делать: {c.get('action')}")
-    weak = [c for c in cps if int(c.get('severity',0) or 0) >= 2]
-    strong = [c for c in cps if int(c.get('severity',0) or 0) < 0]
-    lines.append('')
-    if weak:
-        lines.append(f"Итог 6ч: 🟠 слабых/ранних BUY: {len(weak)} — новые paper BUY не добавлять до 24ч.")
-    elif strong:
-        lines.append(f"Итог 6ч: 🟢 полезных BUY: {len(strong)} — ждать 24ч, live BUY всё равно +0.")
-    else:
-        lines.append('Итог 6ч: 🟡 нейтрально — ждать 24ч, веса не усиливать.')
-    return lines
-
-
-def v1911101_lesson_router_lines():
-    g = v1911101_global_lesson_router_state()
-    lines = ['🧠 LESSON WEIGHT ROUTER']
-    lines.append(f"• режим: {g.get('label')} | lessons {g.get('total')} | good {g.get('good')} | neutral {g.get('neutral')} | bad {g.get('bad')}")
-    lines.append(f"• paperΔ total: {g.get('paper_delta')} | max active paper BUY: {g.get('max_active_paper_buy')}")
-    try:
-        assets = sorted(set(str(l.get('asset','')).upper() for l in v1911101_lessons() if isinstance(l, dict) and l.get('asset')))
-    except Exception:
-        assets = []
-    if assets:
-        lines.append('• asset routing:')
-        for a in assets[:8]:
-            r = v1911101_lesson_router_adjustment(a)
-            st = r.get('asset_stats', {})
-            if st.get('total',0) <= 0:
-                continue
-            verdict = '🟡 neutral'
-            if st.get('bad',0) >= 1 and st.get('good',0) == 0:
-                verdict = '🟠 wait/penalty'
-            elif st.get('good',0) >= 1:
-                verdict = '🟢 paper-priority only'
-            lines.append(f"  - {a}: {verdict} | good {st.get('good')} neutral {st.get('neutral')} bad {st.get('bad')} | avg {st.get('avg_pct'):+.2f}% | adj {r.get('adj')} cap {r.get('cap')}")
-    lines.append('• live BUY: +0, автоторговля OFF.')
-    return lines
-
-
-try:
-    _v1911101_old_v19119_paper_buy_decision_report = v19119_paper_buy_decision_report
-except Exception:
-    _v1911101_old_v19119_paper_buy_decision_report = None
-
-
-def v19119_paper_buy_decision_report(create=False):
-    if _v1911101_old_v19119_paper_buy_decision_report:
-        base = str(_v1911101_old_v19119_paper_buy_decision_report(create=create))
-    else:
-        base = '🟢 Paper BUY Decision Layer\n'
-    for old in [
-        'Fix v19.11.9.4: PAPER BUY теперь сохраняется в GitHub storage сразу после создания.',
-        'Fix v19.11.10: активные PAPER BUY получили 6ч checkpoint + Lesson Router.'
-    ]:
-        base = base.replace(old, 'Fix v19.11.10.1: active PAPER BUY status реально подключён до runtime.')
-    return base + '\n\n' + '\n'.join(v1911101_paper_buy_6h_lines()) + '\n\n' + '\n'.join(v1911101_lesson_router_lines())
-
-
-def v19119_paper_buy_audit_report():
-    return v19119_paper_buy_decision_report(create=False)
-
-
-try:
-    _v1911101_old_v191181_fast_audit_build_content = v191181_fast_audit_build_content
-except Exception:
-    _v1911101_old_v191181_fast_audit_build_content = None
-
-
-def v191181_fast_audit_build_content():
-    base = str(_v1911101_old_v191181_fast_audit_build_content()) if _v1911101_old_v191181_fast_audit_build_content else f"VERSION\n{BOT_VERSION}"
-    return (
-        base +
-        "\n\n" + "="*80 + "\nPAPER BUY DURABLE STATE V19.11.10.1\n" + "="*80 + "\n" + "\n".join(v1911101_durable_state_lines()) +
-        "\n\n" + "="*80 + "\nPAPER BUY 6H CHECKPOINT V19.11.10.1\n" + "="*80 + "\n" + "\n".join(v1911101_paper_buy_6h_lines()) +
-        "\n\n" + "="*80 + "\nLESSON WEIGHT ROUTER V19.11.10.1\n" + "="*80 + "\n" + "\n".join(v1911101_lesson_router_lines())
-    )
-
-
-def version_user_report():
-    return (
-        f"✅ Версия: {BOT_VERSION}\n\n"
-        "Что исправлено:\n"
-        "• v19.11.10 wiring подключён ДО запуска runtime, а не после __main__;\n"
-        "• открытые NEAR/LINK больше не отображаются как просто 🟢 PAPER BUY, если 6ч/probe-score уже ухудшились;\n"
-        "• /paper_buy_status получил active 6h checkpoint прямо в строках открытых сделок;\n"
-        "• /audit_file получил секции PAPER BUY 6H CHECKPOINT и LESSON WEIGHT ROUTER;\n"
-        "• Lesson Router теперь режет будущий paper-score по слабым 24ч урокам;\n"
-        "• durable-state paper_buy_state.json подключён до runtime.\n\n"
-        "Сохранено:\n"
-        "• реальные покупки 0;\n"
-        "• автоторговля OFF;\n"
-        "• BUY-веса +0;\n"
-        "• Risk Engine unchanged;\n"
-        "• backup/persistence fixes сохранены.\n\n"
-        "Команды проверки: /version | /paper_buy_status | /paper | /lesson_engine | /audit_file"
-    )
-
-
-
-
-# === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
-# Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
-
-
-def v1911101_section(title, body):
-    return "\n\n" + "="*80 + "\n" + str(title) + "\n" + "="*80 + "\n" + str(body or "")
-
-
-def v1911101_safe_call(fn_name, fallback=''):
-    try:
-        fn = globals().get(fn_name)
-        if callable(fn):
-            return str(fn())
-    except Exception as e:
-        return f"⚠️ {fn_name} error: {str(e)[:180]}"
-    return fallback
-
-
-def v1911101_safe_audit_short():
-    try:
-        data = paper_store()
-        op = data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}
-        closed = data.get('closed', []) if isinstance(data.get('closed', []), list) else []
-        active_buy = v191194_count_active_buy_in_data(data)
-        lessons = v1911101_lessons() if 'v1911101_lessons' in globals() else []
-        return (
-            "🧾 Короткий аудит FAST\n\n"
-            f"Версия: {BOT_VERSION}\n"
-            "Оценка бота: fast/cache\n"
-            f"Paper: открыто {len(op)} | закрыто {len(closed)} | уроков {len(lessons)} | active PAPER BUY {active_buy}\n"
-            "Режим: быстрый audit без тяжёлого price-refresh.\n"
-            "Покупки: 🔴 НЕТ | автоторговля выключена | BUY-веса +0."
-        )
-    except Exception as e:
-        return f"🧾 Короткий аудит FAST\n⚠️ error: {str(e)[:180]}"
-
-
-def v191181_fast_audit_build_content():
-    parts = []
-    parts.append("ALEX EDGE ULTRA FAST TECH AUDIT FILE")
-    parts.append(v1911101_section("VERSION", f"BOT_VERSION: {BOT_VERSION}"))
-    parts.append(v1911101_section("AUDIT SHORT FAST", v1911101_safe_audit_short()))
-    parts.append(v1911101_section("FAST PROBE SCORING", v1911101_safe_call('v191181_fast_probe_scoring_report')))
-    parts.append(v1911101_section("FAST SHADOW PORTFOLIO", v1911101_safe_call('v191181_fast_shadow_report')))
-    parts.append(v1911101_section("FAST LESSON ENGINE", v1911101_safe_call('v191181_fast_lesson_engine_report')))
-    parts.append(v1911101_section("PAPER BUY DECISION LAYER V19.11.10.1", v1911101_safe_call('v19119_paper_buy_audit_report')))
-    parts.append(v1911101_section("PAPER BUY DURABLE STATE V19.11.10.1", "\n".join(v1911101_durable_state_lines()) if 'v1911101_durable_state_lines' in globals() else 'Durable state: no data'))
-    parts.append(v1911101_section("PAPER BUY 6H CHECKPOINT V19.11.10.1", "\n".join(v1911101_paper_buy_6h_lines()) if 'v1911101_paper_buy_6h_lines' in globals() else 'no checkpoint data'))
-    parts.append(v1911101_section("LESSON WEIGHT ROUTER V19.11.10.1", "\n".join(v1911101_lesson_router_lines()) if 'v1911101_lesson_router_lines' in globals() else 'no router data'))
-    return "".join(parts)
-
-
-
-
-# === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
-# Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
-
-
-def v1911101_fmt_created_paper_buy(trade):
-    try:
-        asset = v19119_trade_asset(trade)
-        plan = trade.get('entry_plan', {}) if isinstance(trade.get('entry_plan', {}), dict) else {}
-        reasons = trade.get('reasons') if isinstance(trade.get('reasons'), list) else []
-        reason = '; '.join(str(x) for x in reasons[:3]) if reasons else str(trade.get('reason') or 'paper BUY training')
-        return (
-            f"• {asset}: 🟢 PAPER BUY | paper-score {int(trade.get('score',0) or 0)}/100 | "
-            f"вход {v19119_format_price(trade.get('entry_price'))} | размер {float(trade.get('paper_size_pct',2.0) or 2.0):.1f}% paper-capital\n"
-            f"  План: T1 {v19119_format_price(plan.get('target1'))} / T2 {v19119_format_price(plan.get('target2'))} / stop {v19119_format_price(plan.get('stop'))}\n"
-            f"  Причина: {reason}"
-        )
-    except Exception as e:
-        return f"• ⚠️ created trade format error: {str(e)[:120]}"
-
-
-def v1911101_candidate_lines(decisions, limit=8):
-    lines = []
-    for d in list(decisions or [])[:int(limit or 8)]:
-        if not isinstance(d, dict):
-            continue
-        try:
-            asset = str(d.get('asset') or '?').upper()
-            dec = str(d.get('decision') or d.get('tier') or 'PAPER WATCH')
-            ps = int(d.get('decision_score', 0) or 0)
-            prs = int(d.get('probe_score', 0) or 0)
-            pnl = float(d.get('probe_pnl', 0) or 0)
-            risk = str(d.get('risk') or 'без критичных блокеров')
-            adj = d.get('lesson_router_adj')
-            adj_txt = f" | router {int(adj):+d}" if isinstance(adj, int) and adj != 0 else ''
-            lines.append(f"• {asset}: {dec} | paper-score {ps}/100 | probe-score {prs}/100 | probe {pnl:+.2f}%{adj_txt} | риск: {risk}")
-        except Exception as e:
-            lines.append(f"• ⚠️ candidate format error: {str(e)[:120]}")
-    return lines
-
-
-def v19119_paper_buy_decision_report(create=False):
-    try:
-        res = v19119_open_paper_buy_decisions(create=bool(create), max_new=2, force_one=False)
-    except Exception as e:
-        res = {'created': [], 'skipped': [], 'active': 0, 'decisions': [], 'error': str(e)[:180]}
-    created = res.get('created', []) if isinstance(res, dict) and isinstance(res.get('created', []), list) else []
-    decisions = res.get('decisions', []) if isinstance(res, dict) and isinstance(res.get('decisions', []), list) else []
-    if not decisions:
-        try:
-            decisions = v19119_ranked_paper_buy_decisions()
-        except Exception:
-            decisions = []
-    try:
-        active_count = int(res.get('active', 0) or 0) if isinstance(res, dict) else 0
-    except Exception:
-        active_count = 0
-    active_rows = v19119_active_paper_buy_rows(limit=8)
-    if active_rows:
-        active_count = max(active_count, len(active_rows))
-    lines = [
-        '🟢 Paper BUY Decision Layer',
-        f'Версия: {BOT_VERSION}',
-        '',
-        'Режим: только paper BUY. Реальные покупки 0, автоторговля OFF, BUY-веса +0.',
-        'Fix v19.11.10.1: active PAPER BUY status подключён до runtime; 6ч checkpoint виден в открытых сделках.',
-        '',
-        f'Создано новых paper BUY: {len(created)}',
-        f'Активных paper BUY: {active_count}',
-    ]
-    if isinstance(res, dict) and res.get('error'):
-        lines += ['', f"⚠️ Ошибка слоя: {res.get('error')}"]
-    if created:
-        lines += ['', 'Новые paper BUY:']
-        lines += [v1911101_fmt_created_paper_buy(t) for t in created]
-    if active_rows:
-        lines += ['', 'Открытые paper BUY:'] + active_rows
-    else:
-        lines += ['', 'Открытых paper BUY пока нет. Если кандидаты ниже проходят зелёный BUY — отправь /paper_buy для открытия и мгновенного сохранения.']
-    try:
-        lines += [''] + v191194_paper_buy_persistence_lines()
-    except Exception as e:
-        lines += ['', f'Persistence: ⚠️ {str(e)[:120]}']
-    lines += ['', 'Кандидаты/отсев сейчас:']
-    cand = v1911101_candidate_lines(decisions, limit=8)
-    lines += cand if cand else ['• нет кандидатов']
-    lines += ['', 'Правило 6ч: если active BUY ослаб до WATCH или ушёл ниже -1%, новые paper BUY не добавлять до 24ч.']
-    try:
-        lines += ['', *v1911101_paper_buy_6h_lines(), '', *v1911101_lesson_router_lines()]
-    except Exception as e:
-        lines += ['', f'⚠️ 6h/router section error: {str(e)[:160]}']
-    lines += ['', 'Проверка результата: 6ч/24ч/48ч через обычный paper finalizer.', 'Команды: /paper_buy | /paper_buy_status | /paper | /lesson_engine | /audit_file']
-    return '\n'.join(lines)
-
-
-def v19119_paper_buy_audit_report():
-    return v19119_paper_buy_decision_report(create=False)
-
-
-
-
-# === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
-# Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.11.10.1 ACTIVE PAPER BUY STATUS WIRING FIX"
-
-
-def v1911101_load_buy_state():
-    try:
-        if os.path.exists(V1911101_PAPER_BUY_STATE_FILE):
-            with open(V1911101_PAPER_BUY_STATE_FILE, 'r', encoding='utf-8') as f:
-                js = json.load(f)
-            if isinstance(js, dict):
-                return js
-    except Exception:
-        pass
-    try:
-        if github_storage_enabled():
-            repo_path = github_storage_repo_path(V1911101_PAPER_BUY_STATE_FILE)
-            raw, meta = github_get_file_bytes(repo_path)
-            if raw:
-                js = json.loads(raw.decode('utf-8', errors='ignore'))
-                if isinstance(js, dict):
-                    try:
-                        with open(V1911101_PAPER_BUY_STATE_FILE, 'w', encoding='utf-8') as f:
-                            json.dump(js, f, ensure_ascii=False, indent=2)
-                    except Exception:
-                        pass
-                    return js
-    except Exception:
-        pass
-    return {}
-
-
-def v1911101_status_snapshot():
-    try:
-        data, open_trades = v19119_open_trades()
-    except Exception:
-        data, open_trades = {'open': {}, 'closed': []}, {}
-    if not isinstance(data, dict):
-        data = {'open': {}, 'closed': []}
-    if not isinstance(open_trades, dict):
-        open_trades = {}
-    active = 0
-    try:
-        active = sum(1 for t in open_trades.values() if v19119_is_paper_buy_decision(t))
-    except Exception:
-        active = 0
-    try:
-        decisions = v19119_ranked_paper_buy_decisions()
-        if not isinstance(decisions, list):
-            decisions = []
-    except Exception:
-        decisions = []
-    return data, open_trades, active, decisions
-
-
-def v19119_paper_buy_decision_report(create=False):
-    created = []
-    res_error = ''
-    if create:
-        try:
-            # Creation is delegated to the pre-existing creator. If an old chain fails, report it but do not break status.
-            res = _v1911101_old_v19119_open_paper_buy_decisions(create=True, max_new=2, force_one=False) if '_v1911101_old_v19119_open_paper_buy_decisions' in globals() and _v1911101_old_v19119_open_paper_buy_decisions else None
-            if isinstance(res, dict):
-                created = res.get('created', []) if isinstance(res.get('created', []), list) else []
-                if created:
-                    try:
-                        data = paper_store()
-                        v1911101_save_buy_state_now(data, reason='paper_buy_create_final_override')
-                    except Exception:
-                        pass
-        except Exception as e:
-            res_error = str(e)[:180]
-    data, open_trades, active_count, decisions = v1911101_status_snapshot()
-    active_rows = v19119_active_paper_buy_rows(limit=8)
-    if active_rows:
-        active_count = max(active_count, len(active_rows))
-    lines = [
-        '🟢 Paper BUY Decision Layer',
-        f'Версия: {BOT_VERSION}',
-        '',
-        'Режим: только paper BUY. Реальные покупки 0, автоторговля OFF, BUY-веса +0.',
-        'Fix v19.11.10.1: active PAPER BUY status подключён до runtime; 6ч checkpoint виден в открытых сделках.',
-        '',
-        f'Создано новых paper BUY: {len(created)}',
-        f'Активных paper BUY: {active_count}',
-    ]
-    if res_error:
-        lines += ['', f'⚠️ create-layer warning: {res_error}']
-    if created:
-        lines += ['', 'Новые paper BUY:'] + [v1911101_fmt_created_paper_buy(t) for t in created]
-    if active_rows:
-        lines += ['', 'Открытые paper BUY:'] + active_rows
-    else:
-        lines += ['', 'Открытых paper BUY пока нет. Если кандидаты ниже проходят зелёный BUY — отправь /paper_buy для открытия и мгновенного сохранения.']
-    try:
-        # Compact persistence to avoid duplicate old durable lines.
-        journal = data.get(V191194_PAPER_BUY_JOURNAL_KEY, []) if isinstance(data.get(V191194_PAPER_BUY_JOURNAL_KEY, []), list) else []
-        state = v1911101_load_buy_state()
-        durable_active = state.get('active_buys', []) if isinstance(state, dict) else []
-        if not isinstance(durable_active, list):
-            durable_active = []
-        lines += ['', 'Persistence:', f'• active paper BUY в store: {active_count}', f'• journal записей: {len(journal)}', f'• active BUY в durable-state: {len(durable_active)}']
-    except Exception as e:
-        lines += ['', f'Persistence: ⚠️ {str(e)[:120]}']
-    lines += ['', 'Кандидаты/отсев сейчас:']
-    cand = v1911101_candidate_lines(decisions, limit=8)
-    lines += cand if cand else ['• нет кандидатов']
-    lines += ['', 'Правило 6ч: если active BUY ослаб до WATCH или ушёл ниже -1%, новые paper BUY не добавлять до 24ч.']
-    lines += ['', *v1911101_paper_buy_6h_lines(), '', *v1911101_lesson_router_lines()]
-    lines += ['', 'Проверка результата: 6ч/24ч/48ч через обычный paper finalizer.', 'Команды: /paper_buy | /paper_buy_status | /paper | /lesson_engine | /audit_file']
-    return '\n'.join(lines)
-
-
-def v19119_paper_buy_audit_report():
-    return v19119_paper_buy_decision_report(create=False)
-
