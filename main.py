@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -1188,7 +1188,7 @@ def github_put_file(path, content_bytes, message, sha=None):
 
 
 
-# === v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX ===
+# === v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY ===
 def _v191182_safe_backup_version_tag(version):
     """Make BOT_VERSION safe for GitHub backup filename."""
     try:
@@ -1776,6 +1776,7 @@ def admin_handle_document(chat_id, msg):
         current = github_get_file(GITHUB_PATH)
         backup_path = ""
         backup_status = "не создан"
+        commit_sha = ""
         current_bytes = b""
         current_text = ""
 
@@ -1792,7 +1793,7 @@ def admin_handle_document(chat_id, msg):
                     "Deploy не запускаю повторно. Проверь /version."
                 )
 
-            # v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX:
+            # v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY:
             # Backup снова создаётся как файл backups/main_backup_*.py, но НЕ отдельным commit.
             # main.py и backup-файл уходят в GitHub одним atomic commit через Git Data API.
             # Поэтому Render Auto Deploy не может стартовать backup-only commit со старым main.py.
@@ -1827,6 +1828,9 @@ def admin_handle_document(chat_id, msg):
             "waiting_file": False,
             "chat_id": str(chat_id),
             "last_backup_path": backup_path,
+            "last_backup_status": backup_status,
+            "last_backup_created_at": time.time() if backup_path else 0,
+            "last_github_commit": commit_sha,
             "last_github_upload_version": upload_version,
             "last_github_upload_at": time.time(),
             "pending_deploy": True,
@@ -2413,7 +2417,13 @@ COMMAND_POOL_ALIASES = {
     "deploy_status": "/deploy_status",
     "статус деплоя": "/deploy_status",
     "state_status": "/state_status",
-    "backup_status": "/state_status",
+    "backup_status": "/backup_status",
+    "backup_verify": "/backup_verify",
+    "admin_health": "/admin_health",
+    "admin_status": "/admin_health",
+    "rollback_list": "/rollback_list",
+    "backup_list": "/backup_list",
+    "audit_speed": "/audit_speed",
     "state_restore": "/state_restore",
 }
 
@@ -16762,7 +16772,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17870,7 +17880,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18345,7 +18355,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18509,7 +18519,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18854,7 +18864,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19235,7 +19245,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19542,7 +19552,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20056,7 +20066,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20197,7 +20207,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20508,7 +20518,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20799,7 +20809,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21353,7 +21363,31 @@ def main():
                 elif text == "/deploy_status":
                     send_message(chat_id, deploy_status_report(chat_id))
 
-                elif text in ["/state_status", "/backup_status"]:
+                elif text in ["/admin_health", "/admin_status", "/health"]:
+                    if is_admin(chat_id):
+                        send_message(chat_id, v191183_admin_health_report(chat_id))
+                    else:
+                        send_message(chat_id, "⛔ Admin health доступен только ADMIN_CHAT_ID.")
+
+                elif text in ["/backup_verify", "/backup_status"]:
+                    if is_admin(chat_id):
+                        send_message(chat_id, v191183_backup_verify_report(chat_id))
+                    else:
+                        send_message(chat_id, "⛔ Backup verify доступен только ADMIN_CHAT_ID.")
+
+                elif text in ["/rollback_list", "/backup_list"]:
+                    if is_admin(chat_id):
+                        send_message(chat_id, v191183_rollback_list_report(chat_id))
+                    else:
+                        send_message(chat_id, "⛔ Rollback list доступен только ADMIN_CHAT_ID.")
+
+                elif text == "/audit_speed":
+                    if is_admin(chat_id):
+                        send_message(chat_id, v191183_audit_speed_report())
+                    else:
+                        send_message(chat_id, "⛔ Audit speed доступен только ADMIN_CHAT_ID.")
+
+                elif text == "/state_status":
                     if is_admin(chat_id):
                         send_message(chat_id, state_status_report())
                     else:
@@ -21626,7 +21660,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22030,7 +22064,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22599,7 +22633,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23107,7 +23141,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23408,12 +23442,12 @@ def build_audit_file(chat_id):
     return path
 
 
-# === v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX ===
+# === v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY ===
 # Цель: не только видеть текущую просадку quality-probe, но и автоматически
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -23936,12 +23970,12 @@ def build_audit_file(chat_id):
     return path
 
 
-# === v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX ===
+# === v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY ===
 # Причина: v19.11.8 добавил Probe Finalizer/Lesson Engine, и /audit_file мог
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.11.8.2 ADMIN ATOMIC BACKUP HOTFIX"
+BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -24356,6 +24390,260 @@ def version_user_report():
         '• Lesson Engine;\n'
         '• реальные покупки 0, автоторговля OFF, BUY-веса +0, Risk Engine unchanged.\n\n'
         'Команды проверки: /version | /audit_file | /quality_probe | /lesson_engine | /signal'
+    )
+
+
+
+# === v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY ===
+try:
+    _v191183_old_build_audit_file = build_audit_file
+except Exception:
+    _v191183_old_build_audit_file = None
+try:
+    _v191183_old_version_user_report = version_user_report
+except Exception:
+    _v191183_old_version_user_report = None
+
+
+def v191183_fmt_age(ts):
+    try:
+        ts = float(ts or 0)
+        if ts <= 0:
+            return 'нет данных'
+        sec = max(0, int(time.time() - ts))
+        if sec < 90:
+            return f'{sec} сек назад'
+        if sec < 3600:
+            return f'{sec//60} мин назад'
+        if sec < 86400:
+            return f'{sec//3600}ч {(sec%3600)//60}м назад'
+        return f'{sec//86400}д {(sec%86400)//3600}ч назад'
+    except Exception:
+        return 'нет данных'
+
+
+def v191183_human_size(n):
+    try:
+        n = int(n or 0)
+        if n < 1024:
+            return f'{n} B'
+        if n < 1024*1024:
+            return f'{n/1024:.1f} KB'
+        return f'{n/1024/1024:.2f} MB'
+    except Exception:
+        return '0 B'
+
+
+def v191183_github_list_dir(path='backups'):
+    if not github_ready():
+        return []
+    repo_path = str(path or '').strip().strip('/')
+    url = github_contents_url(repo_path)
+    r = requests.get(url, headers=github_headers(), params={'ref': GITHUB_BRANCH}, timeout=25)
+    if r.status_code == 404:
+        return []
+    if r.status_code >= 300:
+        raise Exception(f'GitHub list {repo_path} error {r.status_code}: {r.text[:500]}')
+    data = r.json()
+    return data if isinstance(data, list) else []
+
+
+def v191183_recent_backups(limit=5):
+    try:
+        items = v191183_github_list_dir('backups')
+        files = []
+        for it in items:
+            try:
+                if it.get('type') != 'file':
+                    continue
+                name = str(it.get('name') or '')
+                path = str(it.get('path') or '')
+                if not name.startswith('main_backup_') or not name.endswith('.py'):
+                    continue
+                files.append({
+                    'name': name,
+                    'path': path,
+                    'size': int(it.get('size') or 0),
+                    'sha': str(it.get('sha') or '')[:8],
+                })
+            except Exception:
+                continue
+        files.sort(key=lambda x: x.get('name',''), reverse=True)
+        return files[:int(limit or 5)]
+    except Exception as e:
+        return [{'error': str(e)}]
+
+
+def v191183_backup_verify_report(chat_id=None):
+    state = load_admin_state()
+    last_path = str(state.get('last_backup_path') or '').strip()
+    last_status = str(state.get('last_backup_status') or '').strip() or ('создан' if last_path else 'нет данных')
+    last_ver = str(state.get('last_github_upload_version') or '').strip() or 'нет данных'
+    last_commit = str(state.get('last_github_commit') or '').strip() or 'нет данных'
+    lines = [
+        '🧷 Backup verify',
+        f'Версия: {BOT_VERSION}',
+        '',
+        f'GitHub: {"✅ готов" if github_ready() else "❌ ENV не заполнены"}',
+        f'Repo: {GITHUB_REPO or "не задан"}',
+        f'Branch: {GITHUB_BRANCH or "не задан"}',
+        f'Path: {GITHUB_PATH or "не задан"}',
+        '',
+        f'Последняя загруженная версия: {last_ver}',
+        f'Последний commit: {last_commit}',
+        f'Статус backup: {last_status}',
+        f'Путь backup: {last_path or "нет"}',
+        f'Создан: {v191183_fmt_age(state.get("last_backup_created_at"))}',
+    ]
+
+    if github_ready() and last_path:
+        try:
+            bf = github_get_file(last_path)
+            if bf and bf.get('content'):
+                size = int(bf.get('size') or 0)
+                lines.append(f'Проверка GitHub: ✅ backup найден ({v191183_human_size(size)})')
+            else:
+                lines.append('Проверка GitHub: ❌ backup не найден')
+        except Exception as e:
+            lines.append(f'Проверка GitHub: ⚠️ ошибка — {e}')
+    elif not last_path:
+        lines.append('Проверка GitHub: ℹ️ last_backup_path пустой. Первый deploy после hotfix мог пройти старым обработчиком или backup ещё не проверялся.')
+
+    lines += ['', 'Последние backup-файлы:']
+    backups = v191183_recent_backups(5) if github_ready() else []
+    if not backups:
+        lines.append('• не найдены или GitHub недоступен')
+    elif isinstance(backups[0], dict) and backups[0].get('error'):
+        lines.append(f"• ошибка списка backups: {backups[0].get('error')}")
+    else:
+        for b in backups:
+            lines.append(f"• {b.get('path')} | {v191183_human_size(b.get('size'))} | {b.get('sha')}")
+
+    lines += ['', 'Команды: /rollback_list | /deploy_status | /admin_health']
+    return '\n'.join(lines)
+
+
+def v191183_rollback_list_report(chat_id=None):
+    if not github_ready():
+        return '⛔ GitHub ENV не заполнены: не могу показать backups.'
+    backups = v191183_recent_backups(10)
+    lines = [
+        '↩️ Rollback list',
+        f'Версия: {BOT_VERSION}',
+        '',
+        'Последние backup-файлы в GitHub:',
+    ]
+    if not backups:
+        lines.append('• не найдены')
+    elif isinstance(backups[0], dict) and backups[0].get('error'):
+        lines.append(f"• ошибка: {backups[0].get('error')}")
+    else:
+        for i, b in enumerate(backups, 1):
+            lines.append(f"{i}. {b.get('path')} | {v191183_human_size(b.get('size'))} | {b.get('sha')}")
+    lines += ['', 'Быстрый откат сейчас использует /rollback по last_backup_path. Расширенный выбор конкретного backup можно добавить следующим шагом.']
+    return '\n'.join(lines)
+
+
+def v191183_audit_speed_report():
+    state = load_admin_state()
+    sec = state.get('last_audit_seconds')
+    path = state.get('last_audit_path') or 'нет данных'
+    size = state.get('last_audit_size') or 0
+    at = state.get('last_audit_at')
+    mode = state.get('last_audit_mode') or 'fast/cache'
+    return (
+        '⚡ Audit speed monitor\n\n'
+        f'Версия: {BOT_VERSION}\n'
+        f'Последний audit: {float(sec or 0):.1f}с\n'
+        f'Размер txt: {v191183_human_size(size)}\n'
+        f'Режим: {mode}\n'
+        f'Файл: {path}\n'
+        f'Когда: {v191183_fmt_age(at)}\n\n'
+        'Норма: fast-audit должен приходить за секунды, не минуты.'
+    )
+
+
+def v191183_admin_health_report(chat_id=None):
+    state = load_admin_state()
+    left, lock_data = admin_upload_lock_left()
+    pending = bool(state.get('pending_deploy'))
+    last_audit_sec = state.get('last_audit_seconds')
+    latest_ver = 'не проверял'
+    if github_ready():
+        try:
+            latest_ver = github_latest_main_version() or 'не найдена'
+        except Exception as e:
+            latest_ver = f'ошибка: {e}'
+    backups = v191183_recent_backups(3) if github_ready() else []
+    backup_count_line = 'GitHub недоступен'
+    if backups and not (isinstance(backups[0], dict) and backups[0].get('error')):
+        backup_count_line = f'последние видны: {len(backups)}'
+    elif backups and isinstance(backups[0], dict) and backups[0].get('error'):
+        backup_count_line = f"ошибка: {backups[0].get('error')}"
+    return '\n'.join([
+        '🛠 Admin Health',
+        f'Runtime: {BOT_VERSION}',
+        f'GitHub main.py: {latest_ver}',
+        f'GitHub ready: {"✅" if github_ready() else "❌"}',
+        f'Render hook: {"✅ задан" if bool(RENDER_DEPLOY_HOOK_URL) else "❌ не задан"}',
+        f'Pending deploy: {"✅ да" if pending else "❌ нет"}',
+        f'Pending version: {state.get("pending_deploy_version") or "нет"}',
+        f'Last upload: {state.get("last_github_upload_version") or "нет"} | {v191183_fmt_age(state.get("last_github_upload_at"))}',
+        f'Last deploy: {state.get("last_deploy_version") or "нет"} | {v191183_fmt_age(state.get("last_deploy_at"))}',
+        f'Last backup: {state.get("last_backup_path") or "нет"}',
+        f'Backups: {backup_count_line}',
+        f'Upload lock: {"⏳ занят ещё "+str(left)+"с" if left > 0 else "✅ свободен"}',
+        f'Last audit speed: {float(last_audit_sec or 0):.1f}с' if last_audit_sec is not None else 'Last audit speed: нет данных',
+        '',
+        'Команды: /backup_verify | /rollback_list | /audit_speed | /deploy_status',
+    ])
+
+
+def build_audit_file(chat_id):
+    started = time.time()
+    path = None
+    try:
+        if _v191183_old_build_audit_file:
+            path = _v191183_old_build_audit_file(chat_id)
+        else:
+            send_message(chat_id, '❌ build_audit_file недоступен.')
+            return None
+    finally:
+        try:
+            elapsed = time.time() - started
+            state = load_admin_state()
+            state.update({
+                'last_audit_seconds': round(float(elapsed), 2),
+                'last_audit_at': time.time(),
+                'last_audit_path': str(path or ''),
+                'last_audit_size': os.path.getsize(path) if path and os.path.exists(path) else 0,
+                'last_audit_mode': 'fast/cache',
+                'last_audit_version': BOT_VERSION,
+            })
+            save_admin_state(state)
+            try:
+                sync_github_storage_now([ADMIN_STATE_FILE], max_files=1)
+            except Exception:
+                pass
+        except Exception as e:
+            print(f'v191183 audit speed save error: {e}')
+    return path
+
+
+def version_user_report():
+    return (
+        f'✅ Версия: {BOT_VERSION}\n\n'
+        'Что добавлено:\n'
+        '• Admin Health: контроль GitHub/Render/pending deploy/upload lock;\n'
+        '• Backup Verify: проверка last_backup_path и последних backup-файлов в GitHub;\n'
+        '• Rollback List: список последних backup-файлов;\n'
+        '• Audit Speed Monitor: время и размер последнего /audit_file;\n'
+        '• backup + main.py по-прежнему уходят одним atomic commit.\n\n'
+        'Сохранено:\n'
+        '• FAST audit из v19.11.8.1;\n'
+        '• Probe Result Scoring, Shadow Portfolio, Radar Decay Logic, Lesson Engine;\n'
+        '• реальные покупки 0, автоторговля OFF, BUY-веса +0, Risk Engine unchanged.\n\n'
+        'Команды проверки: /admin_health | /backup_verify | /rollback_list | /audit_speed | /audit_file'
     )
 
 
