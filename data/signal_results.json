@@ -1552,7 +1552,8 @@
       "results": {
         "15m": 0.0,
         "30m": 0.0,
-        "1h": 0.0
+        "1h": 0.0,
+        "3h": -0.11
       },
       "price_points": [
         {
@@ -1623,6 +1624,15 @@
           "checkpoint_pct": 0.0,
           "source": "cache_due_late_estimate",
           "cache_price_time": 1782677670.841845,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782684952.036889,
+          "target_time": 1782688470.841845,
+          "checkpoint_price": 71.02,
+          "checkpoint_pct": -0.11,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782684952.036889,
           "cache_price_source": "snapshot"
         }
       },
@@ -1814,7 +1824,9 @@
       "last_seen_counted": 1782683137.427415,
       "seen_count": 1,
       "results": {
-        "15m": 0.0
+        "15m": 0.0,
+        "30m": 0.0,
+        "1h": 0.0
       },
       "price_points": [
         {
@@ -1859,6 +1871,24 @@
         "15m": {
           "checkpoint_time": 1782683137.427415,
           "target_time": 1782684037.427415,
+          "checkpoint_price": 90.397,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782683137.427415,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782683137.427415,
+          "target_time": 1782684937.427415,
+          "checkpoint_price": 90.397,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782683137.427415,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782683137.427415,
+          "target_time": 1782686737.427415,
           "checkpoint_price": 90.397,
           "checkpoint_pct": 0.0,
           "source": "cache_due_late_estimate",
@@ -1917,7 +1947,9 @@
       "last_seen": 1782686780.8384805,
       "last_seen_counted": 1782686780.8384805,
       "seen_count": 1,
-      "results": {},
+      "results": {
+        "15m": 0.0
+      },
       "price_points": [
         {
           "time": 1782686780.8384805,
@@ -1961,7 +1993,18 @@
         }
       ],
       "shadow_result_v184": "ждём первые checkpoints",
-      "confidence_v181": 14
+      "confidence_v181": 14,
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782686780.8384805,
+          "target_time": 1782687680.8384805,
+          "checkpoint_price": 0.1985,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782686780.8384805,
+          "cache_price_source": "snapshot"
+        }
+      }
     }
   },
   "closed": [
