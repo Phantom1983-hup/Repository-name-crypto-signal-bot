@@ -1,21 +1,21 @@
 {
   "enabled": true,
-  "last_check_at": 1782670424.7080157,
-  "last_sent_at": 1782670424.7080157,
+  "last_check_at": 1782674046.785714,
+  "last_sent_at": 1782674046.785714,
   "last_forced_at": 1782417005.8693898,
-  "last_paper_closed": 65,
-  "last_paper_saved": 28,
-  "last_paper_open": 41,
-  "last_learning_open": 28,
+  "last_paper_closed": 67,
+  "last_paper_saved": 30,
+  "last_paper_open": 39,
+  "last_learning_open": 9,
   "last_learning_closed": 53,
   "last_risk": "danger/no-buy",
   "last_btc_bucket": "btc_red",
-  "last_timing_checked": 77,
+  "last_timing_checked": 53,
   "last_reason_lines": [
-    "на подходе к 48ч Paper-сделок: 2",
-    "Timing-сценариев стало больше: 76 → 77",
-    "Learning open изменился: 27 → 28"
+    "Paper closed вырос: 65 → 67",
+    "🛡 спасло от входа выросло: 28 → 30",
+    "Learning open изменился: 28 → 9"
   ],
-  "version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
+  "version": "v19.11.10.2 DURABLE STATE & AUDIT POLISH",
   "mode": "active"
 }
