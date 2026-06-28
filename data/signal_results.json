@@ -40416,7 +40416,11 @@
       "last_seen": 1782659344.6757588,
       "last_seen_counted": 1782659344.6757588,
       "seen_count": 1,
-      "results": {},
+      "results": {
+        "15m": 0.0,
+        "30m": 0.0,
+        "1h": 0.0
+      },
       "price_points": [
         {
           "time": 1782659344.6757588,
@@ -40461,7 +40465,35 @@
       ],
       "shadow_result_v184": "ждём первые checkpoints",
       "confidence_v181": 19,
-      "result_details": {}
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782659344.6757588,
+          "target_time": 1782660244.6757588,
+          "checkpoint_price": 0.09614,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782659344.6757588,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782659344.6757588,
+          "target_time": 1782661144.6757588,
+          "checkpoint_price": 0.09614,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782659344.6757588,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782659344.6757588,
+          "target_time": 1782662944.6757588,
+          "checkpoint_price": 0.09614,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782659344.6757588,
+          "cache_price_source": "snapshot"
+        }
+      }
     }
   },
   "version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
