@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16825,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17933,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18408,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18572,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18917,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19298,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19605,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20119,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20260,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20571,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20862,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21719,7 +21719,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22123,7 +22123,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22692,7 +22692,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23200,7 +23200,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23506,7 +23506,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24034,7 +24034,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25251,7 +25251,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 
 
 def _v191191_branch_ref_name():
@@ -25390,13 +25390,13 @@ def version_user_report():
     )
 
 
-# === v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX ===
+# === v19.11.9.2 PAPER BUY SCORE SYNC ===
 # Причина: Paper BUY candidate-score мог показывать 🟢 82/100 для монеты,
 # у которой текущий Probe Result Scoring уже показывает раннюю просадку 35/100.
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
+BOT_VERSION = "v19.11.9.2 PAPER BUY SCORE SYNC"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25674,233 +25674,6 @@ def version_user_report():
         '• Risk Engine unchanged;\n'
         '• GitHub ref update fix из v19.11.9.1 сохранён.\n\n'
         'Команды проверки: /version | /paper_buy_status | /paper_buy | /audit_file'
-    )
-
-
-# === v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX ===
-# Причина: backup-файл больше 1 MB реально создаётся и виден в /rollback_list,
-# но точечная проверка last_backup_path могла писать "backup не найден",
-# потому что GitHub Contents API для больших файлов возвращает metadata без content.
-# Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
-# Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
-
-BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
-
-
-def v191193_backup_in_recent_list(path, limit=50):
-    """Возвращает запись из /backups, если exact path найден в списке GitHub contents."""
-    try:
-        target = str(path or '').strip().lstrip('/')
-        if not target:
-            return None
-        for b in v191183_recent_backups(limit):
-            if not isinstance(b, dict) or b.get('error'):
-                continue
-            if str(b.get('path') or '').strip().lstrip('/') == target:
-                return b
-    except Exception:
-        pass
-    return None
-
-
-def v191193_verify_github_backup_path(path):
-    """
-    Robust backup existence/readability check for large GitHub files.
-    Returns dict: ok, readable, size, sha, method, note.
-    """
-    result = {
-        'ok': False,
-        'readable': False,
-        'size': 0,
-        'sha': '',
-        'method': '',
-        'note': '',
-    }
-    target = str(path or '').strip().lstrip('/')
-    if not target:
-        result['note'] = 'last_backup_path пустой'
-        return result
-    if not github_ready():
-        result['note'] = 'GitHub ENV не заполнены'
-        return result
-
-    meta = None
-    try:
-        meta = github_get_file(target)
-    except Exception as e:
-        # Не считаем это финальным падением: ниже попробуем список backups.
-        result['note'] = f'contents API error: {str(e)[:120]}'
-
-    if meta:
-        result['ok'] = True
-        result['size'] = int(meta.get('size') or 0)
-        result['sha'] = str(meta.get('sha') or '')[:8]
-        if meta.get('content'):
-            result['readable'] = True
-            result['method'] = 'contents'
-            return result
-
-        # Large-file fallback: Git Blob API / download_url.
-        try:
-            raw, meta2 = github_get_file_bytes(target)
-            if meta2:
-                result['ok'] = True
-                result['size'] = int((meta2 or meta).get('size') or result.get('size') or 0)
-                result['sha'] = str((meta2 or meta).get('sha') or result.get('sha') or '')[:8]
-            if raw:
-                result['readable'] = True
-                result['method'] = 'raw/blob'
-                return result
-            result['method'] = 'metadata'
-            result['note'] = 'metadata найден, bytes не получены через raw/blob'
-        except Exception as e:
-            result['method'] = 'metadata'
-            result['note'] = f'raw/blob fallback error: {str(e)[:120]}'
-
-    # Fallback that fixed the false negative seen in v19.11.9.2:
-    # exact file is visible in rollback list, so it exists even if point-read has no content.
-    b = v191193_backup_in_recent_list(target, limit=50)
-    if b:
-        result['ok'] = True
-        result['size'] = int(b.get('size') or result.get('size') or 0)
-        result['sha'] = str(b.get('sha') or result.get('sha') or '')[:8]
-        if not result.get('method'):
-            result['method'] = 'backups-list'
-        if not result.get('note'):
-            result['note'] = 'найден в списке backups'
-        return result
-
-    if not result.get('note'):
-        result['note'] = 'не найден ни точечно, ни в списке backups'
-    return result
-
-
-# Override Backup Verify: no false ❌ for large backup files.
-def v191183_backup_verify_report(chat_id=None):
-    state = load_admin_state()
-    last_path = str(state.get('last_backup_path') or '').strip()
-    last_status = str(state.get('last_backup_status') or '').strip() or ('создан' if last_path else 'нет данных')
-    last_ver = str(state.get('last_github_upload_version') or '').strip() or 'нет данных'
-    last_commit = str(state.get('last_github_commit') or '').strip() or 'нет данных'
-    lines = [
-        '🧷 Backup verify',
-        f'Версия: {BOT_VERSION}',
-        '',
-        f'GitHub: {"✅ готов" if github_ready() else "❌ ENV не заполнены"}',
-        f'Repo: {GITHUB_REPO or "не задан"}',
-        f'Branch: {GITHUB_BRANCH or "не задан"}',
-        f'Path: {GITHUB_PATH or "не задан"}',
-        '',
-        f'Последняя загруженная версия: {last_ver}',
-        f'Последний commit: {last_commit}',
-        f'Статус backup: {last_status}',
-        f'Путь backup: {last_path or "нет"}',
-        f'Создан: {v191183_fmt_age(state.get("last_backup_created_at"))}',
-    ]
-
-    if github_ready() and last_path:
-        try:
-            chk = v191193_verify_github_backup_path(last_path)
-            size_txt = v191183_human_size(chk.get('size'))
-            method = chk.get('method') or 'unknown'
-            sha = chk.get('sha') or 'no-sha'
-            note = chk.get('note') or ''
-            if chk.get('ok') and chk.get('readable'):
-                lines.append(f'Проверка GitHub: ✅ backup найден и читается ({size_txt}, {method}, {sha})')
-            elif chk.get('ok'):
-                lines.append(f'Проверка GitHub: ✅ backup найден ({size_txt}, {method}, {sha})')
-                if note:
-                    lines.append(f'Примечание: {note}')
-            else:
-                lines.append(f'Проверка GitHub: ❌ backup не найден — {note}')
-        except Exception as e:
-            lines.append(f'Проверка GitHub: ⚠️ ошибка — {e}')
-    elif not last_path:
-        lines.append('Проверка GitHub: ℹ️ last_backup_path пустой. Первый deploy после hotfix мог пройти старым обработчиком или backup ещё не проверялся.')
-
-    lines += ['', 'Последние backup-файлы:']
-    backups = v191183_recent_backups(5) if github_ready() else []
-    if not backups:
-        lines.append('• не найдены или GitHub недоступен')
-    elif isinstance(backups[0], dict) and backups[0].get('error'):
-        lines.append(f"• ошибка списка backups: {backups[0].get('error')}")
-    else:
-        for b in backups:
-            marker = ' ← last_backup_path' if last_path and str(b.get('path') or '').strip().lstrip('/') == last_path.lstrip('/') else ''
-            lines.append(f"• {b.get('path')} | {v191183_human_size(b.get('size'))} | {b.get('sha')}{marker}")
-
-    lines += ['', 'Команды: /rollback_list | /deploy_status | /admin_health']
-    return '\n'.join(lines)
-
-
-# Rollback safety for large backup files: use github_get_file_bytes instead of content-only API.
-def admin_rollback(chat_id):
-    if not is_admin(chat_id):
-        return '⛔ Нет доступа.'
-    if not github_ready():
-        return '⛔ GitHub ENV не заполнены.'
-
-    state = load_admin_state()
-    backup_path = str(state.get('last_backup_path') or '').strip()
-    if not backup_path or 'GitHub history' in backup_path:
-        return 'Backup отдельным файлом не найден. Проверь /backup_verify и /rollback_list.'
-
-    try:
-        backup_bytes, backup_meta = github_get_file_bytes(backup_path)
-        if not backup_meta:
-            return 'Backup-файл в GitHub не найден. Проверь /backup_verify.'
-        if not backup_bytes:
-            return 'Backup-файл найден, но не удалось прочитать bytes через raw/blob fallback. Проверь /backup_verify.'
-
-        current = github_get_file(GITHUB_PATH)
-        current_sha = current.get('sha') if current else None
-        github_put_file(
-            GITHUB_PATH,
-            backup_bytes,
-            f'rollback to {backup_path}',
-            sha=current_sha,
-        )
-        deploy_msg = trigger_render_deploy()
-        state.update({
-            'last_rollback_path': backup_path,
-            'last_rollback_at': time.time(),
-            'pending_deploy': True,
-            'pending_deploy_version': github_latest_main_version() or 'rollback',
-            'pending_deploy_at': time.time(),
-            'pending_deploy_file': GITHUB_PATH,
-        })
-        save_admin_state(state)
-        try:
-            sync_github_storage_now([ADMIN_STATE_FILE], max_files=1)
-        except Exception:
-            pass
-        return f'✅ Rollback выполнен из {backup_path}.\n{deploy_msg}\nПроверь /version через 1–2 минуты.'
-    except Exception as e:
-        return f'⛔ Rollback error: {e}'
-
-
-try:
-    _v191193_old_version_user_report = version_user_report
-except Exception:
-    _v191193_old_version_user_report = None
-
-
-def version_user_report():
-    return (
-        f'✅ Версия: {BOT_VERSION}\n\n'
-        'Что исправлено:\n'
-        '• Backup Verify больше не даёт ложный ❌ для backup-файлов больше 1 MB;\n'
-        '• проверка backup использует metadata + raw/blob fallback + список backups;\n'
-        '• если backup виден в /rollback_list, /backup_verify теперь помечает его как найденный;\n'
-        '• /rollback теперь тоже читает большой backup через raw/blob fallback;\n'
-        '• Paper BUY score sync из v19.11.9.2 сохранён.\n\n'
-        'Сохранено:\n'
-        '• реальные покупки 0;\n'
-        '• автоторговля OFF;\n'
-        '• BUY-веса +0;\n'
-        '• Risk Engine unchanged;\n'
-        '• /audit_file fast/cache.\n\n'
-        'Команды проверки: /version | /backup_verify | /rollback_list | /paper_buy_status | /audit_file'
     )
 
 
