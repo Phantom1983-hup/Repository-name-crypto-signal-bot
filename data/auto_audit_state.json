@@ -1,20 +1,21 @@
 {
   "enabled": true,
-  "last_check_at": 1782634268.2254372,
-  "last_sent_at": 1782634268.2254372,
+  "last_check_at": 1782637881.603655,
+  "last_sent_at": 1782637881.603655,
   "last_forced_at": 1782417005.8693898,
   "last_paper_closed": 57,
   "last_paper_saved": 25,
   "last_paper_open": 40,
-  "last_learning_open": 32,
+  "last_learning_open": 33,
   "last_learning_closed": 42,
   "last_risk": "caution",
-  "last_btc_bucket": "btc_red",
-  "last_timing_checked": 69,
+  "last_btc_bucket": "btc_flat_green",
+  "last_timing_checked": 70,
   "last_reason_lines": [
-    "Learning open изменился: 34 → 32",
-    "Learning closed48 вырос: 40 → 42"
+    "сменился BTC bucket: btc_red → btc_flat_green",
+    "Timing-сценариев стало больше: 69 → 70",
+    "Learning open изменился: 32 → 33"
   ],
-  "version": "v19.11.7.1 SCORE REFRESH SYNC",
+  "version": "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY",
   "mode": "active"
 }
