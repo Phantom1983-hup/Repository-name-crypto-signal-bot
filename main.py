@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16627,7 +16627,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17735,7 +17735,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18210,7 +18210,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18374,7 +18374,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18719,7 +18719,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19100,7 +19100,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19407,7 +19407,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -19921,7 +19921,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20062,7 +20062,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20373,7 +20373,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20664,7 +20664,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21347,6 +21347,9 @@ def main():
                 elif text in ["/quality_probe", "/paper_probe", "/probe", "/virtual_probe"]:
                     send_message(chat_id, quality_probe_user_report())
 
+                elif text in ["/probe_lessons", "/lesson_engine", "/probe_finalizer", "/quality_lessons"]:
+                    send_message(chat_id, v19118_probe_lesson_engine_report())
+
                 elif text in ["/improvement_radar", "/learning_radar", "/radar"]:
                     send_message(chat_id, improvement_radar_user_report())
 
@@ -21488,7 +21491,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -21892,7 +21895,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22461,7 +22464,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -22969,7 +22972,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23249,6 +23252,534 @@ def build_audit_file(chat_id):
     add('QUALITY WATCH LADDER V19.11.7.1', quality_watch_ladder_audit_report, 10)
     add('QUALITY SCORE V19.11.7.1', quality_score_audit_report, 8)
     add('CHECKPOINT SCORING V19.11.7.1', v19112_checkpoint_scoring_user_report, 10)
+    add('TECH: HYPOTHESES', v1910_hypotheses_user_report, 8)
+    add('TECH: PAPER FULL', paper_report, 12)
+    add('TECH: SOL FULL', lambda: single_analysis_full('SOL-USDT'), 25)
+    content = 'ALEX EDGE ULTRA TECH AUDIT FILE\n' + '\n'.join(sections)
+    try:
+        content = v191151_normalize_version_text(content)
+    except Exception:
+        pass
+    try:
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(content)
+    except Exception as e:
+        send_message(chat_id, f'❌ Не удалось создать audit txt: {e}')
+        return None
+    ok = send_document(chat_id, path, caption='🧾 Технический отчёт готов.')
+    if not ok:
+        send_message(chat_id, '⚠️ audit_file собран, но Telegram не принял файл. Ниже короткий аудит.')
+        send_message(chat_id, audit_short_report())
+    return path
+
+
+# === v19.11.8 PROBE FINALIZER & LESSON ENGINE ===
+# Цель: не только видеть текущую просадку quality-probe, но и автоматически
+# закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
+# Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
+
+BOT_VERSION = "v19.11.8 PROBE FINALIZER & LESSON ENGINE"
+
+try:
+    _v19118_old_build_audit_file = build_audit_file
+except Exception:
+    _v19118_old_build_audit_file = None
+try:
+    _v19118_old_quality_probe_user_report = quality_probe_user_report
+except Exception:
+    _v19118_old_quality_probe_user_report = None
+try:
+    _v19118_old_version_user_report = version_user_report
+except Exception:
+    _v19118_old_version_user_report = None
+try:
+    _v19118_old_quality_score_audit_report = quality_score_audit_report
+except Exception:
+    _v19118_old_quality_score_audit_report = None
+
+
+def v19118_safe_float(x, default=0.0):
+    try:
+        return float(x)
+    except Exception:
+        return default
+
+
+def v19118_safe_int(x, default=0):
+    try:
+        return int(float(x))
+    except Exception:
+        return default
+
+
+def v19118_asset(x):
+    try:
+        return str(x or '').upper().replace('-USDT', '').strip()
+    except Exception:
+        return ''
+
+
+def v19118_now():
+    try:
+        return time.time()
+    except Exception:
+        return 0.0
+
+
+def v19118_is_quality_probe_trade(t):
+    if not isinstance(t, dict):
+        return False
+    vt = str(t.get('virtual_type', '') or '').upper()
+    return bool(t.get('is_probe')) or vt == 'VIRTUAL_PROBE_ENTRY_TEST' or str(t.get('probe_scoring_version','')).startswith('v19.11')
+
+
+def v19118_entry_time(t):
+    if not isinstance(t, dict):
+        return 0.0
+    for fld in ['entry_time', 'created_at', 'created_ts', 'open_ts', 'opened_at', 'started_at', 'start_ts', 'timestamp', 'ts', 'time']:
+        try:
+            val = t.get(fld)
+            if val:
+                return float(val)
+        except Exception:
+            continue
+    return 0.0
+
+
+def v19118_trade_age_h(t):
+    et = v19118_entry_time(t)
+    return max(0.0, (v19118_now() - et) / 3600.0) if et else 0.0
+
+
+def v19118_trade_asset(t):
+    return v19118_asset(t.get('asset') or t.get('symbol') or t.get('coin')) if isinstance(t, dict) else ''
+
+
+def v19118_entry_price(t):
+    if not isinstance(t, dict):
+        return 0.0
+    return v19118_safe_float(t.get('entry_price', t.get('entry', t.get('price', 0))), 0.0)
+
+
+def v19118_trade_current_price(t, asset=None):
+    if not isinstance(t, dict):
+        return 0.0
+    asset = asset or v19118_trade_asset(t)
+    cur = 0.0
+    try:
+        if asset and '_safe_price' in globals():
+            cur = float(_safe_price(f'{asset}-USDT') or 0)
+    except Exception:
+        cur = 0.0
+    if cur <= 0:
+        for fld in ['current_price_v19117', 'current_price', 'last_price', 'close_price', 'exit_price']:
+            try:
+                val = float(t.get(fld, 0) or 0)
+                if val > 0:
+                    return val
+            except Exception:
+                continue
+    return cur
+
+
+def v19118_pct_from_trade(t, stage='live'):
+    if not isinstance(t, dict):
+        return 0.0
+    res = t.get('results', {}) if isinstance(t.get('results', {}), dict) else {}
+    # Для финального урока 48ч важнее live-цены, чтобы не менять уже закрытый вывод.
+    if stage == '48h_final':
+        if isinstance(res.get('48h'), (int, float)):
+            return float(res.get('48h'))
+        if isinstance(res.get('24h'), (int, float)):
+            return float(res.get('24h'))
+    if stage == '24h_prelesson':
+        if isinstance(res.get('24h'), (int, float)):
+            return float(res.get('24h'))
+    for fld in ['last_pct', 'current_pnl_v19117', 'pct', 'pnl_pct']:
+        try:
+            val = t.get(fld)
+            if isinstance(val, (int, float)):
+                return float(val)
+        except Exception:
+            pass
+    entry = v19118_entry_price(t)
+    asset = v19118_trade_asset(t)
+    cur = v19118_trade_current_price(t, asset=asset)
+    if entry > 0 and cur > 0:
+        return (cur - entry) / entry * 100.0
+    return 0.0
+
+
+def v19118_lesson_classification(pct, stage='24h_prelesson'):
+    pct = v19118_safe_float(pct, 0.0)
+    if pct >= 3.0:
+        return {
+            'bucket': 'good_entry',
+            'label': '🟢 хороший вход',
+            'lesson': 'условия входа были полезными; проверить повторяемость, live BUY не включать',
+            'paper_delta': 2,
+            'score': 82,
+        }
+    if pct >= 1.0:
+        return {
+            'bucket': 'useful_entry',
+            'label': '🟢 полезная проба',
+            'lesson': 'идея дала небольшой плюс; усилить только paper-наблюдение после подтверждения',
+            'paper_delta': 1,
+            'score': 68,
+        }
+    if pct > -1.5:
+        return {
+            'bucket': 'neutral',
+            'label': '🟡 нейтрально',
+            'lesson': 'преимущества входа нет; веса не усиливать',
+            'paper_delta': 0,
+            'score': 55,
+        }
+    if pct > -4.0:
+        return {
+            'bucket': 'early_drawdown',
+            'label': '🟠 ранний вход / просадка',
+            'lesson': 'вход был ранним; ждать удержание цены, объём и стабилизацию BTC',
+            'paper_delta': -2,
+            'score': 35,
+        }
+    return {
+        'bucket': 'bad_entry',
+        'label': '🔴 плохой вход / сильная просадка',
+        'lesson': 'запрет реальной покупки был правильным; снижать paper-приоритет таких входов без подтверждения',
+        'paper_delta': -4,
+        'score': 18,
+    }
+
+
+def v19118_lesson_key(asset, entry_time, stage):
+    return f"{v19118_asset(asset)}:{int(float(entry_time or 0))}:{stage}"
+
+
+def v19118_make_lesson(t, stage, pct=None):
+    asset = v19118_trade_asset(t)
+    et = v19118_entry_time(t)
+    pct = v19118_pct_from_trade(t, stage=stage) if pct is None else v19118_safe_float(pct, 0.0)
+    cls = v19118_lesson_classification(pct, stage=stage)
+    entry_snapshot = t.get('probe_entry_snapshot_v19117', {}) if isinstance(t.get('probe_entry_snapshot_v19117', {}), dict) else {}
+    res = t.get('results', {}) if isinstance(t.get('results', {}), dict) else {}
+    return {
+        'key': v19118_lesson_key(asset, et, stage),
+        'asset': asset,
+        'stage': stage,
+        'version': BOT_VERSION,
+        'entry_time': et,
+        'lesson_time': v19118_now(),
+        'age_h': v19118_trade_age_h(t),
+        'entry_price': v19118_entry_price(t),
+        'current_price': v19118_trade_current_price(t, asset=asset),
+        'pct': round(pct, 2),
+        'bucket': cls['bucket'],
+        'label': cls['label'],
+        'lesson': cls['lesson'],
+        'paper_delta': cls['paper_delta'],
+        'lesson_score': cls['score'],
+        'entry_score': v19118_safe_int(t.get('score', t.get('entry_score', 62)), 62),
+        'results': {k: v for k, v in res.items() if k in ['1h','3h','6h','12h','24h','48h']},
+        'snapshot': {
+            'btc_change': entry_snapshot.get('btc_change'),
+            'fear': entry_snapshot.get('fear'),
+            'news': entry_snapshot.get('news'),
+            'rsi': entry_snapshot.get('rsi'),
+            'volume_trend': entry_snapshot.get('volume_trend'),
+            'risk_level': entry_snapshot.get('risk_level'),
+            'change_24': entry_snapshot.get('change_24'),
+        }
+    }
+
+
+def v19118_load_lessons(data=None):
+    try:
+        data = data if isinstance(data, dict) else paper_store()
+        lessons = data.get('probe_lessons_v19118', [])
+        return lessons if isinstance(lessons, list) else []
+    except Exception:
+        return []
+
+
+def v19118_run_probe_finalizer(sync=False):
+    """Создаёт 24ч preliminary и 48ч final lessons для quality-probe. Не включает BUY."""
+    paper_changed = False
+    paper_updated = 0
+    paper_closed = 0
+    try:
+        if 'paper_update_from_cache' in globals():
+            paper_changed, paper_updated, paper_closed = paper_update_from_cache()
+    except Exception as e:
+        print(f'v19118 paper update skip: {e}')
+    data = paper_store()
+    open_trades = data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}
+    closed = data.get('closed', []) if isinstance(data.get('closed', []), list) else []
+    lessons = v19118_load_lessons(data)
+    existing = {str(x.get('key','')) for x in lessons if isinstance(x, dict)}
+    added = []
+    changed = False
+
+    # 24h preliminary lessons for still-open quality probes.
+    for key, t in list(open_trades.items()):
+        if not v19118_is_quality_probe_trade(t):
+            continue
+        age_h = v19118_trade_age_h(t)
+        if age_h < 24:
+            continue
+        asset = v19118_trade_asset(t)
+        et = v19118_entry_time(t)
+        lkey = v19118_lesson_key(asset, et, '24h_prelesson')
+        if lkey in existing:
+            continue
+        lesson = v19118_make_lesson(t, '24h_prelesson')
+        lessons.append(lesson)
+        existing.add(lkey)
+        added.append(lesson)
+        t['probe_lesson_24h_v19118'] = lesson
+        open_trades[key] = t
+        changed = True
+
+    # 48h final lessons from closed quality probes.
+    for idx, t in enumerate(list(closed)):
+        if not v19118_is_quality_probe_trade(t):
+            continue
+        asset = v19118_trade_asset(t)
+        et = v19118_entry_time(t)
+        lkey = v19118_lesson_key(asset, et, '48h_final')
+        if lkey in existing:
+            continue
+        lesson = v19118_make_lesson(t, '48h_final')
+        lessons.append(lesson)
+        existing.add(lkey)
+        added.append(lesson)
+        try:
+            t['probe_lesson_48h_v19118'] = lesson
+            closed[idx] = t
+        except Exception:
+            pass
+        changed = True
+
+    if len(lessons) > 500:
+        lessons = lessons[-500:]
+        changed = True
+    if changed:
+        data['open'] = open_trades
+        data['closed'] = closed
+        data['probe_lessons_v19118'] = lessons
+        data['last_probe_lesson_engine_at'] = v19118_now()
+        save_paper_store(data, sync=sync)
+    return {
+        'paper_changed': bool(paper_changed),
+        'paper_updated': int(paper_updated or 0),
+        'paper_closed': int(paper_closed or 0),
+        'lessons_added': len(added),
+        'added': added,
+        'total_lessons': len(lessons),
+    }
+
+
+def v19118_lesson_summary(lessons=None):
+    lessons = lessons if isinstance(lessons, list) else v19118_load_lessons()
+    counts = {'good_entry':0, 'useful_entry':0, 'neutral':0, 'early_drawdown':0, 'bad_entry':0}
+    for l in lessons:
+        if not isinstance(l, dict):
+            continue
+        b = str(l.get('bucket',''))
+        counts[b] = counts.get(b, 0) + 1
+    total = sum(counts.values())
+    avg_delta = 0.0
+    try:
+        vals = [float(l.get('paper_delta',0) or 0) for l in lessons if isinstance(l, dict)]
+        avg_delta = sum(vals)/len(vals) if vals else 0.0
+    except Exception:
+        avg_delta = 0.0
+    return {'total': total, 'counts': counts, 'avg_delta': avg_delta}
+
+
+def v19118_format_lesson_line(l):
+    try:
+        stage = '24ч' if l.get('stage') == '24h_prelesson' else '48ч'
+        snap = l.get('snapshot', {}) if isinstance(l.get('snapshot', {}), dict) else {}
+        ctx = []
+        if snap.get('btc_change') is not None:
+            ctx.append(f"BTC {float(snap.get('btc_change') or 0):+.2f}%")
+        if snap.get('news') is not None:
+            ctx.append(f"новости {int(float(snap.get('news') or 0)):+d}")
+        if snap.get('volume_trend') is not None:
+            ctx.append(f"объём x{float(snap.get('volume_trend') or 0):.2f}")
+        ctx_txt = ' | ' + ', '.join(ctx[:3]) if ctx else ''
+        return (
+            f"• {l.get('asset','?')}: {l.get('label','урок')} | {stage} {float(l.get('pct',0) or 0):+.2f}% "
+            f"| paperΔ {int(l.get('paper_delta',0) or 0):+d}{ctx_txt}"
+        )
+    except Exception:
+        return f"• {l.get('asset','?')}: урок записан"
+
+
+def v19118_probe_lesson_engine_report():
+    res = v19118_run_probe_finalizer(sync=False)
+    lessons = v19118_load_lessons()
+    summary = v19118_lesson_summary(lessons)
+    recent = [l for l in lessons if isinstance(l, dict)][-8:]
+    rows = '\n'.join(v19118_format_lesson_line(l) for l in recent) or '• 24/48ч уроков пока нет — ждём закрытия текущих probe.'
+    c = summary['counts']
+    return (
+        '🧠 PROBE FINALIZER & LESSON ENGINE\n\n'
+        f'Версия: {BOT_VERSION}\n'
+        'Режим: paper/shadow only. Реальные покупки, BUY-веса, Risk Engine и автоторговля не менялись.\n\n'
+        f"Обновление paper: checkpoints +{res.get('paper_updated',0)} | закрыто сейчас: {res.get('paper_closed',0)}\n"
+        f"Новых уроков записано: {res.get('lessons_added',0)} | всего уроков: {summary['total']}\n\n"
+        'Сводка уроков:\n'
+        f"• 🟢 хорошие/полезные: {c.get('good_entry',0)+c.get('useful_entry',0)}\n"
+        f"• 🟡 нейтральные: {c.get('neutral',0)}\n"
+        f"• 🟠/🔴 ранние/плохие входы: {c.get('early_drawdown',0)+c.get('bad_entry',0)}\n"
+        f"• средний paperΔ: {summary['avg_delta']:+.2f}\n\n"
+        'Последние уроки:\n'
+        f'{rows}\n\n'
+        'Правило: 24ч = предварительный урок, 48ч = финальный урок. Live BUY остаётся +0.'
+    )
+
+
+def v19118_probe_lesson_audit_report():
+    return v19118_probe_lesson_engine_report()
+
+
+def v19118_lesson_score_adjustment():
+    """Только learning/display adjustment, не live BUY. Сейчас не вмешивается агрессивно в score."""
+    try:
+        summary = v19118_lesson_summary()
+        c = summary.get('counts', {})
+        bad = int(c.get('bad_entry',0) or 0) + int(c.get('early_drawdown',0) or 0)
+        good = int(c.get('good_entry',0) or 0) + int(c.get('useful_entry',0) or 0)
+        if bad >= good + 5:
+            return -1
+        if good >= bad + 5:
+            return 1
+    except Exception:
+        pass
+    return 0
+
+
+try:
+    _v19118_old_synced_quality_score = v191171_synced_quality_score
+except Exception:
+    _v19118_old_synced_quality_score = None
+
+
+def v191171_synced_quality_score(default=74):
+    base = _v19118_old_synced_quality_score(default=default) if _v19118_old_synced_quality_score else int(default or 74)
+    try:
+        adj = v19118_lesson_score_adjustment()
+        score = int(base) + int(adj)
+        # пока нет ошибок входа, не валим ниже 69: это learning-score, а не отключение алгоритма
+        try:
+            qm_old = _v191171_old_quality_metrics() if '_v191171_old_quality_metrics' in globals() and _v191171_old_quality_metrics else {}
+            errors = int(qm_old.get('entry_error', 0) or 0) if isinstance(qm_old, dict) else 0
+            if errors == 0:
+                score = max(score, 69)
+        except Exception:
+            pass
+        return max(0, min(100, score))
+    except Exception:
+        return int(base)
+
+
+def quality_probe_user_report():
+    # Сначала финализируем доступные 24/48ч уроки, затем показываем текущие probe-scoring.
+    try:
+        v19118_run_probe_finalizer(sync=False)
+    except Exception as e:
+        print(f'v19118 quality probe finalizer skip: {e}')
+    try:
+        txt = _v19118_old_quality_probe_user_report() if _v19118_old_quality_probe_user_report else ''
+    except Exception:
+        txt = ''
+    try:
+        lessons = v19118_load_lessons()
+        summary = v19118_lesson_summary(lessons)
+        c = summary['counts']
+        add = (
+            '\n\n🧠 Lesson Engine:\n'
+            f"• всего 24/48ч уроков: {summary['total']}\n"
+            f"• хорошие/полезные: {c.get('good_entry',0)+c.get('useful_entry',0)} | нейтральные: {c.get('neutral',0)} | ранние/плохие: {c.get('early_drawdown',0)+c.get('bad_entry',0)}\n"
+            '• подробнее: /lesson_engine'
+        )
+        return (txt or v19118_probe_lesson_engine_report()) + add
+    except Exception:
+        return txt or v19118_probe_lesson_engine_report()
+
+
+def quality_score_user_report():
+    try:
+        base = _v191171_old_quality_score_user_report() if '_v191171_old_quality_score_user_report' in globals() and _v191171_old_quality_score_user_report else ''
+    except Exception:
+        base = ''
+    score = v191171_synced_quality_score()
+    if base:
+        try:
+            base = re.sub(r'(Итог:\s*\*{0,2})\d{1,3}(/100)', rf'\g<1>{score}\2', str(base), count=1)
+        except Exception:
+            pass
+        return base + '\n\n🧠 Probe Finalizer: 24/48ч уроки учитываются только в paper-learning, live BUY +0.'
+    return score_refresh_sync_report()
+
+
+def quality_score_audit_report():
+    return quality_score_user_report()
+
+
+def version_user_report():
+    return (
+        f'✅ Версия: {BOT_VERSION}\n\n'
+        'Что добавлено:\n'
+        '• Probe Finalizer: автоматически проверяет quality-probe на 24/48ч;\n'
+        '• Lesson Engine: записывает уроки good / neutral / early / bad / correct no-buy;\n'
+        '• уроки сохраняются в paper-store и не дублируются;\n'
+        '• 24ч = предварительный урок, 48ч = финальный урок;\n'
+        '• /quality_probe показывает краткую сводку Lesson Engine;\n'
+        '• /lesson_engine показывает отдельный отчёт по урокам.\n\n'
+        'Ограничения:\n'
+        '• реальные покупки: 0;\n'
+        '• автоторговля: выключена;\n'
+        '• BUY-веса: +0;\n'
+        '• Risk Engine не менялся.\n\n'
+        'Команды проверки: /quality_probe | /lesson_engine | /paper | /signal | /quality_score | /audit_file'
+    )
+
+
+def build_audit_file(chat_id):
+    try:
+        v19118_run_probe_finalizer(sync=False)
+    except Exception as e:
+        print(f'v19118 audit finalizer skip: {e}')
+    ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+    path = f'/tmp/alex_edge_audit_{ts}.txt'
+    sections=[]
+    def add(title, func, timeout_sec=25):
+        body = audit_section_text(func, timeout_sec=timeout_sec)
+        try:
+            body = v191151_normalize_version_text(body)
+        except Exception:
+            body = str(body)
+        sections.append('\n' + '='*80 + f'\n{title}\n' + '='*80 + '\n' + body)
+    add('VERSION', lambda: f'BOT_VERSION: {BOT_VERSION}', 5)
+    add('AUDIT SHORT', audit_short_report, 15)
+    add('PROBE FINALIZER & LESSON ENGINE V19.11.8', v19118_probe_lesson_audit_report, 12)
+    add('SCORE REFRESH SYNC V19.11.8', score_refresh_sync_report, 8)
+    add('PROBE RESULT SCORING V19.11.8', probe_result_scoring_audit_report, 15)
+    add('SHADOW PORTFOLIO V19.11.8', v19117_shadow_portfolio_report, 8)
+    add('AUTO CHECK SCORE SYNC V19.11.8', auto_check_score_sync_report, 8)
+    add('SINGLE COIN NO-BUY SYNC V19.11.8', single_coin_no_buy_sync_report, 8)
+    add('SIGNAL GROWTH RADAR + DECAY V19.11.8', unified_signal_report, 35)
+    add('AUTO QUALITY PROBE SCHEDULER V19.11.8', auto_quality_probe_status_report, 8)
+    add('QUALITY PAPER PROBE + SCORING V19.11.8', quality_probe_user_report, 12)
+    add('QUALITY LEARNING ACCELERATOR V19.11.8', quality_accelerator_audit_report, 10)
+    add('SELF-LEARNING BRAIN CORE V19.11.8', v199_brain_audit_report, 10)
+    add('QUALITY WATCH LADDER V19.11.8', quality_watch_ladder_audit_report, 10)
+    add('QUALITY SCORE V19.11.8', quality_score_audit_report, 8)
+    add('CHECKPOINT SCORING V19.11.8', v19112_checkpoint_scoring_user_report, 10)
     add('TECH: HYPOTHESES', v1910_hypotheses_user_report, 8)
     add('TECH: PAPER FULL', paper_report, 12)
     add('TECH: SOL FULL', lambda: single_analysis_full('SOL-USDT'), 25)
