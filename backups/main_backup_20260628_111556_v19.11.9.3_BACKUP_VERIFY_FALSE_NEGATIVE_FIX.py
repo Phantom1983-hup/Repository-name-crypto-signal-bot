@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16825,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17933,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18408,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18572,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18917,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19298,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19605,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20119,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20260,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20571,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20862,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21719,7 +21719,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22123,7 +22123,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22692,7 +22692,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23200,7 +23200,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23506,7 +23506,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24034,7 +24034,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25251,7 +25251,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 
 
 def _v191191_branch_ref_name():
@@ -25396,7 +25396,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25684,7 +25684,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
+BOT_VERSION = "v19.11.9.3 BACKUP VERIFY FALSE NEGATIVE FIX"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25901,380 +25901,6 @@ def version_user_report():
         '• Risk Engine unchanged;\n'
         '• /audit_file fast/cache.\n\n'
         'Команды проверки: /version | /backup_verify | /rollback_list | /paper_buy_status | /audit_file'
-    )
-
-
-# === v19.11.9.4 PAPER BUY PERSISTENCE FIX ===
-# Причина: PAPER BUY сделки NEAR/LINK создавались в локальном paper_store,
-# но save_paper_store(sync=False) только помечал файл dirty. Если сразу после этого
-# запускался deploy/restart, GitHub-копия paper_trades.json не успевала обновиться,
-# и активные PAPER BUY исчезали после перезапуска.
-# Fix: при создании PAPER BUY делаем immediate GitHub storage sync для paper_trades.json,
-# пишем journal/persistence metadata и явно показываем persistence status в отчётах.
-# Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
-
-BOT_VERSION = "v19.11.9.4 PAPER BUY PERSISTENCE FIX"
-
-V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
-V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
-
-
-def v191194_now():
-    try:
-        return time.time()
-    except Exception:
-        return 0
-
-
-def v191194_count_active_buy_in_data(data):
-    try:
-        op = data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}
-        return sum(1 for t in op.values() if v19119_is_paper_buy_decision(t))
-    except Exception:
-        return 0
-
-
-def v191194_record_paper_buy_journal(data, key, trade, decision):
-    """Append/replace compact persistent journal record for a created PAPER BUY."""
-    if not isinstance(data, dict) or not isinstance(trade, dict):
-        return data
-    try:
-        journal = data.get(V191194_PAPER_BUY_JOURNAL_KEY)
-        if not isinstance(journal, list):
-            journal = []
-        asset = v19119_trade_asset(trade)
-        now = v191194_now()
-        rec = {
-            'key': key,
-            'asset': asset,
-            'created_at': v19119_safe_float(trade.get('entry_time'), now),
-            'entry_price': v19119_safe_float(trade.get('entry_price'), 0),
-            'last_price': v19119_safe_float(trade.get('last_price'), 0),
-            'paper_score': v19119_safe_int(trade.get('score'), 0),
-            'probe_score': v19119_safe_int((decision or {}).get('probe_score'), 0),
-            'tier': trade.get('paper_buy_tier') or (decision or {}).get('tier'),
-            'status': 'open',
-            'source_probe_key': trade.get('source_probe_key') or (decision or {}).get('source_probe_key'),
-            'version': BOT_VERSION,
-            'saved_at': now,
-        }
-        # Replace duplicate key instead of appending forever.
-        journal = [j for j in journal if not (isinstance(j, dict) and j.get('key') == key)]
-        journal.append(rec)
-        journal = journal[-80:]
-        data[V191194_PAPER_BUY_JOURNAL_KEY] = journal
-    except Exception:
-        pass
-    return data
-
-
-def v191194_persist_paper_store_immediate(data, reason='paper_buy_created'):
-    """
-    Save paper store and immediately sync it to GitHub storage.
-    This prevents PAPER BUY entries from disappearing after Render restart/deploy.
-    Returns status dict for reports.
-    """
-    status = {
-        'ok': False,
-        'mode': 'local',
-        'reason': reason,
-        'synced_files': 0,
-        'error': '',
-        'at': v191194_now(),
-    }
-    if not isinstance(data, dict):
-        status['error'] = 'data is not dict'
-        return status
-    try:
-        data['version'] = BOT_VERSION
-        meta = data.get(V191194_PAPER_BUY_PERSISTENCE_KEY)
-        if not isinstance(meta, dict):
-            meta = {}
-        meta.update({
-            'last_save_at': status['at'],
-            'last_save_reason': reason,
-            'last_version': BOT_VERSION,
-            'active_paper_buy_count': v191194_count_active_buy_in_data(data),
-            'immediate_sync_required': True,
-            'last_sync_mode': 'pending',
-        })
-        data[V191194_PAPER_BUY_PERSISTENCE_KEY] = meta
-
-        # Local write first.
-        save_paper_store(data, sync=False)
-        status['ok'] = True
-
-        # Immediate remote sync: this is the key fix. Do not rely only on dirty queue.
-        if 'github_storage_enabled' in globals() and github_storage_enabled():
-            try:
-                n = sync_github_storage_now([PAPER_TRADES_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
-                status.update({'mode': 'github-immediate', 'synced_files': int(n or 0), 'ok': int(n or 0) >= 1})
-                meta['last_sync_at'] = v191194_now()
-                meta['last_sync_mode'] = 'github-immediate'
-                meta['last_sync_files'] = int(n or 0)
-                meta['last_sync_ok'] = bool(int(n or 0) >= 1)
-                data[V191194_PAPER_BUY_PERSISTENCE_KEY] = meta
-                # Store local sync metadata. Mark dirty but do not block on a second remote write.
-                save_paper_store(data, sync=False)
-            except Exception as e:
-                status.update({'mode': 'github-immediate-failed', 'ok': False, 'error': str(e)[:180]})
-                meta['last_sync_at'] = v191194_now()
-                meta['last_sync_mode'] = 'github-immediate-failed'
-                meta['last_sync_ok'] = False
-                meta['last_sync_error'] = str(e)[:180]
-                data[V191194_PAPER_BUY_PERSISTENCE_KEY] = meta
-                save_paper_store(data, sync=False)
-                try:
-                    background_github_sync([PAPER_TRADES_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
-                except Exception:
-                    pass
-        else:
-            status.update({'mode': 'local-only', 'ok': True})
-            meta['last_sync_mode'] = 'local-only'
-            meta['last_sync_ok'] = True
-            data[V191194_PAPER_BUY_PERSISTENCE_KEY] = meta
-            save_paper_store(data, sync=False)
-    except Exception as e:
-        status.update({'ok': False, 'error': str(e)[:180]})
-    return status
-
-
-def v191194_paper_buy_persistence_lines():
-    try:
-        data = paper_store()
-        meta = data.get(V191194_PAPER_BUY_PERSISTENCE_KEY, {}) if isinstance(data, dict) else {}
-        journal = data.get(V191194_PAPER_BUY_JOURNAL_KEY, []) if isinstance(data, dict) else []
-        if not isinstance(meta, dict):
-            meta = {}
-        if not isinstance(journal, list):
-            journal = []
-        active = v191194_count_active_buy_in_data(data)
-        mode = meta.get('last_sync_mode') or 'нет данных'
-        ok = meta.get('last_sync_ok')
-        ok_txt = '✅' if ok is True else ('❌' if ok is False else 'ℹ️')
-        age = ''
-        try:
-            if meta.get('last_save_at'):
-                age = f" | {v191183_fmt_age(meta.get('last_save_at'))}"
-        except Exception:
-            age = ''
-        return [
-            'Persistence:',
-            f'• active paper BUY в store: {active}',
-            f'• journal записей: {len(journal)}',
-            f'• sync: {ok_txt} {mode}{age}',
-        ]
-    except Exception as e:
-        return ['Persistence:', f'• ⚠️ status error: {str(e)[:120]}']
-
-
-# Override creator: PAPER BUY creations must persist before deploy/restart can erase them.
-def v19119_open_paper_buy_decisions(create=True, max_new=2, force_one=False):
-    data, open_trades = v19119_open_trades()
-    if not isinstance(data, dict):
-        data = {'open': {}, 'closed': []}
-    if not isinstance(open_trades, dict):
-        open_trades = {}
-    data['open'] = open_trades
-
-    active_assets = v19119_active_paper_buy_assets(open_trades)
-    active_count = len(active_assets)
-    decisions = v19119_ranked_paper_buy_decisions()
-    created = []
-    skipped = []
-    persist_status = {'ok': None, 'mode': 'not-needed', 'synced_files': 0, 'error': ''}
-
-    if not create:
-        return {'created': created, 'skipped': decisions, 'active': active_count, 'decisions': decisions, 'persistence': persist_status}
-
-    now = v191194_now()
-    slots = max(0, int(V19119_PAPER_BUY_MAX_ACTIVE) - active_count)
-    limit = min(int(max_new or 0), slots)
-    if limit <= 0:
-        return {'created': created, 'skipped': decisions, 'active': active_count, 'decisions': decisions, 'persistence': persist_status}
-
-    eligible = [d for d in decisions if d.get('tier') in ['quality_buy_test','micro_buy_test'] and d.get('asset') not in active_assets]
-    if not eligible and force_one:
-        fallback = [d for d in decisions if d.get('decision_score',0) >= 45 and d.get('asset') not in active_assets]
-        eligible = fallback[:1]
-
-    for d in eligible[:limit]:
-        try:
-            asset = d.get('asset')
-            price = v19119_safe_float(d.get('price'), 0)
-            if not asset or price <= 0 or asset in active_assets:
-                continue
-            key = paper_trade_key(asset, V19119_PAPER_BUY_TYPE, now)
-            if key in open_trades:
-                continue
-            trade = {
-                'id': key,
-                'asset': asset,
-                'entry_time': now,
-                'entry_price': round(price, 10),
-                'last_price': round(price, 10),
-                'last_pct': 0.0,
-                'score': int(d.get('decision_score', 0) or 0),
-                'entry_score': int(d.get('entry_score', 0) or 0),
-                'probe_score_at_decision': int(d.get('probe_score', 0) or 0),
-                'probe_bucket_at_decision': d.get('probe_bucket'),
-                'master_score': int(d.get('decision_score', 0) or 0),
-                'source_action': 'PAPER_BUY_DECISION',
-                'virtual_type': V19119_PAPER_BUY_TYPE,
-                'verdict': d.get('decision'),
-                'is_quality': True,
-                'is_paper_buy_decision': True,
-                'paper_buy_tier': d.get('tier'),
-                'paper_size': d.get('paper_size'),
-                'entry_plan': {
-                    'target1': d.get('target1'),
-                    'target2': d.get('target2'),
-                    'stop': d.get('stop'),
-                    'target1_pct': d.get('target1_pct'),
-                    'target2_pct': d.get('target2_pct'),
-                    'stop_pct': d.get('stop_pct'),
-                    'cancel_rule': 'если BTC резко давит или цена уходит ниже stop — paper BUY считается плохим/ранним',
-                },
-                'decision_reasons': d.get('reasons', []),
-                'decision_risks': d.get('risks', []),
-                'source_probe_key': d.get('source_probe_key'),
-                'probe_pnl_at_decision': d.get('pnl'),
-                'probe_age_h_at_decision': d.get('age_h'),
-                'btc_change': round(float(d.get('btc_change',0) or 0), 3),
-                'macro_mod': d.get('macro_mod'),
-                'change_24': round(float(d.get('change_24',0) or 0), 3),
-                'results': {},
-                'result_details': {},
-                'status': 'open',
-                'persistence_required': True,
-                'persistence_version': BOT_VERSION,
-                'note': 'PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0',
-                'created_by': BOT_VERSION,
-            }
-            open_trades[key] = trade
-            data = v191194_record_paper_buy_journal(data, key, trade, d)
-            created.append(d)
-            active_assets.add(asset)
-        except Exception as e:
-            skipped.append({'asset': d.get('asset','?'), 'decision': 'error', 'decision_score': 0, 'risks': [str(e)[:120]]})
-            continue
-
-    if created:
-        data['open'] = open_trades
-        data['last_paper_buy_decision_at'] = now
-        data['last_paper_buy_decision_version'] = BOT_VERSION
-        persist_status = v191194_persist_paper_store_immediate(data, reason='paper_buy_created')
-
-    return {'created': created, 'skipped': decisions, 'active': len(active_assets), 'decisions': decisions, 'persistence': persist_status}
-
-
-# Report override: explicitly show persistence status and recovery hint.
-def v19119_paper_buy_decision_report(create=False):
-    try:
-        res = v19119_open_paper_buy_decisions(create=bool(create), max_new=2, force_one=False)
-    except Exception as e:
-        return (
-            '🟢 Paper BUY Decision Layer\n\n'
-            f'Veрсия: {BOT_VERSION}\n'
-            f'⚠️ Не смог построить paper BUY слой: {str(e)[:180]}\n\n'
-            'Реальные покупки 0, автоторговля OFF.'
-        )
-
-    created = res.get('created', []) or []
-    decisions = res.get('decisions', []) or []
-    persist = res.get('persistence', {}) if isinstance(res.get('persistence', {}), dict) else {}
-    active_rows = v19119_active_paper_buy_rows(limit=6)
-    lines = [
-        '🟢 Paper BUY Decision Layer',
-        f'Версия: {BOT_VERSION}',
-        '',
-        'Режим: только paper BUY. Реальные покупки 0, автоторговля OFF, BUY-веса +0.',
-        'Fix v19.11.9.4: PAPER BUY теперь сохраняется в GitHub storage сразу после создания.',
-        '',
-        f'Создано новых paper BUY: {len(created)}',
-        f'Активных paper BUY: {len(active_rows)}',
-    ]
-    if created:
-        lines += ['', 'Новые paper BUY:']
-        for d in created:
-            lines.append(
-                f"• {d.get('asset')}: {d.get('decision')} | paper-score {d.get('decision_score')}/100 | probe-score {d.get('probe_score', '?')}/100 | вход {v19119_format_price(d.get('price'))} | размер {d.get('paper_size')}"
-            )
-            lines.append(
-                f"  План: T1 {v19119_format_price(d.get('target1'))} / T2 {v19119_format_price(d.get('target2'))} / stop {v19119_format_price(d.get('stop'))}"
-            )
-            lines.append('  Причина: ' + '; '.join(d.get('reasons', [])[:3]))
-        if persist:
-            ok = '✅' if persist.get('ok') else '⚠️'
-            lines.append(f"  Persistence: {ok} {persist.get('mode','?')} | synced_files {persist.get('synced_files',0)}")
-            if persist.get('error'):
-                lines.append(f"  Persistence error: {persist.get('error')}")
-    elif create:
-        lines += ['', 'Новые paper BUY не созданы: уже есть активные BUY или кандидаты не прошли sync по probe-score.']
-
-    if active_rows:
-        lines += ['', 'Открытые paper BUY:'] + active_rows
-    else:
-        lines += ['', 'Открытых paper BUY пока нет. Если кандидаты ниже проходят зелёный BUY — отправь /paper_buy для открытия и мгновенного сохранения.']
-
-    lines += [''] + v191194_paper_buy_persistence_lines()
-
-    if decisions:
-        lines += ['', 'Кандидаты/отсев сейчас:']
-        for d in decisions[:6]:
-            lines.append(
-                f"• {d.get('asset')}: {d.get('decision')} | paper-score {d.get('decision_score')}/100 | probe-score {d.get('probe_score','?')}/100 | probe {d.get('pnl'):+.2f}% | риск: {'; '.join(d.get('risks', [])[:2])}"
-            )
-    else:
-        lines += ['', 'Кандидатов нет: нет активных quality-probe в paper-store.']
-
-    lines += [
-        '',
-        'Правило sync: созданный PAPER BUY больше не должен исчезать после deploy/restart.',
-        'Проверка результата: 6ч/24ч/48ч через обычный paper finalizer.',
-        'Команды: /paper_buy | /paper_buy_status | /paper | /lesson_engine | /audit_file',
-    ]
-    return '\n'.join(lines)
-
-
-def v19119_paper_buy_audit_report():
-    return v19119_paper_buy_decision_report(create=False)
-
-
-# Fast audit section: add compact persistence status without changing heavy audit mode.
-def v191194_paper_buy_persistence_audit_section():
-    try:
-        return '\n'.join(['🧷 PAPER BUY PERSISTENCE'] + v191194_paper_buy_persistence_lines())
-    except Exception as e:
-        return f'🧷 PAPER BUY PERSISTENCE\n⚠️ error: {str(e)[:120]}'
-
-try:
-    _v191194_old_v191181_fast_audit_build_content = v191181_fast_audit_build_content
-except Exception:
-    _v191194_old_v191181_fast_audit_build_content = None
-
-
-def v191181_fast_audit_build_content():
-    base = str(_v191194_old_v191181_fast_audit_build_content()) if _v191194_old_v191181_fast_audit_build_content else f'VERSION\n{BOT_VERSION}'
-    return base + '\n\n' + '='*80 + '\nPAPER BUY PERSISTENCE V19.11.9.4\n' + '='*80 + '\n' + v191194_paper_buy_persistence_audit_section()
-
-
-def version_user_report():
-    return (
-        f'✅ Версия: {BOT_VERSION}\n\n'
-        'Что исправлено:\n'
-        '• PAPER BUY сделки теперь сохраняются сразу в GitHub storage после создания;\n'
-        '• save_paper_store(sync=False) больше не оставляет новые BUY только локально перед deploy/restart;\n'
-        '• добавлен PAPER BUY journal и persistence metadata;\n'
-        '• /paper_buy_status и /audit_file показывают persistence status;\n'
-        '• Backup Verify fix из v19.11.9.3 и Paper BUY score sync из v19.11.9.2 сохранены.\n\n'
-        'Сохранено:\n'
-        '• реальные покупки 0;\n'
-        '• автоторговля OFF;\n'
-        '• BUY-веса +0;\n'
-        '• Risk Engine unchanged;\n'
-        '• /audit_file fast/cache.\n\n'
-        'Команды проверки: /version | /paper_buy | /paper_buy_status | /backup_verify | /audit_file'
     )
 
 
