@@ -38083,7 +38083,8 @@
       "results": {
         "15m": 0.0,
         "30m": 2.04,
-        "1h": 22.03
+        "1h": 22.03,
+        "3h": 14.96
       },
       "price_points": [
         {
@@ -38199,6 +38200,15 @@
           "checkpoint_pct": 22.03,
           "source": "cache_due_snapshot",
           "cache_price_time": 1782631929.0827513,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782637575.3647456,
+          "target_time": 1782637292.484573,
+          "checkpoint_price": 0.55926,
+          "checkpoint_pct": 14.96,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782637575.3647456,
           "cache_price_source": "snapshot"
         }
       },
@@ -38870,7 +38880,9 @@
       "last_seen": 1782636682.0459037,
       "last_seen_counted": 1782636682.0459037,
       "seen_count": 1,
-      "results": {},
+      "results": {
+        "15m": 0.0
+      },
       "price_points": [
         {
           "time": 1782636682.0459037,
@@ -38910,7 +38922,17 @@
       ],
       "shadow_result_v184": "ждём первые checkpoints",
       "confidence_v181": 28,
-      "result_details": {}
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782636682.0459037,
+          "target_time": 1782637582.0459037,
+          "checkpoint_price": 71.96,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782636682.0459037,
+          "cache_price_source": "snapshot"
+        }
+      }
     }
   },
   "version": "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY",
