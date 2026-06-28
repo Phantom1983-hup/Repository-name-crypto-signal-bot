@@ -41202,7 +41202,8 @@
       "results": {
         "15m": 5.4,
         "30m": 5.4,
-        "1h": 5.4
+        "1h": 5.4,
+        "3h": -2.1
       },
       "price_points": [
         {
@@ -41286,6 +41287,15 @@
           "checkpoint_pct": 5.4,
           "source": "cache_due_snapshot",
           "cache_price_time": 1782659344.6757588,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782665736.8713222,
+          "target_time": 1782666489.0705512,
+          "checkpoint_price": 0.04391,
+          "checkpoint_pct": -2.1,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782665736.8713222,
           "cache_price_source": "snapshot"
         }
       },
@@ -41516,7 +41526,8 @@
         }
       ],
       "shadow_result_v184": "ждём первые checkpoints",
-      "confidence_v181": 25
+      "confidence_v181": 25,
+      "result_details": {}
     },
     "VELVET_1782666630": {
       "asset": "VELVET",
@@ -41612,7 +41623,8 @@
         }
       ],
       "shadow_result_v184": "ждём первые checkpoints",
-      "confidence_v181": 27
+      "confidence_v181": 27,
+      "result_details": {}
     }
   },
   "version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
