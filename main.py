@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16627,7 +16627,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17735,7 +17735,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18210,7 +18210,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18374,7 +18374,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18719,7 +18719,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19100,7 +19100,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19407,7 +19407,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -19921,7 +19921,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20062,7 +20062,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20373,7 +20373,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20664,7 +20664,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21488,7 +21488,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -21892,7 +21892,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22461,7 +22461,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.7 PROBE RESULT SCORING"
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -22942,6 +22942,313 @@ def build_audit_file(chat_id):
     add('QUALITY WATCH LADDER V19.11.7', quality_watch_ladder_audit_report, 10)
     add('QUALITY SCORE V19.11.7', quality_score_audit_report, 8)
     add('CHECKPOINT SCORING V19.11.7', v19112_checkpoint_scoring_user_report, 10)
+    add('TECH: HYPOTHESES', v1910_hypotheses_user_report, 8)
+    add('TECH: PAPER FULL', paper_report, 12)
+    add('TECH: SOL FULL', lambda: single_analysis_full('SOL-USDT'), 25)
+    content = 'ALEX EDGE ULTRA TECH AUDIT FILE\n' + '\n'.join(sections)
+    try:
+        content = v191151_normalize_version_text(content)
+    except Exception:
+        pass
+    try:
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(content)
+    except Exception as e:
+        send_message(chat_id, f'❌ Не удалось создать audit txt: {e}')
+        return None
+    ok = send_document(chat_id, path, caption='🧾 Технический отчёт готов.')
+    if not ok:
+        send_message(chat_id, '⚠️ audit_file собран, но Telegram не принял файл. Ниже короткий аудит.')
+        send_message(chat_id, audit_short_report())
+    return path
+
+
+# === v19.11.7.1 SCORE REFRESH SYNC ===
+# Причина: после v19.11.7 /audit_file уже показывал score с drawdown-penalty,
+# а быстрые /signal и /auto_audit_now могли ещё брать старый cached quality score.
+# Исправление: единый refresh-слой перед любым коротким score-отчётом.
+# Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
+
+BOT_VERSION = "v19.11.7.1 SCORE REFRESH SYNC"
+
+try:
+    _v191171_old_quality_metrics = _v191162_quality_metrics
+except Exception:
+    _v191171_old_quality_metrics = None
+try:
+    _v191171_old_quality_score_audit_report = quality_score_audit_report
+except Exception:
+    _v191171_old_quality_score_audit_report = None
+try:
+    _v191171_old_quality_score_user_report = quality_score_user_report
+except Exception:
+    _v191171_old_quality_score_user_report = None
+try:
+    _v191171_old_audit_short_report = audit_short_report
+except Exception:
+    _v191171_old_audit_short_report = None
+try:
+    _v191171_old_build_audit_file = build_audit_file
+except Exception:
+    _v191171_old_build_audit_file = None
+
+
+def v191171_extract_score_from_text(txt, default=0):
+    try:
+        s = str(txt or '')
+        pats = [
+            r'Итог:\s*\*{0,2}(\d{1,3})/100',
+            r'Оценка бота:\s*[^\d]*(\d{1,3})/100',
+            r'Оценка:\s*[^\d]*(\d{1,3})/100',
+            r'Quality score:\s*(\d{1,3})/100',
+        ]
+        for p in pats:
+            m = re.search(p, s, flags=re.I)
+            if m:
+                val = int(m.group(1))
+                if 0 <= val <= 100:
+                    return val
+    except Exception:
+        pass
+    return int(default or 0)
+
+
+def v191171_probe_penalty(summary=None):
+    """Мягкий штраф за активные просевшие quality-probe. Только отчётная/learning-оценка."""
+    try:
+        summary = summary or v19117_probe_result_summary()
+        count = int(summary.get('count', 0) or 0)
+        if count <= 0:
+            return 0
+        avg_score = int(summary.get('avg_score', 0) or 0)
+        avg_pnl = float(summary.get('avg_pnl', 0) or 0)
+        c = summary.get('counts', {}) or {}
+        drawdown = int(c.get('mild_drawdown', 0) or 0) + int(c.get('early_drawdown', 0) or 0) + int(c.get('bad_entry', 0) or 0)
+        useful = int(c.get('good_entry', 0) or 0) + int(c.get('useful', 0) or 0)
+        # Текущий кейс v19.11.7: avg_score около 34, avg_pnl около -2.7, 5/6 probes в просадке => -2.
+        penalty = 0
+        if count >= 3 and avg_score < 45 and avg_pnl < -1.0 and drawdown > useful:
+            penalty = 1
+        if count >= 5 and avg_score < 38 and avg_pnl <= -2.0 and drawdown >= max(3, count // 2):
+            penalty = 2
+        if count >= 5 and avg_score < 30 and avg_pnl <= -4.0 and drawdown >= count - 1:
+            penalty = 3
+        return max(0, min(5, penalty))
+    except Exception:
+        return 0
+
+
+def v191171_base_quality_score(default=74):
+    """Берём лучший доступный базовый score без v19.11.7.1 рекурсии."""
+    # 1) Старый quality report чаще всего совпадает с /audit_file.
+    try:
+        if _v191171_old_quality_score_audit_report:
+            txt = _v191171_old_quality_score_audit_report()
+            val = v191171_extract_score_from_text(txt, 0)
+            if val > 0:
+                return val
+    except Exception:
+        pass
+    # 2) Старый unified metrics.
+    try:
+        if _v191171_old_quality_metrics:
+            m = _v191171_old_quality_metrics()
+            val = int(m.get('score', 0) or 0) if isinstance(m, dict) else 0
+            if val > 0:
+                return val
+    except Exception:
+        pass
+    # 3) Текущий quality payload.
+    try:
+        q = _v191132_quality_score_payload() if '_v191132_quality_score_payload' in globals() else {}
+        val = int(q.get('alex_quality', 0) or 0) if isinstance(q, dict) else 0
+        if val > 0:
+            return val
+    except Exception:
+        pass
+    try:
+        m = _v1982_metrics()
+        val = int(m.get('score', 0) or 0) if isinstance(m, dict) else 0
+        if val > 0:
+            return val
+    except Exception:
+        pass
+    return int(default or 0)
+
+
+def v191171_synced_quality_score(default=74):
+    """Единый display-score для /signal, /auto_audit_now, /audit_short и /audit_file."""
+    try:
+        # Перед score-refresh мягко обновляем текущий PnL активных probes.
+        if 'v19117_annotate_open_probe_snapshots' in globals():
+            v19117_annotate_open_probe_snapshots(sync=False)
+    except Exception:
+        pass
+    base = v191171_base_quality_score(default=default)
+    try:
+        summary = v19117_probe_result_summary() if 'v19117_probe_result_summary' in globals() else {}
+        penalty = v191171_probe_penalty(summary)
+        # Если старый report уже сам учёл penalty, повторно сильно не штрафуем.
+        # Нижняя граница удерживает score в статусе защитного фильтра, пока ошибок входа 0.
+        score = base - penalty
+        try:
+            qm_old = _v191171_old_quality_metrics() if _v191171_old_quality_metrics else {}
+            errors = int(qm_old.get('entry_error', 0) or 0) if isinstance(qm_old, dict) else 0
+            if errors == 0:
+                score = max(score, 70)
+        except Exception:
+            pass
+        return max(0, min(100, int(score)))
+    except Exception:
+        return max(0, min(100, int(base)))
+
+
+def _v191162_quality_metrics():
+    """v19.11.7.1: единый источник score с refresh, чтобы quick reports не отставали от audit_file."""
+    try:
+        base = _v191171_old_quality_metrics() if _v191171_old_quality_metrics else {}
+        if not isinstance(base, dict):
+            base = {}
+    except Exception:
+        base = {}
+    try:
+        m = _v1982_metrics()
+        if isinstance(m, dict):
+            base.setdefault('open', int(m.get('open', 0) or 0))
+            base.setdefault('closed', int(m.get('closed', 0) or 0))
+            base.setdefault('protection', int(m.get('protection', 0) or 0))
+            base.setdefault('missed', int(m.get('missed', 0) or 0))
+            base.setdefault('entry_error', int(m.get('entry_error', 0) or 0))
+    except Exception:
+        pass
+    base['score'] = v191171_synced_quality_score(default=int(base.get('score', 74) or 74))
+    return base
+
+
+def v191161_quality_score_value(default=73):
+    return v191171_synced_quality_score(default=default)
+
+
+def audit_short_report():
+    try:
+        ctx = market_context()
+    except Exception:
+        ctx = {}
+    qm = _v191162_quality_metrics()
+    try:
+        mode = _v1982_market_simple(ctx).upper()
+    except Exception:
+        mode = '🟡 ОСТОРОЖНО'
+    return (
+        "🧾 Короткий аудит\n\n"
+        f"🟡 **РЕЖИМ: {mode}**\n"
+        f"Покупки: 🔴 **НЕТ**\n"
+        f"BTC: **{float(ctx.get('btc_change',0) or 0):+.2f}%** | страх: **{ctx.get('fg_value','?')}** | новости: **{int(ctx.get('macro_mod',0) or 0):+d}**\n"
+        f"Оценка бота: 🟢 **{int(qm.get('score',0) or 0)}/100**\n\n"
+        f"Открыто: **{int(qm.get('open',0) or 0)}** | закрыто: **{int(qm.get('closed',0) or 0)}**\n"
+        f"Защита: **{int(qm.get('protection',0) or 0)}** | пропуски: **{int(qm.get('missed',0) or 0)}** | ошибки: **{int(qm.get('entry_error',0) or 0)}**\n\n"
+        "Полный технический файл: /audit_file"
+    )
+
+
+def score_refresh_sync_report():
+    qm = _v191162_quality_metrics()
+    try:
+        summary = v19117_probe_result_summary()
+    except Exception:
+        summary = {'count': 0, 'avg_pnl': 0, 'avg_score': 0, 'counts': {}}
+    penalty = v191171_probe_penalty(summary)
+    return (
+        '🔄 SCORE REFRESH SYNC\n\n'
+        f'Версия: {BOT_VERSION}\n'
+        'Статус: /signal, /auto_audit_now, /quality_score и /audit_file используют один refresh-score.\n\n'
+        f"Единая оценка: {qm.get('score',0)}/100\n"
+        f"Закрыто: {qm.get('closed',0)} | защита: {qm.get('protection',0)} | пропуски: {qm.get('missed',0)} | ошибки: {qm.get('entry_error',0)}\n\n"
+        'Probe-scoring:\n'
+        f"• активных probes: {summary.get('count',0)}\n"
+        f"• средний PnL: {float(summary.get('avg_pnl',0) or 0):+.2f}%\n"
+        f"• средний probe-score: {int(summary.get('avg_score',0) or 0)}/100\n"
+        f"• текущий drawdown-penalty: -{penalty}\n\n"
+        'Реальные покупки: 0. Автоторговля выключена. BUY-веса +0. Risk Engine не менялся.'
+    )
+
+
+def quality_score_user_report():
+    try:
+        txt = _v191171_old_quality_score_user_report() if _v191171_old_quality_score_user_report else ''
+    except Exception:
+        txt = ''
+    score = v191171_synced_quality_score()
+    if txt:
+        # Мягко заменяем первый итоговый score, чтобы /quality_score не расходился с /signal.
+        try:
+            txt = re.sub(r'(Итог:\s*\*{0,2})\d{1,3}(/100)', rf'\g<1>{score}\2', str(txt), count=1)
+        except Exception:
+            pass
+        return txt + '\n\n🔄 Score Refresh Sync: быстрые отчёты и audit_file используют эту же оценку.'
+    return score_refresh_sync_report()
+
+
+def quality_score_audit_report():
+    return quality_score_user_report()
+
+
+def auto_check_score_sync_report():
+    qm = _v191162_quality_metrics()
+    return (
+        '🧠 AUTO CHECK SCORE SYNC\n\n'
+        f"Версия: {BOT_VERSION}\n"
+        'Статус: авто-проверка синхронизирована с /quality_score, /signal и /audit_file.\n\n'
+        f"Оценка: {qm['score']}/100\n"
+        f"Открыто: {qm.get('open',0)} | закрыто: {qm.get('closed',0)}\n"
+        f"Защита: {qm.get('protection',0)} | пропуски: {qm.get('missed',0)} | ошибки: {qm.get('entry_error',0)}\n\n"
+        'Реальные покупки: 0. Автоторговля выключена. Risk Engine не менялся.'
+    )
+
+
+def version_user_report():
+    return (
+        f'✅ Версия: {BOT_VERSION}\n\n'
+        'Что исправлено:\n'
+        '• /signal больше не держит старую оценку, если probe-scoring уже снизил score в audit_file;\n'
+        '• /auto_audit_now, /signal, /quality_score и /audit_file используют один refresh-score;\n'
+        '• drawdown-penalty по активным quality-probe применяется одинаково во всех быстрых отчётах;\n'
+        '• Probe Result Scoring, Shadow Portfolio и Radar Decay Logic из v19.11.7 сохранены.\n\n'
+        'Ограничения:\n'
+        '• реальные покупки: 0;\n'
+        '• автоторговля: выключена;\n'
+        '• BUY-веса: +0;\n'
+        '• Risk Engine не менялся.\n\n'
+        'Команды проверки: /signal | /auto_audit_now | /quality_score | /quality_probe | /audit_file'
+    )
+
+
+def build_audit_file(chat_id):
+    ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+    path = f'/tmp/alex_edge_audit_{ts}.txt'
+    sections=[]
+    def add(title, func, timeout_sec=25):
+        body = audit_section_text(func, timeout_sec=timeout_sec)
+        try:
+            body = v191151_normalize_version_text(body)
+        except Exception:
+            body = str(body)
+        sections.append('\n' + '='*80 + f'\n{title}\n' + '='*80 + '\n' + body)
+    add('VERSION', lambda: f'BOT_VERSION: {BOT_VERSION}', 5)
+    add('AUDIT SHORT', audit_short_report, 15)
+    add('SCORE REFRESH SYNC V19.11.7.1', score_refresh_sync_report, 8)
+    add('PROBE RESULT SCORING V19.11.7.1', probe_result_scoring_audit_report, 15)
+    add('SHADOW PORTFOLIO V19.11.7.1', v19117_shadow_portfolio_report, 8)
+    add('AUTO CHECK SCORE SYNC V19.11.7.1', auto_check_score_sync_report, 8)
+    add('SINGLE COIN NO-BUY SYNC V19.11.7.1', single_coin_no_buy_sync_report, 8)
+    add('SIGNAL GROWTH RADAR + DECAY V19.11.7.1', unified_signal_report, 35)
+    add('AUTO QUALITY PROBE SCHEDULER V19.11.7.1', auto_quality_probe_status_report, 8)
+    add('QUALITY PAPER PROBE + SCORING V19.11.7.1', quality_probe_user_report, 12)
+    add('QUALITY LEARNING ACCELERATOR V19.11.7.1', quality_accelerator_audit_report, 10)
+    add('SELF-LEARNING BRAIN CORE V19.11.7.1', v199_brain_audit_report, 10)
+    add('QUALITY WATCH LADDER V19.11.7.1', quality_watch_ladder_audit_report, 10)
+    add('QUALITY SCORE V19.11.7.1', quality_score_audit_report, 8)
+    add('CHECKPOINT SCORING V19.11.7.1', v19112_checkpoint_scoring_user_report, 10)
     add('TECH: HYPOTHESES', v1910_hypotheses_user_report, 8)
     add('TECH: PAPER FULL', paper_report, 12)
     add('TECH: SOL FULL', lambda: single_analysis_full('SOL-USDT'), 25)
