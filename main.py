@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -1089,6 +1089,50 @@ def github_get_file(path=None):
     return r.json()
 
 
+
+
+def github_get_file_bytes(path=None):
+    """
+    v19.11.8.4 LARGE FILE BACKUP FIX:
+    GitHub Contents API may return empty content/encoding=none for main.py > 1 MB.
+    For backup/admin health we must fetch raw bytes via blob API/download_url fallback.
+    """
+    meta = github_get_file(path)
+    if not meta:
+        return b"", None
+    # Normal small-file path
+    content = meta.get("content")
+    if content:
+        try:
+            return base64.b64decode(content), meta
+        except Exception:
+            pass
+
+    # Large-file path: use Git Blob API by sha
+    sha = (meta.get("sha") or "").strip()
+    if sha:
+        try:
+            r = requests.get(github_api_url(f"git/blobs/{sha}"), headers=github_headers(), timeout=40)
+            if r.status_code < 300:
+                js = r.json()
+                blob_content = js.get("content") or ""
+                if blob_content:
+                    return base64.b64decode(blob_content), meta
+        except Exception as e:
+            print(f"github blob bytes fallback error: {e}")
+
+    # Last fallback: raw download_url
+    download_url = (meta.get("download_url") or "").strip()
+    if download_url:
+        try:
+            r = requests.get(download_url, headers={"Authorization": f"Bearer {GITHUB_TOKEN}"}, timeout=40)
+            if r.status_code < 300 and r.content:
+                return r.content, meta
+        except Exception as e:
+            print(f"github download_url bytes fallback error: {e}")
+
+    return b"", meta
+
 def extract_bot_version_from_text(text):
     try:
         m = re.search(r'BOT_VERSION\s*=\s*["\']([^"\']+)["\']', text or "")
@@ -1131,10 +1175,10 @@ def version_tuple(ver):
 
 def github_latest_main_version():
     try:
-        cur = github_get_file(GITHUB_PATH)
-        if not cur or not cur.get("content"):
+        raw, meta = github_get_file_bytes(GITHUB_PATH)
+        if not raw:
             return ""
-        txt = base64.b64decode(cur.get("content") or "").decode("utf-8", errors="ignore")
+        txt = raw.decode("utf-8", errors="ignore")
         return extract_bot_version_from_text(txt)
     except Exception as e:
         print(f"github latest version check error: {e}")
@@ -1188,7 +1232,7 @@ def github_put_file(path, content_bytes, message, sha=None):
 
 
 
-# === v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY ===
+# === v19.11.8.4 LARGE FILE BACKUP FIX ===
 def _v191182_safe_backup_version_tag(version):
     """Make BOT_VERSION safe for GitHub backup filename."""
     try:
@@ -1781,10 +1825,10 @@ def admin_handle_document(chat_id, msg):
         current_text = ""
 
         new_bytes = open(ADMIN_UPLOAD_FILE, "rb").read()
-        if current and current.get("content"):
-            current_bytes = base64.b64decode(current["content"])
-            current_text = current_bytes.decode("utf-8", errors="ignore")
-            if current_bytes == new_bytes:
+        if current:
+            current_bytes, _current_meta = github_get_file_bytes(GITHUB_PATH)
+            current_text = (current_bytes or b"").decode("utf-8", errors="ignore")
+            if current_bytes and current_bytes == new_bytes:
                 mark_admin_upload_processed(doc, upload_version)
                 release_admin_upload_lock("skipped_same_content")
                 save_admin_state({**state, "waiting_file": False})
@@ -1793,30 +1837,37 @@ def admin_handle_document(chat_id, msg):
                     "Deploy не запускаю повторно. Проверь /version."
                 )
 
-            # v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY:
-            # Backup снова создаётся как файл backups/main_backup_*.py, но НЕ отдельным commit.
-            # main.py и backup-файл уходят в GitHub одним atomic commit через Git Data API.
-            # Поэтому Render Auto Deploy не может стартовать backup-only commit со старым main.py.
-            backup_path = _v191182_backup_path_for_current_main(current_text)
+            # v19.11.8.4 LARGE FILE BACKUP FIX:
+            # GitHub Contents API may return empty content for main.py >1MB.
+            # Fetch raw bytes via github_get_file_bytes(), then commit backup+main.py atomically.
+            if current_bytes:
+                backup_path = _v191182_backup_path_for_current_main(current_text)
+            else:
+                backup_status = "не создан — не удалось прочитать текущий main.py из GitHub"
 
         if backup_path:
-            github_put_files_atomic(
+            atomic_result = github_put_files_atomic(
                 {
                     backup_path: current_bytes,
                     GITHUB_PATH: new_bytes,
                 },
                 f"deploy {upload_version} with atomic backup"
             )
+            commit_sha = str((atomic_result or {}).get("sha") or "")
             backup_status = f"создан\nФайл: {backup_path}"
         else:
-            # Первый commit в пустой repo: backup создать не из чего.
+            # Первый commit в пустой repo или current main.py не прочитан: backup создать не из чего.
             current_sha = current.get("sha") if current else None
-            github_put_file(
+            put_result = github_put_file(
                 GITHUB_PATH,
                 new_bytes,
                 f"deploy {upload_version} single-main-commit",
                 sha=current_sha
             )
+            try:
+                commit_sha = str(((put_result or {}).get("commit") or {}).get("sha") or "")
+            except Exception:
+                commit_sha = ""
 
         mark_admin_upload_processed(doc, upload_version)
 
@@ -1824,7 +1875,8 @@ def admin_handle_document(chat_id, msg):
         # После проверки и GitHub commit НЕ запускаем Render сразу.
         # Показываем админу одну кнопку 🚀 Запустить деплой.
         prev_state = state if isinstance(state, dict) else {}
-        save_admin_state({
+        new_state = dict(prev_state)
+        new_state.update({
             "waiting_file": False,
             "chat_id": str(chat_id),
             "last_backup_path": backup_path,
@@ -1840,6 +1892,7 @@ def admin_handle_document(chat_id, msg):
             "last_deploy_version": prev_state.get("last_deploy_version", ""),
             "last_deploy_at": prev_state.get("last_deploy_at", 0)
         })
+        save_admin_state(new_state)
         try:
             sync_github_storage_now([ADMIN_STATE_FILE, ADMIN_PROCESSED_UPLOADS_FILE], max_files=2)
         except Exception:
@@ -16772,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17880,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18355,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18519,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18864,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19245,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19552,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20066,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20207,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20518,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20809,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21660,7 +21713,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22064,7 +22117,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22633,7 +22686,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23141,7 +23194,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23442,12 +23495,12 @@ def build_audit_file(chat_id):
     return path
 
 
-# === v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY ===
+# === v19.11.8.4 LARGE FILE BACKUP FIX ===
 # Цель: не только видеть текущую просадку quality-probe, но и автоматически
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -23970,12 +24023,12 @@ def build_audit_file(chat_id):
     return path
 
 
-# === v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY ===
+# === v19.11.8.4 LARGE FILE BACKUP FIX ===
 # Причина: v19.11.8 добавил Probe Finalizer/Lesson Engine, и /audit_file мог
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY"
+BOT_VERSION = "v19.11.8.4 LARGE FILE BACKUP FIX"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -24394,7 +24447,7 @@ def version_user_report():
 
 
 
-# === v19.11.8.3 ADMIN HEALTH & BACKUP VERIFY ===
+# === v19.11.8.4 LARGE FILE BACKUP FIX ===
 try:
     _v191183_old_build_audit_file = build_audit_file
 except Exception:
@@ -24646,6 +24699,23 @@ def version_user_report():
         'Команды проверки: /admin_health | /backup_verify | /rollback_list | /audit_speed | /audit_file'
     )
 
+
+
+# === v19.11.8.4 LARGE FILE BACKUP FIX ===
+def version_user_report():
+    return (
+        f'✅ Версия: {BOT_VERSION}\n\n'
+        'Что исправлено:\n'
+        '• Backup теперь умеет читать GitHub main.py больше 1 MB через raw/blob fallback;\n'
+        '• Admin Health больше не должен писать “GitHub main.py: не найдена” при большом файле;\n'
+        '• backup + main.py остаются одним atomic commit;\n'
+        '• last_github_commit теперь сохраняется после atomic commit;\n'
+        '• admin_state больше не стирает данные последнего /audit_file после загрузки main.py.\n\n'
+        'Сохранено:\n'
+        '• FAST audit; Probe Result Scoring; Shadow Portfolio; Radar Decay Logic; Lesson Engine;\n'
+        '• реальные покупки 0, автоторговля OFF, BUY-веса +0, Risk Engine unchanged.\n\n'
+        'Команды проверки: /version | /admin_health | /backup_verify | /rollback_list | /audit_speed'
+    )
 
 
 if __name__ == "__main__":
