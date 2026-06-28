@@ -38921,7 +38921,8 @@
       "last_seen_counted": 1782636682.0459037,
       "seen_count": 1,
       "results": {
-        "15m": 0.0
+        "15m": 0.0,
+        "30m": -0.31
       },
       "price_points": [
         {
@@ -38974,6 +38975,15 @@
           "checkpoint_pct": 0.0,
           "source": "cache_due_late_estimate",
           "cache_price_time": 1782636682.0459037,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782638653.4742162,
+          "target_time": 1782638482.0459037,
+          "checkpoint_price": 71.74,
+          "checkpoint_pct": -0.31,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782638653.4742162,
           "cache_price_source": "snapshot"
         }
       },
