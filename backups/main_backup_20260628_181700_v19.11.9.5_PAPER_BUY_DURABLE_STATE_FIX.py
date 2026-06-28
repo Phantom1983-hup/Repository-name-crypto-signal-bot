@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16825,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17933,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18408,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18572,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18917,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19298,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19605,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20119,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20260,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20571,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20862,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21719,7 +21719,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22123,7 +22123,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22692,7 +22692,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23200,7 +23200,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23506,7 +23506,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24034,7 +24034,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25251,7 +25251,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 
 
 def _v191191_branch_ref_name():
@@ -25396,7 +25396,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25684,7 +25684,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25904,7 +25904,7 @@ def version_user_report():
     )
 
 
-# === v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER ===
+# === v19.11.9.5 PAPER BUY DURABLE STATE FIX ===
 # Причина: PAPER BUY сделки NEAR/LINK создавались в локальном paper_store,
 # но save_paper_store(sync=False) только помечал файл dirty. Если сразу после этого
 # запускался deploy/restart, GitHub-копия paper_trades.json не успевала обновиться,
@@ -25913,7 +25913,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26299,7 +26299,7 @@ if __name__ == "__main__":
 # Market news summary не путает деэскалацию с давлением из headline-строк.
 
 
-# === v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER ===
+# === v19.11.9.5 PAPER BUY DURABLE STATE FIX ===
 # Причина: v19.11.9.4 сохранял PAPER BUY в paper_trades.json, но после Render restart
 # активные BUY всё равно пропадали. Вероятная причина: общий paper_trades.json/локальный
 # repo state после deploy мог подняться без свежих BUY, а восстановление из GitHub не имело
@@ -26308,7 +26308,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
+BOT_VERSION = "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -26600,442 +26600,4 @@ def version_user_report():
         "• Risk Engine unchanged;\n"
         "• /audit_file fast/cache.\n\n"
         "Команды проверки: /version | /paper_buy | /paper_buy_status | /audit_file | /deploy_latest"
-    )
-
-
-# === v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER ===
-# Причина: после 6ч NEAR/LINK остались активными PAPER BUY, но текущий probe-score
-# по ним ухудшился до WATCH. Нужен не только слой открытия PAPER BUY, но и слой
-# управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
-# Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-
-BOT_VERSION = "v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER"
-
-V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
-V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
-
-
-def v191110_asset_lesson_stats(asset=None):
-    """Aggregate 24/48h probe lessons by asset without network refresh."""
-    try:
-        lessons = v19118_load_lessons() if 'v19118_load_lessons' in globals() else []
-    except Exception:
-        lessons = []
-    asset_filter = str(asset or "").upper().strip()
-    rows = []
-    for l in lessons if isinstance(lessons, list) else []:
-        if not isinstance(l, dict):
-            continue
-        a = str(l.get('asset','')).upper().strip()
-        if asset_filter and a != asset_filter:
-            continue
-        rows.append(l)
-    stats = {
-        'asset': asset_filter,
-        'total': len(rows),
-        'good': 0,
-        'neutral': 0,
-        'bad': 0,
-        'paper_delta': 0,
-        'avg_pct': 0.0,
-        'buckets': {},
-        'recent': rows[-8:],
-    }
-    pct_sum = 0.0
-    for l in rows:
-        b = str(l.get('bucket',''))
-        stats['buckets'][b] = stats['buckets'].get(b, 0) + 1
-        try:
-            pd = int(l.get('paper_delta', 0) or 0)
-        except Exception:
-            pd = 0
-        stats['paper_delta'] += pd
-        try:
-            pct_sum += float(l.get('pct', 0) or 0)
-        except Exception:
-            pass
-        if b in ('good_entry','useful_entry'):
-            stats['good'] += 1
-        elif b == 'neutral':
-            stats['neutral'] += 1
-        elif b in ('early_drawdown','bad_entry'):
-            stats['bad'] += 1
-    if rows:
-        stats['avg_pct'] = round(pct_sum / len(rows), 2)
-    return stats
-
-
-def v191110_global_lesson_router_state():
-    stats = v191110_asset_lesson_stats()
-    total = int(stats.get('total',0) or 0)
-    bad = int(stats.get('bad',0) or 0)
-    good = int(stats.get('good',0) or 0)
-    neutral = int(stats.get('neutral',0) or 0)
-    if total <= 0:
-        mode = 'learning_wait'
-        label = '🟡 уроков пока нет'
-        cap = 2
-    elif bad >= max(2, total // 2):
-        mode = 'caution_penalty'
-        label = '🟠 осторожно: ранних/плохих уроков больше половины'
-        cap = 2
-    elif good >= 2 and bad <= neutral:
-        mode = 'selective_boost'
-        label = '🟢 выборочное усиление quality-условий'
-        cap = 3
-    else:
-        mode = 'neutral_learning'
-        label = '🟡 нейтральное обучение без усиления BUY'
-        cap = 2
-    return {
-        'mode': mode,
-        'label': label,
-        'total': total,
-        'good': good,
-        'neutral': neutral,
-        'bad': bad,
-        'paper_delta': stats.get('paper_delta',0),
-        'max_active_paper_buy': cap,
-    }
-
-
-def v191110_lesson_router_adjustment(asset):
-    """Returns score adjustment/cap for a future paper BUY candidate."""
-    a = str(asset or '').upper().strip()
-    st = v191110_asset_lesson_stats(a)
-    global_state = v191110_global_lesson_router_state()
-    adj = 0
-    cap = 100
-    notes = []
-
-    if global_state.get('mode') == 'caution_penalty':
-        adj -= 4
-        cap = min(cap, 72)
-        notes.append('общий Lesson Router: рынок/условия дали много ранних входов')
-
-    if st.get('total',0) > 0:
-        if st.get('bad',0) >= 1 and st.get('good',0) == 0:
-            adj -= 8
-            cap = min(cap, 58)
-            notes.append(f'{a}: прошлый урок был ранний/плохой — только WATCH/подтверждение')
-        elif st.get('neutral',0) >= 1 and st.get('bad',0) == 0:
-            adj -= 2
-            cap = min(cap, 68)
-            notes.append(f'{a}: урок нейтральный — не усиливать до агрессивного BUY')
-        elif st.get('good',0) >= 1:
-            adj += 4
-            notes.append(f'{a}: есть полезный урок, но только paper')
-
-    return {'asset': a, 'adj': adj, 'cap': cap, 'notes': notes, 'asset_stats': st, 'global': global_state}
-
-
-try:
-    _v191110_old_v19119_decision_from_probe = v19119_decision_from_probe
-except Exception:
-    _v191110_old_v19119_decision_from_probe = None
-
-
-def v19119_decision_from_probe(t):
-    """v19.11.10: use 24h lessons to route future paper BUY decisions."""
-    if _v191110_old_v19119_decision_from_probe:
-        d = _v191110_old_v19119_decision_from_probe(t)
-    else:
-        d = {}
-    try:
-        asset = str(d.get('asset') or v19119_trade_asset(t)).upper().strip()
-        route = v191110_lesson_router_adjustment(asset)
-        old_score = int(d.get('decision_score', 0) or 0)
-        new_score = old_score + int(route.get('adj',0) or 0)
-        new_score = max(0, min(int(route.get('cap',100) or 100), new_score))
-        d['decision_score_before_router'] = old_score
-        d['decision_score'] = new_score
-        d['lesson_router'] = route
-        if route.get('notes'):
-            risks = list(d.get('risks', []) or [])
-            risks.extend(route.get('notes', [])[:2])
-            d['risks'] = risks[:5]
-
-        probe_score = int(d.get('probe_score', 55) or 55)
-        # Router does not override drawdown sync; it can only make candidate safer.
-        if probe_score <= 18 or new_score < 45:
-            d['decision'] = '🔴 PAPER BUY ЗАПРЕЩЁН'
-            d['tier'] = 'reject'
-            d['paper_size'] = '0%'
-        elif probe_score <= 35 or new_score < 60:
-            d['decision'] = '🟠 PAPER WATCH, BUY ЖДАТЬ'
-            d['tier'] = 'watch_only'
-            d['paper_size'] = '0%'
-        elif new_score < 66:
-            d['decision'] = '🟡 PAPER MICRO-BUY'
-            d['tier'] = 'micro_buy_test'
-            d['paper_size'] = '1.0% paper-capital'
-        else:
-            d['decision'] = '🟢 PAPER BUY'
-            d['tier'] = 'quality_buy_test'
-            d['paper_size'] = '2.0% paper-capital'
-    except Exception as e:
-        try:
-            d.setdefault('risks', []).append(f'lesson router error: {str(e)[:80]}')
-        except Exception:
-            pass
-    return d
-
-
-def v191110_decision_map():
-    try:
-        decisions = v19119_ranked_paper_buy_decisions()
-    except Exception:
-        decisions = []
-    mp = {}
-    for d in decisions if isinstance(decisions, list) else []:
-        if isinstance(d, dict):
-            a = str(d.get('asset','')).upper().strip()
-            if a and a not in mp:
-                mp[a] = d
-    return mp
-
-
-def v191110_active_buy_checkpoint(t, decision_map=None):
-    """Classify an open PAPER BUY at 6h/24h using live PnL + current probe decision."""
-    decision_map = decision_map if isinstance(decision_map, dict) else v191110_decision_map()
-    asset = v19119_trade_asset(t)
-    entry = v19119_safe_float(t.get('entry_price'), 0)
-    last = v19119_safe_float(t.get('last_price'), entry)
-    if not last:
-        last = entry
-    try:
-        pct = t.get('last_pct')
-        if not isinstance(pct, (int, float)):
-            pct = ((last - entry) / entry * 100.0) if entry and last else 0.0
-        pct = float(pct or 0.0)
-    except Exception:
-        pct = 0.0
-    age_h = v19119_trade_age_h(t)
-    plan = t.get('entry_plan', {}) if isinstance(t.get('entry_plan', {}), dict) else {}
-    stop = v19119_safe_float(plan.get('stop'), 0)
-    t1 = v19119_safe_float(plan.get('target1'), 0)
-    d = decision_map.get(asset, {})
-    probe_score = int(d.get('probe_score', t.get('probe_score', 55)) or 55)
-    decision = str(d.get('decision') or '')
-    paper_score = int(d.get('decision_score', t.get('decision_score', 0)) or 0)
-
-    try:
-        stop_distance_pct = ((last - stop) / last * 100.0) if last and stop else 99.0
-    except Exception:
-        stop_distance_pct = 99.0
-    try:
-        to_t1_pct = ((t1 - last) / last * 100.0) if last and t1 else 99.0
-    except Exception:
-        to_t1_pct = 99.0
-
-    status = '🟢 PAPER BUY active'
-    action = 'держать paper-наблюдение'
-    severity = 0
-    checkpoint = 'pre-6h' if age_h < 6 else '6h'
-    if age_h >= 6:
-        if stop and last <= stop:
-            status = '🔴 STOP HIT / paper exit'
-            action = 'фиксировать как ошибку paper-входа, новые BUY запретить'
-            severity = 4
-        elif pct <= -1.0 and probe_score <= 35:
-            status = '🟠 6ч ранний PAPER BUY'
-            action = 'не усиливать, новых BUY не открывать, ждать 24ч/48ч'
-            severity = 3
-        elif 'WATCH' in decision or probe_score <= 35:
-            status = '🟠 6ч ослабла / WATCH'
-            action = 'оставить только контроль, без новых BUY'
-            severity = 2
-        elif pct >= 1.8 or (t1 and last >= t1):
-            status = '🟢 6ч сильный paper BUY'
-            action = 'зафиксировать полезную модель, ждать 24ч'
-            severity = -2
-        elif pct >= 0.3:
-            status = '🟢 6ч умеренно полезно'
-            action = 'держать до 24ч без усиления live BUY'
-            severity = -1
-        elif pct > -0.5:
-            status = '🟡 6ч нейтрально'
-            action = 'не усиливать веса, ждать 24ч'
-            severity = 1
-        else:
-            status = '🟠 6ч слабый BUY'
-            action = 'считать ранним входом, новых BUY не открывать'
-            severity = 2
-    else:
-        if pct <= -1.0 or ('WATCH' in decision and pct < 0):
-            status = '🟠 до 6ч слабость / WATCH'
-            action = 'ждать 6ч checkpoint'
-            severity = 1
-        elif pct >= 1.0:
-            status = '🟢 до 6ч полезно'
-            action = 'ждать 6ч checkpoint'
-            severity = -1
-
-    risk_tags = []
-    if stop_distance_pct <= 1.2:
-        risk_tags.append('близко к stop')
-        if severity < 3:
-            severity = 3
-    if to_t1_pct <= 0.8 and pct > 0:
-        risk_tags.append('близко к T1')
-    if probe_score <= 35:
-        risk_tags.append(f'probe-score {probe_score}/100')
-
-    return {
-        'asset': asset,
-        'entry': entry,
-        'last': last,
-        'pct': round(pct, 2),
-        'age_h': round(age_h, 1),
-        'stop': stop,
-        'target1': t1,
-        'probe_score': probe_score,
-        'paper_score': paper_score,
-        'current_decision': decision,
-        'checkpoint': checkpoint,
-        'status': status,
-        'action': action,
-        'severity': severity,
-        'risk_tags': risk_tags,
-        'stop_distance_pct': round(stop_distance_pct, 2),
-        'to_t1_pct': round(to_t1_pct, 2),
-    }
-
-
-def v191110_active_checkpoints(limit=8):
-    try:
-        data, open_trades = v19119_open_trades()
-    except Exception:
-        open_trades = {}
-    decision_map = v191110_decision_map()
-    rows = []
-    for t in list((open_trades or {}).values()):
-        if not v19119_is_paper_buy_decision(t):
-            continue
-        rows.append(v191110_active_buy_checkpoint(t, decision_map=decision_map))
-        if len(rows) >= int(limit or 8):
-            break
-    return rows
-
-
-try:
-    _v191110_old_v19119_active_paper_buy_rows = v19119_active_paper_buy_rows
-except Exception:
-    _v191110_old_v19119_active_paper_buy_rows = None
-
-
-def v19119_active_paper_buy_rows(limit=8):
-    rows = []
-    for c in v191110_active_checkpoints(limit=limit):
-        tags = ''
-        if c.get('risk_tags'):
-            tags = ' | ' + ', '.join(c.get('risk_tags')[:3])
-        rows.append(
-            f"• {c.get('asset')}: {c.get('status')} | {v19119_format_price(c.get('entry'))} → {v19119_format_price(c.get('last'))} ({float(c.get('pct',0)):+.2f}%) | {float(c.get('age_h',0)):.1f}ч | stop {v19119_format_price(c.get('stop'))} | T1 {v19119_format_price(c.get('target1'))}{tags}\n"
-            f"  Действие: {c.get('action')}"
-        )
-    return rows
-
-
-def v191110_paper_buy_6h_lines():
-    cps = v191110_active_checkpoints(limit=8)
-    lines = ['🧭 PAPER BUY 6H CHECKPOINT']
-    if not cps:
-        lines.append('• активных PAPER BUY нет')
-        return lines
-    for c in cps:
-        lines.append(
-            f"• {c.get('asset')}: {c.get('status')} | {float(c.get('pct',0)):+.2f}% | {float(c.get('age_h',0)):.1f}ч | probe-score {c.get('probe_score')}/100"
-        )
-        lines.append(f"  Что делать: {c.get('action')}")
-    weak = [c for c in cps if int(c.get('severity',0) or 0) >= 2]
-    strong = [c for c in cps if int(c.get('severity',0) or 0) < 0]
-    lines.append('')
-    if weak:
-        lines.append(f"Итог 6ч: 🟠 слабых/ранних BUY: {len(weak)} — новые paper BUY не добавлять до 24ч.")
-    elif strong:
-        lines.append(f"Итог 6ч: 🟢 полезных BUY: {len(strong)} — ждать 24ч, live BUY всё равно +0.")
-    else:
-        lines.append('Итог 6ч: 🟡 нейтрально — ждать 24ч, веса не усиливать.')
-    return lines
-
-
-def v191110_lesson_router_lines():
-    g = v191110_global_lesson_router_state()
-    lines = ['🧠 LESSON WEIGHT ROUTER']
-    lines.append(f"• режим: {g.get('label')} | lessons {g.get('total')} | good {g.get('good')} | neutral {g.get('neutral')} | bad {g.get('bad')}")
-    lines.append(f"• paperΔ total: {g.get('paper_delta')} | max active paper BUY: {g.get('max_active_paper_buy')}")
-    try:
-        assets = sorted(set(str(l.get('asset','')).upper() for l in (v19118_load_lessons() or []) if isinstance(l, dict) and l.get('asset')))
-    except Exception:
-        assets = []
-    if assets:
-        lines.append('• asset routing:')
-        for a in assets[:8]:
-            r = v191110_lesson_router_adjustment(a)
-            st = r.get('asset_stats', {})
-            if st.get('total',0) <= 0:
-                continue
-            verdict = '🟡 neutral'
-            if st.get('bad',0) >= 1 and st.get('good',0) == 0:
-                verdict = '🟠 wait/penalty'
-            elif st.get('good',0) >= 1:
-                verdict = '🟢 paper-priority only'
-            lines.append(f"  - {a}: {verdict} | good {st.get('good')} neutral {st.get('neutral')} bad {st.get('bad')} | avg {st.get('avg_pct'):+.2f}% | adj {r.get('adj')} cap {r.get('cap')}")
-    lines.append('• live BUY: +0, автоторговля OFF.')
-    return lines
-
-
-try:
-    _v191110_old_v19119_paper_buy_decision_report = v19119_paper_buy_decision_report
-except Exception:
-    _v191110_old_v19119_paper_buy_decision_report = None
-
-
-def v19119_paper_buy_decision_report(create=False):
-    if _v191110_old_v19119_paper_buy_decision_report:
-        base = str(_v191110_old_v19119_paper_buy_decision_report(create=create))
-    else:
-        base = '🟢 Paper BUY Decision Layer\n'
-    base = base.replace('Fix v19.11.9.4: PAPER BUY теперь сохраняется в GitHub storage сразу после создания.',
-                        'Fix v19.11.10: активные PAPER BUY получили 6ч checkpoint + Lesson Router.')
-    return base + '\n\n' + '\n'.join(v191110_paper_buy_6h_lines()) + '\n\n' + '\n'.join(v191110_lesson_router_lines())
-
-
-def v19119_paper_buy_audit_report():
-    return v19119_paper_buy_decision_report(create=False)
-
-
-try:
-    _v191110_old_v191181_fast_audit_build_content = v191181_fast_audit_build_content
-except Exception:
-    _v191110_old_v191181_fast_audit_build_content = None
-
-
-def v191181_fast_audit_build_content():
-    base = str(_v191110_old_v191181_fast_audit_build_content()) if _v191110_old_v191181_fast_audit_build_content else f"VERSION\n{BOT_VERSION}"
-    return (
-        base +
-        "\n\n" + "="*80 + "\nPAPER BUY 6H CHECKPOINT V19.11.10\n" + "="*80 + "\n" + "\n".join(v191110_paper_buy_6h_lines()) +
-        "\n\n" + "="*80 + "\nLESSON WEIGHT ROUTER V19.11.10\n" + "="*80 + "\n" + "\n".join(v191110_lesson_router_lines())
-    )
-
-
-def version_user_report():
-    return (
-        f"✅ Версия: {BOT_VERSION}\n\n"
-        "Что добавлено:\n"
-        "• 6ч checkpoint для активных PAPER BUY;\n"
-        "• если активный BUY ослаб и перешёл в WATCH — отчёт показывает это как ранний/слабый paper-вход;\n"
-        "• если 6ч результат < -1% и probe-score 35/100 — статус: ранний PAPER BUY, новые BUY не открывать;\n"
-        "• добавлен Lesson Weight Router: первые 24ч уроки уменьшают будущий paper-priority слабых условий;\n"
-        "• NEAR/LINK не удаляются, а переводятся в checkpoint-режим до 24/48ч;\n"
-        "• /audit_file получил секции PAPER BUY 6H CHECKPOINT и LESSON WEIGHT ROUTER.\n\n"
-        "Сохранено:\n"
-        "• реальные покупки 0;\n"
-        "• автоторговля OFF;\n"
-        "• BUY-веса +0;\n"
-        "• Risk Engine unchanged;\n"
-        "• durable-state и backup fixes сохранены.\n\n"
-        "Команды проверки: /version | /paper_buy_status | /paper | /lesson_engine | /audit_file"
     )
