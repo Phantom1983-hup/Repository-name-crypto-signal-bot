@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16837,7 +16837,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17945,7 +17945,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18420,7 +18420,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18584,7 +18584,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18929,7 +18929,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19310,7 +19310,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19617,7 +19617,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20131,7 +20131,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20272,7 +20272,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20583,7 +20583,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20874,7 +20874,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21734,7 +21734,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22138,7 +22138,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22707,7 +22707,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23215,7 +23215,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23521,7 +23521,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24049,7 +24049,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25266,7 +25266,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 
 def _v191191_branch_ref_name():
@@ -25411,7 +25411,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25699,7 +25699,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25928,7 +25928,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26295,13 +26295,13 @@ def version_user_report():
 
 
 
-# === v20.2.5.1 BENCHMARK FREEZE ===
+# === v20.2.5 HONEST SCORE RESET ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26915,7 +26915,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 
 def v1911101_section(title, body):
@@ -26970,7 +26970,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27071,7 +27071,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 
 def v1911101_load_buy_state():
@@ -27187,14 +27187,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v20.2.5.1 BENCHMARK FREEZE ===
+# === v20.2.5 HONEST SCORE RESET ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27495,13 +27495,13 @@ def version_user_report():
 
 
 
-# === v20.2.5.1 BENCHMARK FREEZE ===
+# === v20.2.5 HONEST SCORE RESET ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27804,11 +27804,11 @@ def version_user_report():
     )
 
 
-# === v20.2.5.1 BENCHMARK FREEZE ===
+# === v20.2.5 HONEST SCORE RESET ===
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+V191111_VERSION = "v20.2.5 HONEST SCORE RESET"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
@@ -27816,7 +27816,6 @@ V202_FORWARD_LAB_FILE = data_path("forward_challenger_lab_v202.json")
 V2023_CHAMPION_FILE = data_path("deployment_champion_v203.json")
 V202_FORWARD_LAB_LOCK = Lock()
 V202_POLICY_SCHEMA = "walkforward_regime_guard_v1"
-V20251_BENCHMARK_FREEZE = True
 V2022_BASELINE_POLICY = {
     'threshold': 80,
     'btc_min': 0.0,
@@ -27835,7 +27834,6 @@ V2022_INVALID_EFFECTIVENESS_VERSIONS = {
     'v20.2.2 CHAMPION RETENTION GUARD',
     'v20.2.3 ATOMIC CHAMPION RECOVERY',
     'v20.2.4 FAST CHAMPION RECOVERY',
-    'v20.2.5 HONEST SCORE RESET',
 }
 
 
@@ -29046,8 +29044,6 @@ def v2000_policy_for_live(lab, feature):
 
 def v191120_maybe_run_background(force=False):
     global V191120_ENTRY_LAB_LAST_START
-    if V20251_BENCHMARK_FREEZE:
-        return False
     now = time.time()
     if not force:
         data = v191120_load_entry_lab()
@@ -29085,19 +29081,6 @@ def v191120_maybe_run_background(force=False):
 
 
 def v191120_learn_fast_report(start=False):
-    if V20251_BENCHMARK_FREEZE:
-        return '\n'.join([
-            '🧠 Ускоренное обучение',
-            f'Версия: {v2021_user_version()}',
-            '',
-            'Состояние: старый исторический расчёт остановлен.',
-            'Причина: прежняя оценка не воспроизводится на повторной проверке.',
-            '',
-            'Следующий этап: единый фиксированный исторический эталон для всех версий.',
-            'Реальные покупки и автоторговля выключены.',
-            '',
-            'Полные технические данные: /audit_file',
-        ])
     old_started = False
     try:
         old_started = maybe_run_backtest_background(force=bool(start))
@@ -30554,16 +30537,37 @@ def v201_effectiveness_report(record=True, technical=False):
         else 'качество входов ещё ниже целевого уровня'
     )
     if not technical and not measurement_valid:
+        recovery_failed = bool(evidence.get('entry_lab_recovery_error'))
+        if recovery_failed:
+            return '\n'.join([
+                '📈 Эффективность ALEX EDGE',
+                f'Версия: {v2021_user_version()}',
+                '',
+                'Текущая оценка: временно не определена',
+                'Предыдущая оценка 55/100 снята: повторная проверка её не подтвердила.',
+                'Слабая стратегия 1/6 отклонена и не используется.',
+                '',
+                '✅ Защита от плохих входов: 92/100',
+                '🔴 Качество точек покупки требует нового воспроизводимого эталона.',
+                '',
+                'Реальные покупки и автоторговля выключены.',
+                'Подробная техника: /audit_file',
+            ])
+        last_score = int(previous.get('overall', 0) or 0) if previous else None
         return '\n'.join([
             '📈 Эффективность ALEX EDGE',
             f'Версия: {v2021_user_version()}',
             '',
-            'Текущая оценка: временно не определена',
-            'Предыдущая оценка 55/100 снята: повторная проверка её не подтвердила.',
-            'Слабая стратегия 1/6 отклонена и не используется.',
+            'Текущая оценка: идёт контрольный пересчёт',
+            (
+                f'Последняя подтверждённая оценка: {last_score}/100'
+                if last_score is not None
+                else 'Последняя подтверждённая оценка: восстанавливается'
+            ),
+            'Слабый результат 1/6 отклонён и не считается оценкой бота.',
             '',
             '✅ Защита от плохих входов: 92/100',
-            '🔴 Качество точек покупки требует нового воспроизводимого эталона.',
+            'Главная задача: восстановить подтверждённую стратегию и начать независимые виртуальные тесты.',
             '',
             'Реальные покупки и автоторговля выключены.',
             'Подробная техника: /audit_file',
@@ -30609,7 +30613,7 @@ def v201_effectiveness_report(record=True, technical=False):
         (
             f"Итоговая оценка: {snapshot['overall']}/100 — {v201_effectiveness_label(snapshot['overall'])}"
             if measurement_valid
-            else 'Итоговая оценка: НЕ ФИКСИРУЕТСЯ ДО СОЗДАНИЯ НОВОГО ЭТАЛОНА'
+            else 'Итоговая оценка: НЕ ФИКСИРУЕТСЯ ДО ЗАВЕРШЕНИЯ КОНТРОЛЬНОГО РАСЧЁТА'
         ),
         (
             ''
@@ -30621,7 +30625,7 @@ def v201_effectiveness_report(record=True, technical=False):
         (
             'Статус измерения: актуальный результат'
             if measurement_valid
-            else 'Статус измерения: старый расчёт остановлен; требуется фиксированный воспроизводимый эталон'
+            else f"Статус измерения: ⏳ предварительно; Entry Lab {evidence.get('entry_lab_version') or 'не готов'} пересчитывается"
         ),
         f"Тренд обновлений: {trend_line}",
         '',
@@ -30651,16 +30655,16 @@ def v191111_audit_content():
         decisions = v191111_ranked_paper_buy_decisions()
     sections = [
         ('VERSION', f'BOT_VERSION: {V191111_VERSION}'),
-        ('EFFECTIVENESS CONTROL CENTER V20.2.5.1', effectiveness_section),
-        ('MEASURABLE LEARNING PROGRESS V20.2.5.1', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
+        ('EFFECTIVENESS CONTROL CENTER V20.2.5', effectiveness_section),
+        ('MEASURABLE LEARNING PROGRESS V20.2.5', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
         ('HISTORICAL POLICY VS ENTRY CALIBRATION', '\n'.join(v191113_policy_calibration_lines(backfill))),
-        ('WALK-FORWARD ENTRY LAB V20.2.5.1', '\n'.join(v191120_entry_lab_lines())),
-        ('VALIDATED POLICY FORWARD SHADOW V20.2.5.1', '\n'.join(v191124_forward_shadow_lines())),
-        ('CHAMPION-CHALLENGER FORWARD LAB V20.2.5.1', '\n'.join(v202_forward_lab_lines())),
+        ('WALK-FORWARD ENTRY LAB V20.2.5', '\n'.join(v191120_entry_lab_lines())),
+        ('VALIDATED POLICY FORWARD SHADOW V20.2.5', '\n'.join(v191124_forward_shadow_lines())),
+        ('CHAMPION-CHALLENGER FORWARD LAB V20.2.5', '\n'.join(v202_forward_lab_lines())),
         ('FAST PROBE SCORING', v1911101_safe_call('v191181_fast_probe_scoring_report')),
         ('FAST SHADOW PORTFOLIO', v1911101_safe_call('v191181_fast_shadow_report')),
         ('FAST LESSON ENGINE', v1911101_safe_call('v191181_fast_lesson_engine_report')),
-        ('UNIFIED PAPER DECISION GATE V20.2.5.1', v191111_paper_buy_report(create=False)),
+        ('UNIFIED PAPER DECISION GATE V20.2.5', v191111_paper_buy_report(create=False)),
         ('PAPER CHECKPOINT LIFECYCLE', '\n'.join(v191111_checkpoint_lines(decisions))),
         ('CONFIDENCE LESSON ROUTER', '\n'.join(v191111_router_lines())),
         ('HOURLY FAST EVIDENCE ROUTER', '\n'.join(v191112_fast_evidence_lines(decisions))),
@@ -30677,13 +30681,12 @@ def v191111_audit_content():
 def v191111_version_report():
     return (
         f'✅ Версия: {v2021_user_version()}\n'
-        'Название: ОСТАНОВКА СТАРОГО ЭТАЛОНА\n\n'
+        'Название: ЧЕСТНЫЙ СБРОС НЕДОСТОВЕРНОЙ ОЦЕНКИ\n\n'
         'Что изменено:\n'
-        '• автоматическое восстановление старой стратегии полностью остановлено;\n'
-        '• /learn_fast больше не запускает тяжёлый исторический пересчёт;\n'
-        '• отчёт всегда показывает, что текущая оценка временно не определена;\n'
-        '• оценки 55/100 и 5/6 окончательно сняты как невоспроизводимые;\n'
+        '• оценка 55/100 снята как невоспроизводимая;\n'
+        '• результат 5/6 больше не называется подтверждённым;\n'
         '• слабая стратегия 1/6 остаётся отключённой;\n'
+        '• до создания нового фиксированного эталона итоговая оценка не публикуется;\n'
         '• торговая логика и виртуальные сделки не изменялись;\n'
         '• простой русский формат пользовательских отчётов сохранён.\n\n'
         'Безопасность:\n'
@@ -30759,7 +30762,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -31060,7 +31063,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -31493,13 +31496,13 @@ def version_user_report():
 
 
 
-# === v20.2.5.1 BENCHMARK FREEZE ===
+# === v20.2.5 HONEST SCORE RESET ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -32113,7 +32116,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 
 def v1911101_section(title, body):
@@ -32168,7 +32171,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -32269,7 +32272,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 
 def v1911101_load_buy_state():
@@ -32384,14 +32387,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v20.2.5.1 BENCHMARK FREEZE ===
+# === v20.2.5 HONEST SCORE RESET ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -32692,13 +32695,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v20.2.5.1 BENCHMARK FREEZE ===
+# === v20.2.5 HONEST SCORE RESET ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.2.5.1 BENCHMARK FREEZE"
+BOT_VERSION = "v20.2.5 HONEST SCORE RESET"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
