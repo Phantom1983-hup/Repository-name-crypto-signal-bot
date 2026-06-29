@@ -1,6 +1,6 @@
 {
-  "version": "v20.1.1 MEASUREMENT & REGIME GUARD",
-  "created_at": 1782727009.3939354,
+  "version": "v20.1.2 FRESHNESS & FORWARD RACE GUARD",
+  "created_at": 1782730148.7001946,
   "active_count": 2,
   "active_buys": [
     {
@@ -92,16 +92,16 @@
       "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
       "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
       "last_price_time": 1782724926.82097,
-      "durable_saved_by": "v20.1.1 MEASUREMENT & REGIME GUARD",
-      "durable_saved_at": 1782727009.3939252
+      "durable_saved_by": "v20.1.2 FRESHNESS & FORWARD RACE GUARD",
+      "durable_saved_at": 1782730148.700187
     },
     {
       "id": "LINK:PAPER_BUY_DECISION_TEST:495179",
       "asset": "LINK",
       "entry_time": 1782646362.306717,
       "entry_price": 7.3031,
-      "last_price": 7.3164,
-      "last_pct": 0.18,
+      "last_price": 7.3509,
+      "last_pct": 0.65,
       "score": 68,
       "entry_score": 62,
       "probe_score_at_decision": 55,
@@ -183,9 +183,9 @@
       "persistence_version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
       "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
       "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
-      "last_price_time": 1782724926.82097,
-      "durable_saved_by": "v20.1.1 MEASUREMENT & REGIME GUARD",
-      "durable_saved_at": 1782727009.393928
+      "last_price_time": 1782728869.5906174,
+      "durable_saved_by": "v20.1.2 FRESHNESS & FORWARD RACE GUARD",
+      "durable_saved_at": 1782730148.7001896
     }
   ],
   "journal": [
