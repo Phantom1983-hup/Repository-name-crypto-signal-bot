@@ -9886,6 +9886,22 @@
       "decision": "🔴 PAPER BUY ЗАПРЕЩЁН",
       "captured_at": 1782737709.0157435,
       "version": "v20.2.3 ATOMIC CHAMPION RECOVERY"
+    },
+    {
+      "snapshot_key": "candidate:AAVE:VIRTUAL_PROBE_ENTRY_TEST:495160:h45",
+      "kind": "paper_candidate",
+      "asset": "AAVE",
+      "stage": "24–48ч",
+      "hour_bucket": 45,
+      "age_h": 45.1,
+      "pnl_pct": -3.86,
+      "probe_score": 35,
+      "raw_score": 45,
+      "adjusted_score": 35,
+      "gate": "BLOCK",
+      "decision": "🔴 PAPER BUY ЗАПРЕЩЁН",
+      "captured_at": 1782738700.1275165,
+      "version": "v20.2.3 ATOMIC CHAMPION RECOVERY"
     }
   ],
   "last_policy_forward_scan_at": 1782733864.2760766,
