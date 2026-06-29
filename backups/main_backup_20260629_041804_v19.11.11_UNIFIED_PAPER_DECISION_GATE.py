@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16825,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17933,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18408,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18572,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18917,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19298,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19605,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20119,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20260,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20571,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20862,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21719,7 +21719,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22123,7 +22123,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22692,7 +22692,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23200,7 +23200,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23506,7 +23506,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24034,7 +24034,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25251,7 +25251,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 
 def _v191191_branch_ref_name():
@@ -25396,7 +25396,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25684,7 +25684,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25913,7 +25913,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26280,13 +26280,13 @@ def version_user_report():
 
 
 
-# === v19.11.11.1 MEASURABLE FAST LEARNING ===
+# === v19.11.11 UNIFIED PAPER DECISION GATE ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26900,7 +26900,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 
 def v1911101_section(title, body):
@@ -26955,7 +26955,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27056,7 +27056,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 
 def v1911101_load_buy_state():
@@ -27172,14 +27172,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v19.11.11.1 MEASURABLE FAST LEARNING ===
+# === v19.11.11 UNIFIED PAPER DECISION GATE ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27480,13 +27480,13 @@ def version_user_report():
 
 
 
-# === v19.11.11.1 MEASURABLE FAST LEARNING ===
+# === v19.11.11 UNIFIED PAPER DECISION GATE ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27789,13 +27789,12 @@ def version_user_report():
     )
 
 
-# === v19.11.11.1 MEASURABLE FAST LEARNING ===
+# === v19.11.11 UNIFIED PAPER DECISION GATE ===
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+V191111_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 V191111_MIN_ASSET_LESSONS = 3
-V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 
 try:
     _V191111_BASE_OPEN = v19119_open_paper_buy_decisions
@@ -27902,32 +27901,31 @@ def v191111_lesson_router_adjustment(asset):
     bad = int(local.get('bad', 0) or 0)
     good = int(local.get('good', 0) or 0)
     delta = int(local.get('paper_delta', 0) or 0)
-    global_adj = 0
-    asset_adj = 0
+    adj = 0
     cap = 100
     reasons = []
 
     global_total = int(global_stats.get('total', 0) or 0)
     global_bad = int(global_stats.get('bad', 0) or 0)
     if global_total >= 4 and global_bad > global_total / 2.0:
-        global_adj -= 4
+        adj -= 4
         cap = min(cap, 72)
         reasons.append('global weak-lesson penalty')
 
     if total == 1:
         if bad:
-            asset_adj -= 2
+            adj -= 2
             cap = min(cap, 68)
             reasons.append('1 bad lesson: soft penalty only')
         elif good:
             reasons.append('1 good lesson: no boost before confirmation')
         else:
-            asset_adj -= 1
+            adj -= 1
             cap = min(cap, 72)
             reasons.append('1 neutral lesson: confidence low')
     elif total == 2:
         if bad >= 1 and good == 0:
-            asset_adj -= 5
+            adj -= 5
             cap = min(cap, 62)
             reasons.append('2 lessons: provisional weakness')
         elif good >= 1 and bad == 0:
@@ -27936,28 +27934,25 @@ def v191111_lesson_router_adjustment(asset):
         bad_rate = bad / float(total)
         good_rate = good / float(total)
         if bad_rate >= 0.67 and good == 0:
-            asset_adj -= 12
+            adj -= 12
             cap = min(cap, 45)
             reasons.append('confirmed asset weakness')
         elif bad_rate >= 0.50:
-            asset_adj -= 7
+            adj -= 7
             cap = min(cap, 55)
             reasons.append('asset bad-rate >= 50%')
         elif good_rate >= 0.60 and good >= 2:
-            asset_adj += 3
+            adj += 3
             cap = min(cap, 78)
             reasons.append('confirmed paper-only quality')
         if delta <= -6:
-            asset_adj -= 4
+            adj -= 4
             cap = min(cap, 42)
             reasons.append('confirmed negative paper delta')
 
-    adj = global_adj + asset_adj
     return {
         'asset': asset,
         'adj': adj,
-        'global_adj': global_adj,
-        'asset_adj': asset_adj,
         'cap': cap,
         'asset_stats': local,
         'global': global_stats,
@@ -28059,7 +28054,6 @@ def v191111_active_checkpoints(decisions=None, limit=8):
             action = 'продолжать ускоренные checkpoints'
             severity = 1
         checkpoints.append({
-            'trade_id': trade.get('id') or f"{asset}:{trade.get('entry_time', 0)}",
             'asset': asset,
             'entry': entry,
             'last': last,
@@ -28078,76 +28072,6 @@ def v191111_active_checkpoints(decisions=None, limit=8):
         if len(checkpoints) >= int(limit or 8):
             break
     return checkpoints
-
-
-def v191111_record_fast_snapshots(decisions=None):
-    """Persist one active/candidate snapshot per lifecycle stage for fast learning."""
-    result = {'added': 0, 'total': 0, 'error': ''}
-    try:
-        data, _ = v19119_open_trades()
-        if not isinstance(data, dict):
-            data = paper_store()
-        log = data.get(V191111_FAST_CHECKPOINT_KEY, [])
-        if not isinstance(log, list):
-            log = []
-        existing = {
-            str(row.get('snapshot_key'))
-            for row in log
-            if isinstance(row, dict) and row.get('snapshot_key')
-        }
-        now = time.time()
-        additions = []
-        checkpoints = v191111_active_checkpoints(decisions=decisions, limit=12)
-        for row in checkpoints:
-            key = f"active:{row.get('trade_id')}:{row.get('stage')}"
-            if key in existing:
-                continue
-            additions.append({
-                'snapshot_key': key,
-                'kind': 'active_paper_buy',
-                'asset': row.get('asset'),
-                'stage': row.get('stage'),
-                'age_h': row.get('age_h'),
-                'pnl_pct': row.get('pct'),
-                'probe_score': row.get('probe_score'),
-                'severity': row.get('severity'),
-                'status': row.get('status'),
-                'captured_at': now,
-                'version': V191111_VERSION,
-            })
-            existing.add(key)
-        for row in decisions or []:
-            if not isinstance(row, dict):
-                continue
-            stage = v191111_checkpoint_stage(row.get('age_h', 0))
-            source_id = row.get('source_probe_key') or row.get('asset')
-            key = f"candidate:{source_id}:{stage}"
-            if key in existing:
-                continue
-            additions.append({
-                'snapshot_key': key,
-                'kind': 'paper_candidate',
-                'asset': row.get('asset'),
-                'stage': stage,
-                'age_h': row.get('age_h'),
-                'pnl_pct': row.get('probe_pnl'),
-                'probe_score': row.get('probe_score'),
-                'raw_score': row.get('raw_decision_score'),
-                'adjusted_score': row.get('decision_score'),
-                'gate': row.get('global_gate'),
-                'decision': row.get('decision'),
-                'captured_at': now,
-                'version': V191111_VERSION,
-            })
-            existing.add(key)
-        if additions:
-            log.extend(additions)
-            data[V191111_FAST_CHECKPOINT_KEY] = log[-400:]
-            save_paper_store(data, sync=False)
-        result.update({'added': len(additions), 'total': len(log[-400:])})
-    except Exception as exc:
-        result['error'] = str(exc)[:180]
-    return result
 
 
 def v191111_gate_state(decisions=None):
@@ -28319,8 +28243,7 @@ def v191111_router_lines():
         lines.append(
             f"  - {asset}: {confidence} | n {stats.get('total')} | good {stats.get('good')} "
             f"neutral {stats.get('neutral')} bad {stats.get('bad')} | avg {float(stats.get('avg_pct', 0)):+.2f}% | "
-            f"global {int(route.get('global_adj', 0)):+d} + asset {int(route.get('asset_adj', 0)):+d} "
-            f"= total {int(route.get('adj', 0)):+d} | cap {route.get('cap')}"
+            f"adj {int(route.get('adj', 0)):+d} cap {route.get('cap')}"
         )
     lines.append('• live BUY: +0, автоторговля OFF.')
     return lines
@@ -28355,50 +28278,6 @@ def v191111_candidate_lines(decisions, limit=8):
     return lines
 
 
-def v191111_learning_progress_lines(snapshot_result=None):
-    stats = v191111_lesson_stats()
-    total = int(stats.get('total', 0) or 0)
-    good = int(stats.get('good', 0) or 0)
-    bad = int(stats.get('bad', 0) or 0)
-    avg_pct = float(stats.get('avg_pct', 0) or 0)
-    good_rate = good / float(total) * 100.0 if total else 0.0
-    bad_rate = bad / float(total) * 100.0 if total else 0.0
-    quality_score = int(round(50 + avg_pct * 8 + good * 4 - bad * 6 + min(total, 20)))
-    quality_score = max(0, min(100, quality_score))
-    try:
-        technical_score = int(v1911102_fast_score_value())
-    except Exception:
-        technical_score = 0
-    criteria = [
-        ('выборка ≥20 уроков', total >= 20),
-        ('полезных ≥55%', good_rate >= 55.0),
-        ('средний PnL >+0.5%', avg_pct > 0.5),
-        ('плохих ≤25%', bad_rate <= 25.0 and total > 0),
-    ]
-    passed = sum(1 for _, ok in criteria if ok)
-    checkpoint_total = 0
-    try:
-        data = paper_store()
-        log = data.get(V191111_FAST_CHECKPOINT_KEY, []) if isinstance(data, dict) else []
-        checkpoint_total = len(log) if isinstance(log, list) else 0
-    except Exception:
-        pass
-    if isinstance(snapshot_result, dict):
-        checkpoint_total = max(checkpoint_total, int(snapshot_result.get('total', 0) or 0))
-    lines = [
-        '📏 MEASURABLE LEARNING PROGRESS',
-        f'• техническая целостность: {technical_score}/100',
-        f'• качество прогнозов по урокам: {quality_score}/100',
-        f'• уроки: {total} | полезные {good} ({good_rate:.1f}%) | плохие {bad} ({bad_rate:.1f}%) | средний PnL {avg_pct:+.2f}%',
-        f'• сохранено fast-checkpoints: {checkpoint_total}',
-        f"• готовность к автопокупкам: {'🟢 READY' if passed == len(criteria) else '🔴 BLOCK'} | критериев {passed}/{len(criteria)}",
-    ]
-    for name, ok in criteria:
-        lines.append(f"  - {'✅' if ok else '❌'} {name}")
-    lines.append('• live BUY: 0; готовность определяется результатами, а не количеством функций.')
-    return lines
-
-
 def v191111_paper_buy_report(create=False):
     result = v191111_open_paper_buy_decisions(create=bool(create), max_new=2, force_one=False)
     decisions = result.get('decisions', []) if isinstance(result.get('decisions'), list) else []
@@ -28410,7 +28289,6 @@ def v191111_paper_buy_report(create=False):
     except Exception:
         data, active_count = {}, int(gate.get('active_count', 0) or 0)
     checkpoints = v191111_active_checkpoints(decisions=decisions, limit=8)
-    snapshot_result = v191111_record_fast_snapshots(decisions)
     lines = [
         '🧠 Unified PAPER BUY Decision Gate',
         f'Версия: {V191111_VERSION}',
@@ -28441,25 +28319,25 @@ def v191111_paper_buy_report(create=False):
     lines += ['', 'Кандидаты и итоговое разрешение:']
     lines += v191111_candidate_lines(decisions) or ['• кандидатов нет']
     lines += ['', *v191111_checkpoint_lines(decisions), '', *v191111_router_lines(), '', *v191111_trace_lines(decisions)]
-    lines += ['', *v191111_learning_progress_lines(snapshot_result)]
-    lines += ['', 'Fast-learning: snapshots сохраняются без ожидания 24/48ч; постоянные asset-веса меняются только при достаточной выборке.']
+    lines += ['', 'Fast-learning: checkpoints обновляются без ожидания 24/48ч; постоянные asset-веса меняются только при достаточной выборке.']
     return '\n'.join(lines)
 
 
 def v191111_audit_content():
+    try:
+        base = str(_V191111_BASE_AUDIT()) if callable(_V191111_BASE_AUDIT) else 'ALEX EDGE ULTRA FAST TECH AUDIT FILE'
+    except Exception as exc:
+        base = f'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n⚠️ base audit error: {str(exc)[:180]}'
+    marker = 'UNIFIED PAPER DECISION GATE V19.11.11'
+    if marker in base:
+        return base
     decisions = v191111_ranked_paper_buy_decisions()
-    snapshot_result = v191111_record_fast_snapshots(decisions)
     sections = [
-        ('VERSION', f'BOT_VERSION: {V191111_VERSION}'),
-        ('MEASURABLE LEARNING PROGRESS V19.11.11.1', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
-        ('FAST PROBE SCORING', v1911101_safe_call('v191181_fast_probe_scoring_report')),
-        ('FAST SHADOW PORTFOLIO', v1911101_safe_call('v191181_fast_shadow_report')),
-        ('FAST LESSON ENGINE', v1911101_safe_call('v191181_fast_lesson_engine_report')),
-        ('UNIFIED PAPER DECISION GATE V19.11.11.1', v191111_paper_buy_report(create=False)),
-        ('PAPER BUY DURABLE STATE', '\n'.join(v1911101_durable_state_lines())),
-        ('AUTO-AUDIT SILENT LOG', v1911103_auto_audit_silent_log_report()),
+        (marker, v191111_paper_buy_report(create=False)),
+        ('PAPER CHECKPOINT LIFECYCLE V19.11.11', '\n'.join(v191111_checkpoint_lines(decisions))),
+        ('CONFIDENCE LESSON ROUTER V19.11.11', '\n'.join(v191111_router_lines())),
+        ('PAPER DECISION TRACE V19.11.11', '\n'.join(v191111_trace_lines(decisions))),
     ]
-    base = 'ALEX EDGE ULTRA FAST TECH AUDIT FILE'
     for title, body in sections:
         base += '\n\n' + '=' * 80 + '\n' + title + '\n' + '=' * 80 + '\n' + str(body)
     return base
@@ -28469,12 +28347,12 @@ def v191111_version_report():
     return (
         f'✅ Версия: {V191111_VERSION}\n\n'
         'Что изменено:\n'
-        '• audit больше не дублирует decision/checkpoint/router блоки;\n'
-        '• техническая целостность отделена от фактического качества прогнозов;\n'
-        '• добавлены измеримые критерии готовности к автопокупкам;\n'
-        '• ранние active/candidate snapshots сохраняются по стадиям без ожидания 24/48ч;\n'
-        '• Lesson Router отдельно показывает global и asset penalty;\n'
-        '• один asset-урок остаётся low-sample и не считается подтверждённым выводом.\n\n'
+        '• raw signal, Lesson Router, checkpoint gate и итоговое действие сведены в одну цепочку;\n'
+        '• единый gate физически блокирует создание PAPER BUY, если active BUY слабый или лимит заполнен;\n'
+        '• статусы теперь соответствуют возрасту: от 15–30м до 48ч+;\n'
+        '• candidate probe показывает реальный PnL snapshot вместо ложного +0.00%;\n'
+        '• один урок больше не создаёт тяжёлый asset penalty: подтверждение начинается с 3 уроков;\n'
+        '• /audit_file получил CHECKPOINT LIFECYCLE, CONFIDENCE ROUTER и DECISION TRACE.\n\n'
         'Безопасность:\n'
         '• реальные покупки 0;\n'
         '• автоторговля OFF;\n'
@@ -28540,7 +28418,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -28841,7 +28719,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -29274,13 +29152,13 @@ def version_user_report():
 
 
 
-# === v19.11.11.1 MEASURABLE FAST LEARNING ===
+# === v19.11.11 UNIFIED PAPER DECISION GATE ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -29894,7 +29772,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 
 def v1911101_section(title, body):
@@ -29949,7 +29827,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -30050,7 +29928,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 
 def v1911101_load_buy_state():
@@ -30165,14 +30043,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v19.11.11.1 MEASURABLE FAST LEARNING ===
+# === v19.11.11 UNIFIED PAPER DECISION GATE ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -30473,13 +30351,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v19.11.11.1 MEASURABLE FAST LEARNING ===
+# === v19.11.11 UNIFIED PAPER DECISION GATE ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v19.11.11.1 MEASURABLE FAST LEARNING"
+BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
