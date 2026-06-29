@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16825,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17933,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18408,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18572,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18917,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19298,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19605,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20119,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20260,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20571,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20862,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21719,7 +21719,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22123,7 +22123,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22692,7 +22692,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23200,7 +23200,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23506,7 +23506,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24034,7 +24034,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25251,7 +25251,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 
 def _v191191_branch_ref_name():
@@ -25396,7 +25396,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25684,7 +25684,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25913,7 +25913,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26280,13 +26280,13 @@ def version_user_report():
 
 
 
-# === v19.11.10.3 SILENT AUTO-AUDIT LOG ===
+# === v19.11.10.2 DURABLE STATE & AUDIT POLISH ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26900,7 +26900,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 
 def v1911101_section(title, body):
@@ -26955,7 +26955,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27056,7 +27056,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 
 def v1911101_load_buy_state():
@@ -27172,14 +27172,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v19.11.10.3 SILENT AUTO-AUDIT LOG ===
+# === v19.11.10.2 DURABLE STATE & AUDIT POLISH ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27478,316 +27478,6 @@ def version_user_report():
         'Команды проверки: /version | /paper_buy_status | /audit_file | /lesson_engine'
     )
 
-
-
-# === v19.11.10.3 SILENT AUTO-AUDIT LOG ===
-# Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
-# Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
-# Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
-# Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
-# Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
-
-try:
-    AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
-except Exception:
-    AUTO_AUDIT_SILENT_LOG_FILE = '/tmp/auto_audit_silent_log.json'
-
-try:
-    PROTECTED_STATE_BASENAMES.add('auto_audit_silent_log.json')
-except Exception:
-    pass
-
-try:
-    _v1911103_prev_auto_audit_check_and_send = auto_audit_check_and_send
-    if getattr(_v1911103_prev_auto_audit_check_and_send, '_v1911103_silent', False):
-        _v1911103_old_auto_audit_check_and_send = globals().get('_v1911103_old_auto_audit_check_and_send')
-    else:
-        _v1911103_old_auto_audit_check_and_send = _v1911103_prev_auto_audit_check_and_send
-except Exception:
-    _v1911103_old_auto_audit_check_and_send = None
-
-try:
-    _v1911103_old_auto_audit_status_text = auto_audit_status_text
-except Exception:
-    _v1911103_old_auto_audit_status_text = None
-
-try:
-    _v1911103_old_v191181_fast_audit_build_content = v191181_fast_audit_build_content
-except Exception:
-    _v1911103_old_v191181_fast_audit_build_content = None
-
-try:
-    _v1911103_old_version_user_report = version_user_report
-except Exception:
-    _v1911103_old_version_user_report = None
-
-
-def _v1911103_ts():
-    try:
-        return (datetime.utcnow() + timedelta(hours=MOSCOW_OFFSET_HOURS)).strftime('%Y-%m-%d %H:%M:%S')
-    except Exception:
-        return datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
-
-
-def _v1911103_score():
-    try:
-        return int(v1911102_fast_score_value())
-    except Exception:
-        try:
-            qm = _v191162_quality_metrics()
-            return int(qm.get('score', 70) or 70)
-        except Exception:
-            return 70
-
-
-def _v1911103_load_log():
-    try:
-        data = load_json(AUTO_AUDIT_SILENT_LOG_FILE)
-        if not isinstance(data, dict):
-            data = {}
-    except Exception:
-        data = {}
-    items = data.get('items', []) if isinstance(data.get('items', []), list) else []
-    data['items'] = items
-    return data
-
-
-def _v1911103_append_log(entry):
-    try:
-        data = _v1911103_load_log()
-        items = data.get('items', []) if isinstance(data.get('items', []), list) else []
-        items.append(entry if isinstance(entry, dict) else {'note': str(entry)})
-        data['items'] = items[-80:]
-        data['version'] = BOT_VERSION
-        data['updated_at'] = time.time()
-        save_json(AUTO_AUDIT_SILENT_LOG_FILE, data)
-        try:
-            mark_github_dirty(AUTO_AUDIT_SILENT_LOG_FILE)
-        except Exception:
-            pass
-        return True
-    except Exception as e:
-        try:
-            print(f'v19.11.10.3 silent auto-audit log error: {e}')
-        except Exception:
-            pass
-        return False
-
-
-def _v1911103_compact_reason_lines(prev, paper, learning, risk, btc_bucket, closed_n=0, errors=None):
-    reasons = []
-    errors = errors or []
-    try:
-        if closed_n:
-            reasons.append(f'закрылись новые Paper-сделки: {closed_n}')
-        if prev.get('last_paper_closed') is not None and int(paper.get('closed', 0) or 0) > int(prev.get('last_paper_closed') or 0):
-            reasons.append(f"Paper closed: {prev.get('last_paper_closed')} → {paper.get('closed', 0)}")
-        if prev.get('last_paper_saved') is not None and int(paper.get('saved', 0) or 0) > int(prev.get('last_paper_saved') or 0):
-            reasons.append(f"защита: {prev.get('last_paper_saved')} → {paper.get('saved', 0)}")
-        if int(paper.get('overdue', 0) or 0) > 0:
-            reasons.append(f"overdue paper >=48ч: {paper.get('overdue', 0)}")
-        if prev.get('last_risk') and prev.get('last_risk') != risk:
-            reasons.append(f"режим рынка: {prev.get('last_risk')} → {risk}")
-        if prev.get('last_btc_bucket') and prev.get('last_btc_bucket') != btc_bucket:
-            reasons.append(f"BTC bucket: {prev.get('last_btc_bucket')} → {btc_bucket}")
-        if prev.get('last_learning_closed') is not None and int(learning.get('closed', 0) or 0) > int(prev.get('last_learning_closed') or 0):
-            reasons.append(f"Learning closed48: {prev.get('last_learning_closed')} → {learning.get('closed', 0)}")
-        for e in errors[:3]:
-            reasons.append('ошибка: ' + str(e)[:90])
-    except Exception as e:
-        reasons.append('reason-build error: ' + str(e)[:80])
-    if not reasons:
-        reasons = ['плановая silent-проверка: критических изменений нет']
-    return reasons[:8]
-
-
-def auto_audit_check_and_send(chat_id=None, force=False):
-    """v19.11.10.3: scheduled Auto-Audit is silent; manual /auto_audit_now still sends."""
-    if force:
-        if callable(_v1911103_old_auto_audit_check_and_send):
-            return _v1911103_old_auto_audit_check_and_send(chat_id=chat_id, force=True)
-        return False
-
-    target_chat_id = chat_id or (ADMIN_CHAT_ID if ADMIN_CHAT_ID else load_chat_id())
-    if not target_chat_id:
-        return False
-
-    state = auto_audit_load_state()
-    if not state.get('enabled'):
-        return False
-
-    now_ts = time.time()
-    mode, interval_min, min_gap_min, critical_only = auto_audit_effective_settings(state)
-    if now_ts - float(state.get('last_check_at', 0) or 0) < interval_min * 60:
-        return False
-
-    prev = dict(state)
-    state['last_check_at'] = now_ts
-    errors = []
-    closed_n = 0
-    try:
-        _changed, _updated, closed_n = paper_update_from_cache()
-    except Exception as e:
-        errors.append('paper sweep ' + str(e)[:80])
-
-    try:
-        ctx = market_context()
-    except Exception as e:
-        ctx = {}
-        errors.append('market_context ' + str(e)[:80])
-
-    try:
-        paper = auto_audit_paper_stats()
-    except Exception as e:
-        paper = {}
-        errors.append('paper_stats ' + str(e)[:80])
-
-    try:
-        learning = auto_audit_learning_stats()
-    except Exception as e:
-        learning = {}
-        errors.append('learning_stats ' + str(e)[:80])
-
-    try:
-        risk = auto_audit_market_label(ctx) if isinstance(ctx, dict) else 'unknown'
-    except Exception:
-        risk = 'unknown'
-    try:
-        btc_bucket = auto_audit_btc_bucket(ctx.get('btc_change', 0) if isinstance(ctx, dict) else 0)
-    except Exception:
-        btc_bucket = 'unknown'
-
-    reasons = _v1911103_compact_reason_lines(prev, paper, learning, risk, btc_bucket, closed_n=closed_n, errors=errors)
-
-    state.update({
-        'version': BOT_VERSION,
-        'mode': mode,
-        'telegram_push': 'silent-disabled-v19.11.10.3',
-        'last_paper_closed': int(paper.get('closed', 0) or 0),
-        'last_paper_saved': int(paper.get('saved', 0) or 0),
-        'last_paper_open': int(paper.get('open', 0) or 0),
-        'last_learning_open': int(learning.get('open', 0) or 0),
-        'last_learning_closed': int(learning.get('closed', 0) or 0),
-        'last_risk': risk,
-        'last_btc_bucket': btc_bucket,
-        'last_timing_checked': int(learning.get('timing_checked', 0) or 0),
-        'last_reason_lines': reasons,
-        'last_silent_logged_at': now_ts,
-    })
-    auto_audit_save_state(state, sync=False)
-
-    entry = {
-        'ts': _v1911103_ts(),
-        'version': BOT_VERSION,
-        'mode': mode,
-        'telegram_sent': False,
-        'score': _v1911103_score(),
-        'risk': risk,
-        'btc_bucket': btc_bucket,
-        'paper_open': int(paper.get('open', 0) or 0),
-        'paper_closed': int(paper.get('closed', 0) or 0),
-        'paper_saved': int(paper.get('saved', 0) or 0),
-        'paper_missed': int(paper.get('missed', 0) or 0),
-        'learning_open': int(learning.get('open', 0) or 0),
-        'learning_closed': int(learning.get('closed', 0) or 0),
-        'reason_lines': reasons,
-        'note': 'scheduled auto-audit is silent; details are stored for /audit_file',
-    }
-    _v1911103_append_log(entry)
-    return False
-
-auto_audit_check_and_send._v1911103_silent = True
-
-
-def v1911103_auto_audit_silent_log_report():
-    data = _v1911103_load_log()
-    items = data.get('items', []) if isinstance(data.get('items', []), list) else []
-    lines = [
-        '🤫 AUTO-AUDIT SILENT LOG',
-        '',
-        f'Версия: {BOT_VERSION}',
-        'Telegram hourly messages: OFF',
-        'Фоновая проверка: ON, но пишет только state/log для /audit_file.',
-        'Ручная проверка: /auto_audit_now по-прежнему отправляет карточку по запросу пользователя.',
-        f'Записей в silent-log: {len(items)}',
-    ]
-    if not items:
-        lines += ['', 'Последние записи: пока нет — появятся после следующего планового silent-cycle.']
-        return '\n'.join(lines)
-    lines += ['', 'Последние записи:']
-    for e in items[-6:]:
-        if not isinstance(e, dict):
-            continue
-        reasons = e.get('reason_lines', []) if isinstance(e.get('reason_lines', []), list) else []
-        reason = '; '.join([str(x) for x in reasons[:3]]) if reasons else 'без изменений'
-        lines.append(
-            f"• {e.get('ts','?')} | score {e.get('score','?')}/100 | {e.get('risk','?')} | "
-            f"paper {e.get('paper_open',0)}/{e.get('paper_closed',0)} | sent: NO | {reason}"
-        )
-    return '\n'.join(lines)
-
-
-def auto_audit_status_text():
-    try:
-        state = auto_audit_load_state()
-    except Exception:
-        state = {}
-    enabled = 'включена' if state.get('enabled') else 'выключена'
-    try:
-        mode, interval_min, min_gap_min, critical_only = auto_audit_effective_settings(state)
-        mode_label = auto_audit_mode_label(mode)
-    except Exception:
-        interval_min, mode_label = 60, 'critical-only'
-    last_ts = state.get('last_silent_logged_at') or state.get('last_check_at') or 0
-    last_txt = 'нет'
-    try:
-        if float(last_ts or 0) > 0:
-            last_txt = format_age(time.time() - float(last_ts)) + ' назад'
-    except Exception:
-        pass
-    return (
-        '🧠 Автопроверка\n\n'
-        f'Статус фоновой проверки: **{enabled}**\n'
-        'Telegram-уведомления по расписанию: **OFF / silent**\n'
-        f'Режим расчёта: **{mode_label}**\n'
-        f'Плановый silent-cycle: каждые **{interval_min} мин**\n'
-        f'Последняя silent-запись: **{last_txt}**\n\n'
-        'Теперь почасовые карточки в чат не отправляются.\n'
-        'Данные для самообучения и проверки пишутся в /audit_file.\n\n'
-        'Команды: /auto_audit_now — ручная карточка | /audit_file — технический лог | /auto_audit_off — выключить фон полностью'
-    )
-
-
-def v191181_fast_audit_build_content():
-    if callable(_v1911103_old_v191181_fast_audit_build_content):
-        base = str(_v1911103_old_v191181_fast_audit_build_content())
-    else:
-        base = 'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n' + v1911103_auto_audit_silent_log_report()
-    marker = 'AUTO-AUDIT SILENT LOG V19.11.10.3'
-    if marker in base:
-        return base
-    return base + '\n\n' + '='*80 + '\n' + marker + '\n' + '='*80 + '\n' + v1911103_auto_audit_silent_log_report()
-
-
-def version_user_report():
-    return (
-        f'✅ Версия: {BOT_VERSION}\n\n'
-        'Что исправлено:\n'
-        '• почасовая Автопроверка больше НЕ присылает карточки в Telegram;\n'
-        '• фоновый auto-audit оставлен только как silent-cycle для самообучения/финализации;\n'
-        '• результаты silent-cycle пишутся в state/log и отображаются в /audit_file;\n'
-        '• /auto_audit_status теперь показывает, что Telegram-уведомления по расписанию OFF;\n'
-        '• /auto_audit_now сохранён как ручная проверка по запросу пользователя.\n\n'
-        'Сохранено:\n'
-        '• реальные покупки 0;\n'
-        '• автоторговля OFF;\n'
-        '• BUY-веса +0;\n'
-        '• Risk Engine unchanged;\n'
-        '• v19.11.10.2 durable-state, 6H checkpoint, Lesson Router и audit/shadow fixes сохранены.\n\n'
-        'Команды проверки: /version | /auto_audit_status | /audit_file | /paper_buy_status'
-    )
-
 if __name__ == "__main__":
     try:
         restore_state_from_github_if_richer()
@@ -27818,7 +27508,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -28119,7 +27809,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -28552,13 +28242,13 @@ def version_user_report():
 
 
 
-# === v19.11.10.3 SILENT AUTO-AUDIT LOG ===
+# === v19.11.10.2 DURABLE STATE & AUDIT POLISH ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -29172,7 +28862,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 
 def v1911101_section(title, body):
@@ -29227,7 +28917,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -29328,7 +29018,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 
 def v1911101_load_buy_state():
@@ -29443,14 +29133,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v19.11.10.3 SILENT AUTO-AUDIT LOG ===
+# === v19.11.10.2 DURABLE STATE & AUDIT POLISH ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
+BOT_VERSION = "v19.11.10.2 DURABLE STATE & AUDIT POLISH"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -29747,315 +29437,5 @@ def version_user_report():
         '• Risk Engine unchanged;\n'
         '• backup/persistence fixes сохранены.\n\n'
         'Команды проверки: /version | /paper_buy_status | /audit_file | /lesson_engine'
-    )
-
-# === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
-
-# === v19.11.10.3 SILENT AUTO-AUDIT LOG ===
-# Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
-# Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
-# Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
-# Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
-# Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
-
-try:
-    AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
-except Exception:
-    AUTO_AUDIT_SILENT_LOG_FILE = '/tmp/auto_audit_silent_log.json'
-
-try:
-    PROTECTED_STATE_BASENAMES.add('auto_audit_silent_log.json')
-except Exception:
-    pass
-
-try:
-    _v1911103_prev_auto_audit_check_and_send = auto_audit_check_and_send
-    if getattr(_v1911103_prev_auto_audit_check_and_send, '_v1911103_silent', False):
-        _v1911103_old_auto_audit_check_and_send = globals().get('_v1911103_old_auto_audit_check_and_send')
-    else:
-        _v1911103_old_auto_audit_check_and_send = _v1911103_prev_auto_audit_check_and_send
-except Exception:
-    _v1911103_old_auto_audit_check_and_send = None
-
-try:
-    _v1911103_old_auto_audit_status_text = auto_audit_status_text
-except Exception:
-    _v1911103_old_auto_audit_status_text = None
-
-try:
-    _v1911103_old_v191181_fast_audit_build_content = v191181_fast_audit_build_content
-except Exception:
-    _v1911103_old_v191181_fast_audit_build_content = None
-
-try:
-    _v1911103_old_version_user_report = version_user_report
-except Exception:
-    _v1911103_old_version_user_report = None
-
-
-def _v1911103_ts():
-    try:
-        return (datetime.utcnow() + timedelta(hours=MOSCOW_OFFSET_HOURS)).strftime('%Y-%m-%d %H:%M:%S')
-    except Exception:
-        return datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
-
-
-def _v1911103_score():
-    try:
-        return int(v1911102_fast_score_value())
-    except Exception:
-        try:
-            qm = _v191162_quality_metrics()
-            return int(qm.get('score', 70) or 70)
-        except Exception:
-            return 70
-
-
-def _v1911103_load_log():
-    try:
-        data = load_json(AUTO_AUDIT_SILENT_LOG_FILE)
-        if not isinstance(data, dict):
-            data = {}
-    except Exception:
-        data = {}
-    items = data.get('items', []) if isinstance(data.get('items', []), list) else []
-    data['items'] = items
-    return data
-
-
-def _v1911103_append_log(entry):
-    try:
-        data = _v1911103_load_log()
-        items = data.get('items', []) if isinstance(data.get('items', []), list) else []
-        items.append(entry if isinstance(entry, dict) else {'note': str(entry)})
-        data['items'] = items[-80:]
-        data['version'] = BOT_VERSION
-        data['updated_at'] = time.time()
-        save_json(AUTO_AUDIT_SILENT_LOG_FILE, data)
-        try:
-            mark_github_dirty(AUTO_AUDIT_SILENT_LOG_FILE)
-        except Exception:
-            pass
-        return True
-    except Exception as e:
-        try:
-            print(f'v19.11.10.3 silent auto-audit log error: {e}')
-        except Exception:
-            pass
-        return False
-
-
-def _v1911103_compact_reason_lines(prev, paper, learning, risk, btc_bucket, closed_n=0, errors=None):
-    reasons = []
-    errors = errors or []
-    try:
-        if closed_n:
-            reasons.append(f'закрылись новые Paper-сделки: {closed_n}')
-        if prev.get('last_paper_closed') is not None and int(paper.get('closed', 0) or 0) > int(prev.get('last_paper_closed') or 0):
-            reasons.append(f"Paper closed: {prev.get('last_paper_closed')} → {paper.get('closed', 0)}")
-        if prev.get('last_paper_saved') is not None and int(paper.get('saved', 0) or 0) > int(prev.get('last_paper_saved') or 0):
-            reasons.append(f"защита: {prev.get('last_paper_saved')} → {paper.get('saved', 0)}")
-        if int(paper.get('overdue', 0) or 0) > 0:
-            reasons.append(f"overdue paper >=48ч: {paper.get('overdue', 0)}")
-        if prev.get('last_risk') and prev.get('last_risk') != risk:
-            reasons.append(f"режим рынка: {prev.get('last_risk')} → {risk}")
-        if prev.get('last_btc_bucket') and prev.get('last_btc_bucket') != btc_bucket:
-            reasons.append(f"BTC bucket: {prev.get('last_btc_bucket')} → {btc_bucket}")
-        if prev.get('last_learning_closed') is not None and int(learning.get('closed', 0) or 0) > int(prev.get('last_learning_closed') or 0):
-            reasons.append(f"Learning closed48: {prev.get('last_learning_closed')} → {learning.get('closed', 0)}")
-        for e in errors[:3]:
-            reasons.append('ошибка: ' + str(e)[:90])
-    except Exception as e:
-        reasons.append('reason-build error: ' + str(e)[:80])
-    if not reasons:
-        reasons = ['плановая silent-проверка: критических изменений нет']
-    return reasons[:8]
-
-
-def auto_audit_check_and_send(chat_id=None, force=False):
-    """v19.11.10.3: scheduled Auto-Audit is silent; manual /auto_audit_now still sends."""
-    if force:
-        if callable(_v1911103_old_auto_audit_check_and_send):
-            return _v1911103_old_auto_audit_check_and_send(chat_id=chat_id, force=True)
-        return False
-
-    target_chat_id = chat_id or (ADMIN_CHAT_ID if ADMIN_CHAT_ID else load_chat_id())
-    if not target_chat_id:
-        return False
-
-    state = auto_audit_load_state()
-    if not state.get('enabled'):
-        return False
-
-    now_ts = time.time()
-    mode, interval_min, min_gap_min, critical_only = auto_audit_effective_settings(state)
-    if now_ts - float(state.get('last_check_at', 0) or 0) < interval_min * 60:
-        return False
-
-    prev = dict(state)
-    state['last_check_at'] = now_ts
-    errors = []
-    closed_n = 0
-    try:
-        _changed, _updated, closed_n = paper_update_from_cache()
-    except Exception as e:
-        errors.append('paper sweep ' + str(e)[:80])
-
-    try:
-        ctx = market_context()
-    except Exception as e:
-        ctx = {}
-        errors.append('market_context ' + str(e)[:80])
-
-    try:
-        paper = auto_audit_paper_stats()
-    except Exception as e:
-        paper = {}
-        errors.append('paper_stats ' + str(e)[:80])
-
-    try:
-        learning = auto_audit_learning_stats()
-    except Exception as e:
-        learning = {}
-        errors.append('learning_stats ' + str(e)[:80])
-
-    try:
-        risk = auto_audit_market_label(ctx) if isinstance(ctx, dict) else 'unknown'
-    except Exception:
-        risk = 'unknown'
-    try:
-        btc_bucket = auto_audit_btc_bucket(ctx.get('btc_change', 0) if isinstance(ctx, dict) else 0)
-    except Exception:
-        btc_bucket = 'unknown'
-
-    reasons = _v1911103_compact_reason_lines(prev, paper, learning, risk, btc_bucket, closed_n=closed_n, errors=errors)
-
-    state.update({
-        'version': BOT_VERSION,
-        'mode': mode,
-        'telegram_push': 'silent-disabled-v19.11.10.3',
-        'last_paper_closed': int(paper.get('closed', 0) or 0),
-        'last_paper_saved': int(paper.get('saved', 0) or 0),
-        'last_paper_open': int(paper.get('open', 0) or 0),
-        'last_learning_open': int(learning.get('open', 0) or 0),
-        'last_learning_closed': int(learning.get('closed', 0) or 0),
-        'last_risk': risk,
-        'last_btc_bucket': btc_bucket,
-        'last_timing_checked': int(learning.get('timing_checked', 0) or 0),
-        'last_reason_lines': reasons,
-        'last_silent_logged_at': now_ts,
-    })
-    auto_audit_save_state(state, sync=False)
-
-    entry = {
-        'ts': _v1911103_ts(),
-        'version': BOT_VERSION,
-        'mode': mode,
-        'telegram_sent': False,
-        'score': _v1911103_score(),
-        'risk': risk,
-        'btc_bucket': btc_bucket,
-        'paper_open': int(paper.get('open', 0) or 0),
-        'paper_closed': int(paper.get('closed', 0) or 0),
-        'paper_saved': int(paper.get('saved', 0) or 0),
-        'paper_missed': int(paper.get('missed', 0) or 0),
-        'learning_open': int(learning.get('open', 0) or 0),
-        'learning_closed': int(learning.get('closed', 0) or 0),
-        'reason_lines': reasons,
-        'note': 'scheduled auto-audit is silent; details are stored for /audit_file',
-    }
-    _v1911103_append_log(entry)
-    return False
-
-auto_audit_check_and_send._v1911103_silent = True
-
-
-def v1911103_auto_audit_silent_log_report():
-    data = _v1911103_load_log()
-    items = data.get('items', []) if isinstance(data.get('items', []), list) else []
-    lines = [
-        '🤫 AUTO-AUDIT SILENT LOG',
-        '',
-        f'Версия: {BOT_VERSION}',
-        'Telegram hourly messages: OFF',
-        'Фоновая проверка: ON, но пишет только state/log для /audit_file.',
-        'Ручная проверка: /auto_audit_now по-прежнему отправляет карточку по запросу пользователя.',
-        f'Записей в silent-log: {len(items)}',
-    ]
-    if not items:
-        lines += ['', 'Последние записи: пока нет — появятся после следующего планового silent-cycle.']
-        return '\n'.join(lines)
-    lines += ['', 'Последние записи:']
-    for e in items[-6:]:
-        if not isinstance(e, dict):
-            continue
-        reasons = e.get('reason_lines', []) if isinstance(e.get('reason_lines', []), list) else []
-        reason = '; '.join([str(x) for x in reasons[:3]]) if reasons else 'без изменений'
-        lines.append(
-            f"• {e.get('ts','?')} | score {e.get('score','?')}/100 | {e.get('risk','?')} | "
-            f"paper {e.get('paper_open',0)}/{e.get('paper_closed',0)} | sent: NO | {reason}"
-        )
-    return '\n'.join(lines)
-
-
-def auto_audit_status_text():
-    try:
-        state = auto_audit_load_state()
-    except Exception:
-        state = {}
-    enabled = 'включена' if state.get('enabled') else 'выключена'
-    try:
-        mode, interval_min, min_gap_min, critical_only = auto_audit_effective_settings(state)
-        mode_label = auto_audit_mode_label(mode)
-    except Exception:
-        interval_min, mode_label = 60, 'critical-only'
-    last_ts = state.get('last_silent_logged_at') or state.get('last_check_at') or 0
-    last_txt = 'нет'
-    try:
-        if float(last_ts or 0) > 0:
-            last_txt = format_age(time.time() - float(last_ts)) + ' назад'
-    except Exception:
-        pass
-    return (
-        '🧠 Автопроверка\n\n'
-        f'Статус фоновой проверки: **{enabled}**\n'
-        'Telegram-уведомления по расписанию: **OFF / silent**\n'
-        f'Режим расчёта: **{mode_label}**\n'
-        f'Плановый silent-cycle: каждые **{interval_min} мин**\n'
-        f'Последняя silent-запись: **{last_txt}**\n\n'
-        'Теперь почасовые карточки в чат не отправляются.\n'
-        'Данные для самообучения и проверки пишутся в /audit_file.\n\n'
-        'Команды: /auto_audit_now — ручная карточка | /audit_file — технический лог | /auto_audit_off — выключить фон полностью'
-    )
-
-
-def v191181_fast_audit_build_content():
-    if callable(_v1911103_old_v191181_fast_audit_build_content):
-        base = str(_v1911103_old_v191181_fast_audit_build_content())
-    else:
-        base = 'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n' + v1911103_auto_audit_silent_log_report()
-    marker = 'AUTO-AUDIT SILENT LOG V19.11.10.3'
-    if marker in base:
-        return base
-    return base + '\n\n' + '='*80 + '\n' + marker + '\n' + '='*80 + '\n' + v1911103_auto_audit_silent_log_report()
-
-
-def version_user_report():
-    return (
-        f'✅ Версия: {BOT_VERSION}\n\n'
-        'Что исправлено:\n'
-        '• почасовая Автопроверка больше НЕ присылает карточки в Telegram;\n'
-        '• фоновый auto-audit оставлен только как silent-cycle для самообучения/финализации;\n'
-        '• результаты silent-cycle пишутся в state/log и отображаются в /audit_file;\n'
-        '• /auto_audit_status теперь показывает, что Telegram-уведомления по расписанию OFF;\n'
-        '• /auto_audit_now сохранён как ручная проверка по запросу пользователя.\n\n'
-        'Сохранено:\n'
-        '• реальные покупки 0;\n'
-        '• автоторговля OFF;\n'
-        '• BUY-веса +0;\n'
-        '• Risk Engine unchanged;\n'
-        '• v19.11.10.2 durable-state, 6H checkpoint, Lesson Router и audit/shadow fixes сохранены.\n\n'
-        'Команды проверки: /version | /auto_audit_status | /audit_file | /paper_buy_status'
     )
 
