@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16825,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17933,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18408,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18572,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18917,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19298,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19605,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20119,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20260,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20571,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20862,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21719,7 +21719,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22123,7 +22123,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22692,7 +22692,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23200,7 +23200,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23506,7 +23506,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24034,7 +24034,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25251,7 +25251,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 
 def _v191191_branch_ref_name():
@@ -25396,7 +25396,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25684,7 +25684,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25913,7 +25913,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26280,13 +26280,13 @@ def version_user_report():
 
 
 
-# === v19.12.0.1 PAGINATED ENTRY HISTORY ===
+# === v19.12.0 WALK-FORWARD ENTRY LAB ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26900,7 +26900,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 
 def v1911101_section(title, body):
@@ -26955,7 +26955,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27056,7 +27056,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 
 def v1911101_load_buy_state():
@@ -27172,14 +27172,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v19.12.0.1 PAGINATED ENTRY HISTORY ===
+# === v19.12.0 WALK-FORWARD ENTRY LAB ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27480,13 +27480,13 @@ def version_user_report():
 
 
 
-# === v19.12.0.1 PAGINATED ENTRY HISTORY ===
+# === v19.12.0 WALK-FORWARD ENTRY LAB ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27789,11 +27789,11 @@ def version_user_report():
     )
 
 
-# === v19.12.0.1 PAGINATED ENTRY HISTORY ===
+# === v19.12.0 WALK-FORWARD ENTRY LAB ===
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+V191111_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 
@@ -28028,51 +28028,32 @@ except Exception:
     _V191120_OLD_LEARN_FAST_REPORT = None
 
 
-def v191120_fetch_4h_candles(asset, pages=2, bars_per_page=1200):
-    """Fetch roughly 13 months of 4h candles instead of KuCoin's short default page."""
-    rows_by_ts = {}
-    end_at = int(time.time())
-    page_seconds = int(bars_per_page) * 4 * 3600
-    for _ in range(max(1, int(pages or 1))):
-        start_at = max(0, end_at - page_seconds)
-        try:
-            response = requests.get(
-                "https://api.kucoin.com/api/v1/market/candles",
-                params={
-                    "symbol": f"{asset}-USDT",
-                    "type": "4hour",
-                    "startAt": start_at,
-                    "endAt": end_at,
-                },
-                timeout=12,
-            ).json()
-            if response.get("code") != "200000":
-                break
-            raw_rows = response.get("data", [])
-            if not isinstance(raw_rows, list) or not raw_rows:
-                break
-            oldest = None
-            for candle in raw_rows:
-                try:
-                    ts = int(candle[0])
-                    rows_by_ts[ts] = {
-                        'ts': ts,
-                        'open': float(candle[1]),
-                        'close': float(candle[2]),
-                        'high': float(candle[3]),
-                        'low': float(candle[4]),
-                        'volume': float(candle[5]),
-                    }
-                    oldest = ts if oldest is None else min(oldest, ts)
-                except Exception:
-                    continue
-            if oldest is None or oldest >= end_at:
-                break
-            end_at = oldest - 1
-        except Exception as exc:
-            print(f"walk-forward candles error {asset}: {exc}")
-            break
-    return [rows_by_ts[ts] for ts in sorted(rows_by_ts)][-2400:]
+def v191120_fetch_4h_candles(asset):
+    try:
+        response = requests.get(
+            "https://api.kucoin.com/api/v1/market/candles",
+            params={"symbol": f"{asset}-USDT", "type": "4hour"},
+            timeout=10,
+        ).json()
+        if response.get("code") != "200000":
+            return []
+        rows = []
+        for candle in sorted(response.get("data", []), key=lambda item: int(item[0])):
+            try:
+                rows.append({
+                    'ts': int(candle[0]),
+                    'open': float(candle[1]),
+                    'close': float(candle[2]),
+                    'high': float(candle[3]),
+                    'low': float(candle[4]),
+                    'volume': float(candle[5]),
+                })
+            except Exception:
+                continue
+        return rows
+    except Exception as exc:
+        print(f"walk-forward candles error {asset}: {exc}")
+        return []
 
 
 def v191120_ema(values, period):
@@ -28280,7 +28261,6 @@ def v191120_run_walkforward(candles_by_asset=None):
         'method': '4h chronological walk-forward 70/30; features use past candles only; stride 12h',
         'assets_requested': list(V191120_ENTRY_LAB_ASSETS),
         'assets_loaded': [asset for asset, rows in candles_by_asset.items() if asset != 'BTC' and len(rows) >= 60],
-        'candle_counts': {asset: len(rows) for asset, rows in candles_by_asset.items()},
         'total_samples': len(samples),
         'train_samples': len(train),
         'validation_samples': len(validation),
@@ -28321,7 +28301,6 @@ def v191120_entry_lab_lines():
     lines += [
         f"• samples: total {data.get('total_samples', 0)} | train {data.get('train_samples', 0)} | validation {data.get('validation_samples', 0)}",
         f"• assets loaded: {len(data.get('assets_loaded', []) or [])}/{len(data.get('assets_requested', []) or [])}",
-        f"• history depth: up to {max((data.get('candle_counts', {}) or {'?': 0}).values())} candles per asset",
         f"• selected PAPER threshold: {data.get('selected_threshold', '?')}/100",
         f"• validation: n {validation.get('n', 0)} | avg48 {float(validation.get('avg48', 0) or 0):+.2f}% | "
         f"win {float(validation.get('win_rate', 0) or 0)*100:.1f}% | bad {float(validation.get('bad_rate', 0) or 0)*100:.1f}% | "
@@ -29111,13 +29090,13 @@ def v191111_audit_content():
         decisions = v191111_ranked_paper_buy_decisions()
     sections = [
         ('VERSION', f'BOT_VERSION: {V191111_VERSION}'),
-        ('MEASURABLE LEARNING PROGRESS V19.12.0.1', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
+        ('MEASURABLE LEARNING PROGRESS V19.12.0', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
         ('HISTORICAL POLICY VS ENTRY CALIBRATION', '\n'.join(v191113_policy_calibration_lines(backfill))),
-        ('WALK-FORWARD ENTRY LAB V19.12.0.1', '\n'.join(v191120_entry_lab_lines())),
+        ('WALK-FORWARD ENTRY LAB V19.12.0', '\n'.join(v191120_entry_lab_lines())),
         ('FAST PROBE SCORING', v1911101_safe_call('v191181_fast_probe_scoring_report')),
         ('FAST SHADOW PORTFOLIO', v1911101_safe_call('v191181_fast_shadow_report')),
         ('FAST LESSON ENGINE', v1911101_safe_call('v191181_fast_lesson_engine_report')),
-        ('UNIFIED PAPER DECISION GATE V19.12.0.1', v191111_paper_buy_report(create=False)),
+        ('UNIFIED PAPER DECISION GATE V19.12.0', v191111_paper_buy_report(create=False)),
         ('PAPER CHECKPOINT LIFECYCLE', '\n'.join(v191111_checkpoint_lines(decisions))),
         ('CONFIDENCE LESSON ROUTER', '\n'.join(v191111_router_lines())),
         ('HOURLY FAST EVIDENCE ROUTER', '\n'.join(v191112_fast_evidence_lines(decisions))),
@@ -29135,10 +29114,12 @@ def v191111_version_report():
     return (
         f'✅ Версия: {V191111_VERSION}\n\n'
         'Что изменено:\n'
-        '• Entry Lab загружает историю страницами, а не коротким блоком из 100 свечей;\n'
-        '• глубина увеличена примерно до 2400 четырёхчасовых свечей на актив;\n'
-        '• train/validation получают значительно больше независимых примеров;\n'
-        '• логика walk-forward и запрет live BUY сохранены.\n\n'
+        '• добавлен исторический 4ч walk-forward Entry Lab без look-ahead;\n'
+        '• первые 70% истории используются для выбора PAPER-порога, последние 30% — только для validation;\n'
+        '• проверяются win-rate, средний 48ч PnL, bad-rate и MAE;\n'
+        '• replay работает в фоне и даёт независимые BUY-примеры без ожидания рынка;\n'
+        '• результат не может включить live BUY или автоторговлю;\n'
+        '• hourly evidence, same-cycle refresh и historical policy calibration сохранены.\n\n'
         'Безопасность:\n'
         '• реальные покупки 0;\n'
         '• автоторговля OFF;\n'
@@ -29211,7 +29192,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -29512,7 +29493,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -29945,13 +29926,13 @@ def version_user_report():
 
 
 
-# === v19.12.0.1 PAGINATED ENTRY HISTORY ===
+# === v19.12.0 WALK-FORWARD ENTRY LAB ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -30565,7 +30546,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 
 def v1911101_section(title, body):
@@ -30620,7 +30601,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -30721,7 +30702,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 
 def v1911101_load_buy_state():
@@ -30836,14 +30817,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v19.12.0.1 PAGINATED ENTRY HISTORY ===
+# === v19.12.0 WALK-FORWARD ENTRY LAB ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -31144,13 +31125,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v19.12.0.1 PAGINATED ENTRY HISTORY ===
+# === v19.12.0 WALK-FORWARD ENTRY LAB ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v19.12.0.1 PAGINATED ENTRY HISTORY"
+BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
