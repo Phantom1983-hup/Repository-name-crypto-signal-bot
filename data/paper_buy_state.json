@@ -1,6 +1,6 @@
 {
-  "version": "v19.12.0.1 PAGINATED ENTRY HISTORY",
-  "created_at": 1782714628.3203678,
+  "version": "v19.12.4 POLICY FORWARD SHADOW",
+  "created_at": 1782721391.5642457,
   "active_count": 2,
   "active_buys": [
     {
@@ -8,8 +8,8 @@
       "asset": "NEAR",
       "entry_time": 1782646362.306717,
       "entry_price": 1.8596,
-      "last_price": 1.866,
-      "last_pct": 0.34,
+      "last_price": 1.8712,
+      "last_pct": 0.62,
       "score": 68,
       "entry_score": 62,
       "probe_score_at_decision": 55,
@@ -91,17 +91,17 @@
       "persistence_version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
       "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
       "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
-      "last_price_time": 1782714608.2176304,
-      "durable_saved_by": "v19.12.0.1 PAGINATED ENTRY HISTORY",
-      "durable_saved_at": 1782714628.320356
+      "last_price_time": 1782719083.357533,
+      "durable_saved_by": "v19.12.4 POLICY FORWARD SHADOW",
+      "durable_saved_at": 1782721391.5642374
     },
     {
       "id": "LINK:PAPER_BUY_DECISION_TEST:495179",
       "asset": "LINK",
       "entry_time": 1782646362.306717,
       "entry_price": 7.3031,
-      "last_price": 7.3338,
-      "last_pct": 0.42,
+      "last_price": 7.3199,
+      "last_pct": 0.23,
       "score": 68,
       "entry_score": 62,
       "probe_score_at_decision": 55,
@@ -183,9 +183,9 @@
       "persistence_version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
       "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
       "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
-      "last_price_time": 1782714608.2176304,
-      "durable_saved_by": "v19.12.0.1 PAGINATED ENTRY HISTORY",
-      "durable_saved_at": 1782714628.32036
+      "last_price_time": 1782720900.966011,
+      "durable_saved_by": "v19.12.4 POLICY FORWARD SHADOW",
+      "durable_saved_at": 1782721391.5642402
     }
   ],
   "journal": [
