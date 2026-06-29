@@ -24,7 +24,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16853,7 +16853,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17961,7 +17961,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18436,7 +18436,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18600,7 +18600,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18945,7 +18945,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19326,7 +19326,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19633,7 +19633,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20147,7 +20147,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20288,7 +20288,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20599,7 +20599,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20890,7 +20890,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21750,7 +21750,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22154,7 +22154,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22723,7 +22723,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23231,7 +23231,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23537,7 +23537,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24065,7 +24065,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25282,7 +25282,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 
 def _v191191_branch_ref_name():
@@ -25427,7 +25427,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25715,7 +25715,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25944,7 +25944,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26311,13 +26311,13 @@ def version_user_report():
 
 
 
-# === v20.9.5 AUDIT FINAL LABEL CLEANUP ===
+# === v20.9.4 AUDIT LABEL POLISH ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26931,7 +26931,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 
 def v1911101_section(title, body):
@@ -26986,7 +26986,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27087,7 +27087,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 
 def v1911101_load_buy_state():
@@ -27203,14 +27203,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v20.9.5 AUDIT FINAL LABEL CLEANUP ===
+# === v20.9.4 AUDIT LABEL POLISH ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27511,13 +27511,13 @@ def version_user_report():
 
 
 
-# === v20.9.5 AUDIT FINAL LABEL CLEANUP ===
+# === v20.9.4 AUDIT LABEL POLISH ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27820,11 +27820,11 @@ def version_user_report():
     )
 
 
-# === v20.9.5 AUDIT FINAL LABEL CLEANUP ===
+# === v20.9.4 AUDIT LABEL POLISH ===
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+V191111_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
@@ -32196,7 +32196,7 @@ def v191111_install():
 v191111_install()
 
 
-# === v20.9.5 AUDIT FINAL LABEL CLEANUP ===
+# === v20.9.4 AUDIT LABEL POLISH ===
 # Fix: /sol could show SOL quality-watch while /alerts omitted SOL because fast alerts sorted by volume/score only.
 # This adds a separate momentum post layer for quality assets. It never opens BUY and never bypasses benchmark/paper guards.
 
@@ -32414,7 +32414,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -32715,7 +32715,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -33148,13 +33148,13 @@ def version_user_report():
 
 
 
-# === v20.9.5 AUDIT FINAL LABEL CLEANUP ===
+# === v20.9.4 AUDIT LABEL POLISH ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -33768,7 +33768,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 
 def v1911101_section(title, body):
@@ -33823,7 +33823,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -33924,7 +33924,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 
 def v1911101_load_buy_state():
@@ -34039,14 +34039,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v20.9.5 AUDIT FINAL LABEL CLEANUP ===
+# === v20.9.4 AUDIT LABEL POLISH ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -34347,13 +34347,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v20.9.5 AUDIT FINAL LABEL CLEANUP ===
+# === v20.9.4 AUDIT LABEL POLISH ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+BOT_VERSION = "v20.9.4 AUDIT LABEL POLISH"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -34658,75 +34658,3 @@ def version_user_report():
 
 # Re-apply v19.11.11 after legacy post-__main__ overrides when imported by tests/workers.
 v191111_install()
-
-# === v20.9.5 AUDIT FINAL LABEL CLEANUP ===
-# Cosmetic-only cleanup after v20.9.4: keep SOL alerts, quarantine and trading logic unchanged.
-# Purpose: remove leftover v20.9.3/v20.9.4 audit labels from current technical report.
-BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
-
-try:
-    V191111_VERSION = BOT_VERSION
-except Exception:
-    pass
-
-try:
-    _v2095_prev_fast_audit_build_content = v191181_fast_audit_build_content
-except Exception:
-    _v2095_prev_fast_audit_build_content = None
-
-
-def v2095_clean_audit_labels(text):
-    s = str(text or '')
-    # Current-section uppercase labels only; historical lower-case history is intentionally preserved.
-    s = s.replace('FIXED BENCHMARK + REPORT CLARITY FIX V20.9.4', 'FIXED BENCHMARK + REPORT CLARITY FIX V20.9.5')
-    s = s.replace('EFFECTIVENESS CONTROL CENTER V20.9.4', 'EFFECTIVENESS CONTROL CENTER V20.9.5')
-    s = s.replace('MEASURABLE LEARNING PROGRESS V20.9.4', 'MEASURABLE LEARNING PROGRESS V20.9.5')
-    s = s.replace('VALIDATED POLICY FORWARD SHADOW V20.9.4', 'VALIDATED POLICY FORWARD SHADOW V20.9.5')
-    s = s.replace('CHAMPION-CHALLENGER FORWARD LAB V20.9.4', 'CHAMPION-CHALLENGER FORWARD LAB V20.9.5')
-    s = s.replace('AUTO QUALITY PROBE QUARANTINE V20.9.4', 'AUTO QUALITY PROBE QUARANTINE V20.9.5')
-    s = s.replace('UNIFIED PAPER DECISION GATE V20.9.4', 'UNIFIED PAPER DECISION GATE V20.9.5')
-    s = s.replace('MOMENTUM POST GUARD V20.9.3', 'MOMENTUM POST GUARD V20.9.5')
-    s = s.replace('BOT_VERSION: v20.9.5 AUDIT FINAL LABEL CLEANUP', f'BOT_VERSION: {BOT_VERSION}')
-    s = s.replace('Версия: v20.9.5 AUDIT FINAL LABEL CLEANUP', f'Версия: {BOT_VERSION}')
-    # Keep historical score rows untouched, but make the active current version clear where v20.9.4 was used as current.
-    s = s.replace('Версия: v20.9.3 SOL ALERTS WIRING FIX\nСтатус: ⛔ создание новых автопроб заблокировано',
-                  f'Версия: {BOT_VERSION}\nСтатус: ⛔ создание новых автопроб заблокировано')
-    return s
-
-
-def v191181_fast_audit_build_content():
-    base = _v2095_prev_fast_audit_build_content() if callable(_v2095_prev_fast_audit_build_content) else 'ALEX EDGE ULTRA FAST TECH AUDIT FILE'
-    return v2095_clean_audit_labels(base)
-
-
-def v191111_audit_content():
-    try:
-        return v191181_fast_audit_build_content()
-    except Exception:
-        return 'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n\n' + f'BOT_VERSION: {BOT_VERSION}'
-
-
-def version_user_report():
-    return (
-        '✅ Версия: v20.9.5\n'
-        'Название: ФИНАЛЬНАЯ ЧИСТКА НАЗВАНИЙ АУДИТА\n\n'
-        'Что исправлено:\n'
-        '• /alerts продолжает показывать SOL и другие сильные quality-импульсы;\n'
-        '• /sol и /alerts согласованы;\n'
-        '• карантин слабых автопроб сохранён;\n'
-        '• в /audit_file убраны оставшиеся старые подписи v20.9.3/v20.9.4 в текущих технических разделах;\n'
-        '• v20.7 остаётся удержанным ориентиром: 44/100;\n'
-        '• торговая логика и виртуальные сделки не менялись.\n\n'
-        'Безопасность:\n'
-        '• реальные покупки: 0;\n'
-        '• автоторговля: выключена;\n'
-        '• импульсный пост не открывает сделку.\n\n'
-        'Команды проверки: /version | /alerts | /sol | /effectiveness | /audit_file'
-    )
-
-try:
-    globals()['version_user_report'] = version_user_report
-    globals()['v191181_fast_audit_build_content'] = v191181_fast_audit_build_content
-    globals()['v191111_audit_content'] = v191111_audit_content
-except Exception:
-    pass
