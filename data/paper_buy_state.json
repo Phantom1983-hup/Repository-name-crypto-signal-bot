@@ -1,6 +1,6 @@
 {
-  "version": "v20.9 PROBE QUARANTINE GUARD",
-  "created_at": 1782752577.7284393,
+  "version": "v20.9.2 MOBILE SAFE FILE FIX",
+  "created_at": 1782757865.2291942,
   "active_count": 2,
   "active_buys": [
     {
@@ -8,8 +8,8 @@
       "asset": "NEAR",
       "entry_time": 1782646362.306717,
       "entry_price": 1.8596,
-      "last_price": 1.8546,
-      "last_pct": -0.27,
+      "last_price": 1.8968,
+      "last_pct": 2.0,
       "score": 68,
       "entry_score": 62,
       "probe_score_at_decision": 55,
@@ -97,17 +97,17 @@
       "persistence_version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
       "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
       "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
-      "last_price_time": 1782751411.6210644,
-      "durable_saved_by": "v20.9 PROBE QUARANTINE GUARD",
-      "durable_saved_at": 1782752577.7284226
+      "last_price_time": 1782757746.4775786,
+      "durable_saved_by": "v20.9.2 MOBILE SAFE FILE FIX",
+      "durable_saved_at": 1782757865.2291842
     },
     {
       "id": "LINK:PAPER_BUY_DECISION_TEST:495179",
       "asset": "LINK",
       "entry_time": 1782646362.306717,
       "entry_price": 7.3031,
-      "last_price": 7.3213,
-      "last_pct": 0.25,
+      "last_price": 7.4462,
+      "last_pct": 1.96,
       "score": 68,
       "entry_score": 62,
       "probe_score_at_decision": 55,
@@ -195,9 +195,9 @@
       "persistence_version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
       "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
       "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
-      "last_price_time": 1782751411.6210644,
-      "durable_saved_by": "v20.9 PROBE QUARANTINE GUARD",
-      "durable_saved_at": 1782752577.7284255
+      "last_price_time": 1782757746.4775786,
+      "durable_saved_by": "v20.9.2 MOBILE SAFE FILE FIX",
+      "durable_saved_at": 1782757865.229187
     }
   ],
   "journal": [
