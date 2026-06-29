@@ -9002,7 +9002,42 @@
         }
       },
       "closed_time": 1782749875.0185,
-      "outcome": "paper_loss"
+      "outcome": "paper_loss",
+      "probe_lesson_48h_v19118": {
+        "key": "AAVE:1782576393:48h_final",
+        "asset": "AAVE",
+        "stage": "48h_final",
+        "version": "v20.7 MODEL SELECTION GUARD",
+        "entry_time": 1782576393.2249265,
+        "lesson_time": 1782749926.7414327,
+        "age_h": 48.20375458565023,
+        "entry_price": 96.071,
+        "current_price": 92.346,
+        "pct": -5.27,
+        "bucket": "bad_entry",
+        "label": "🔴 плохой вход / сильная просадка",
+        "lesson": "запрет реальной покупки был правильным; снижать paper-приоритет таких входов без подтверждения",
+        "paper_delta": -4,
+        "lesson_score": 18,
+        "entry_score": 62,
+        "results": {
+          "1h": -0.32,
+          "3h": -1.69,
+          "6h": -2.79,
+          "12h": -1.37,
+          "24h": -5.39,
+          "48h": -5.27
+        },
+        "snapshot": {
+          "btc_change": -0.5,
+          "fear": 18,
+          "news": 0,
+          "rsi": 30.5,
+          "volume_trend": 1.15,
+          "risk_level": "caution",
+          "change_24": -5.64
+        }
+      }
     }
   ],
   "last_created_at": 1782749888.6416292,
@@ -9431,9 +9466,44 @@
         "risk_level": "caution",
         "change_24": -3.44
       }
+    },
+    {
+      "key": "AAVE:1782576393:48h_final",
+      "asset": "AAVE",
+      "stage": "48h_final",
+      "version": "v20.7 MODEL SELECTION GUARD",
+      "entry_time": 1782576393.2249265,
+      "lesson_time": 1782749926.7414327,
+      "age_h": 48.20375458565023,
+      "entry_price": 96.071,
+      "current_price": 92.346,
+      "pct": -5.27,
+      "bucket": "bad_entry",
+      "label": "🔴 плохой вход / сильная просадка",
+      "lesson": "запрет реальной покупки был правильным; снижать paper-приоритет таких входов без подтверждения",
+      "paper_delta": -4,
+      "lesson_score": 18,
+      "entry_score": 62,
+      "results": {
+        "1h": -0.32,
+        "3h": -1.69,
+        "6h": -2.79,
+        "12h": -1.37,
+        "24h": -5.39,
+        "48h": -5.27
+      },
+      "snapshot": {
+        "btc_change": -0.5,
+        "fear": 18,
+        "news": 0,
+        "rsi": 30.5,
+        "volume_trend": 1.15,
+        "risk_level": "caution",
+        "change_24": -5.64
+      }
     }
   ],
-  "last_probe_lesson_engine_at": 1782749012.487208,
+  "last_probe_lesson_engine_at": 1782749926.7414596,
   "unified_fast_checkpoint_log_v1911111": [
     {
       "snapshot_key": "active:NEAR:PAPER_BUY_DECISION_TEST:495179:12–24ч",
