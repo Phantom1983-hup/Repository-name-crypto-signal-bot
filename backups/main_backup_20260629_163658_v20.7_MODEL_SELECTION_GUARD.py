@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16849,7 +16849,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17957,7 +17957,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18432,7 +18432,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18596,7 +18596,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18941,7 +18941,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19322,7 +19322,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19629,7 +19629,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20143,7 +20143,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20284,7 +20284,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20595,7 +20595,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20886,7 +20886,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21746,7 +21746,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22150,7 +22150,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22719,7 +22719,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23227,7 +23227,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23533,7 +23533,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24061,7 +24061,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25278,7 +25278,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 
 def _v191191_branch_ref_name():
@@ -25423,7 +25423,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25711,7 +25711,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25940,7 +25940,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26307,13 +26307,13 @@ def version_user_report():
 
 
 
-# === v20.8 ADAPTIVE EXIT PLAN GUARD ===
+# === v20.7 MODEL SELECTION GUARD ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26927,7 +26927,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 
 def v1911101_section(title, body):
@@ -26982,7 +26982,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27083,7 +27083,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 
 def v1911101_load_buy_state():
@@ -27199,14 +27199,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v20.8 ADAPTIVE EXIT PLAN GUARD ===
+# === v20.7 MODEL SELECTION GUARD ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27507,13 +27507,13 @@ def version_user_report():
 
 
 
-# === v20.8 ADAPTIVE EXIT PLAN GUARD ===
+# === v20.7 MODEL SELECTION GUARD ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27816,11 +27816,11 @@ def version_user_report():
     )
 
 
-# === v20.8 ADAPTIVE EXIT PLAN GUARD ===
+# === v20.7 MODEL SELECTION GUARD ===
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+V191111_VERSION = "v20.7 MODEL SELECTION GUARD"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
@@ -27829,7 +27829,7 @@ V2023_CHAMPION_FILE = data_path("deployment_champion_v203.json")
 V203_BENCHMARK_FILE = data_path("fixed_market_benchmark_v203.json")
 V203_BENCHMARK_RESULT_FILE = data_path("fixed_benchmark_result_v203.json")
 V203_BENCHMARK_SCHEMA = "fixed_market_benchmark_v203_1"
-V203_EVALUATOR_SCHEMA = "adaptive_exit_plan_guard_v208_1"
+V203_EVALUATOR_SCHEMA = "model_selection_guard_v207_1"
 V203_BENCHMARK_LOCK = Lock()
 V203_BENCHMARK_LAST_START = 0
 V202_FORWARD_LAB_LOCK = Lock()
@@ -29699,7 +29699,7 @@ def v206_maybe_forward_background(force=False):
                 return
             v206_adaptive_forward_cycle()
         except Exception as exc:
-            print(f'v20.8 adaptive forward error: {exc}')
+            print(f'v20.7 adaptive forward error: {exc}')
         finally:
             if shared_acquired:
                 V202_FORWARD_LAB_LOCK.release()
@@ -31034,45 +31034,6 @@ V204_FEATURES = [
 ]
 
 
-def v208_plan_specs():
-    return [
-        {'key': 't12_s20', 'target_pct': 1.2, 'stop_pct': -2.0},
-        {'key': 't15_s20', 'target_pct': 1.5, 'stop_pct': -2.0},
-        {'key': 't18_s25', 'target_pct': 1.8, 'stop_pct': -2.5},
-        {'key': 't20_s30', 'target_pct': 2.0, 'stop_pct': -3.0},
-        {'key': 't25_s30', 'target_pct': 2.5, 'stop_pct': -3.0},
-        {'key': 't30_s35', 'target_pct': 3.0, 'stop_pct': -3.5},
-    ]
-
-
-def v208_default_plan_key():
-    return 't20_s30'
-
-
-def v208_plan_label(plan_key):
-    for plan in v208_plan_specs():
-        if plan.get('key') == plan_key:
-            return f"T1 +{float(plan.get('target_pct', 0) or 0):.1f}% / stop {float(plan.get('stop_pct', 0) or 0):.1f}%"
-    return 'T1 +2.0% / stop -3.0%'
-
-
-def v208_rows_with_plan(rows, plan_key):
-    if not plan_key:
-        return rows
-    result = []
-    for source in rows if isinstance(rows, list) else []:
-        row = dict(source)
-        plans = row.get('plans_v208', {}) if isinstance(row.get('plans_v208', {}), dict) else {}
-        plan = plans.get(str(plan_key), {}) if isinstance(plans.get(str(plan_key), {}), dict) else {}
-        if plan:
-            row['plan_return'] = round(float(plan.get('return_pct', 0) or 0), 3)
-            row['plan_outcome'] = plan.get('outcome')
-            row['plan_bars'] = int(plan.get('bars', 0) or 0)
-            row['plan_key'] = str(plan_key)
-        result.append(row)
-    return result
-
-
 def v204_enrich_samples(candles_by_asset):
     samples = v191120_build_dataset(candles_by_asset)
     indexes = {}
@@ -31101,22 +31062,6 @@ def v204_enrich_samples(candles_by_asset):
             ]
             recent_volume = sum(volumes[-3:]) / 3.0
             previous_volume = sum(volumes[-12:-3]) / 9.0 if len(volumes) >= 12 else recent_volume
-            future = candles[index + 1:index + 13]
-            plans = {}
-            for plan in v208_plan_specs():
-                simulated = v191122_simulate_plan(
-                    price,
-                    future,
-                    target_pct=float(plan.get('target_pct', 2.0) or 2.0),
-                    stop_pct=float(plan.get('stop_pct', -3.0) or -3.0),
-                )
-                plans[str(plan.get('key'))] = {
-                    'target_pct': float(plan.get('target_pct', 0) or 0),
-                    'stop_pct': float(plan.get('stop_pct', 0) or 0),
-                    'return_pct': round(float(simulated.get('return_pct', 0) or 0), 3),
-                    'outcome': simulated.get('outcome'),
-                    'bars': int(simulated.get('bars', 0) or 0),
-                }
             row.update({
                 'momentum_12h': round(v191120_pct(closes[-4], price), 4),
                 'momentum_48h': round(v191120_pct(closes[-13], price), 4),
@@ -31134,7 +31079,6 @@ def v204_enrich_samples(candles_by_asset):
                     recent_volume / previous_volume if previous_volume > 0 else 1.0,
                     4,
                 ),
-                'plans_v208': plans,
             })
             enriched.append(row)
         except Exception:
@@ -31223,7 +31167,7 @@ def v206_fit_categories(rows, global_return, global_bad, weight_scale=1.0):
     return result
 
 
-def v204_fit_model(rows, prior=30.0, include_context=True, category_weight_scale=1.0, schema='context_binned_evidence_v208_1'):
+def v204_fit_model(rows, prior=30.0, include_context=True, category_weight_scale=1.0, schema='context_binned_evidence_v207_1'):
     if not rows:
         raise ValueError('empty model training set')
     global_return = sum(float(row.get('plan_return', 0) or 0) for row in rows) / len(rows)
@@ -31335,10 +31279,9 @@ def v204_score_rows(rows, model):
     return result
 
 
-def v204_metrics(rows, cutoff, bad_max=1.0, expected_min=-999.0, plan_key=None):
-    source_rows = v208_rows_with_plan(rows, plan_key) if plan_key else rows
+def v204_metrics(rows, cutoff, bad_max=1.0, expected_min=-999.0):
     selected = [
-        row for row in source_rows
+        row for row in rows
         if float(row.get('evidence_score') if row.get('evidence_score') is not None else -999) >= float(cutoff)
         and float(row.get('bad_probability') if row.get('bad_probability') is not None else 1) <= float(bad_max)
         and float(row.get('expected_return') if row.get('expected_return') is not None else -999) >= float(expected_min)
@@ -31347,9 +31290,6 @@ def v204_metrics(rows, cutoff, bad_max=1.0, expected_min=-999.0, plan_key=None):
     metrics['cutoff'] = round(float(cutoff), 6)
     metrics['bad_max'] = round(float(bad_max), 4)
     metrics['expected_min'] = round(float(expected_min), 4)
-    if plan_key:
-        metrics['plan_key'] = str(plan_key)
-        metrics['plan_label'] = v208_plan_label(plan_key)
     return metrics
 
 
@@ -31380,7 +31320,7 @@ def v204_calibration_objective(metrics):
     )
 
 
-def v204_validation_windows(rows, cutoff, bad_max=1.0, expected_min=-999.0, window_count=3, plan_key=None):
+def v204_validation_windows(rows, cutoff, bad_max=1.0, expected_min=-999.0, window_count=3):
     timestamps = sorted({int(row.get('ts', 0) or 0) for row in rows})
     windows = []
     for index in range(int(window_count)):
@@ -31392,7 +31332,6 @@ def v204_validation_windows(rows, cutoff, bad_max=1.0, expected_min=-999.0, wind
             cutoff,
             bad_max=bad_max,
             expected_min=expected_min,
-            plan_key=plan_key,
         )
         metrics['window'] = index + 1
         metrics['stable'] = (
@@ -31413,15 +31352,7 @@ def v207_model_variants():
             'prior': 70.0,
             'include_context': False,
             'category_weight_scale': 0.0,
-            'schema': 'numeric_smooth_evidence_v208_1',
-        },
-        {
-            'name': 'numeric_extra_smooth',
-            'title': 'числовая очень сглаженная модель',
-            'prior': 120.0,
-            'include_context': False,
-            'category_weight_scale': 0.0,
-            'schema': 'numeric_extra_smooth_evidence_v208_1',
+            'schema': 'numeric_smooth_evidence_v207_1',
         },
         {
             'name': 'numeric_balanced',
@@ -31429,7 +31360,7 @@ def v207_model_variants():
             'prior': 35.0,
             'include_context': False,
             'category_weight_scale': 0.0,
-            'schema': 'numeric_balanced_evidence_v208_1',
+            'schema': 'numeric_balanced_evidence_v207_1',
         },
         {
             'name': 'context_guarded',
@@ -31437,7 +31368,7 @@ def v207_model_variants():
             'prior': 80.0,
             'include_context': True,
             'category_weight_scale': 0.45,
-            'schema': 'context_guarded_evidence_v208_1',
+            'schema': 'context_guarded_evidence_v207_1',
         },
         {
             'name': 'context_full_research',
@@ -31445,7 +31376,7 @@ def v207_model_variants():
             'prior': 45.0,
             'include_context': True,
             'category_weight_scale': 0.75,
-            'schema': 'context_research_evidence_v208_1',
+            'schema': 'context_research_evidence_v207_1',
         },
     ]
 
@@ -31458,14 +31389,14 @@ def v207_selection_objective(row):
     if n < 20:
         return -10000.0
     return (
-        float(selection.get('plan_expectancy', 0) or 0) * 42
+        float(selection.get('plan_expectancy', 0) or 0) * 24
         + float(selection.get('avg48', 0) or 0) * 10
-        + float(calibration.get('plan_expectancy', 0) or 0) * 14
+        + float(calibration.get('plan_expectancy', 0) or 0) * 8
         + float(calibration.get('avg48', 0) or 0) * 4
         + stable * 1.5
         + min(2.0, n / 90.0)
         - v191120_bad_rate_value(selection) * 35
-        - float(selection.get('plan_stop_rate', 0) or 0) * 28
+        - float(selection.get('plan_stop_rate', 0) or 0) * 10
     )
 
 
@@ -31476,7 +31407,7 @@ def v207_candidate_is_prequalified(row):
         int(calibration.get('n', 0) or 0) >= 35
         and int(selection.get('n', 0) or 0) >= 20
         and (
-            float(selection.get('plan_expectancy', 0) or 0) >= 0.08
+            float(selection.get('plan_expectancy', 0) or 0) >= 0.05
             or float(selection.get('avg48', 0) or 0) > 0
         )
         and v191120_bad_rate_value(selection) <= 0.30
@@ -31492,7 +31423,7 @@ def v207_build_model_candidates(fit, calibration, selection):
             prior=float(variant.get('prior', 30.0) or 30.0),
             include_context=bool(variant.get('include_context')),
             category_weight_scale=float(variant.get('category_weight_scale', 1.0) or 1.0),
-            schema=str(variant.get('schema') or 'evidence_v208_1'),
+            schema=str(variant.get('schema') or 'evidence_v207_1'),
         )
         model_hash = v203_sha256(model)
         calibration_scored = v204_score_rows(calibration, model)
@@ -31500,51 +31431,44 @@ def v207_build_model_candidates(fit, calibration, selection):
         for cutoff in v204_cutoff_candidates(calibration_scored):
             for bad_max in [0.18, 0.22, 0.26, 0.30]:
                 for expected_min in [0.0, 0.05, 0.10, 0.20]:
-                    for plan in v208_plan_specs():
-                        plan_key = str(plan.get('key') or v208_default_plan_key())
-                        calibration_metrics = v204_metrics(
-                            calibration_scored,
-                            cutoff,
-                            bad_max=bad_max,
-                            expected_min=expected_min,
-                            plan_key=plan_key,
-                        )
-                        if int(calibration_metrics.get('n', 0) or 0) < 25:
-                            continue
-                        selection_metrics = v204_metrics(
-                            selection_scored,
-                            cutoff,
-                            bad_max=bad_max,
-                            expected_min=expected_min,
-                            plan_key=plan_key,
-                        )
-                        windows = v204_validation_windows(
-                            selection_scored,
-                            cutoff,
-                            bad_max=bad_max,
-                            expected_min=expected_min,
-                            window_count=3,
-                            plan_key=plan_key,
-                        )
-                        row = {
-                            'variant': variant.get('name'),
-                            'variant_title': variant.get('title'),
-                            'model': model,
-                            'model_hash': model_hash,
-                            'model_schema': model.get('schema'),
-                            'cutoff': round(float(cutoff), 6),
-                            'bad_max': round(float(bad_max), 4),
-                            'expected_min': round(float(expected_min), 4),
-                            'plan_key': plan_key,
-                            'plan': dict(plan),
-                            'calibration': calibration_metrics,
-                            'selection': selection_metrics,
-                            'selection_windows': windows,
-                            'selection_stable_windows': sum(1 for item in windows if isinstance(item, dict) and item.get('stable')),
-                        }
-                        row['prequalified'] = v207_candidate_is_prequalified(row)
-                        row['selection_objective'] = round(v207_selection_objective(row), 6)
-                        candidates.append(row)
+                    calibration_metrics = v204_metrics(
+                        calibration_scored,
+                        cutoff,
+                        bad_max=bad_max,
+                        expected_min=expected_min,
+                    )
+                    if int(calibration_metrics.get('n', 0) or 0) < 25:
+                        continue
+                    selection_metrics = v204_metrics(
+                        selection_scored,
+                        cutoff,
+                        bad_max=bad_max,
+                        expected_min=expected_min,
+                    )
+                    windows = v204_validation_windows(
+                        selection_scored,
+                        cutoff,
+                        bad_max=bad_max,
+                        expected_min=expected_min,
+                        window_count=3,
+                    )
+                    row = {
+                        'variant': variant.get('name'),
+                        'variant_title': variant.get('title'),
+                        'model': model,
+                        'model_hash': model_hash,
+                        'model_schema': model.get('schema'),
+                        'cutoff': round(float(cutoff), 6),
+                        'bad_max': round(float(bad_max), 4),
+                        'expected_min': round(float(expected_min), 4),
+                        'calibration': calibration_metrics,
+                        'selection': selection_metrics,
+                        'selection_windows': windows,
+                        'selection_stable_windows': sum(1 for item in windows if isinstance(item, dict) and item.get('stable')),
+                    }
+                    row['prequalified'] = v207_candidate_is_prequalified(row)
+                    row['selection_objective'] = round(v207_selection_objective(row), 6)
+                    candidates.append(row)
     return candidates
 
 
@@ -31584,14 +31508,12 @@ def v204_evaluate_once(candles_by_asset, benchmark_hash):
     bad_max = float(selected_calibration.get('bad_max', 1) or 1)
     expected_min_value = selected_calibration.get('expected_min')
     expected_min = float(expected_min_value if expected_min_value is not None else -999)
-    plan_key = str(selected_calibration.get('plan_key') or v208_default_plan_key())
     validation_scored = v204_score_rows(validation, model)
     validation_metrics = v204_metrics(
         validation_scored,
         cutoff,
         bad_max=bad_max,
         expected_min=expected_min,
-        plan_key=plan_key,
     )
     windows = v204_validation_windows(
         validation_scored,
@@ -31599,7 +31521,6 @@ def v204_evaluate_once(candles_by_asset, benchmark_hash):
         bad_max=bad_max,
         expected_min=expected_min,
         window_count=3,
-        plan_key=plan_key,
     )
     readiness = v2022_policy_readiness(validation_metrics, windows)
     model_hash = str(selected_calibration.get('model_hash') or v203_sha256(model))
@@ -31625,14 +31546,11 @@ def v204_evaluate_once(candles_by_asset, benchmark_hash):
         'model_hash': model_hash,
         'model': model,
         'selected_policy': {
-            'type': 'adaptive_exit_plan_guard',
+            'type': 'model_selection_guard',
             'variant': selected_calibration.get('variant'),
             'cutoff': round(cutoff, 6),
             'bad_max': round(bad_max, 4),
             'expected_min': round(expected_min, 4),
-            'plan_key': plan_key,
-            'plan': selected_calibration.get('plan', {}),
-            'plan_label': v208_plan_label(plan_key),
             'model_hash': model_hash,
         },
         'selected_train': {'n': len(fit)},
@@ -31643,8 +31561,6 @@ def v204_evaluate_once(candles_by_asset, benchmark_hash):
         'selected_prevalidation': selected_selection,
         'selection_windows': selection_windows,
         'selection_guard_passed': bool(selected_calibration.get('prequalified')),
-        'selected_plan_key': plan_key,
-        'selected_plan_label': v208_plan_label(plan_key),
         'selected_validation': validation_metrics,
         'validation_windows': windows,
         'readiness_checks': readiness.get('checks', {}),
@@ -31826,7 +31742,7 @@ def v203_benchmark_lines():
     benchmark = v203_load_benchmark()
     result = v203_load_result()
     benchmark_valid, benchmark_error = v203_validate_benchmark(benchmark, require_full=True)
-    lines = ['📐 FIXED BENCHMARK + ADAPTIVE EXIT PLAN GUARD V20.8']
+    lines = ['📐 FIXED BENCHMARK + MODEL SELECTION GUARD V20.7']
     if not benchmark_valid:
         lines.append(f"• status: building or blocked | reason: {result.get('error') or benchmark_error}")
         lines.append('• published effectiveness: disabled until checksum and repeat test pass')
@@ -31844,7 +31760,6 @@ def v203_benchmark_lines():
             f"calibration {result.get('calibration_samples', 0)} | selection {result.get('selection_samples', 0)} | "
             f"final validation {result.get('validation_samples', 0)}",
             f"• selected model: {result.get('model_variant', '?')} | {result.get('model_schema', '?')} | hash {str(result.get('model_hash') or '')[:16]}",
-            f"• selected exit plan: {result.get('selected_plan_label') or v208_plan_label(result.get('selected_plan_key'))}",
             f"• candidates: {result.get('policy_search_count', 0)} | "
             f"selection guard {'PASS' if result.get('selection_guard_passed') else 'FAIL'} | "
             f"forward guard {'PASS' if result.get('qualified_for_forward_shadow') else 'BLOCK'}",
@@ -31940,8 +31855,7 @@ def v203_learn_fast_report(start=False):
         f'Версия: {v2021_user_version()}',
         '',
         'Состояние: единый исторический эталон готов и защищён.',
-        'Модель: выбран лучший вариант входа и плана выхода.',
-        f"План: {result.get('selected_plan_label') or v208_plan_label(result.get('selected_plan_key'))}",
+        'Модель: выбран лучший вариант из нескольких проверок.',
         f"Историческая проверка: {result.get('readiness_passed', 0)}/6",
         f"Стабильные периоды: {result.get('stable_windows', 0)}/3",
         f"Средний результат через 48 часов: {float(validation.get('avg48', 0) or 0):+.2f}%",
@@ -31968,17 +31882,17 @@ def v191111_audit_content():
         decisions = v191111_ranked_paper_buy_decisions()
     sections = [
         ('VERSION', f'BOT_VERSION: {V191111_VERSION}'),
-        ('FIXED BENCHMARK + ADAPTIVE EXIT PLAN GUARD V20.8', '\n'.join(v203_benchmark_lines())),
-        ('EFFECTIVENESS CONTROL CENTER V20.8', effectiveness_section),
-        ('MEASURABLE LEARNING PROGRESS V20.8', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
+        ('FIXED BENCHMARK + MODEL SELECTION GUARD V20.7', '\n'.join(v203_benchmark_lines())),
+        ('EFFECTIVENESS CONTROL CENTER V20.7', effectiveness_section),
+        ('MEASURABLE LEARNING PROGRESS V20.7', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
         ('HISTORICAL POLICY VS ENTRY CALIBRATION', '\n'.join(v191113_policy_calibration_lines(backfill))),
         ('LEGACY WALK-FORWARD ENTRY LAB (RESEARCH ONLY)', '\n'.join(v191120_entry_lab_lines())),
-        ('VALIDATED POLICY FORWARD SHADOW V20.8', '\n'.join(v191124_forward_shadow_lines())),
-        ('CHAMPION-CHALLENGER FORWARD LAB V20.8', '\n'.join(v202_forward_lab_lines())),
+        ('VALIDATED POLICY FORWARD SHADOW V20.7', '\n'.join(v191124_forward_shadow_lines())),
+        ('CHAMPION-CHALLENGER FORWARD LAB V20.7', '\n'.join(v202_forward_lab_lines())),
         ('FAST PROBE SCORING', v1911101_safe_call('v191181_fast_probe_scoring_report')),
         ('FAST SHADOW PORTFOLIO', v1911101_safe_call('v191181_fast_shadow_report')),
         ('FAST LESSON ENGINE', v1911101_safe_call('v191181_fast_lesson_engine_report')),
-        ('UNIFIED PAPER DECISION GATE V20.8', v191111_paper_buy_report(create=False)),
+        ('UNIFIED PAPER DECISION GATE V20.7', v191111_paper_buy_report(create=False)),
         ('PAPER CHECKPOINT LIFECYCLE', '\n'.join(v191111_checkpoint_lines(decisions))),
         ('CONFIDENCE LESSON ROUTER', '\n'.join(v191111_router_lines())),
         ('HOURLY FAST EVIDENCE ROUTER', '\n'.join(v191112_fast_evidence_lines(decisions))),
@@ -31995,15 +31909,15 @@ def v191111_audit_content():
 def v191111_version_report():
     return (
         f'✅ Версия: {v2021_user_version()}\n'
-        'Название: АДАПТИВНЫЙ ПЛАН ВЫХОДА\n\n'
+        'Название: ЗАЩИТА ОТ СЛАБОЙ МОДЕЛИ\n\n'
         'Что изменено:\n'
         '• сохранён неизменяемый исторический эталон v20.3;\n'
-        '• бот теперь подбирает не только точку входа, но и виртуальный план цель/стоп;\n'
-        '• проверяются несколько вариантов цели и стопа;\n'
-        '• план выбирается только на промежуточной проверке, не на финальной;\n'
-        '• финальная проверка остаётся честным экзаменом для модели и плана;\n'
-        '• слабая модель по-прежнему не может открывать новые forward PAPER-входы;\n'
+        '• бот сравнивает несколько моделей и выбирает только лучшую по промежуточной проверке;\n'
+        '• финальная проверка остаётся закрытой для обучения и выбора порога;\n'
+        '• слабая модель больше не может открывать новые forward PAPER-входы;\n'
         '• уже открытые forward PAPER продолжают обновляться до 48 часов;\n'
+        '• в отчёте отдельно показывается историческая проверка и проверка на новых данных;\n'
+        '• финальная проверка не участвует в обучении и подборе параметров;\n'
         '• результат по-прежнему рассчитывается дважды и сверяется по контрольной сумме;\n'
         '• торговая логика и виртуальные сделки не изменялись;\n'
         '• простой русский формат пользовательских отчётов сохранён.\n\n'
@@ -32081,7 +31995,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -32382,7 +32296,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -32815,13 +32729,13 @@ def version_user_report():
 
 
 
-# === v20.8 ADAPTIVE EXIT PLAN GUARD ===
+# === v20.7 MODEL SELECTION GUARD ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -33435,7 +33349,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 
 def v1911101_section(title, body):
@@ -33490,7 +33404,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -33591,7 +33505,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 
 def v1911101_load_buy_state():
@@ -33706,14 +33620,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v20.8 ADAPTIVE EXIT PLAN GUARD ===
+# === v20.7 MODEL SELECTION GUARD ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -34014,13 +33928,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v20.8 ADAPTIVE EXIT PLAN GUARD ===
+# === v20.7 MODEL SELECTION GUARD ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
+BOT_VERSION = "v20.7 MODEL SELECTION GUARD"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
