@@ -1,5 +1,5 @@
 {
-  "version": "v19.11.12 HOURLY EVIDENCE LEARNING",
+  "version": "v19.11.13 HISTORICAL BUY LESSON BACKFILL",
   "open": {
     "SOL:VIRTUAL_WATCH_ENTRY_TEST:495150": {
       "id": "SOL:VIRTUAL_WATCH_ENTRY_TEST:495150",
@@ -2245,7 +2245,8 @@
         "15m": 0.0,
         "30m": 0.0,
         "1h": 0.0,
-        "3h": 2.42
+        "3h": 2.42,
+        "6h": -5.44
       },
       "result_details": {
         "15m": {
@@ -2266,6 +2267,11 @@
         "3h": {
           "checkpoint_time": 1782692231.9363065,
           "checkpoint_price": 0.2033,
+          "source": "learning_cache:snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782704377.3332403,
+          "checkpoint_price": 0.1877,
           "source": "learning_cache:snapshot"
         }
       },
@@ -8115,7 +8121,7 @@
     }
   ],
   "last_created_at": 1782703152.3426392,
-  "last_update_at": 1782707984.1348257,
+  "last_update_at": 1782709428.3123684,
   "last_quality_probe_created_at": 1782576393.2249265,
   "last_probe_scoring_snapshot_at": 1782633516.4294314,
   "paper_buy_journal_v191194": [
