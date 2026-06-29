@@ -171,6 +171,45 @@
         "evaluation_hash": "9913d86d1423d432977e308236336f6877bf27f4df65e7cb15c8d30a4a3ba351",
         "benchmark_repeatable": true
       }
+    },
+    {
+      "timestamp": 1782744550.204834,
+      "version": "v20.4 ADAPTIVE EVIDENCE MODEL",
+      "measurement_valid": true,
+      "overall": 43,
+      "forecast_accuracy": 40,
+      "evidence_confidence": 49,
+      "scores": {
+        "protection": 92,
+        "entry_accuracy": 12,
+        "historical_validation": 33,
+        "forward_proof": 0,
+        "learning_speed": 79,
+        "technical_reliability": 100
+      },
+      "evidence": {
+        "paper_closed": 89,
+        "lessons": 6,
+        "good_lessons": 0,
+        "bad_lessons": 4,
+        "lesson_avg_pct": -2.47,
+        "validation_n": 955,
+        "entry_lab_version": "v20.4 ADAPTIVE EVIDENCE MODEL",
+        "entry_lab_fresh": true,
+        "entry_lab_recovery_error": "",
+        "validation_expectancy": -0.07,
+        "forward_closed": 0,
+        "forward_avg_pct": 0.0,
+        "experiment_forward_active": 0,
+        "experiment_forward_closed": 0,
+        "checkpoints": 86,
+        "evidence_ready_assets": 6,
+        "evidence_tracked_assets": 6,
+        "technical_checks": "benchmark checksum PASS; repeatability PASS",
+        "benchmark_hash": "7fea2d252e303565de5523093c21a0af31eab5c828c5162028a434379388caa9",
+        "evaluation_hash": "afffae59d600b5b832829f767ebc624b876e0bbb652c077eeb829310ff16270c",
+        "benchmark_repeatable": true
+      }
     }
   ]
 }
