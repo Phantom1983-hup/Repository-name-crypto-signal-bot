@@ -1,5 +1,5 @@
 {
-  "version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
+  "version": "v20.9 PROBE QUARANTINE GUARD",
   "open": {
     "ILY:AVOID_PUMP_TEST:495166": {
       "id": "ILY:AVOID_PUMP_TEST:495166",
@@ -1273,7 +1273,8 @@
         "15m": 0.0,
         "30m": 0.0,
         "1h": 0.0,
-        "3h": -0.14
+        "3h": -0.14,
+        "6h": 0.21
       },
       "result_details": {
         "15m": {
@@ -1294,6 +1295,11 @@
         "3h": {
           "checkpoint_time": 1782740201.0092719,
           "checkpoint_price": 0.1449,
+          "source": "learning_cache:snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782751411.6210644,
+          "checkpoint_price": 0.1454,
           "source": "learning_cache:snapshot"
         }
       },
@@ -1464,7 +1470,8 @@
       "results": {
         "15m": 0.0,
         "30m": 0.87,
-        "1h": 0.62
+        "1h": 0.62,
+        "3h": 0.81
       },
       "result_details": {
         "15m": {
@@ -1480,6 +1487,11 @@
         "1h": {
           "checkpoint_time": 1782744368.8055992,
           "checkpoint_price": 4.722,
+          "source": "learning_cache:snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782751411.6210644,
+          "checkpoint_price": 4.731,
           "source": "learning_cache:snapshot"
         }
       },
@@ -1589,7 +1601,8 @@
       "macro_mod": 12,
       "results": {
         "15m": 0.0,
-        "30m": 0.0
+        "30m": 0.0,
+        "1h": 0.35
       },
       "result_details": {
         "15m": {
@@ -1600,6 +1613,11 @@
         "30m": {
           "checkpoint_time": 1782748831.486644,
           "checkpoint_price": 6.661,
+          "source": "learning_cache:snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782751411.6210644,
+          "checkpoint_price": 6.684,
           "source": "learning_cache:snapshot"
         }
       },
@@ -1625,7 +1643,8 @@
       "macro_mod": 12,
       "results": {
         "15m": 0.0,
-        "30m": 0.0
+        "30m": 0.0,
+        "1h": 0.61
       },
       "result_details": {
         "15m": {
@@ -1636,6 +1655,11 @@
         "30m": {
           "checkpoint_time": 1782748831.486644,
           "checkpoint_price": 0.75831,
+          "source": "learning_cache:snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782751411.6210644,
+          "checkpoint_price": 0.76292,
           "source": "learning_cache:snapshot"
         }
       },
@@ -1660,12 +1684,18 @@
       "btc_change": -0.17,
       "macro_mod": 12,
       "results": {
-        "15m": -0.23
+        "15m": -0.23,
+        "30m": 0.36
       },
       "result_details": {
         "15m": {
           "checkpoint_time": 1782748831.486644,
           "checkpoint_price": 90.802,
+          "source": "learning_cache:snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782751411.6210644,
+          "checkpoint_price": 91.34,
           "source": "learning_cache:snapshot"
         }
       },
@@ -1690,10 +1720,16 @@
       "btc_change": -0.17,
       "macro_mod": 12,
       "results": {
-        "15m": 0.11
+        "15m": 0.11,
+        "30m": 0.11
       },
       "result_details": {
         "15m": {
+          "checkpoint_time": 1782751411.6210644,
+          "checkpoint_price": 0.06673,
+          "source": "learning_cache:snapshot"
+        },
+        "30m": {
           "checkpoint_time": 1782751411.6210644,
           "checkpoint_price": 0.06673,
           "source": "learning_cache:snapshot"
@@ -1710,8 +1746,8 @@
       "asset": "SOL",
       "entry_time": 1782751580.5157573,
       "entry_price": 73.65,
-      "last_price": 73.65,
-      "last_pct": 0.0,
+      "last_price": 73.68,
+      "last_pct": 0.04,
       "score": 62,
       "master_score": 62,
       "source_action": "PAPER_PROBE",
@@ -1723,8 +1759,16 @@
       "change_24": 3.05,
       "btc_change": 0.19,
       "macro_mod": 12,
-      "results": {},
-      "result_details": {},
+      "results": {
+        "15m": 0.04
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782751411.6210644,
+          "checkpoint_price": 73.68,
+          "source": "learning_cache:snapshot"
+        }
+      },
       "status": "open",
       "note": "quality paper probe only: реальные сделки и автопокупки выключены",
       "created_by": "auto_quality_probe_scheduler",
@@ -1748,15 +1792,16 @@
       },
       "probe_scoring_version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
       "current_price_v19117": 73.68,
-      "current_pnl_v19117": 0.04073319755600969
+      "current_pnl_v19117": 0.04073319755600969,
+      "last_price_time": 1782751411.6210644
     },
     "SUI:VIRTUAL_PROBE_ENTRY_TEST:495208": {
       "id": "SUI:VIRTUAL_PROBE_ENTRY_TEST:495208",
       "asset": "SUI",
       "entry_time": 1782751580.5157573,
       "entry_price": 0.6935,
-      "last_price": 0.6935,
-      "last_pct": 0.0,
+      "last_price": 0.6934,
+      "last_pct": -0.01,
       "score": 62,
       "master_score": 62,
       "source_action": "PAPER_PROBE",
@@ -1768,8 +1813,16 @@
       "change_24": 1.67,
       "btc_change": 0.38,
       "macro_mod": 12,
-      "results": {},
-      "result_details": {},
+      "results": {
+        "15m": -0.01
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782751411.6210644,
+          "checkpoint_price": 0.6934,
+          "source": "learning_cache:snapshot"
+        }
+      },
       "status": "open",
       "note": "quality paper probe only: реальные сделки и автопокупки выключены",
       "created_by": "auto_quality_probe_scheduler",
@@ -1793,15 +1846,16 @@
       },
       "probe_scoring_version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
       "current_price_v19117": 0.6936,
-      "current_pnl_v19117": 0.014419610670510308
+      "current_pnl_v19117": 0.014419610670510308,
+      "last_price_time": 1782751411.6210644
     },
     "LINK:VIRTUAL_PROBE_ENTRY_TEST:495208": {
       "id": "LINK:VIRTUAL_PROBE_ENTRY_TEST:495208",
       "asset": "LINK",
       "entry_time": 1782751580.5157573,
       "entry_price": 7.3324,
-      "last_price": 7.3324,
-      "last_pct": 0.0,
+      "last_price": 7.3213,
+      "last_pct": -0.15,
       "score": 62,
       "master_score": 62,
       "source_action": "PAPER_PROBE",
@@ -1813,8 +1867,16 @@
       "change_24": 1.34,
       "btc_change": 0.38,
       "macro_mod": 12,
-      "results": {},
-      "result_details": {},
+      "results": {
+        "15m": -0.15
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782751411.6210644,
+          "checkpoint_price": 7.3213,
+          "source": "learning_cache:snapshot"
+        }
+      },
       "status": "open",
       "note": "quality paper probe only: реальные сделки и автопокупки выключены",
       "created_by": "auto_quality_probe_scheduler",
@@ -1838,15 +1900,16 @@
       },
       "probe_scoring_version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
       "current_price_v19117": 7.3234,
-      "current_pnl_v19117": -0.12274289455020804
+      "current_pnl_v19117": -0.12274289455020804,
+      "last_price_time": 1782751411.6210644
     },
     "INJ:VIRTUAL_PROBE_ENTRY_TEST:495208": {
       "id": "INJ:VIRTUAL_PROBE_ENTRY_TEST:495208",
       "asset": "INJ",
       "entry_time": 1782751580.5157573,
       "entry_price": 4.734,
-      "last_price": 4.734,
-      "last_pct": 0.0,
+      "last_price": 4.731,
+      "last_pct": -0.06,
       "score": 72,
       "master_score": 72,
       "source_action": "PAPER_PROBE",
@@ -1858,8 +1921,16 @@
       "change_24": 3.72,
       "btc_change": 0.36,
       "macro_mod": 12,
-      "results": {},
-      "result_details": {},
+      "results": {
+        "15m": -0.06
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782751411.6210644,
+          "checkpoint_price": 4.731,
+          "source": "learning_cache:snapshot"
+        }
+      },
       "status": "open",
       "note": "quality paper probe only: реальные сделки и автопокупки выключены",
       "created_by": "auto_quality_probe_scheduler",
@@ -1883,7 +1954,8 @@
       },
       "probe_scoring_version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
       "current_price_v19117": 4.728,
-      "current_pnl_v19117": -0.1267427122940479
+      "current_pnl_v19117": -0.1267427122940479,
+      "last_price_time": 1782751411.6210644
     }
   },
   "closed": [
@@ -9255,7 +9327,7 @@
     }
   ],
   "last_created_at": 1782749888.6416292,
-  "last_update_at": 1782751435.920053,
+  "last_update_at": 1782752626.328412,
   "last_quality_probe_created_at": 1782751580.5157573,
   "last_probe_scoring_snapshot_at": 1782751632.7169902,
   "paper_buy_journal_v191194": [
