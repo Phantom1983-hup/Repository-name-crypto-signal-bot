@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16825,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17933,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18408,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18572,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18917,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19298,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19605,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20119,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20260,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20571,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20862,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21719,7 +21719,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22123,7 +22123,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22692,7 +22692,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23200,7 +23200,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23506,7 +23506,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24034,7 +24034,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25251,7 +25251,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 
 def _v191191_branch_ref_name():
@@ -25396,7 +25396,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25684,7 +25684,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25913,7 +25913,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26280,13 +26280,13 @@ def version_user_report():
 
 
 
-# === v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH ===
+# === v19.11.13 HISTORICAL BUY LESSON BACKFILL ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26900,7 +26900,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 
 def v1911101_section(title, body):
@@ -26955,7 +26955,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27056,7 +27056,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 
 def v1911101_load_buy_state():
@@ -27172,14 +27172,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH ===
+# === v19.11.13 HISTORICAL BUY LESSON BACKFILL ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27480,13 +27480,13 @@ def version_user_report():
 
 
 
-# === v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH ===
+# === v19.11.13 HISTORICAL BUY LESSON BACKFILL ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27789,11 +27789,11 @@ def version_user_report():
     )
 
 
-# === v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH ===
+# === v19.11.13 HISTORICAL BUY LESSON BACKFILL ===
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+V191111_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 
@@ -28496,9 +28496,6 @@ def v191111_ranked_paper_buy_decisions():
 
 def v191111_open_paper_buy_decisions(create=True, max_new=2, force_one=False):
     decisions = v191111_ranked_paper_buy_decisions()
-    snapshot_result = v191111_record_fast_snapshots(decisions)
-    if int(snapshot_result.get('added', 0) or 0) > 0:
-        decisions = v191111_ranked_paper_buy_decisions()
     gate = v191111_gate_state(decisions)
     if not create:
         try:
@@ -28511,7 +28508,6 @@ def v191111_open_paper_buy_decisions(create=True, max_new=2, force_one=False):
             'decisions': decisions,
             'skipped': decisions,
             'gate': gate,
-            'snapshot_result': snapshot_result,
             'active': gate.get('active_count', 0),
         })
         return result
@@ -28521,7 +28517,6 @@ def v191111_open_paper_buy_decisions(create=True, max_new=2, force_one=False):
             'decisions': decisions,
             'skipped': decisions,
             'gate': gate,
-            'snapshot_result': snapshot_result,
             'active': gate.get('active_count', 0),
             'blocked_by_unified_gate': True,
         }
@@ -28536,7 +28531,6 @@ def v191111_open_paper_buy_decisions(create=True, max_new=2, force_one=False):
     result = dict(result) if isinstance(result, dict) else {}
     result['decisions'] = decisions
     result['gate'] = gate
-    result['snapshot_result'] = snapshot_result
     result['active'] = max(gate.get('active_count', 0), int(result.get('active', 0) or 0))
     return result
 
@@ -28678,9 +28672,7 @@ def v191111_paper_buy_report(create=False):
     except Exception:
         data, active_count = {}, int(gate.get('active_count', 0) or 0)
     checkpoints = v191111_active_checkpoints(decisions=decisions, limit=8)
-    snapshot_result = result.get('snapshot_result', {}) if isinstance(result.get('snapshot_result'), dict) else {}
-    if not snapshot_result:
-        snapshot_result = v191111_record_fast_snapshots(decisions)
+    snapshot_result = v191111_record_fast_snapshots(decisions)
     lines = [
         '🧠 Unified PAPER BUY Decision Gate',
         f'Версия: {V191111_VERSION}',
@@ -28737,16 +28729,14 @@ def v191111_audit_content():
     backfill = v191113_historical_buy_backfill()
     decisions = v191111_ranked_paper_buy_decisions()
     snapshot_result = v191111_record_fast_snapshots(decisions)
-    if int(snapshot_result.get('added', 0) or 0) > 0:
-        decisions = v191111_ranked_paper_buy_decisions()
     sections = [
         ('VERSION', f'BOT_VERSION: {V191111_VERSION}'),
-        ('MEASURABLE LEARNING PROGRESS V19.11.13.1', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
+        ('MEASURABLE LEARNING PROGRESS V19.11.13', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
         ('HISTORICAL POLICY VS ENTRY CALIBRATION', '\n'.join(v191113_policy_calibration_lines(backfill))),
         ('FAST PROBE SCORING', v1911101_safe_call('v191181_fast_probe_scoring_report')),
         ('FAST SHADOW PORTFOLIO', v1911101_safe_call('v191181_fast_shadow_report')),
         ('FAST LESSON ENGINE', v1911101_safe_call('v191181_fast_lesson_engine_report')),
-        ('UNIFIED PAPER DECISION GATE V19.11.13.1', v191111_paper_buy_report(create=False)),
+        ('UNIFIED PAPER DECISION GATE V19.11.13', v191111_paper_buy_report(create=False)),
         ('PAPER CHECKPOINT LIFECYCLE', '\n'.join(v191111_checkpoint_lines(decisions))),
         ('CONFIDENCE LESSON ROUTER', '\n'.join(v191111_router_lines())),
         ('HOURLY FAST EVIDENCE ROUTER', '\n'.join(v191112_fast_evidence_lines(decisions))),
@@ -28764,10 +28754,11 @@ def v191111_version_report():
     return (
         f'✅ Версия: {V191111_VERSION}\n\n'
         'Что изменено:\n'
-        '• новый hourly snapshot сохраняется и сразу участвует в том же расчёте;\n'
-        '• /paper_buy_status и /audit_file больше не расходятся по evidence ready;\n'
-        '• после добавления snapshot повторно вычисляются trajectory, score и gate;\n'
-        '• historical BUY backfill сохранён; WATCH/AVOID по-прежнему исключены.\n\n'
+        '• закрытые исторические BUY-тесты превращаются в уроки сразу, без ожидания новых 24/48ч циклов;\n'
+        '• WATCH, OBSERVE и AVOID никогда не попадают в BUY backfill;\n'
+        '• 24ч и 48ч одной сделки считаются одним независимым уроком, приоритет у 48ч;\n'
+        '• защитная точность отделена от качества входов и готовности к автопокупкам;\n'
+        '• Hourly Evidence Router и компактный /paper_buy_status сохранены.\n\n'
         'Безопасность:\n'
         '• реальные покупки 0;\n'
         '• автоторговля OFF;\n'
@@ -28833,7 +28824,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -29134,7 +29125,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -29567,13 +29558,13 @@ def version_user_report():
 
 
 
-# === v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH ===
+# === v19.11.13 HISTORICAL BUY LESSON BACKFILL ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -30187,7 +30178,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 
 def v1911101_section(title, body):
@@ -30242,7 +30233,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -30343,7 +30334,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 
 def v1911101_load_buy_state():
@@ -30458,14 +30449,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH ===
+# === v19.11.13 HISTORICAL BUY LESSON BACKFILL ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -30766,13 +30757,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH ===
+# === v19.11.13 HISTORICAL BUY LESSON BACKFILL ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
+BOT_VERSION = "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
