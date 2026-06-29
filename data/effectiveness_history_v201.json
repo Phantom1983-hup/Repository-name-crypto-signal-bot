@@ -97,6 +97,41 @@
         "evidence_tracked_assets": 6,
         "technical_checks": "5/5"
       }
+    },
+    {
+      "timestamp": 1782734756.6910176,
+      "version": "v20.2.1 SIMPLE RUSSIAN USER REPORTS",
+      "measurement_valid": true,
+      "overall": 39,
+      "forecast_accuracy": 36,
+      "evidence_confidence": 49,
+      "scores": {
+        "protection": 92,
+        "entry_accuracy": 12,
+        "historical_validation": 17,
+        "forward_proof": 0,
+        "learning_speed": 79,
+        "technical_reliability": 100
+      },
+      "evidence": {
+        "paper_closed": 82,
+        "lessons": 6,
+        "good_lessons": 0,
+        "bad_lessons": 4,
+        "lesson_avg_pct": -2.47,
+        "validation_n": 39,
+        "entry_lab_version": "v20.2.1 SIMPLE RUSSIAN USER REPORTS",
+        "entry_lab_fresh": true,
+        "validation_expectancy": 0.74,
+        "forward_closed": 0,
+        "forward_avg_pct": 0.0,
+        "experiment_forward_active": 0,
+        "experiment_forward_closed": 0,
+        "checkpoints": 70,
+        "evidence_ready_assets": 6,
+        "evidence_tracked_assets": 6,
+        "technical_checks": "5/5"
+      }
     }
   ]
 }
