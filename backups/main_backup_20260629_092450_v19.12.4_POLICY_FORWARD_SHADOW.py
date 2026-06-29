@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16825,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17933,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18408,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18572,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18917,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19298,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19605,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20119,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20260,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20571,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20862,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21719,7 +21719,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22123,7 +22123,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22692,7 +22692,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23200,7 +23200,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23506,7 +23506,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24034,7 +24034,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25251,7 +25251,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 
 def _v191191_branch_ref_name():
@@ -25396,7 +25396,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25684,7 +25684,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25913,7 +25913,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26280,13 +26280,13 @@ def version_user_report():
 
 
 
-# === v20.0 REGIME EXPERT CORE ===
+# === v19.12.4 POLICY FORWARD SHADOW ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26900,7 +26900,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 
 def v1911101_section(title, body):
@@ -26955,7 +26955,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27056,7 +27056,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 
 def v1911101_load_buy_state():
@@ -27172,14 +27172,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v20.0 REGIME EXPERT CORE ===
+# === v19.12.4 POLICY FORWARD SHADOW ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27480,13 +27480,13 @@ def version_user_report():
 
 
 
-# === v20.0 REGIME EXPERT CORE ===
+# === v19.12.4 POLICY FORWARD SHADOW ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27789,11 +27789,11 @@ def version_user_report():
     )
 
 
-# === v20.0 REGIME EXPERT CORE ===
+# === v19.12.4 POLICY FORWARD SHADOW ===
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.0 REGIME EXPERT CORE"
+V191111_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 
@@ -28120,25 +28120,6 @@ def v191120_pct(start, end):
         return 0.0
 
 
-def v2000_market_regime(features):
-    btc = float(features.get('btc_24h', 0) or 0)
-    ret4 = float(features.get('ret_4h', 0) or 0)
-    ret24 = float(features.get('ret_24h', 0) or 0)
-    volume = float(features.get('volume_ratio', 1) or 1)
-    volatility = float(features.get('range14', 0) or 0)
-    btc_above = bool(features.get('btc_above_ema20'))
-    asset_above = bool(features.get('above_ema20'))
-    if btc <= -2.0 or (volatility >= 22 and ret24 <= -3):
-        return 'panic'
-    if btc >= 0 and ret4 >= 0 and -5 <= ret24 < 0:
-        return 'recovery'
-    if btc >= 0.5 and btc_above and asset_above and ret24 >= 1 and volume >= 0.9:
-        return 'growth'
-    if abs(btc) < 1.0 and -3 <= ret24 <= 3:
-        return 'sideways'
-    return 'decline'
-
-
 def v191120_feature_score(candles, index, btc_by_ts):
     current = candles[index]
     closes = [row['close'] for row in candles[:index + 1]]
@@ -28196,7 +28177,7 @@ def v191120_feature_score(candles, index, btc_by_ts):
         score -= 10; reasons.append('BTC pressure')
     elif not btc_above_ema:
         score -= 4
-    result = {
+    return {
         'score': max(0, min(100, int(round(score)))),
         'ret_4h': round(ret_4h, 3),
         'ret_24h': round(ret_24h, 3),
@@ -28209,8 +28190,6 @@ def v191120_feature_score(candles, index, btc_by_ts):
         'btc_above_ema20': btc_above_ema,
         'reasons': reasons[:5],
     }
-    result['regime'] = v2000_market_regime(result)
-    return result
 
 
 def v191120_btc_features(candles):
@@ -28365,76 +28344,6 @@ def v191121_policy_objective(metrics):
     )
 
 
-V2000_REGIMES = ['growth', 'decline', 'sideways', 'panic', 'recovery']
-
-
-def v2000_select_policy_for_rows(rows):
-    if len(rows) < 60:
-        return {}
-    metrics = [v191121_policy_metrics(rows, policy) for policy in v191121_policy_candidates()]
-    min_n = max(25, min(80, int(len(rows) * 0.08)))
-    eligible = [item for item in metrics if int(item.get('n', 0) or 0) >= min_n]
-    return max(eligible, key=v191121_policy_objective) if eligible else {}
-
-
-def v2000_ensemble_selected_rows(rows, regime_experts):
-    selected = []
-    for row in rows:
-        regime = str(row.get('regime') or v2000_market_regime(row))
-        expert = regime_experts.get(regime, {}) if isinstance(regime_experts, dict) else {}
-        policy = expert.get('policy', {}) if isinstance(expert, dict) else {}
-        if policy and v191121_policy_match(row, policy):
-            selected.append(row)
-    return selected
-
-
-def v2000_build_regime_experts(train, validation):
-    experts = {}
-    for regime in V2000_REGIMES:
-        train_rows = [row for row in train if str(row.get('regime')) == regime]
-        validation_rows = [row for row in validation if str(row.get('regime')) == regime]
-        selected_train = v2000_select_policy_for_rows(train_rows)
-        policy = selected_train.get('policy', {}) if isinstance(selected_train, dict) else {}
-        selected_validation = v191121_policy_metrics(validation_rows, policy) if policy else {}
-        experts[regime] = {
-            'train_rows': len(train_rows),
-            'validation_rows': len(validation_rows),
-            'policy': policy,
-            'train': selected_train,
-            'validation': selected_validation,
-        }
-    combined_train = v2000_ensemble_selected_rows(train, experts)
-    combined_validation = v2000_ensemble_selected_rows(validation, experts)
-    return {
-        'experts': experts,
-        'train': v191120_metrics(combined_train, 0),
-        'validation': v191120_metrics(combined_validation, 0),
-    }
-
-
-def v2000_validation_windows(validation, regime_experts, window_count=3):
-    timestamps = sorted({int(row.get('ts', 0) or 0) for row in validation})
-    if not timestamps:
-        return []
-    windows = []
-    total = len(timestamps)
-    for index in range(int(window_count)):
-        start_pos = int(total * index / window_count)
-        end_pos = int(total * (index + 1) / window_count)
-        window_ts = set(timestamps[start_pos:end_pos])
-        rows = [row for row in validation if int(row.get('ts', 0) or 0) in window_ts]
-        selected = v2000_ensemble_selected_rows(rows, regime_experts)
-        metrics = v191120_metrics(selected, 0)
-        metrics['window'] = index + 1
-        metrics['stable'] = (
-            int(metrics.get('n', 0) or 0) >= 15
-            and float(metrics.get('plan_expectancy', 0) or 0) > 0
-            and float(metrics.get('bad_rate', 1) or 1) <= 0.25
-        )
-        windows.append(metrics)
-    return windows
-
-
 def v191123_validation_windows(validation, policy, window_count=3):
     timestamps = sorted({int(row.get('ts', 0) or 0) for row in validation})
     if not timestamps or not policy:
@@ -28499,20 +28408,7 @@ def v191120_run_walkforward(candles_by_asset=None):
         selected_threshold = int(selected_policy.get('threshold', selected_threshold) or selected_threshold)
         selected_train = selected_policy_train
         selected_validation = selected_policy_validation
-    regime_result = v2000_build_regime_experts(train, validation)
-    regime_train = regime_result.get('train', {}) if isinstance(regime_result, dict) else {}
-    regime_validation = regime_result.get('validation', {}) if isinstance(regime_result, dict) else {}
-    regime_experts = regime_result.get('experts', {}) if isinstance(regime_result, dict) else {}
-    regime_active = (
-        int(regime_train.get('n', 0) or 0) >= 80
-        and v191121_policy_objective(regime_train) >= v191121_policy_objective(selected_train) + 0.30
-    )
-    if regime_active:
-        selected_train = regime_train
-        selected_validation = regime_validation
-        validation_windows = v2000_validation_windows(validation, regime_experts, window_count=3)
-    else:
-        validation_windows = v191123_validation_windows(validation, selected_policy, window_count=3)
+    validation_windows = v191123_validation_windows(validation, selected_policy, window_count=3)
     stable_windows = sum(1 for row in validation_windows if row.get('stable'))
     readiness_checks = {
         'validation_n_60': int(selected_validation.get('n', 0) or 0) >= 60,
@@ -28540,10 +28436,6 @@ def v191120_run_walkforward(candles_by_asset=None):
         'selected_train': selected_train,
         'selected_validation': selected_validation,
         'selected_policy': selected_policy,
-        'policy_mode': 'regime_experts' if regime_active else 'global_policy',
-        'regime_experts': regime_experts,
-        'regime_train': regime_train,
-        'regime_validation': regime_validation,
         'policy_search_count': len(policy_train_rows),
         'validation_windows': validation_windows,
         'stable_windows': stable_windows,
@@ -28577,12 +28469,10 @@ def v191120_entry_lab_lines():
     checks = data.get('readiness_checks', {}) if isinstance(data.get('readiness_checks'), dict) else {}
     policy = data.get('selected_policy', {}) if isinstance(data.get('selected_policy'), dict) else {}
     windows = data.get('validation_windows', []) if isinstance(data.get('validation_windows'), list) else []
-    policy_mode = str(data.get('policy_mode') or 'global_policy')
     lines += [
         f"• samples: total {data.get('total_samples', 0)} | train {data.get('train_samples', 0)} | validation {data.get('validation_samples', 0)}",
         f"• assets loaded: {len(data.get('assets_loaded', []) or [])}/{len(data.get('assets_requested', []) or [])}",
         f"• history depth: up to {max((data.get('candle_counts', {}) or {'?': 0}).values())} candles per asset",
-        f"• model: {'REGIME EXPERTS' if policy_mode == 'regime_experts' else 'GLOBAL POLICY'}",
         f"• selected PAPER threshold: {data.get('selected_threshold', '?')}/100",
         (
             f"• policy: BTC ≥{float(policy.get('btc_min', 0) or 0):+.1f}% | 4ч ≥{float(policy.get('ret4_min', 0) or 0):+.1f}% | "
@@ -28605,31 +28495,7 @@ def v191120_entry_lab_lines():
         f"• historical checks: {sum(1 for value in checks.values() if value)}/{len(checks)} | live BUY: ALWAYS OFF",
         '• threshold is research-only until paper/live-forward results confirm it.',
     ]
-    experts = data.get('regime_experts', {}) if isinstance(data.get('regime_experts'), dict) else {}
-    if experts:
-        lines.append('• regime experts:')
-        for regime in V2000_REGIMES:
-            expert = experts.get(regime, {}) if isinstance(experts.get(regime), dict) else {}
-            validation_row = expert.get('validation', {}) if isinstance(expert.get('validation'), dict) else {}
-            policy_row = expert.get('policy', {}) if isinstance(expert.get('policy'), dict) else {}
-            lines.append(
-                f"  - {regime}: threshold {policy_row.get('threshold', '—')} | n {validation_row.get('n', 0)} | "
-                f"exp {float(validation_row.get('plan_expectancy', 0) or 0):+.2f}% | bad {float(validation_row.get('bad_rate', 0) or 0)*100:.1f}%"
-            )
     return lines
-
-
-def v2000_policy_for_live(lab, feature):
-    mode = str((lab or {}).get('policy_mode') or 'global_policy')
-    if mode == 'regime_experts':
-        regime = str(feature.get('regime') or v2000_market_regime(feature))
-        experts = lab.get('regime_experts', {}) if isinstance(lab.get('regime_experts'), dict) else {}
-        expert = experts.get(regime, {}) if isinstance(experts.get(regime), dict) else {}
-        policy = expert.get('policy', {}) if isinstance(expert.get('policy'), dict) else {}
-        if policy:
-            return policy, regime
-    policy = lab.get('selected_policy', {}) if isinstance(lab.get('selected_policy'), dict) else {}
-    return policy, str(feature.get('regime') or v2000_market_regime(feature))
 
 
 def v191120_maybe_run_background(force=False):
@@ -28705,9 +28571,8 @@ def v191124_run_forward_shadow_scan():
     try:
         lab = v191120_load_entry_lab()
         policy = lab.get('selected_policy', {}) if isinstance(lab.get('selected_policy'), dict) else {}
-        regime_experts = lab.get('regime_experts', {}) if isinstance(lab.get('regime_experts'), dict) else {}
         checks = lab.get('readiness_checks', {}) if isinstance(lab.get('readiness_checks'), dict) else {}
-        if (not policy and not regime_experts) or int(lab.get('stable_windows', 0) or 0) < 3:
+        if not policy or int(lab.get('stable_windows', 0) or 0) < 3:
             result['error'] = 'validated policy not ready'
             return result
         if sum(1 for value in checks.values() if value) < max(4, len(checks) - 1):
@@ -28730,8 +28595,7 @@ def v191124_run_forward_shadow_scan():
             result['scanned'] += 1
             feature = v191120_feature_score(candles, len(candles) - 1, btc_features)
             feature.update({'asset': asset, 'ts': candles[-1]['ts']})
-            live_policy, regime = v2000_policy_for_live(lab, feature)
-            if not live_policy or not v191121_policy_match(feature, live_policy):
+            if not v191121_policy_match(feature, policy):
                 continue
             matches.append(feature)
             if asset in active_assets or len(active) + len(created) >= 4 or len(created) >= 2:
@@ -28757,9 +28621,7 @@ def v191124_run_forward_shadow_scan():
                     'target1_pct': 2.0,
                     'stop_pct': -3.0,
                 },
-                'policy': dict(live_policy),
-                'market_regime': regime,
-                'policy_mode': lab.get('policy_mode', 'global_policy'),
+                'policy': dict(policy),
                 'walkforward_validation': lab.get('selected_validation', {}),
                 'entry_features': feature,
                 'results': {},
@@ -29573,14 +29435,14 @@ def v191111_audit_content():
         decisions = v191111_ranked_paper_buy_decisions()
     sections = [
         ('VERSION', f'BOT_VERSION: {V191111_VERSION}'),
-        ('MEASURABLE LEARNING PROGRESS V20.0', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
+        ('MEASURABLE LEARNING PROGRESS V19.12.4', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
         ('HISTORICAL POLICY VS ENTRY CALIBRATION', '\n'.join(v191113_policy_calibration_lines(backfill))),
-        ('WALK-FORWARD ENTRY LAB V20.0', '\n'.join(v191120_entry_lab_lines())),
-        ('VALIDATED POLICY FORWARD SHADOW V20.0', '\n'.join(v191124_forward_shadow_lines())),
+        ('WALK-FORWARD ENTRY LAB V19.12.4', '\n'.join(v191120_entry_lab_lines())),
+        ('VALIDATED POLICY FORWARD SHADOW V19.12.4', '\n'.join(v191124_forward_shadow_lines())),
         ('FAST PROBE SCORING', v1911101_safe_call('v191181_fast_probe_scoring_report')),
         ('FAST SHADOW PORTFOLIO', v1911101_safe_call('v191181_fast_shadow_report')),
         ('FAST LESSON ENGINE', v1911101_safe_call('v191181_fast_lesson_engine_report')),
-        ('UNIFIED PAPER DECISION GATE V20.0', v191111_paper_buy_report(create=False)),
+        ('UNIFIED PAPER DECISION GATE V19.12.4', v191111_paper_buy_report(create=False)),
         ('PAPER CHECKPOINT LIFECYCLE', '\n'.join(v191111_checkpoint_lines(decisions))),
         ('CONFIDENCE LESSON ROUTER', '\n'.join(v191111_router_lines())),
         ('HOURLY FAST EVIDENCE ROUTER', '\n'.join(v191112_fast_evidence_lines(decisions))),
@@ -29598,11 +29460,10 @@ def v191111_version_report():
     return (
         f'✅ Версия: {V191111_VERSION}\n\n'
         'Что изменено:\n'
-        '• рынок разделён на рост, падение, боковик, панику и восстановление;\n'
-        '• для каждого режима обучается отдельная entry-policy;\n'
-        '• meta-router сравнивает режимные модели с общей и выбирает лучшую только по train;\n'
-        '• выбранная модель отдельно проверяется на validation и трёх временных окнах;\n'
-        '• Forward Shadow применяет policy текущего режима;\n'
+        '• исторически подтверждённая policy подключена к новым forward PAPER-тестам;\n'
+        '• проверка запускается фоном и не засоряет Telegram;\n'
+        '• одновременно ведётся не более 4 forward PAPER и создаётся не более 2 за цикл;\n'
+        '• результаты через 24/48ч станут настоящими BUY-уроками;\n'
         '• live BUY и автоторговля остаются выключены.\n\n'
         'Безопасность:\n'
         '• реальные покупки 0;\n'
@@ -29678,7 +29539,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -29979,7 +29840,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -30412,13 +30273,13 @@ def version_user_report():
 
 
 
-# === v20.0 REGIME EXPERT CORE ===
+# === v19.12.4 POLICY FORWARD SHADOW ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -31032,7 +30893,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 
 def v1911101_section(title, body):
@@ -31087,7 +30948,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -31188,7 +31049,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 
 def v1911101_load_buy_state():
@@ -31303,14 +31164,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v20.0 REGIME EXPERT CORE ===
+# === v19.12.4 POLICY FORWARD SHADOW ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -31611,13 +31472,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v20.0 REGIME EXPERT CORE ===
+# === v19.12.4 POLICY FORWARD SHADOW ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.0 REGIME EXPERT CORE"
+BOT_VERSION = "v19.12.4 POLICY FORWARD SHADOW"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
