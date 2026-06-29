@@ -542,6 +542,50 @@
         "research_overall": 44,
         "auto_quality_probe_guard": "blocked until benchmark forward guard passes"
       }
+    },
+    {
+      "timestamp": 1782761137.2536213,
+      "version": "v20.9.6 RUNTIME AUDIT LABEL FIX",
+      "measurement_valid": true,
+      "overall": 44,
+      "forecast_accuracy": 42,
+      "evidence_confidence": 49,
+      "scores": {
+        "protection": 92,
+        "entry_accuracy": 17,
+        "historical_validation": 33,
+        "forward_proof": 0,
+        "learning_speed": 79,
+        "technical_reliability": 100
+      },
+      "evidence": {
+        "paper_closed": 92,
+        "lessons": 6,
+        "good_lessons": 0,
+        "bad_lessons": 4,
+        "lesson_avg_pct": -1.9,
+        "validation_n": 146,
+        "entry_lab_version": "v20.9.6 RUNTIME AUDIT LABEL FIX",
+        "entry_lab_fresh": true,
+        "entry_lab_recovery_error": "",
+        "validation_expectancy": 0.08,
+        "forward_closed": 0,
+        "forward_avg_pct": 0.0,
+        "experiment_forward_active": 0,
+        "experiment_forward_closed": 0,
+        "checkpoints": 108,
+        "evidence_ready_assets": 7,
+        "evidence_tracked_assets": 7,
+        "technical_checks": "benchmark checksum PASS; repeatability PASS",
+        "benchmark_hash": "7fea2d252e303565de5523093c21a0af31eab5c828c5162028a434379388caa9",
+        "evaluation_hash": "5174d9786aba016b0b1f2eaa01267b82dfa5957b2508ad5ddfe7364f38ffbf7b",
+        "benchmark_repeatable": true,
+        "retained_best_version": "v20.7 MODEL SELECTION GUARD",
+        "retained_best_score": 44,
+        "rejected_research_version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
+        "research_overall": 44,
+        "auto_quality_probe_guard": "blocked until benchmark forward guard passes"
+      }
     }
   ]
 }
