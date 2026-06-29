@@ -1,13 +1,13 @@
 {
-  "version": "v20.9 PROBE QUARANTINE GUARD",
-  "updated_at": "2026-06-29T17:05:13.116923",
-  "updated_at_msk": "2026-06-29 20:05",
+  "version": "v20.9.1 REPORT CLARITY FIX",
+  "updated_at": "2026-06-29T17:58:59.476334",
+  "updated_at_msk": "2026-06-29 20:58",
   "days": 90,
   "assets": {
     "BTC": {
       "n": 93,
       "avg_24h": -0.222,
-      "avg_48h": -0.305,
+      "avg_48h": -0.302,
       "avg_drawdown48": -2.473,
       "avg_runup48": 1.968,
       "good48_rate": 0.312,
@@ -46,7 +46,7 @@
         },
         "5": {
           "n": 14,
-          "avg_48h": 0.941,
+          "avg_48h": 0.966,
           "avg_drawdown48": -1.527,
           "avg_runup48": 2.675
         },
@@ -61,10 +61,10 @@
     "ETH": {
       "n": 93,
       "avg_24h": -0.475,
-      "avg_48h": -0.686,
+      "avg_48h": -0.662,
       "avg_drawdown48": -3.46,
-      "avg_runup48": 2.51,
-      "good48_rate": 0.301,
+      "avg_runup48": 2.538,
+      "good48_rate": 0.312,
       "bad48_rate": 0.29,
       "strong_drawdown_rate": 0.269,
       "weekday": {
@@ -100,9 +100,9 @@
         },
         "5": {
           "n": 14,
-          "avg_48h": 1.62,
+          "avg_48h": 1.779,
           "avg_drawdown48": -2.175,
-          "avg_runup48": 3.899
+          "avg_runup48": 4.083
         },
         "6": {
           "n": 13,
@@ -115,9 +115,9 @@
     "SOL": {
       "n": 93,
       "avg_24h": -0.302,
-      "avg_48h": -0.363,
+      "avg_48h": -0.35,
       "avg_drawdown48": -3.676,
-      "avg_runup48": 3.006,
+      "avg_runup48": 3.036,
       "good48_rate": 0.333,
       "bad48_rate": 0.301,
       "strong_drawdown_rate": 0.333,
@@ -154,9 +154,9 @@
         },
         "5": {
           "n": 14,
-          "avg_48h": 1.395,
+          "avg_48h": 1.481,
           "avg_drawdown48": -2.498,
-          "avg_runup48": 3.755
+          "avg_runup48": 3.952
         },
         "6": {
           "n": 13,
@@ -169,9 +169,9 @@
     "SUI": {
       "n": 93,
       "avg_24h": -0.435,
-      "avg_48h": -0.558,
+      "avg_48h": -0.553,
       "avg_drawdown48": -4.651,
-      "avg_runup48": 4.067,
+      "avg_runup48": 4.078,
       "good48_rate": 0.301,
       "bad48_rate": 0.344,
       "strong_drawdown_rate": 0.419,
@@ -208,9 +208,9 @@
         },
         "5": {
           "n": 14,
-          "avg_48h": 1.991,
+          "avg_48h": 2.021,
           "avg_drawdown48": -3.453,
-          "avg_runup48": 5.73
+          "avg_runup48": 5.802
         },
         "6": {
           "n": 13,
@@ -223,10 +223,10 @@
     "LINK": {
       "n": 93,
       "avg_24h": -0.332,
-      "avg_48h": -0.445,
+      "avg_48h": -0.431,
       "avg_drawdown48": -3.571,
-      "avg_runup48": 2.949,
-      "good48_rate": 0.29,
+      "avg_runup48": 2.962,
+      "good48_rate": 0.301,
       "bad48_rate": 0.29,
       "strong_drawdown_rate": 0.312,
       "weekday": {
@@ -262,9 +262,9 @@
         },
         "5": {
           "n": 14,
-          "avg_48h": 1.194,
+          "avg_48h": 1.283,
           "avg_drawdown48": -2.682,
-          "avg_runup48": 3.692
+          "avg_runup48": 3.781
         },
         "6": {
           "n": 13,
@@ -277,11 +277,11 @@
     "TAO": {
       "n": 93,
       "avg_24h": -0.752,
-      "avg_48h": -1.07,
+      "avg_48h": -1.054,
       "avg_drawdown48": -5.497,
       "avg_runup48": 4.789,
       "good48_rate": 0.301,
-      "bad48_rate": 0.441,
+      "bad48_rate": 0.43,
       "strong_drawdown_rate": 0.452,
       "weekday": {
         "0": {
@@ -316,7 +316,7 @@
         },
         "5": {
           "n": 14,
-          "avg_48h": 2.294,
+          "avg_48h": 2.398,
           "avg_drawdown48": -1.451,
           "avg_runup48": 6.978
         },
@@ -331,7 +331,7 @@
     "NEAR": {
       "n": 93,
       "avg_24h": 1.262,
-      "avg_48h": 2.022,
+      "avg_48h": 2.041,
       "avg_drawdown48": -3.868,
       "avg_runup48": 7.977,
       "good48_rate": 0.473,
@@ -370,7 +370,7 @@
         },
         "5": {
           "n": 14,
-          "avg_48h": 4.862,
+          "avg_48h": 4.988,
           "avg_drawdown48": -2.689,
           "avg_runup48": 9.008
         },
@@ -385,7 +385,7 @@
     "AAVE": {
       "n": 93,
       "avg_24h": -0.003,
-      "avg_48h": 0.054,
+      "avg_48h": 0.059,
       "avg_drawdown48": -4.521,
       "avg_runup48": 4.492,
       "good48_rate": 0.376,
@@ -424,7 +424,7 @@
         },
         "5": {
           "n": 14,
-          "avg_48h": 0.304,
+          "avg_48h": 0.339,
           "avg_drawdown48": -4.767,
           "avg_runup48": 3.948
         },
@@ -439,9 +439,9 @@
     "BNB": {
       "n": 93,
       "avg_24h": -0.198,
-      "avg_48h": -0.269,
+      "avg_48h": -0.264,
       "avg_drawdown48": -2.598,
-      "avg_runup48": 2.213,
+      "avg_runup48": 2.22,
       "good48_rate": 0.301,
       "bad48_rate": 0.215,
       "strong_drawdown_rate": 0.204,
@@ -478,9 +478,9 @@
         },
         "5": {
           "n": 14,
-          "avg_48h": 1.171,
+          "avg_48h": 1.205,
           "avg_drawdown48": -1.283,
-          "avg_runup48": 3.167
+          "avg_runup48": 3.213
         },
         "6": {
           "n": 13,
@@ -493,9 +493,9 @@
     "ADA": {
       "n": 93,
       "avg_24h": -1.058,
-      "avg_48h": -1.534,
+      "avg_48h": -1.524,
       "avg_drawdown48": -4.539,
-      "avg_runup48": 2.496,
+      "avg_runup48": 2.509,
       "good48_rate": 0.237,
       "bad48_rate": 0.333,
       "strong_drawdown_rate": 0.344,
@@ -532,9 +532,9 @@
         },
         "5": {
           "n": 14,
-          "avg_48h": 0.106,
+          "avg_48h": 0.174,
           "avg_drawdown48": -3.504,
-          "avg_runup48": 2.942
+          "avg_runup48": 3.029
         },
         "6": {
           "n": 13,
@@ -547,9 +547,9 @@
     "AVAX": {
       "n": 93,
       "avg_24h": -0.625,
-      "avg_48h": -0.856,
+      "avg_48h": -0.859,
       "avg_drawdown48": -4.234,
-      "avg_runup48": 2.824,
+      "avg_runup48": 2.83,
       "good48_rate": 0.312,
       "bad48_rate": 0.269,
       "strong_drawdown_rate": 0.323,
@@ -586,9 +586,9 @@
         },
         "5": {
           "n": 14,
-          "avg_48h": 0.913,
+          "avg_48h": 0.887,
           "avg_drawdown48": -2.941,
-          "avg_runup48": 3.808
+          "avg_runup48": 3.849
         },
         "6": {
           "n": 13,
@@ -601,7 +601,7 @@
     "INJ": {
       "n": 93,
       "avg_24h": 1.207,
-      "avg_48h": 1.884,
+      "avg_48h": 1.893,
       "avg_drawdown48": -3.958,
       "avg_runup48": 8.405,
       "good48_rate": 0.57,
@@ -640,7 +640,7 @@
         },
         "5": {
           "n": 14,
-          "avg_48h": 3.421,
+          "avg_48h": 3.483,
           "avg_drawdown48": -3.652,
           "avg_runup48": 7.805
         },
