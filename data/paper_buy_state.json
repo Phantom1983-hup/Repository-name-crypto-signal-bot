@@ -1,6 +1,6 @@
 {
-  "version": "v20.2.4 FAST CHAMPION RECOVERY",
-  "created_at": 1782739425.0167844,
+  "version": "v20.3 FIXED REPRODUCIBLE BENCHMARK",
+  "created_at": 1782742139.2733865,
   "active_count": 2,
   "active_buys": [
     {
@@ -98,16 +98,16 @@
       "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
       "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
       "last_price_time": 1782735646.6459584,
-      "durable_saved_by": "v20.2.4 FAST CHAMPION RECOVERY",
-      "durable_saved_at": 1782739425.0167766
+      "durable_saved_by": "v20.3 FIXED REPRODUCIBLE BENCHMARK",
+      "durable_saved_at": 1782742139.2733748
     },
     {
       "id": "LINK:PAPER_BUY_DECISION_TEST:495179",
       "asset": "LINK",
       "entry_time": 1782646362.306717,
       "entry_price": 7.3031,
-      "last_price": 7.3215,
-      "last_pct": 0.25,
+      "last_price": 7.2745,
+      "last_pct": -0.39,
       "score": 68,
       "entry_score": 62,
       "probe_score_at_decision": 55,
@@ -195,9 +195,9 @@
       "persistence_version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
       "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
       "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
-      "last_price_time": 1782737457.757129,
-      "durable_saved_by": "v20.2.4 FAST CHAMPION RECOVERY",
-      "durable_saved_at": 1782739425.016779
+      "last_price_time": 1782740851.4685996,
+      "durable_saved_by": "v20.3 FIXED REPRODUCIBLE BENCHMARK",
+      "durable_saved_at": 1782742139.2733786
     }
   ],
   "journal": [
