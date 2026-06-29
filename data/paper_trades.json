@@ -1,5 +1,5 @@
 {
-  "version": "v19.12.1 ENTRY POLICY SEARCH",
+  "version": "v19.12.2 RISK REWARD WALKFORWARD",
   "open": {
     "PIEVERSE:AVOID_PUMP_TEST:495152": {
       "id": "PIEVERSE:AVOID_PUMP_TEST:495152",
@@ -2340,6 +2340,25 @@
       "last_price": 0.528,
       "last_price_time": 1782717555.9669955,
       "last_pct": 19.19
+    },
+    "SYN:AVOID_PUMP_TEST:495199": {
+      "id": "SYN:AVOID_PUMP_TEST:495199",
+      "asset": "SYN",
+      "entry_time": 1782718264.9340305,
+      "entry_price": 0.3981,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 17.26,
+      "btc_change": 0.0,
+      "macro_mod": -15,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [
@@ -8190,7 +8209,7 @@
       "outcome": "pump_continued_no_pullback"
     }
   ],
-  "last_created_at": 1782703152.3426392,
+  "last_created_at": 1782718264.9340305,
   "last_update_at": 1782717572.0653822,
   "last_quality_probe_created_at": 1782576393.2249265,
   "last_probe_scoring_snapshot_at": 1782633516.4294314,
