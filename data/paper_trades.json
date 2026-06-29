@@ -1,5 +1,5 @@
 {
-  "version": "v20.9.5 AUDIT FINAL LABEL CLEANUP",
+  "version": "v20.9.6 RUNTIME AUDIT LABEL FIX",
   "open": {
     "ILY:AVOID_PUMP_TEST:495166": {
       "id": "ILY:AVOID_PUMP_TEST:495166",
@@ -1752,7 +1752,8 @@
       "results": {
         "15m": -0.23,
         "30m": 0.36,
-        "1h": 1.34
+        "1h": 1.34,
+        "3h": 1.42
       },
       "result_details": {
         "15m": {
@@ -1768,6 +1769,11 @@
         "1h": {
           "checkpoint_time": 1782754489.9177384,
           "checkpoint_price": 92.229,
+          "source": "learning_cache:snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782759472.9199758,
+          "checkpoint_price": 92.298,
           "source": "learning_cache:snapshot"
         }
       },
@@ -1794,7 +1800,8 @@
       "results": {
         "15m": 0.11,
         "30m": 0.11,
-        "1h": 0.68
+        "1h": 0.68,
+        "3h": 8.84
       },
       "result_details": {
         "15m": {
@@ -1810,6 +1817,11 @@
         "1h": {
           "checkpoint_time": 1782752691.6229873,
           "checkpoint_price": 0.06711,
+          "source": "learning_cache:snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782759472.9199758,
+          "checkpoint_price": 0.072543,
           "source": "learning_cache:snapshot"
         }
       },
@@ -9453,7 +9465,7 @@
     }
   ],
   "last_created_at": 1782749888.6416292,
-  "last_update_at": 1782760442.9027326,
+  "last_update_at": 1782761101.1149595,
   "last_quality_probe_created_at": 1782751580.5157573,
   "last_probe_scoring_snapshot_at": 1782751632.7169902,
   "paper_buy_journal_v191194": [
