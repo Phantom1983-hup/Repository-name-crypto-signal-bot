@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16835,7 +16835,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17943,7 +17943,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18418,7 +18418,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18582,7 +18582,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18927,7 +18927,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19308,7 +19308,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19615,7 +19615,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20129,7 +20129,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20270,7 +20270,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20581,7 +20581,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20872,7 +20872,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21732,7 +21732,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22136,7 +22136,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22705,7 +22705,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23213,7 +23213,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23519,7 +23519,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24047,7 +24047,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25264,7 +25264,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 
 def _v191191_branch_ref_name():
@@ -25409,7 +25409,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25697,7 +25697,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25926,7 +25926,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26293,13 +26293,13 @@ def version_user_report():
 
 
 
-# === v20.2.1 SIMPLE RUSSIAN USER REPORTS ===
+# === v20.2 CHAMPION CHALLENGER FORWARD LAB ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26913,7 +26913,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 
 def v1911101_section(title, body):
@@ -26968,7 +26968,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27069,7 +27069,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 
 def v1911101_load_buy_state():
@@ -27185,14 +27185,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v20.2.1 SIMPLE RUSSIAN USER REPORTS ===
+# === v20.2 CHAMPION CHALLENGER FORWARD LAB ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27493,13 +27493,13 @@ def version_user_report():
 
 
 
-# === v20.2.1 SIMPLE RUSSIAN USER REPORTS ===
+# === v20.2 CHAMPION CHALLENGER FORWARD LAB ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27802,22 +27802,17 @@ def version_user_report():
     )
 
 
-# === v20.2.1 SIMPLE RUSSIAN USER REPORTS ===
+# === v20.2 CHAMPION CHALLENGER FORWARD LAB ===
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+V191111_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
 V202_FORWARD_LAB_FILE = data_path("forward_challenger_lab_v202.json")
 V202_FORWARD_LAB_LOCK = Lock()
 V202_POLICY_SCHEMA = "walkforward_regime_guard_v1"
-
-
-def v2021_user_version():
-    return str(V191111_VERSION).split()[0] if str(V191111_VERSION).strip() else str(BOT_VERSION).split()[0]
-
 
 try:
     PROTECTED_STATE_BASENAMES.add("effectiveness_history_v201.json")
@@ -28773,31 +28768,18 @@ def v191120_learn_fast_report(start=False):
         forward_started = v191124_maybe_forward_background(force=bool(start))
     except Exception:
         forward_started = False
-    lab = v191120_load_entry_lab()
-    checks = lab.get('readiness_checks', {}) if isinstance(lab.get('readiness_checks', {}), dict) else {}
-    windows = lab.get('validation_windows', []) if isinstance(lab.get('validation_windows', []), list) else []
-    validation = lab.get('selected_validation', {}) if isinstance(lab.get('selected_validation', {}), dict) else {}
-    forward_lab = v202_forward_lab_load() if 'v202_forward_lab_load' in globals() else {}
-    experiments_open = forward_lab.get('open', {}) if isinstance(forward_lab.get('open', {}), dict) else {}
-    experiments_closed = forward_lab.get('closed', []) if isinstance(forward_lab.get('closed', []), list) else []
-    passed = sum(1 for ok in checks.values() if ok)
-    stable = sum(1 for row in windows if isinstance(row, dict) and row.get('stable'))
     lines = [
         '🧠 Ускоренное обучение',
-        f'Версия: {v2021_user_version()}',
+        f'Версия: {V191111_VERSION}',
         '',
-        f"Состояние: {'идёт новый расчёт' if lab_started else 'расчёт актуален'}",
-        f"Историческая проверка: {passed}/{len(checks) if checks else 0}",
-        f"Стабильные периоды: {stable}/{len(windows) if windows else 0}",
-        f"Средний результат через 48 часов: {float(validation.get('avg48', 0) or 0):+.2f}%",
-        f"Ожидаемый результат торгового плана: {float(validation.get('plan_expectancy', 0) or 0):+.2f}%",
+        f"Старый daily bootstrap: {'запущен' if old_started else 'есть/недавно запускался'}",
+        f"Walk-forward Entry Lab: {'запущен в фоне' if lab_started else 'есть/уже выполняется'}",
+        f"Policy Forward Shadow: {'запущен в фоне' if forward_started else 'есть/ожидает следующего цикла'}",
+        'Champion–Challenger Lab: подключён к Forward Shadow, отдельное PAPER-хранилище',
         '',
-        f"Новые независимые тесты: открыто {len(experiments_open)} | завершено {len(experiments_closed)}",
+        *v191120_entry_lab_lines(),
         '',
-        'Вывод: основная стратегия сохранена. Бот параллельно проверяет новые варианты только на виртуальных сделках.',
-        'Реальные покупки и автоторговля выключены.',
-        '',
-        'Полные технические данные: /audit_file',
+        'Реальные покупки 0, автоторговля OFF.',
     ]
     return '\n'.join(lines)
 
@@ -29868,54 +29850,6 @@ def v191111_paper_buy_report(create=False):
     return '\n'.join(lines)
 
 
-def v2021_paper_buy_user_report(create=False):
-    result = v191111_open_paper_buy_decisions(create=bool(create), max_new=2, force_one=False)
-    decisions = result.get('decisions', []) if isinstance(result.get('decisions'), list) else []
-    created = result.get('created', []) if isinstance(result.get('created'), list) else []
-    gate = result.get('gate', {}) if isinstance(result.get('gate'), dict) else v191111_gate_state(decisions)
-    checkpoints = v191111_active_checkpoints(decisions=decisions, limit=8)
-    lines = [
-        '🧪 Виртуальные покупки',
-        f'Версия: {v2021_user_version()}',
-        '',
-        'Реальные деньги не используются. Автоторговля выключена.',
-        f"Новые виртуальные входы: {'разрешены' if gate.get('allowed') else 'временно заблокированы'}",
-        f"Открыто проверок: {len(checkpoints)} | создано сейчас: {len(created)}",
-    ]
-    if checkpoints:
-        lines += ['', 'Открытые проверки:']
-        for row in checkpoints:
-            pct = float(row.get('pct', 0) or 0)
-            if pct >= 0.5:
-                status = '🟢 пока полезно'
-            elif pct <= -1.0:
-                status = '🟠 слабый результат'
-            else:
-                status = '🟡 без ясного результата'
-            lines.append(
-                f"• {row.get('asset')}: {status} | {pct:+.2f}% | {float(row.get('age_h', 0) or 0):.1f}ч"
-            )
-    candidates = [row for row in decisions if int(row.get('decision_score', 0) or 0) >= 55][:3]
-    if candidates:
-        lines += ['', 'Ближайшие кандидаты:']
-        for row in candidates:
-            lines.append(
-                f"• {row.get('asset')}: оценка {int(row.get('decision_score', 0) or 0)}/100 — "
-                f"{'ждёт свободного места' if not gate.get('allowed') else 'доступен только для виртуального теста'}"
-            )
-    if not gate.get('allowed'):
-        reason = 'лимит открытых проверок заполнен'
-        if any(row.get('weak') for row in checkpoints):
-            reason = 'есть слабая открытая проверка'
-        lines += ['', f'Почему новые входы остановлены: {reason}.']
-    lines += [
-        '',
-        'Вывод: бот продолжает наблюдение и не рискует реальными деньгами.',
-        'Подробная техника: /audit_file',
-    ]
-    return '\n'.join(lines)
-
-
 def v201_clamp(value):
     try:
         return max(0, min(100, int(round(float(value)))))
@@ -30152,7 +30086,7 @@ def v201_effectiveness_label(score):
     return 'эффективность слабая'
 
 
-def v201_effectiveness_report(record=True, technical=False):
+def v201_effectiveness_report(record=True):
     snapshot = v201_effectiveness_snapshot()
     measurement_valid = bool(snapshot.get('measurement_valid'))
     history = v201_record_effectiveness(snapshot) if record and measurement_valid else v201_load_effectiveness_history()
@@ -30193,35 +30127,6 @@ def v201_effectiveness_report(record=True, technical=False):
         if int(evidence.get('forward_closed', 0) or 0) == 0
         else 'качество входов ещё ниже целевого уровня'
     )
-    if not technical:
-        if scores['entry_accuracy'] < 40:
-            main_problem = 'бот пока плохо подтверждает качество точек покупки'
-        elif scores['forward_proof'] < 40:
-            main_problem = 'мало завершённых проверок на новых рыночных данных'
-        else:
-            main_problem = 'нужно продолжать накапливать независимую статистику'
-        return '\n'.join([
-            '📈 Эффективность ALEX EDGE',
-            f'Версия: {v2021_user_version()}',
-            '',
-            f"Общая оценка: {snapshot['overall']}/100 — {v201_effectiveness_label(snapshot['overall'])}",
-            f"Точность прогнозов: {snapshot['forecast_accuracy']}/100",
-            f"Достоверность оценки: {snapshot['evidence_confidence']}/100",
-            f"Изменение после обновления: {trend_line}",
-            '',
-            f"✅ Защита от плохих входов: {scores['protection']}/100",
-            f"🟡 Историческая проверка: {scores['historical_validation']}/100",
-            f"🟡 Скорость обучения: {scores['learning_speed']}/100",
-            f"🔴 Качество точек покупки: {scores['entry_accuracy']}/100",
-            f"🔴 Проверка на новых данных: {scores['forward_proof']}/100",
-            '',
-            f"Главная проблема: {main_problem}.",
-            f"Сейчас виртуальных тестов: {evidence.get('experiment_forward_active', 0)} открыто, "
-            f"{evidence.get('experiment_forward_closed', 0)} завершено.",
-            '',
-            'Вывод: бот хорошо защищает от плохих решений, но включать реальные покупки ещё рано.',
-            'Подробная техника: /audit_file',
-        ])
     return '\n'.join([
         '📈 ЭФФЕКТИВНОСТЬ ALEX EDGE',
         f"Версия: {V191111_VERSION}",
@@ -30254,7 +30159,7 @@ def v201_effectiveness_report(record=True, technical=False):
 
 
 def v191111_audit_content():
-    effectiveness_section = v201_effectiveness_report(record=True, technical=True)
+    effectiveness_section = v201_effectiveness_report(record=True)
     backfill = v191113_historical_buy_backfill()
     decisions = v191111_ranked_paper_buy_decisions()
     snapshot_result = v191111_record_fast_snapshots(decisions)
@@ -30262,16 +30167,16 @@ def v191111_audit_content():
         decisions = v191111_ranked_paper_buy_decisions()
     sections = [
         ('VERSION', f'BOT_VERSION: {V191111_VERSION}'),
-        ('EFFECTIVENESS CONTROL CENTER V20.2.1', effectiveness_section),
-        ('MEASURABLE LEARNING PROGRESS V20.2.1', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
+        ('EFFECTIVENESS CONTROL CENTER V20.2', effectiveness_section),
+        ('MEASURABLE LEARNING PROGRESS V20.2', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
         ('HISTORICAL POLICY VS ENTRY CALIBRATION', '\n'.join(v191113_policy_calibration_lines(backfill))),
-        ('WALK-FORWARD ENTRY LAB V20.2.1', '\n'.join(v191120_entry_lab_lines())),
-        ('VALIDATED POLICY FORWARD SHADOW V20.2.1', '\n'.join(v191124_forward_shadow_lines())),
-        ('CHAMPION-CHALLENGER FORWARD LAB V20.2.1', '\n'.join(v202_forward_lab_lines())),
+        ('WALK-FORWARD ENTRY LAB V20.2', '\n'.join(v191120_entry_lab_lines())),
+        ('VALIDATED POLICY FORWARD SHADOW V20.2', '\n'.join(v191124_forward_shadow_lines())),
+        ('CHAMPION-CHALLENGER FORWARD LAB V20.2', '\n'.join(v202_forward_lab_lines())),
         ('FAST PROBE SCORING', v1911101_safe_call('v191181_fast_probe_scoring_report')),
         ('FAST SHADOW PORTFOLIO', v1911101_safe_call('v191181_fast_shadow_report')),
         ('FAST LESSON ENGINE', v1911101_safe_call('v191181_fast_lesson_engine_report')),
-        ('UNIFIED PAPER DECISION GATE V20.2.1', v191111_paper_buy_report(create=False)),
+        ('UNIFIED PAPER DECISION GATE V20.2', v191111_paper_buy_report(create=False)),
         ('PAPER CHECKPOINT LIFECYCLE', '\n'.join(v191111_checkpoint_lines(decisions))),
         ('CONFIDENCE LESSON ROUTER', '\n'.join(v191111_router_lines())),
         ('HOURLY FAST EVIDENCE ROUTER', '\n'.join(v191112_fast_evidence_lines(decisions))),
@@ -30287,19 +30192,20 @@ def v191111_audit_content():
 
 def v191111_version_report():
     return (
-        f'✅ Версия: {v2021_user_version()}\n'
-        'Название: ПРОСТЫЕ ПОЛЬЗОВАТЕЛЬСКИЕ ОТЧЁТЫ\n\n'
+        f'✅ Версия: {V191111_VERSION}\n\n'
         'Что изменено:\n'
-        '• пользовательские отчёты переведены на простой русский язык;\n'
-        '• /learn_fast теперь показывает только результат обучения и понятный вывод;\n'
-        '• /effectiveness показывает сильные и слабые стороны без технических терминов;\n'
-        '• /paper_buy_status показывает открытые проверки, кандидатов и причину остановки;\n'
-        '• вся внутренняя диагностика собрана только в /audit_file;\n'
-        '• алгоритм параллельных виртуальных проверок сохранён.\n\n'
+        '• добавлен отдельный Champion–Challenger Forward Lab;\n'
+        '• balanced и exploration policy собирают независимые PAPER-примеры параллельно champion;\n'
+        '• эксперименты хранятся отдельно и не занимают лимит основных PAPER BUY;\n'
+        '• сохраняются checkpoints 1ч/4ч/12ч/24ч/48ч и итог каждой когорты;\n'
+        '• challengers не влияют на score, веса и основной gate до достаточной выборки;\n'
+        '• forward-скан выполняется каждый час без дублей одной 4ч свечи;\n'
+        '• live BUY и автоторговля остаются выключены.\n\n'
         'Безопасность:\n'
-        '• реальные покупки: 0;\n'
-        '• автоторговля: выключена;\n'
-        '• влияние экспериментов на реальные решения: отсутствует.\n\n'
+        '• реальные покупки 0;\n'
+        '• автоторговля OFF;\n'
+        '• BUY-веса +0;\n'
+        '• force-one не обходит единый gate.\n\n'
         'Команды проверки: /version | /effectiveness | /paper_buy_status | /audit_file'
     )
 
@@ -30322,7 +30228,7 @@ def v191111_install():
     globals()['v1911101_paper_buy_6h_lines'] = lambda: v191111_checkpoint_lines(v191111_ranked_paper_buy_decisions())
     globals()['v1911101_lesson_router_lines'] = v191111_router_lines
     globals()['v1911101_candidate_lines'] = v191111_candidate_lines
-    globals()['v19119_paper_buy_decision_report'] = v2021_paper_buy_user_report
+    globals()['v19119_paper_buy_decision_report'] = v191111_paper_buy_report
     globals()['v19119_paper_buy_audit_report'] = lambda: v191111_paper_buy_report(create=False)
     globals()['v191181_fast_audit_build_content'] = v191111_audit_content
     globals()['version_user_report'] = v191111_version_report
@@ -30369,7 +30275,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -30670,7 +30576,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -31103,13 +31009,13 @@ def version_user_report():
 
 
 
-# === v20.2.1 SIMPLE RUSSIAN USER REPORTS ===
+# === v20.2 CHAMPION CHALLENGER FORWARD LAB ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -31723,7 +31629,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 
 def v1911101_section(title, body):
@@ -31778,7 +31684,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -31879,7 +31785,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 
 def v1911101_load_buy_state():
@@ -31994,14 +31900,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v20.2.1 SIMPLE RUSSIAN USER REPORTS ===
+# === v20.2 CHAMPION CHALLENGER FORWARD LAB ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -32302,13 +32208,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v20.2.1 SIMPLE RUSSIAN USER REPORTS ===
+# === v20.2 CHAMPION CHALLENGER FORWARD LAB ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
+BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
