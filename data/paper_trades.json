@@ -10950,6 +10950,34 @@
       "decision": "🔴 PAPER BUY ЗАПРЕЩЁН",
       "captured_at": 1782749010.0843344,
       "version": "v20.6 CONTEXT MODEL & FORWARD PROOF"
+    },
+    {
+      "snapshot_key": "active:NEAR:PAPER_BUY_DECISION_TEST:495179:h29",
+      "kind": "active_paper_buy",
+      "asset": "NEAR",
+      "stage": "24–48ч",
+      "hour_bucket": 29,
+      "age_h": 29.2,
+      "pnl_pct": -0.27,
+      "probe_score": 62,
+      "severity": 1,
+      "status": "🟡 24–48ч нейтрально",
+      "captured_at": 1782751488.4234998,
+      "version": "v20.8 ADAPTIVE EXIT PLAN GUARD"
+    },
+    {
+      "snapshot_key": "active:LINK:PAPER_BUY_DECISION_TEST:495179:h29",
+      "kind": "active_paper_buy",
+      "asset": "LINK",
+      "stage": "24–48ч",
+      "hour_bucket": 29,
+      "age_h": 29.2,
+      "pnl_pct": 0.25,
+      "probe_score": 62,
+      "severity": 1,
+      "status": "🟡 24–48ч нейтрально",
+      "captured_at": 1782751488.4234998,
+      "version": "v20.8 ADAPTIVE EXIT PLAN GUARD"
     }
   ],
   "last_policy_forward_scan_at": 1782733864.2760766,
