@@ -24,7 +24,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16853,7 +16853,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17961,7 +17961,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18436,7 +18436,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18600,7 +18600,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18945,7 +18945,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19326,7 +19326,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19633,7 +19633,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20147,7 +20147,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20288,7 +20288,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20599,7 +20599,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20890,7 +20890,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21750,7 +21750,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22154,7 +22154,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22723,7 +22723,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23231,7 +23231,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23537,7 +23537,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24065,7 +24065,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25282,7 +25282,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 
 def _v191191_branch_ref_name():
@@ -25427,7 +25427,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25715,7 +25715,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25944,7 +25944,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26317,7 +26317,7 @@ def version_user_report():
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26931,7 +26931,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 
 def v1911101_section(title, body):
@@ -26986,7 +26986,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27087,7 +27087,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 
 def v1911101_load_buy_state():
@@ -27210,7 +27210,7 @@ def v19119_paper_buy_audit_report():
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27517,7 +27517,7 @@ def version_user_report():
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27824,7 +27824,7 @@ def version_user_report():
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+V191111_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
@@ -32384,66 +32384,2337 @@ try:
 except Exception:
     pass
 
+if __name__ == "__main__":
+    try:
+        restore_state_from_github_if_richer()
+    except Exception as e:
+        print(f"startup state restore guard error: {e}")
+    keep_alive()
+    main()
 
 
-# === v20.9.6 RUNTIME AUDIT LABEL FIX ===
-# Runtime-safe cleanup: this block is deliberately placed BEFORE __main__.
-# It fixes labels that v20.9.5 could not clean because its cleanup code was appended after main().
-BOT_VERSION = "v20.9.6 RUNTIME AUDIT LABEL FIX"
+# === V3.7 CONSISTENCY FIX ===
+# 1. Score cap when signal is SKIP and upside is minimal.
+# 2. BTC after +4% day with falling volume is capped.
+# 3. +10/+15 probabilities reduced when expected upside is tiny.
+# 4. Improves consistency between score, probabilities and verdict.
+
+
+# === v17.3 BTC DROP WORDING GUARD ===
+# BTC около -2% + страх: single BTC не пишет СРЕДНЕСРОЧНЫЙ НАБОР / первая часть.
+# Market news summary не путает деэскалацию с давлением из headline-строк.
+
+
+# === v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER ===
+# Причина: v19.11.9.4 сохранял PAPER BUY в paper_trades.json, но после Render restart
+# активные BUY всё равно пропадали. Вероятная причина: общий paper_trades.json/локальный
+# repo state после deploy мог подняться без свежих BUY, а восстановление из GitHub не имело
+# отдельного маленького источника истины именно для PAPER BUY.
+# Fix: дополнительно пишем минимальный durable-state файл paper_buy_state.json и при отчётах
+# восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
+# Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
+
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+
+V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
+V191195_STATE_KEY = "paper_buy_durable_state_v191195"
+V191195_RESTORE_META_KEY = "paper_buy_restore_v191195"
+
+try:
+    PROTECTED_STATE_BASENAMES.add("paper_buy_state.json")
+except Exception:
+    pass
+
+# Storage read fallback for data/*.json too: Contents API can return no content for larger files.
+try:
+    _v191195_old_github_storage_get_raw = github_storage_get_raw
+except Exception:
+    _v191195_old_github_storage_get_raw = None
+
+
+def github_storage_get_raw(local_path):
+    """Read GitHub data storage with raw/blob fallback, not content-only."""
+    if not github_storage_enabled():
+        return None, None
+    # First try legacy path for small files.
+    try:
+        if _v191195_old_github_storage_get_raw:
+            raw, sha = _v191195_old_github_storage_get_raw(local_path)
+            if raw:
+                return raw, sha
+    except Exception:
+        pass
+    # Fallback: use generic GitHub raw/blob reader on data/<basename>.
+    try:
+        repo_path = github_storage_repo_path(local_path)
+        raw, meta = github_get_file_bytes(repo_path)
+        if raw:
+            return raw, (meta or {}).get("sha")
+    except Exception as e:
+        print(f"v191195 github_storage_get_raw fallback error {local_path}: {e}")
+    return None, None
+
+
+def v191195_trade_to_state_record(key, trade):
+    try:
+        if not isinstance(trade, dict) or not v19119_is_paper_buy_decision(trade):
+            return None
+        asset = v19119_trade_asset(trade)
+        if not asset:
+            return None
+        rec = dict(trade)
+        rec.setdefault("id", key)
+        rec.setdefault("asset", asset)
+        rec.setdefault("status", "open")
+        rec["durable_saved_by"] = BOT_VERSION
+        rec["durable_saved_at"] = time.time()
+        return rec
+    except Exception:
+        return None
+
+
+def v191195_build_buy_state(data=None):
+    if not isinstance(data, dict):
+        data = paper_store()
+    open_trades = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    active = []
+    for key, trade in list(open_trades.items()):
+        rec = v191195_trade_to_state_record(key, trade)
+        if rec:
+            active.append(rec)
+    journal = data.get(V191194_PAPER_BUY_JOURNAL_KEY, []) if isinstance(data.get(V191194_PAPER_BUY_JOURNAL_KEY, []), list) else []
+    state = {
+        "version": BOT_VERSION,
+        "created_at": time.time(),
+        "active_count": len(active),
+        "active_buys": active,
+        "journal": journal[-80:],
+        "source": "paper_trades.json",
+        "note": "Durable minimal PAPER BUY state. Real buys remain 0; autotrading OFF.",
+    }
+    return state
+
+
+def v191195_save_buy_state_now(data=None, reason="paper_buy_durable_save"):
+    status = {"ok": False, "mode": "not-run", "active": 0, "synced_files": 0, "error": "", "at": time.time(), "reason": reason}
+    try:
+        state = v191195_build_buy_state(data)
+        status["active"] = int(state.get("active_count", 0) or 0)
+        # Always write the small durable file locally.
+        save_json(V191195_PAPER_BUY_STATE_FILE, state)
+        status.update({"ok": True, "mode": "local"})
+        # Force immediate GitHub storage sync for the durable state plus full paper store.
+        if github_storage_enabled():
+            try:
+                n = sync_github_storage_now([V191195_PAPER_BUY_STATE_FILE, PAPER_TRADES_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+                status.update({"mode": "github-durable-immediate", "synced_files": int(n or 0), "ok": int(n or 0) >= 1})
+            except Exception as e:
+                status.update({"mode": "github-durable-failed", "ok": False, "error": str(e)[:180]})
+        return status
+    except Exception as e:
+        status.update({"ok": False, "mode": "error", "error": str(e)[:180]})
+        return status
+
+
+def v191195_load_buy_state():
+    data = load_json(V191195_PAPER_BUY_STATE_FILE)
+    if isinstance(data, dict) and data:
+        return data
+    # Direct raw fallback if load_json did not get it.
+    try:
+        raw, _sha = github_storage_get_raw(V191195_PAPER_BUY_STATE_FILE)
+        if raw:
+            js = json.loads(raw.decode("utf-8", errors="ignore"))
+            if isinstance(js, dict):
+                try:
+                    with open(V191195_PAPER_BUY_STATE_FILE, "w", encoding="utf-8") as f:
+                        json.dump(js, f, ensure_ascii=False, indent=2)
+                except Exception:
+                    pass
+                return js
+    except Exception:
+        pass
+    return {}
+
+
+def v191195_restore_paper_buys_from_state(data=None, reason="status_restore"):
+    """If paper_trades.json lost active PAPER BUY after restart, restore from paper_buy_state.json."""
+    result = {"restored": 0, "available": 0, "mode": "not-needed", "error": "", "at": time.time()}
+    try:
+        if not isinstance(data, dict):
+            data = paper_store()
+        open_trades = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+        active_now = v191194_count_active_buy_in_data(data)
+        if active_now > 0:
+            result.update({"available": active_now, "mode": "already-active"})
+            return data, result
+
+        state = v191195_load_buy_state()
+        active = state.get("active_buys", []) if isinstance(state, dict) else []
+        if not isinstance(active, list) or not active:
+            result.update({"mode": "no-durable-state"})
+            return data, result
+        result["available"] = len(active)
+
+        now = time.time()
+        restored = 0
+        existing_assets = set(str(t.get("asset", "")).upper() for t in open_trades.values() if isinstance(t, dict))
+        for trade in active:
+            if not isinstance(trade, dict):
+                continue
+            if not v19119_is_paper_buy_decision(trade):
+                continue
+            asset = str(trade.get("asset") or v19119_trade_asset(trade)).upper().strip()
+            if not asset or asset in existing_assets:
+                continue
+            try:
+                age_h = (now - float(trade.get("entry_time", now) or now)) / 3600.0
+            except Exception:
+                age_h = 0
+            # Do not restore ancient paper buys; 60h covers 48h finalizer + buffer.
+            if age_h > 60:
+                continue
+            key = trade.get("id") or paper_trade_key(asset, V19119_PAPER_BUY_TYPE, trade.get("entry_time", now))
+            if key in open_trades:
+                continue
+            rec = dict(trade)
+            rec["id"] = key
+            rec["status"] = "open"
+            rec["restored_from"] = "paper_buy_state.json"
+            rec["restored_at"] = now
+            rec["restored_by"] = BOT_VERSION
+            open_trades[key] = rec
+            existing_assets.add(asset)
+            restored += 1
+
+        if restored:
+            data["open"] = open_trades
+            meta = data.get(V191195_RESTORE_META_KEY)
+            if not isinstance(meta, dict):
+                meta = {}
+            meta.update({"last_restore_at": now, "restored": restored, "reason": reason, "version": BOT_VERSION})
+            data[V191195_RESTORE_META_KEY] = meta
+            save_paper_store(data, sync=False)
+            v191195_save_buy_state_now(data, reason="restore_after_restart")
+            result.update({"restored": restored, "mode": "restored-from-durable-state"})
+        else:
+            result.update({"mode": "durable-state-empty-or-stale"})
+        return data, result
+    except Exception as e:
+        result.update({"mode": "restore-error", "error": str(e)[:180]})
+        return (data if isinstance(data, dict) else paper_store()), result
+
+
+try:
+    _v191195_old_v19119_open_paper_buy_decisions = v19119_open_paper_buy_decisions
+except Exception:
+    _v191195_old_v19119_open_paper_buy_decisions = None
+
+
+def v19119_open_paper_buy_decisions(create=True, max_new=2, force_one=False):
+    # Before status/checking, restore active BUY if paper_trades lost them after restart.
+    try:
+        if not create:
+            v191195_restore_paper_buys_from_state(reason="paper_buy_status")
+    except Exception:
+        pass
+    if _v191195_old_v19119_open_paper_buy_decisions:
+        res = _v191195_old_v19119_open_paper_buy_decisions(create=create, max_new=max_new, force_one=force_one)
+    else:
+        res = {"created": [], "skipped": [], "active": 0, "decisions": []}
+    try:
+        data = paper_store()
+        active = v191194_count_active_buy_in_data(data)
+        if active > 0:
+            st = v191195_save_buy_state_now(data, reason="paper_buy_create_or_status")
+            if isinstance(res, dict):
+                res["durable_state"] = st
+    except Exception as e:
+        if isinstance(res, dict):
+            res["durable_state"] = {"ok": False, "mode": "error", "error": str(e)[:120]}
+    return res
+
+
+try:
+    _v191195_old_v191194_paper_buy_persistence_lines = v191194_paper_buy_persistence_lines
+except Exception:
+    _v191195_old_v191194_paper_buy_persistence_lines = None
+
+
+def v191195_durable_state_lines():
+    try:
+        state = v191195_load_buy_state()
+        active = state.get("active_buys", []) if isinstance(state, dict) else []
+        if not isinstance(active, list):
+            active = []
+        created_at = state.get("created_at") if isinstance(state, dict) else None
+        age = ""
+        try:
+            if created_at:
+                age = f" | {v191183_fmt_age(created_at)}"
+        except Exception:
+            age = ""
+        data = paper_store()
+        restore_meta = data.get(V191195_RESTORE_META_KEY, {}) if isinstance(data, dict) else {}
+        restored_line = "нет"
+        if isinstance(restore_meta, dict) and restore_meta.get("last_restore_at"):
+            restored_line = f"{restore_meta.get('restored', 0)} | {v191183_fmt_age(restore_meta.get('last_restore_at'))}"
+        return [
+            "Durable state:",
+            f"• файл: {os.path.basename(V191195_PAPER_BUY_STATE_FILE)}",
+            f"• active BUY в durable-state: {len(active)}{age}",
+            f"• last restore: {restored_line}",
+        ]
+    except Exception as e:
+        return ["Durable state:", f"• ⚠️ error: {str(e)[:120]}"]
+
+
+def v191194_paper_buy_persistence_lines():
+    base = []
+    try:
+        if _v191195_old_v191194_paper_buy_persistence_lines:
+            base = list(_v191195_old_v191194_paper_buy_persistence_lines())
+    except Exception:
+        base = []
+    return base + v191195_durable_state_lines()
+
+
+try:
+    _v191195_old_v191181_fast_audit_build_content = v191181_fast_audit_build_content
+except Exception:
+    _v191195_old_v191181_fast_audit_build_content = None
+
+
+def v191181_fast_audit_build_content():
+    base = str(_v191195_old_v191181_fast_audit_build_content()) if _v191195_old_v191181_fast_audit_build_content else f"VERSION\n{BOT_VERSION}"
+    return base + "\n\n" + "="*80 + "\nPAPER BUY DURABLE STATE V19.11.9.5\n" + "="*80 + "\n" + "\n".join(v191195_durable_state_lines())
+
+
+def version_user_report():
+    return (
+        f"✅ Версия: {BOT_VERSION}\n\n"
+        "Что исправлено:\n"
+        "• PAPER BUY теперь сохраняется не только в paper_trades.json, но и в отдельный durable-state файл;\n"
+        "• после deploy/restart бот восстанавливает активные PAPER BUY из paper_buy_state.json;\n"
+        "• storage-read для data/*.json получил raw/blob fallback;\n"
+        "• /paper_buy_status и /audit_file показывают Durable state;\n"
+        "• Backup Verify fix, Paper BUY score sync и GitHub ref fix сохранены.\n\n"
+        "Сохранено:\n"
+        "• реальные покупки 0;\n"
+        "• автоторговля OFF;\n"
+        "• BUY-веса +0;\n"
+        "• Risk Engine unchanged;\n"
+        "• /audit_file fast/cache.\n\n"
+        "Команды проверки: /version | /paper_buy | /paper_buy_status | /audit_file | /deploy_latest"
+    )
+
+
+# === v19.11.10 PAPER BUY 6H EXIT & LESSON ROUTER ===
+# Причина: после 6ч NEAR/LINK остались активными PAPER BUY, но текущий probe-score
+# по ним ухудшился до WATCH. Нужен не только слой открытия PAPER BUY, но и слой
+# управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
+# Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
+
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+
+V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
+V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
+
+
+def v191110_asset_lesson_stats(asset=None):
+    """Aggregate 24/48h probe lessons by asset without network refresh."""
+    try:
+        lessons = v19118_load_lessons() if 'v19118_load_lessons' in globals() else []
+    except Exception:
+        lessons = []
+    asset_filter = str(asset or "").upper().strip()
+    rows = []
+    for l in lessons if isinstance(lessons, list) else []:
+        if not isinstance(l, dict):
+            continue
+        a = str(l.get('asset','')).upper().strip()
+        if asset_filter and a != asset_filter:
+            continue
+        rows.append(l)
+    stats = {
+        'asset': asset_filter,
+        'total': len(rows),
+        'good': 0,
+        'neutral': 0,
+        'bad': 0,
+        'paper_delta': 0,
+        'avg_pct': 0.0,
+        'buckets': {},
+        'recent': rows[-8:],
+    }
+    pct_sum = 0.0
+    for l in rows:
+        b = str(l.get('bucket',''))
+        stats['buckets'][b] = stats['buckets'].get(b, 0) + 1
+        try:
+            pd = int(l.get('paper_delta', 0) or 0)
+        except Exception:
+            pd = 0
+        stats['paper_delta'] += pd
+        try:
+            pct_sum += float(l.get('pct', 0) or 0)
+        except Exception:
+            pass
+        if b in ('good_entry','useful_entry'):
+            stats['good'] += 1
+        elif b == 'neutral':
+            stats['neutral'] += 1
+        elif b in ('early_drawdown','bad_entry'):
+            stats['bad'] += 1
+    if rows:
+        stats['avg_pct'] = round(pct_sum / len(rows), 2)
+    return stats
+
+
+def v191110_global_lesson_router_state():
+    stats = v191110_asset_lesson_stats()
+    total = int(stats.get('total',0) or 0)
+    bad = int(stats.get('bad',0) or 0)
+    good = int(stats.get('good',0) or 0)
+    neutral = int(stats.get('neutral',0) or 0)
+    if total <= 0:
+        mode = 'learning_wait'
+        label = '🟡 уроков пока нет'
+        cap = 2
+    elif bad >= max(2, total // 2):
+        mode = 'caution_penalty'
+        label = '🟠 осторожно: ранних/плохих уроков больше половины'
+        cap = 2
+    elif good >= 2 and bad <= neutral:
+        mode = 'selective_boost'
+        label = '🟢 выборочное усиление quality-условий'
+        cap = 3
+    else:
+        mode = 'neutral_learning'
+        label = '🟡 нейтральное обучение без усиления BUY'
+        cap = 2
+    return {
+        'mode': mode,
+        'label': label,
+        'total': total,
+        'good': good,
+        'neutral': neutral,
+        'bad': bad,
+        'paper_delta': stats.get('paper_delta',0),
+        'max_active_paper_buy': cap,
+    }
+
+
+def v191110_lesson_router_adjustment(asset):
+    """Returns score adjustment/cap for a future paper BUY candidate."""
+    a = str(asset or '').upper().strip()
+    st = v191110_asset_lesson_stats(a)
+    global_state = v191110_global_lesson_router_state()
+    adj = 0
+    cap = 100
+    notes = []
+
+    if global_state.get('mode') == 'caution_penalty':
+        adj -= 4
+        cap = min(cap, 72)
+        notes.append('общий Lesson Router: рынок/условия дали много ранних входов')
+
+    if st.get('total',0) > 0:
+        if st.get('bad',0) >= 1 and st.get('good',0) == 0:
+            adj -= 8
+            cap = min(cap, 58)
+            notes.append(f'{a}: прошлый урок был ранний/плохой — только WATCH/подтверждение')
+        elif st.get('neutral',0) >= 1 and st.get('bad',0) == 0:
+            adj -= 2
+            cap = min(cap, 68)
+            notes.append(f'{a}: урок нейтральный — не усиливать до агрессивного BUY')
+        elif st.get('good',0) >= 1:
+            adj += 4
+            notes.append(f'{a}: есть полезный урок, но только paper')
+
+    return {'asset': a, 'adj': adj, 'cap': cap, 'notes': notes, 'asset_stats': st, 'global': global_state}
+
+
+try:
+    _v191110_old_v19119_decision_from_probe = v19119_decision_from_probe
+except Exception:
+    _v191110_old_v19119_decision_from_probe = None
+
+
+def v19119_decision_from_probe(t):
+    """v19.11.10: use 24h lessons to route future paper BUY decisions."""
+    if _v191110_old_v19119_decision_from_probe:
+        d = _v191110_old_v19119_decision_from_probe(t)
+    else:
+        d = {}
+    try:
+        asset = str(d.get('asset') or v19119_trade_asset(t)).upper().strip()
+        route = v191110_lesson_router_adjustment(asset)
+        old_score = int(d.get('decision_score', 0) or 0)
+        new_score = old_score + int(route.get('adj',0) or 0)
+        new_score = max(0, min(int(route.get('cap',100) or 100), new_score))
+        d['decision_score_before_router'] = old_score
+        d['decision_score'] = new_score
+        d['lesson_router'] = route
+        if route.get('notes'):
+            risks = list(d.get('risks', []) or [])
+            risks.extend(route.get('notes', [])[:2])
+            d['risks'] = risks[:5]
+
+        probe_score = int(d.get('probe_score', 55) or 55)
+        # Router does not override drawdown sync; it can only make candidate safer.
+        if probe_score <= 18 or new_score < 45:
+            d['decision'] = '🔴 PAPER BUY ЗАПРЕЩЁН'
+            d['tier'] = 'reject'
+            d['paper_size'] = '0%'
+        elif probe_score <= 35 or new_score < 60:
+            d['decision'] = '🟠 PAPER WATCH, BUY ЖДАТЬ'
+            d['tier'] = 'watch_only'
+            d['paper_size'] = '0%'
+        elif new_score < 66:
+            d['decision'] = '🟡 PAPER MICRO-BUY'
+            d['tier'] = 'micro_buy_test'
+            d['paper_size'] = '1.0% paper-capital'
+        else:
+            d['decision'] = '🟢 PAPER BUY'
+            d['tier'] = 'quality_buy_test'
+            d['paper_size'] = '2.0% paper-capital'
+    except Exception as e:
+        try:
+            d.setdefault('risks', []).append(f'lesson router error: {str(e)[:80]}')
+        except Exception:
+            pass
+    return d
+
+
+def v191110_decision_map():
+    try:
+        decisions = v19119_ranked_paper_buy_decisions()
+    except Exception:
+        decisions = []
+    mp = {}
+    for d in decisions if isinstance(decisions, list) else []:
+        if isinstance(d, dict):
+            a = str(d.get('asset','')).upper().strip()
+            if a and a not in mp:
+                mp[a] = d
+    return mp
+
+
+def v191110_active_buy_checkpoint(t, decision_map=None):
+    """Classify an open PAPER BUY at 6h/24h using live PnL + current probe decision."""
+    decision_map = decision_map if isinstance(decision_map, dict) else v191110_decision_map()
+    asset = v19119_trade_asset(t)
+    entry = v19119_safe_float(t.get('entry_price'), 0)
+    last = v19119_safe_float(t.get('last_price'), entry)
+    if not last:
+        last = entry
+    try:
+        pct = t.get('last_pct')
+        if not isinstance(pct, (int, float)):
+            pct = ((last - entry) / entry * 100.0) if entry and last else 0.0
+        pct = float(pct or 0.0)
+    except Exception:
+        pct = 0.0
+    age_h = v19119_trade_age_h(t)
+    plan = t.get('entry_plan', {}) if isinstance(t.get('entry_plan', {}), dict) else {}
+    stop = v19119_safe_float(plan.get('stop'), 0)
+    t1 = v19119_safe_float(plan.get('target1'), 0)
+    d = decision_map.get(asset, {})
+    probe_score = int(d.get('probe_score', t.get('probe_score', 55)) or 55)
+    decision = str(d.get('decision') or '')
+    paper_score = int(d.get('decision_score', t.get('decision_score', 0)) or 0)
+
+    try:
+        stop_distance_pct = ((last - stop) / last * 100.0) if last and stop else 99.0
+    except Exception:
+        stop_distance_pct = 99.0
+    try:
+        to_t1_pct = ((t1 - last) / last * 100.0) if last and t1 else 99.0
+    except Exception:
+        to_t1_pct = 99.0
+
+    status = '🟢 PAPER BUY active'
+    action = 'держать paper-наблюдение'
+    severity = 0
+    checkpoint = 'pre-6h' if age_h < 6 else '6h'
+    if age_h >= 6:
+        if stop and last <= stop:
+            status = '🔴 STOP HIT / paper exit'
+            action = 'фиксировать как ошибку paper-входа, новые BUY запретить'
+            severity = 4
+        elif pct <= -1.0 and probe_score <= 35:
+            status = '🟠 6ч ранний PAPER BUY'
+            action = 'не усиливать, новых BUY не открывать, ждать 24ч/48ч'
+            severity = 3
+        elif 'WATCH' in decision or probe_score <= 35:
+            status = '🟠 6ч ослабла / WATCH'
+            action = 'оставить только контроль, без новых BUY'
+            severity = 2
+        elif pct >= 1.8 or (t1 and last >= t1):
+            status = '🟢 6ч сильный paper BUY'
+            action = 'зафиксировать полезную модель, ждать 24ч'
+            severity = -2
+        elif pct >= 0.3:
+            status = '🟢 6ч умеренно полезно'
+            action = 'держать до 24ч без усиления live BUY'
+            severity = -1
+        elif pct > -0.5:
+            status = '🟡 6ч нейтрально'
+            action = 'не усиливать веса, ждать 24ч'
+            severity = 1
+        else:
+            status = '🟠 6ч слабый BUY'
+            action = 'считать ранним входом, новых BUY не открывать'
+            severity = 2
+    else:
+        if pct <= -1.0 or ('WATCH' in decision and pct < 0):
+            status = '🟠 до 6ч слабость / WATCH'
+            action = 'ждать 6ч checkpoint'
+            severity = 1
+        elif pct >= 1.0:
+            status = '🟢 до 6ч полезно'
+            action = 'ждать 6ч checkpoint'
+            severity = -1
+
+    risk_tags = []
+    if stop_distance_pct <= 1.2:
+        risk_tags.append('близко к stop')
+        if severity < 3:
+            severity = 3
+    if to_t1_pct <= 0.8 and pct > 0:
+        risk_tags.append('близко к T1')
+    if probe_score <= 35:
+        risk_tags.append(f'probe-score {probe_score}/100')
+
+    return {
+        'asset': asset,
+        'entry': entry,
+        'last': last,
+        'pct': round(pct, 2),
+        'age_h': round(age_h, 1),
+        'stop': stop,
+        'target1': t1,
+        'probe_score': probe_score,
+        'paper_score': paper_score,
+        'current_decision': decision,
+        'checkpoint': checkpoint,
+        'status': status,
+        'action': action,
+        'severity': severity,
+        'risk_tags': risk_tags,
+        'stop_distance_pct': round(stop_distance_pct, 2),
+        'to_t1_pct': round(to_t1_pct, 2),
+    }
+
+
+def v191110_active_checkpoints(limit=8):
+    try:
+        data, open_trades = v19119_open_trades()
+    except Exception:
+        open_trades = {}
+    decision_map = v191110_decision_map()
+    rows = []
+    for t in list((open_trades or {}).values()):
+        if not v19119_is_paper_buy_decision(t):
+            continue
+        rows.append(v191110_active_buy_checkpoint(t, decision_map=decision_map))
+        if len(rows) >= int(limit or 8):
+            break
+    return rows
+
+
+try:
+    _v191110_old_v19119_active_paper_buy_rows = v19119_active_paper_buy_rows
+except Exception:
+    _v191110_old_v19119_active_paper_buy_rows = None
+
+
+def v19119_active_paper_buy_rows(limit=8):
+    rows = []
+    for c in v191110_active_checkpoints(limit=limit):
+        tags = ''
+        if c.get('risk_tags'):
+            tags = ' | ' + ', '.join(c.get('risk_tags')[:3])
+        rows.append(
+            f"• {c.get('asset')}: {c.get('status')} | {v19119_format_price(c.get('entry'))} → {v19119_format_price(c.get('last'))} ({float(c.get('pct',0)):+.2f}%) | {float(c.get('age_h',0)):.1f}ч | stop {v19119_format_price(c.get('stop'))} | T1 {v19119_format_price(c.get('target1'))}{tags}\n"
+            f"  Действие: {c.get('action')}"
+        )
+    return rows
+
+
+def v191110_paper_buy_6h_lines():
+    cps = v191110_active_checkpoints(limit=8)
+    lines = ['🧭 PAPER BUY 6H CHECKPOINT']
+    if not cps:
+        lines.append('• активных PAPER BUY нет')
+        return lines
+    for c in cps:
+        lines.append(
+            f"• {c.get('asset')}: {c.get('status')} | {float(c.get('pct',0)):+.2f}% | {float(c.get('age_h',0)):.1f}ч | probe-score {c.get('probe_score')}/100"
+        )
+        lines.append(f"  Что делать: {c.get('action')}")
+    weak = [c for c in cps if int(c.get('severity',0) or 0) >= 2]
+    strong = [c for c in cps if int(c.get('severity',0) or 0) < 0]
+    lines.append('')
+    if weak:
+        lines.append(f"Итог 6ч: 🟠 слабых/ранних BUY: {len(weak)} — новые paper BUY не добавлять до 24ч.")
+    elif strong:
+        lines.append(f"Итог 6ч: 🟢 полезных BUY: {len(strong)} — ждать 24ч, live BUY всё равно +0.")
+    else:
+        lines.append('Итог 6ч: 🟡 нейтрально — ждать 24ч, веса не усиливать.')
+    return lines
+
+
+def v191110_lesson_router_lines():
+    g = v191110_global_lesson_router_state()
+    lines = ['🧠 LESSON WEIGHT ROUTER']
+    lines.append(f"• режим: {g.get('label')} | lessons {g.get('total')} | good {g.get('good')} | neutral {g.get('neutral')} | bad {g.get('bad')}")
+    lines.append(f"• paperΔ total: {g.get('paper_delta')} | max active paper BUY: {g.get('max_active_paper_buy')}")
+    try:
+        assets = sorted(set(str(l.get('asset','')).upper() for l in (v19118_load_lessons() or []) if isinstance(l, dict) and l.get('asset')))
+    except Exception:
+        assets = []
+    if assets:
+        lines.append('• asset routing:')
+        for a in assets[:8]:
+            r = v191110_lesson_router_adjustment(a)
+            st = r.get('asset_stats', {})
+            if st.get('total',0) <= 0:
+                continue
+            verdict = '🟡 neutral'
+            if st.get('bad',0) >= 1 and st.get('good',0) == 0:
+                verdict = '🟠 wait/penalty'
+            elif st.get('good',0) >= 1:
+                verdict = '🟢 paper-priority only'
+            lines.append(f"  - {a}: {verdict} | good {st.get('good')} neutral {st.get('neutral')} bad {st.get('bad')} | avg {st.get('avg_pct'):+.2f}% | adj {r.get('adj')} cap {r.get('cap')}")
+    lines.append('• live BUY: +0, автоторговля OFF.')
+    return lines
+
+
+try:
+    _v191110_old_v19119_paper_buy_decision_report = v19119_paper_buy_decision_report
+except Exception:
+    _v191110_old_v19119_paper_buy_decision_report = None
+
+
+def v19119_paper_buy_decision_report(create=False):
+    if _v191110_old_v19119_paper_buy_decision_report:
+        base = str(_v191110_old_v19119_paper_buy_decision_report(create=create))
+    else:
+        base = '🟢 Paper BUY Decision Layer\n'
+    base = base.replace('Fix v19.11.9.4: PAPER BUY теперь сохраняется в GitHub storage сразу после создания.',
+                        'Fix v19.11.10: активные PAPER BUY получили 6ч checkpoint + Lesson Router.')
+    return base + '\n\n' + '\n'.join(v191110_paper_buy_6h_lines()) + '\n\n' + '\n'.join(v191110_lesson_router_lines())
+
+
+def v19119_paper_buy_audit_report():
+    return v19119_paper_buy_decision_report(create=False)
+
+
+try:
+    _v191110_old_v191181_fast_audit_build_content = v191181_fast_audit_build_content
+except Exception:
+    _v191110_old_v191181_fast_audit_build_content = None
+
+
+def v191181_fast_audit_build_content():
+    base = str(_v191110_old_v191181_fast_audit_build_content()) if _v191110_old_v191181_fast_audit_build_content else f"VERSION\n{BOT_VERSION}"
+    return (
+        base +
+        "\n\n" + "="*80 + "\nPAPER BUY 6H CHECKPOINT V19.11.10\n" + "="*80 + "\n" + "\n".join(v191110_paper_buy_6h_lines()) +
+        "\n\n" + "="*80 + "\nLESSON WEIGHT ROUTER V19.11.10\n" + "="*80 + "\n" + "\n".join(v191110_lesson_router_lines())
+    )
+
+
+def version_user_report():
+    return (
+        f"✅ Версия: {BOT_VERSION}\n\n"
+        "Что добавлено:\n"
+        "• 6ч checkpoint для активных PAPER BUY;\n"
+        "• если активный BUY ослаб и перешёл в WATCH — отчёт показывает это как ранний/слабый paper-вход;\n"
+        "• если 6ч результат < -1% и probe-score 35/100 — статус: ранний PAPER BUY, новые BUY не открывать;\n"
+        "• добавлен Lesson Weight Router: первые 24ч уроки уменьшают будущий paper-priority слабых условий;\n"
+        "• NEAR/LINK не удаляются, а переводятся в checkpoint-режим до 24/48ч;\n"
+        "• /audit_file получил секции PAPER BUY 6H CHECKPOINT и LESSON WEIGHT ROUTER.\n\n"
+        "Сохранено:\n"
+        "• реальные покупки 0;\n"
+        "• автоторговля OFF;\n"
+        "• BUY-веса +0;\n"
+        "• Risk Engine unchanged;\n"
+        "• durable-state и backup fixes сохранены.\n\n"
+        "Команды проверки: /version | /paper_buy_status | /paper | /lesson_engine | /audit_file"
+    )
+
+
+
+# === v20.9.5 AUDIT FINAL LABEL CLEANUP ===
+# Critical wiring fix: the previous v19.11.10 block was appended after __main__,
+# so production runtime used the old PAPER BUY report. This block is intentionally
+# inserted before __main__ and also appended at EOF for import/smoke parity.
+# It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
+
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+
+V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
+V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
+V1911101_RESTORE_META_KEY = "paper_buy_restore_v1911101"
+
+try:
+    PROTECTED_STATE_BASENAMES.add("paper_buy_state.json")
+except Exception:
+    pass
+
+
+def v1911101_now():
+    try:
+        return time.time()
+    except Exception:
+        return 0
+
+
+def v1911101_read_storage_json(local_path):
+    """Read data/*.json from local or GitHub with raw/blob fallback."""
+    try:
+        data = load_json(local_path)
+        if isinstance(data, dict) and data:
+            return data
+    except Exception:
+        pass
+    try:
+        if github_storage_enabled():
+            repo_path = github_storage_repo_path(local_path)
+            raw, meta = github_get_file_bytes(repo_path)
+            if raw:
+                js = json.loads(raw.decode("utf-8", errors="ignore"))
+                if isinstance(js, dict):
+                    try:
+                        save_json(local_path, js)
+                    except Exception:
+                        pass
+                    return js
+    except Exception as e:
+        try:
+            print(f"v1911101 read storage fallback error {local_path}: {e}")
+        except Exception:
+            pass
+    return {}
+
+
+def v1911101_trade_to_state_record(key, trade):
+    try:
+        if not isinstance(trade, dict) or not v19119_is_paper_buy_decision(trade):
+            return None
+        asset = v19119_trade_asset(trade)
+        if not asset:
+            return None
+        rec = dict(trade)
+        rec.setdefault("id", key)
+        rec.setdefault("asset", asset)
+        rec.setdefault("status", "open")
+        rec["durable_saved_by"] = BOT_VERSION
+        rec["durable_saved_at"] = v1911101_now()
+        return rec
+    except Exception:
+        return None
+
+
+def v1911101_build_buy_state(data=None):
+    if not isinstance(data, dict):
+        data = paper_store()
+    open_trades = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+    active = []
+    for key, trade in list(open_trades.items()):
+        rec = v1911101_trade_to_state_record(key, trade)
+        if rec:
+            active.append(rec)
+    journal = data.get(V191194_PAPER_BUY_JOURNAL_KEY, []) if isinstance(data.get(V191194_PAPER_BUY_JOURNAL_KEY, []), list) else []
+    return {
+        "version": BOT_VERSION,
+        "created_at": v1911101_now(),
+        "active_count": len(active),
+        "active_buys": active,
+        "journal": journal[-80:],
+        "source": "paper_trades.json",
+        "note": "Durable minimal PAPER BUY state. Real buys remain 0; autotrading OFF.",
+    }
+
+
+def v1911101_save_buy_state_now(data=None, reason="paper_buy_durable_save"):
+    status = {"ok": False, "mode": "not-run", "active": 0, "synced_files": 0, "error": "", "at": v1911101_now(), "reason": reason}
+    try:
+        state = v1911101_build_buy_state(data)
+        status["active"] = int(state.get("active_count", 0) or 0)
+        save_json(V1911101_PAPER_BUY_STATE_FILE, state)
+        status.update({"ok": True, "mode": "local"})
+        if github_storage_enabled():
+            try:
+                n = sync_github_storage_now([V1911101_PAPER_BUY_STATE_FILE, PAPER_TRADES_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=4)
+                status.update({"mode": "github-durable-immediate", "synced_files": int(n or 0), "ok": int(n or 0) >= 1})
+            except Exception as e:
+                status.update({"mode": "github-durable-failed", "ok": False, "error": str(e)[:180]})
+        return status
+    except Exception as e:
+        status.update({"ok": False, "mode": "error", "error": str(e)[:180]})
+        return status
+
+
+def v1911101_load_buy_state():
+    return v1911101_read_storage_json(V1911101_PAPER_BUY_STATE_FILE)
+
+
+def v1911101_restore_paper_buys_from_state(data=None, reason="status_restore"):
+    result = {"restored": 0, "available": 0, "mode": "not-needed", "error": "", "at": v1911101_now()}
+    try:
+        if not isinstance(data, dict):
+            data = paper_store()
+        open_trades = data.get("open", {}) if isinstance(data.get("open", {}), dict) else {}
+        active_now = v191194_count_active_buy_in_data(data)
+        if active_now > 0:
+            result.update({"available": active_now, "mode": "already-active"})
+            return data, result
+        state = v1911101_load_buy_state()
+        active = state.get("active_buys", []) if isinstance(state, dict) else []
+        if not isinstance(active, list) or not active:
+            result.update({"mode": "no-durable-state"})
+            return data, result
+        result["available"] = len(active)
+        now = v1911101_now()
+        restored = 0
+        existing_assets = set(str(t.get("asset", "")).upper() for t in open_trades.values() if isinstance(t, dict))
+        for trade in active:
+            if not isinstance(trade, dict) or not v19119_is_paper_buy_decision(trade):
+                continue
+            asset = str(trade.get("asset") or v19119_trade_asset(trade)).upper().strip()
+            if not asset or asset in existing_assets:
+                continue
+            try:
+                age_h = (now - float(trade.get("entry_time", now) or now)) / 3600.0
+            except Exception:
+                age_h = 0
+            if age_h > 60:
+                continue
+            key = trade.get("id") or paper_trade_key(asset, V19119_PAPER_BUY_TYPE, trade.get("entry_time", now))
+            if key in open_trades:
+                continue
+            rec = dict(trade)
+            rec["id"] = key
+            rec["status"] = "open"
+            rec["restored_from"] = "paper_buy_state.json"
+            rec["restored_at"] = now
+            rec["restored_by"] = BOT_VERSION
+            open_trades[key] = rec
+            existing_assets.add(asset)
+            restored += 1
+        if restored:
+            data["open"] = open_trades
+            meta = data.get(V1911101_RESTORE_META_KEY)
+            if not isinstance(meta, dict):
+                meta = {}
+            meta.update({"last_restore_at": now, "restored": restored, "reason": reason, "version": BOT_VERSION})
+            data[V1911101_RESTORE_META_KEY] = meta
+            save_paper_store(data, sync=False)
+            v1911101_save_buy_state_now(data, reason="restore_after_restart")
+            result.update({"restored": restored, "mode": "restored-from-durable-state"})
+        else:
+            result.update({"mode": "durable-state-empty-or-stale"})
+        return data, result
+    except Exception as e:
+        result.update({"mode": "restore-error", "error": str(e)[:180]})
+        return (data if isinstance(data, dict) else paper_store()), result
+
+
+try:
+    _v1911101_old_v19119_open_paper_buy_decisions = v19119_open_paper_buy_decisions
+except Exception:
+    _v1911101_old_v19119_open_paper_buy_decisions = None
+
+try:
+    _v1911101_old_v19119_ranked_paper_buy_decisions = v19119_ranked_paper_buy_decisions
+except Exception:
+    _v1911101_old_v19119_ranked_paper_buy_decisions = None
+
+
+def v1911101_lessons():
+    try:
+        ls = v19118_load_lessons()
+        return ls if isinstance(ls, list) else []
+    except Exception:
+        return []
+
+
+def v1911101_lesson_router_adjustment(asset):
+    asset = str(asset or '').upper().strip()
+    rows = [l for l in v1911101_lessons() if isinstance(l, dict) and str(l.get('asset','')).upper().strip() == asset]
+    st = {"total": len(rows), "good": 0, "neutral": 0, "bad": 0, "avg_pct": 0.0, "paper_delta": 0}
+    if not rows:
+        return {"asset": asset, "adj": 0, "cap": 100, "asset_stats": st, "reason": "no lessons"}
+    vals = []
+    delta = 0
+    for r in rows:
+        cls = str(r.get('classification') or r.get('label') or r.get('status') or '').lower()
+        try:
+            vals.append(float(r.get('pct') if r.get('pct') is not None else r.get('pnl_pct', 0) or 0))
+        except Exception:
+            pass
+        try:
+            delta += int(r.get('paper_delta') or r.get('paperΔ') or 0)
+        except Exception:
+            pass
+        if any(x in cls for x in ['good', 'useful', 'полез', 'хорош']):
+            st['good'] += 1
+        elif any(x in cls for x in ['bad', 'early', 'drawdown', 'плох', 'ранн', 'просад']):
+            st['bad'] += 1
+        else:
+            st['neutral'] += 1
+    st['paper_delta'] = delta
+    st['avg_pct'] = round(sum(vals)/len(vals), 2) if vals else 0.0
+    adj = 0
+    cap = 100
+    reason = 'neutral lessons'
+    if st['bad'] >= 1 and st['good'] == 0:
+        adj -= 12
+        cap = 45
+        reason = 'bad/early lessons penalty'
+    if delta <= -4:
+        adj -= 8
+        cap = min(cap, 35)
+        reason = 'heavy paperΔ penalty'
+    if st['good'] >= 1:
+        adj += 6
+        reason = 'good lesson bonus, paper-only'
+    return {"asset": asset, "adj": adj, "cap": cap, "asset_stats": st, "reason": reason}
+
+
+def v1911101_global_lesson_router_state():
+    ls = v1911101_lessons()
+    good = neutral = bad = delta = 0
+    for r in ls:
+        if not isinstance(r, dict):
+            continue
+        cls = str(r.get('classification') or r.get('label') or r.get('status') or '').lower()
+        try:
+            delta += int(r.get('paper_delta') or r.get('paperΔ') or 0)
+        except Exception:
+            pass
+        if any(x in cls for x in ['good','useful','полез','хорош']):
+            good += 1
+        elif any(x in cls for x in ['bad','early','drawdown','плох','ранн','просад']):
+            bad += 1
+        else:
+            neutral += 1
+    total = good + neutral + bad
+    label = '🟡 нет уроков'
+    cap = V19119_PAPER_BUY_MAX_ACTIVE if 'V19119_PAPER_BUY_MAX_ACTIVE' in globals() else 2
+    if total:
+        if good == 0 and bad >= max(2, neutral):
+            label = '🟠 cautious / lesson penalty'
+            cap = min(cap, 2)
+        elif good > bad:
+            label = '🟢 paper priority only'
+        else:
+            label = '🟡 neutral / wait 48h'
+    return {"total": total, "good": good, "neutral": neutral, "bad": bad, "paper_delta": delta, "label": label, "max_active_paper_buy": cap}
+
+
+def v19119_ranked_paper_buy_decisions():
+    base = []
+    if _v1911101_old_v19119_ranked_paper_buy_decisions:
+        try:
+            base = _v1911101_old_v19119_ranked_paper_buy_decisions()
+        except Exception:
+            base = []
+    out = []
+    for d in base or []:
+        if not isinstance(d, dict):
+            continue
+        nd = dict(d)
+        asset = str(nd.get('asset') or '').upper().strip()
+        r = v1911101_lesson_router_adjustment(asset)
+        try:
+            score = int(nd.get('decision_score', 0) or 0)
+        except Exception:
+            score = 0
+        score = max(0, min(int(r.get('cap',100)), score + int(r.get('adj',0))))
+        nd['decision_score'] = score
+        nd['lesson_router_adj'] = int(r.get('adj',0))
+        nd['lesson_router_cap'] = int(r.get('cap',100))
+        nd['lesson_router_reason'] = r.get('reason')
+        if score < 50 and str(nd.get('decision','')).startswith('🟢'):
+            nd['decision'] = '🟠 PAPER WATCH, BUY ЖДАТЬ'
+            nd['tier'] = 'watch_only'
+            risk = str(nd.get('risk') or '')
+            nd['risk'] = (risk + '; ' if risk else '') + f"Lesson Router: {r.get('reason')}"
+        out.append(nd)
+    try:
+        out.sort(key=lambda x: int(x.get('decision_score',0) or 0), reverse=True)
+    except Exception:
+        pass
+    return out
+
+
+def v19119_open_paper_buy_decisions(create=True, max_new=2, force_one=False):
+    try:
+        if not create:
+            v1911101_restore_paper_buys_from_state(reason="paper_buy_status")
+    except Exception:
+        pass
+    if _v1911101_old_v19119_open_paper_buy_decisions:
+        res = _v1911101_old_v19119_open_paper_buy_decisions(create=create, max_new=max_new, force_one=force_one)
+    else:
+        res = {"created": [], "skipped": [], "active": 0, "decisions": []}
+    try:
+        data = paper_store()
+        active = v191194_count_active_buy_in_data(data)
+        if isinstance(res, dict):
+            res['active'] = active
+        if active > 0:
+            st = v1911101_save_buy_state_now(data, reason="paper_buy_create_or_status")
+            if isinstance(res, dict):
+                res["durable_state"] = st
+    except Exception as e:
+        if isinstance(res, dict):
+            res["durable_state"] = {"ok": False, "mode": "error", "error": str(e)[:120]}
+    return res
+
+
+try:
+    _v1911101_old_v191194_paper_buy_persistence_lines = v191194_paper_buy_persistence_lines
+except Exception:
+    _v1911101_old_v191194_paper_buy_persistence_lines = None
+
+
+def v1911101_durable_state_lines():
+    try:
+        state = v1911101_load_buy_state()
+        active = state.get("active_buys", []) if isinstance(state, dict) else []
+        if not isinstance(active, list):
+            active = []
+        created_at = state.get("created_at") if isinstance(state, dict) else None
+        age = ""
+        try:
+            if created_at:
+                age = f" | {v191183_fmt_age(created_at)}"
+        except Exception:
+            age = ""
+        data = paper_store()
+        restore_meta = data.get(V1911101_RESTORE_META_KEY, {}) if isinstance(data, dict) else {}
+        restored_line = "нет"
+        if isinstance(restore_meta, dict) and restore_meta.get("last_restore_at"):
+            restored_line = f"{restore_meta.get('restored', 0)} | {v191183_fmt_age(restore_meta.get('last_restore_at'))}"
+        return [
+            "Durable state:",
+            f"• файл: {os.path.basename(V1911101_PAPER_BUY_STATE_FILE)}",
+            f"• active BUY в durable-state: {len(active)}{age}",
+            f"• last restore: {restored_line}",
+        ]
+    except Exception as e:
+        return ["Durable state:", f"• ⚠️ error: {str(e)[:120]}"]
+
+
+def v191194_paper_buy_persistence_lines():
+    base = []
+    try:
+        if _v1911101_old_v191194_paper_buy_persistence_lines:
+            base = list(_v1911101_old_v191194_paper_buy_persistence_lines())
+    except Exception:
+        base = []
+    return base + v1911101_durable_state_lines()
+
+
+def v1911101_decision_map():
+    mp = {}
+    try:
+        for d in v19119_ranked_paper_buy_decisions() or []:
+            if not isinstance(d, dict):
+                continue
+            a = str(d.get('asset') or '').upper().strip()
+            if a and a not in mp:
+                mp[a] = d
+    except Exception:
+        pass
+    return mp
+
+
+def v1911101_active_buy_checkpoint(t, decision_map=None):
+    decision_map = decision_map if isinstance(decision_map, dict) else v1911101_decision_map()
+    asset = v19119_trade_asset(t)
+    entry = v19119_safe_float(t.get('entry_price'), 0)
+    last = v19119_safe_float(t.get('last_price'), entry) or entry
+    try:
+        pct = t.get('last_pct')
+        if not isinstance(pct, (int, float)):
+            pct = ((last - entry) / entry * 100.0) if entry and last else 0.0
+        pct = float(pct or 0.0)
+    except Exception:
+        pct = 0.0
+    age_h = v19119_trade_age_h(t)
+    plan = t.get('entry_plan', {}) if isinstance(t.get('entry_plan', {}), dict) else {}
+    stop = v19119_safe_float(plan.get('stop'), 0)
+    t1 = v19119_safe_float(plan.get('target1'), 0)
+    d = decision_map.get(asset, {})
+    probe_score = int(d.get('probe_score', t.get('probe_score', 55)) or 55)
+    current_decision = str(d.get('decision') or '')
+    paper_score = int(d.get('decision_score', t.get('decision_score', t.get('score', 0))) or 0)
+    try:
+        stop_distance_pct = ((last - stop) / last * 100.0) if last and stop else 99.0
+    except Exception:
+        stop_distance_pct = 99.0
+    try:
+        to_t1_pct = ((t1 - last) / last * 100.0) if last and t1 else 99.0
+    except Exception:
+        to_t1_pct = 99.0
+    status = '🟢 PAPER BUY active'
+    action = 'держать paper-наблюдение'
+    severity = 0
+    checkpoint = 'pre-6h' if age_h < 6 else '6h'
+    if age_h >= 6:
+        if stop and last <= stop:
+            status = '🔴 STOP HIT / paper exit'
+            action = 'фиксировать как ошибку paper-входа, новые BUY запретить'
+            severity = 4
+        elif pct <= -1.0 and probe_score <= 35:
+            status = '🟠 6ч ранний PAPER BUY'
+            action = 'не усиливать, новых BUY не открывать, ждать 24ч/48ч'
+            severity = 3
+        elif 'WATCH' in current_decision or probe_score <= 35:
+            status = '🟠 6ч ослабла / WATCH'
+            action = 'оставить только контроль, без новых BUY'
+            severity = 2
+        elif pct >= 1.8 or (t1 and last >= t1):
+            status = '🟢 6ч сильный paper BUY'
+            action = 'зафиксировать полезную модель, ждать 24ч'
+            severity = -2
+        elif pct >= 0.3:
+            status = '🟢 6ч умеренно полезно'
+            action = 'держать до 24ч без усиления live BUY'
+            severity = -1
+        elif pct > -0.5:
+            status = '🟡 6ч нейтрально'
+            action = 'не усиливать веса, ждать 24ч'
+            severity = 1
+        else:
+            status = '🟠 6ч слабый BUY'
+            action = 'считать ранним входом, новых BUY не открывать'
+            severity = 2
+    else:
+        if pct <= -1.0 or ('WATCH' in current_decision and pct < 0):
+            status = '🟠 до 6ч слабость / WATCH'
+            action = 'ждать 6ч checkpoint'
+            severity = 1
+        elif pct >= 1.0:
+            status = '🟢 до 6ч полезно'
+            action = 'ждать 6ч checkpoint'
+            severity = -1
+    risk_tags = []
+    if stop_distance_pct <= 1.2:
+        risk_tags.append('близко к stop')
+        if severity < 3:
+            severity = 3
+    if to_t1_pct <= 0.8 and pct > 0:
+        risk_tags.append('близко к T1')
+    if probe_score <= 35:
+        risk_tags.append(f'probe-score {probe_score}/100')
+    return {
+        'asset': asset, 'entry': entry, 'last': last, 'pct': round(pct, 2), 'age_h': round(age_h, 1),
+        'stop': stop, 'target1': t1, 'probe_score': probe_score, 'paper_score': paper_score,
+        'current_decision': current_decision, 'checkpoint': checkpoint, 'status': status, 'action': action,
+        'severity': severity, 'risk_tags': risk_tags, 'stop_distance_pct': round(stop_distance_pct, 2), 'to_t1_pct': round(to_t1_pct, 2),
+    }
+
+
+def v1911101_active_checkpoints(limit=8):
+    try:
+        data, open_trades = v19119_open_trades()
+    except Exception:
+        open_trades = {}
+    decision_map = v1911101_decision_map()
+    rows = []
+    for t in list((open_trades or {}).values()):
+        if not v19119_is_paper_buy_decision(t):
+            continue
+        rows.append(v1911101_active_buy_checkpoint(t, decision_map=decision_map))
+        if len(rows) >= int(limit or 8):
+            break
+    return rows
+
+
+try:
+    _v1911101_old_v19119_active_paper_buy_rows = v19119_active_paper_buy_rows
+except Exception:
+    _v1911101_old_v19119_active_paper_buy_rows = None
+
+
+def v19119_active_paper_buy_rows(limit=8):
+    rows = []
+    for c in v1911101_active_checkpoints(limit=limit):
+        tags = ''
+        if c.get('risk_tags'):
+            tags = ' | ' + ', '.join(c.get('risk_tags')[:3])
+        rows.append(
+            f"• {c.get('asset')}: {c.get('status')} | {v19119_format_price(c.get('entry'))} → {v19119_format_price(c.get('last'))} ({float(c.get('pct',0)):+.2f}%) | {float(c.get('age_h',0)):.1f}ч | stop {v19119_format_price(c.get('stop'))} | T1 {v19119_format_price(c.get('target1'))}{tags}\n"
+            f"  Действие: {c.get('action')}"
+        )
+    return rows
+
+
+def v1911101_paper_buy_6h_lines():
+    cps = v1911101_active_checkpoints(limit=8)
+    lines = ['🧭 PAPER BUY 6H CHECKPOINT']
+    if not cps:
+        lines.append('• активных PAPER BUY нет')
+        return lines
+    for c in cps:
+        lines.append(f"• {c.get('asset')}: {c.get('status')} | {float(c.get('pct',0)):+.2f}% | {float(c.get('age_h',0)):.1f}ч | probe-score {c.get('probe_score')}/100")
+        lines.append(f"  Что делать: {c.get('action')}")
+    weak = [c for c in cps if int(c.get('severity',0) or 0) >= 2]
+    strong = [c for c in cps if int(c.get('severity',0) or 0) < 0]
+    lines.append('')
+    if weak:
+        lines.append(f"Итог 6ч: 🟠 слабых/ранних BUY: {len(weak)} — новые paper BUY не добавлять до 24ч.")
+    elif strong:
+        lines.append(f"Итог 6ч: 🟢 полезных BUY: {len(strong)} — ждать 24ч, live BUY всё равно +0.")
+    else:
+        lines.append('Итог 6ч: 🟡 нейтрально — ждать 24ч, веса не усиливать.')
+    return lines
+
+
+def v1911101_lesson_router_lines():
+    g = v1911101_global_lesson_router_state()
+    lines = ['🧠 LESSON WEIGHT ROUTER']
+    lines.append(f"• режим: {g.get('label')} | lessons {g.get('total')} | good {g.get('good')} | neutral {g.get('neutral')} | bad {g.get('bad')}")
+    lines.append(f"• paperΔ total: {g.get('paper_delta')} | max active paper BUY: {g.get('max_active_paper_buy')}")
+    try:
+        assets = sorted(set(str(l.get('asset','')).upper() for l in v1911101_lessons() if isinstance(l, dict) and l.get('asset')))
+    except Exception:
+        assets = []
+    if assets:
+        lines.append('• asset routing:')
+        for a in assets[:8]:
+            r = v1911101_lesson_router_adjustment(a)
+            st = r.get('asset_stats', {})
+            if st.get('total',0) <= 0:
+                continue
+            verdict = '🟡 neutral'
+            if st.get('bad',0) >= 1 and st.get('good',0) == 0:
+                verdict = '🟠 wait/penalty'
+            elif st.get('good',0) >= 1:
+                verdict = '🟢 paper-priority only'
+            lines.append(f"  - {a}: {verdict} | good {st.get('good')} neutral {st.get('neutral')} bad {st.get('bad')} | avg {st.get('avg_pct'):+.2f}% | adj {r.get('adj')} cap {r.get('cap')}")
+    lines.append('• live BUY: +0, автоторговля OFF.')
+    return lines
+
+
+try:
+    _v1911101_old_v19119_paper_buy_decision_report = v19119_paper_buy_decision_report
+except Exception:
+    _v1911101_old_v19119_paper_buy_decision_report = None
+
+
+def v19119_paper_buy_decision_report(create=False):
+    if _v1911101_old_v19119_paper_buy_decision_report:
+        base = str(_v1911101_old_v19119_paper_buy_decision_report(create=create))
+    else:
+        base = '🟢 Paper BUY Decision Layer\n'
+    for old in [
+        'Fix v19.11.9.4: PAPER BUY теперь сохраняется в GitHub storage сразу после создания.',
+        'Fix v19.11.10: активные PAPER BUY получили 6ч checkpoint + Lesson Router.'
+    ]:
+        base = base.replace(old, 'Fix v19.11.10.1: active PAPER BUY status реально подключён до runtime.')
+    return base + '\n\n' + '\n'.join(v1911101_paper_buy_6h_lines()) + '\n\n' + '\n'.join(v1911101_lesson_router_lines())
+
+
+def v19119_paper_buy_audit_report():
+    return v19119_paper_buy_decision_report(create=False)
+
+
+try:
+    _v1911101_old_v191181_fast_audit_build_content = v191181_fast_audit_build_content
+except Exception:
+    _v1911101_old_v191181_fast_audit_build_content = None
+
+
+def v191181_fast_audit_build_content():
+    base = str(_v1911101_old_v191181_fast_audit_build_content()) if _v1911101_old_v191181_fast_audit_build_content else f"VERSION\n{BOT_VERSION}"
+    return (
+        base +
+        "\n\n" + "="*80 + "\nPAPER BUY DURABLE STATE V19.11.10.1\n" + "="*80 + "\n" + "\n".join(v1911101_durable_state_lines()) +
+        "\n\n" + "="*80 + "\nPAPER BUY 6H CHECKPOINT V19.11.10.1\n" + "="*80 + "\n" + "\n".join(v1911101_paper_buy_6h_lines()) +
+        "\n\n" + "="*80 + "\nLESSON WEIGHT ROUTER V19.11.10.1\n" + "="*80 + "\n" + "\n".join(v1911101_lesson_router_lines())
+    )
+
+
+def version_user_report():
+    return (
+        f"✅ Версия: {BOT_VERSION}\n\n"
+        "Что исправлено:\n"
+        "• v19.11.10 wiring подключён ДО запуска runtime, а не после __main__;\n"
+        "• открытые NEAR/LINK больше не отображаются как просто 🟢 PAPER BUY, если 6ч/probe-score уже ухудшились;\n"
+        "• /paper_buy_status получил active 6h checkpoint прямо в строках открытых сделок;\n"
+        "• /audit_file получил секции PAPER BUY 6H CHECKPOINT и LESSON WEIGHT ROUTER;\n"
+        "• Lesson Router теперь режет будущий paper-score по слабым 24ч урокам;\n"
+        "• durable-state paper_buy_state.json подключён до runtime.\n\n"
+        "Сохранено:\n"
+        "• реальные покупки 0;\n"
+        "• автоторговля OFF;\n"
+        "• BUY-веса +0;\n"
+        "• Risk Engine unchanged;\n"
+        "• backup/persistence fixes сохранены.\n\n"
+        "Команды проверки: /version | /paper_buy_status | /paper | /lesson_engine | /audit_file"
+    )
+
+
+
+
+# === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
+# Prevents post-__main__ historical override chains from creating recursive audit builders.
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+
+
+def v1911101_section(title, body):
+    return "\n\n" + "="*80 + "\n" + str(title) + "\n" + "="*80 + "\n" + str(body or "")
+
+
+def v1911101_safe_call(fn_name, fallback=''):
+    try:
+        fn = globals().get(fn_name)
+        if callable(fn):
+            return str(fn())
+    except Exception as e:
+        return f"⚠️ {fn_name} error: {str(e)[:180]}"
+    return fallback
+
+
+def v1911101_safe_audit_short():
+    try:
+        data = paper_store()
+        op = data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}
+        closed = data.get('closed', []) if isinstance(data.get('closed', []), list) else []
+        active_buy = v191194_count_active_buy_in_data(data)
+        lessons = v1911101_lessons() if 'v1911101_lessons' in globals() else []
+        return (
+            "🧾 Короткий аудит FAST\n\n"
+            f"Версия: {BOT_VERSION}\n"
+            "Оценка бота: fast/cache\n"
+            f"Paper: открыто {len(op)} | закрыто {len(closed)} | уроков {len(lessons)} | active PAPER BUY {active_buy}\n"
+            "Режим: быстрый audit без тяжёлого price-refresh.\n"
+            "Покупки: 🔴 НЕТ | автоторговля выключена | BUY-веса +0."
+        )
+    except Exception as e:
+        return f"🧾 Короткий аудит FAST\n⚠️ error: {str(e)[:180]}"
+
+
+def v191181_fast_audit_build_content():
+    parts = []
+    parts.append("ALEX EDGE ULTRA FAST TECH AUDIT FILE")
+    parts.append(v1911101_section("VERSION", f"BOT_VERSION: {BOT_VERSION}"))
+    parts.append(v1911101_section("AUDIT SHORT FAST", v1911101_safe_audit_short()))
+    parts.append(v1911101_section("FAST PROBE SCORING", v1911101_safe_call('v191181_fast_probe_scoring_report')))
+    parts.append(v1911101_section("FAST SHADOW PORTFOLIO", v1911101_safe_call('v191181_fast_shadow_report')))
+    parts.append(v1911101_section("FAST LESSON ENGINE", v1911101_safe_call('v191181_fast_lesson_engine_report')))
+    parts.append(v1911101_section("PAPER BUY DECISION LAYER V19.11.10.1", v1911101_safe_call('v19119_paper_buy_audit_report')))
+    parts.append(v1911101_section("PAPER BUY DURABLE STATE V19.11.10.1", "\n".join(v1911101_durable_state_lines()) if 'v1911101_durable_state_lines' in globals() else 'Durable state: no data'))
+    parts.append(v1911101_section("PAPER BUY 6H CHECKPOINT V19.11.10.1", "\n".join(v1911101_paper_buy_6h_lines()) if 'v1911101_paper_buy_6h_lines' in globals() else 'no checkpoint data'))
+    parts.append(v1911101_section("LESSON WEIGHT ROUTER V19.11.10.1", "\n".join(v1911101_lesson_router_lines()) if 'v1911101_lesson_router_lines' in globals() else 'no router data'))
+    return "".join(parts)
+
+
+
+
+# === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
+# Standalone report builder: does not call old report functions, avoiding recursive override chains.
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+
+
+def v1911101_fmt_created_paper_buy(trade):
+    try:
+        asset = v19119_trade_asset(trade)
+        plan = trade.get('entry_plan', {}) if isinstance(trade.get('entry_plan', {}), dict) else {}
+        reasons = trade.get('reasons') if isinstance(trade.get('reasons'), list) else []
+        reason = '; '.join(str(x) for x in reasons[:3]) if reasons else str(trade.get('reason') or 'paper BUY training')
+        return (
+            f"• {asset}: 🟢 PAPER BUY | paper-score {int(trade.get('score',0) or 0)}/100 | "
+            f"вход {v19119_format_price(trade.get('entry_price'))} | размер {float(trade.get('paper_size_pct',2.0) or 2.0):.1f}% paper-capital\n"
+            f"  План: T1 {v19119_format_price(plan.get('target1'))} / T2 {v19119_format_price(plan.get('target2'))} / stop {v19119_format_price(plan.get('stop'))}\n"
+            f"  Причина: {reason}"
+        )
+    except Exception as e:
+        return f"• ⚠️ created trade format error: {str(e)[:120]}"
+
+
+def v1911101_candidate_lines(decisions, limit=8):
+    lines = []
+    for d in list(decisions or [])[:int(limit or 8)]:
+        if not isinstance(d, dict):
+            continue
+        try:
+            asset = str(d.get('asset') or '?').upper()
+            dec = str(d.get('decision') or d.get('tier') or 'PAPER WATCH')
+            ps = int(d.get('decision_score', 0) or 0)
+            prs = int(d.get('probe_score', 0) or 0)
+            pnl = float(d.get('probe_pnl', 0) or 0)
+            risk = str(d.get('risk') or 'без критичных блокеров')
+            adj = d.get('lesson_router_adj')
+            adj_txt = f" | router {int(adj):+d}" if isinstance(adj, int) and adj != 0 else ''
+            lines.append(f"• {asset}: {dec} | paper-score {ps}/100 | probe-score {prs}/100 | probe {pnl:+.2f}%{adj_txt} | риск: {risk}")
+        except Exception as e:
+            lines.append(f"• ⚠️ candidate format error: {str(e)[:120]}")
+    return lines
+
+
+def v19119_paper_buy_decision_report(create=False):
+    try:
+        res = v19119_open_paper_buy_decisions(create=bool(create), max_new=2, force_one=False)
+    except Exception as e:
+        res = {'created': [], 'skipped': [], 'active': 0, 'decisions': [], 'error': str(e)[:180]}
+    created = res.get('created', []) if isinstance(res, dict) and isinstance(res.get('created', []), list) else []
+    decisions = res.get('decisions', []) if isinstance(res, dict) and isinstance(res.get('decisions', []), list) else []
+    if not decisions:
+        try:
+            decisions = v19119_ranked_paper_buy_decisions()
+        except Exception:
+            decisions = []
+    try:
+        active_count = int(res.get('active', 0) or 0) if isinstance(res, dict) else 0
+    except Exception:
+        active_count = 0
+    active_rows = v19119_active_paper_buy_rows(limit=8)
+    if active_rows:
+        active_count = max(active_count, len(active_rows))
+    lines = [
+        '🟢 Paper BUY Decision Layer',
+        f'Версия: {BOT_VERSION}',
+        '',
+        'Режим: только paper BUY. Реальные покупки 0, автоторговля OFF, BUY-веса +0.',
+        'Fix v19.11.10.1: active PAPER BUY status подключён до runtime; 6ч checkpoint виден в открытых сделках.',
+        '',
+        f'Создано новых paper BUY: {len(created)}',
+        f'Активных paper BUY: {active_count}',
+    ]
+    if isinstance(res, dict) and res.get('error'):
+        lines += ['', f"⚠️ Ошибка слоя: {res.get('error')}"]
+    if created:
+        lines += ['', 'Новые paper BUY:']
+        lines += [v1911101_fmt_created_paper_buy(t) for t in created]
+    if active_rows:
+        lines += ['', 'Открытые paper BUY:'] + active_rows
+    else:
+        lines += ['', 'Открытых paper BUY пока нет. Если кандидаты ниже проходят зелёный BUY — отправь /paper_buy для открытия и мгновенного сохранения.']
+    try:
+        lines += [''] + v191194_paper_buy_persistence_lines()
+    except Exception as e:
+        lines += ['', f'Persistence: ⚠️ {str(e)[:120]}']
+    lines += ['', 'Кандидаты/отсев сейчас:']
+    cand = v1911101_candidate_lines(decisions, limit=8)
+    lines += cand if cand else ['• нет кандидатов']
+    lines += ['', 'Правило 6ч: если active BUY ослаб до WATCH или ушёл ниже -1%, новые paper BUY не добавлять до 24ч.']
+    try:
+        lines += ['', *v1911101_paper_buy_6h_lines(), '', *v1911101_lesson_router_lines()]
+    except Exception as e:
+        lines += ['', f'⚠️ 6h/router section error: {str(e)[:160]}']
+    lines += ['', 'Проверка результата: 6ч/24ч/48ч через обычный paper finalizer.', 'Команды: /paper_buy | /paper_buy_status | /paper | /lesson_engine | /audit_file']
+    return '\n'.join(lines)
+
+
+def v19119_paper_buy_audit_report():
+    return v19119_paper_buy_decision_report(create=False)
+
+
+
+
+# === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
+# Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+
+
+def v1911101_load_buy_state():
+    try:
+        if os.path.exists(V1911101_PAPER_BUY_STATE_FILE):
+            with open(V1911101_PAPER_BUY_STATE_FILE, 'r', encoding='utf-8') as f:
+                js = json.load(f)
+            if isinstance(js, dict):
+                return js
+    except Exception:
+        pass
+    try:
+        if github_storage_enabled():
+            repo_path = github_storage_repo_path(V1911101_PAPER_BUY_STATE_FILE)
+            raw, meta = github_get_file_bytes(repo_path)
+            if raw:
+                js = json.loads(raw.decode('utf-8', errors='ignore'))
+                if isinstance(js, dict):
+                    try:
+                        with open(V1911101_PAPER_BUY_STATE_FILE, 'w', encoding='utf-8') as f:
+                            json.dump(js, f, ensure_ascii=False, indent=2)
+                    except Exception:
+                        pass
+                    return js
+    except Exception:
+        pass
+    return {}
+
+
+def v1911101_status_snapshot():
+    try:
+        data, open_trades = v19119_open_trades()
+    except Exception:
+        data, open_trades = {'open': {}, 'closed': []}, {}
+    if not isinstance(data, dict):
+        data = {'open': {}, 'closed': []}
+    if not isinstance(open_trades, dict):
+        open_trades = {}
+    active = 0
+    try:
+        active = sum(1 for t in open_trades.values() if v19119_is_paper_buy_decision(t))
+    except Exception:
+        active = 0
+    try:
+        decisions = v19119_ranked_paper_buy_decisions()
+        if not isinstance(decisions, list):
+            decisions = []
+    except Exception:
+        decisions = []
+    return data, open_trades, active, decisions
+
+
+def v19119_paper_buy_decision_report(create=False):
+    created = []
+    res_error = ''
+    if create:
+        try:
+            # Creation is delegated to the pre-existing creator. If an old chain fails, report it but do not break status.
+            res = _v1911101_old_v19119_open_paper_buy_decisions(create=True, max_new=2, force_one=False) if '_v1911101_old_v19119_open_paper_buy_decisions' in globals() and _v1911101_old_v19119_open_paper_buy_decisions else None
+            if isinstance(res, dict):
+                created = res.get('created', []) if isinstance(res.get('created', []), list) else []
+                if created:
+                    try:
+                        data = paper_store()
+                        v1911101_save_buy_state_now(data, reason='paper_buy_create_final_override')
+                    except Exception:
+                        pass
+        except Exception as e:
+            res_error = str(e)[:180]
+    data, open_trades, active_count, decisions = v1911101_status_snapshot()
+    active_rows = v19119_active_paper_buy_rows(limit=8)
+    if active_rows:
+        active_count = max(active_count, len(active_rows))
+    lines = [
+        '🟢 Paper BUY Decision Layer',
+        f'Версия: {BOT_VERSION}',
+        '',
+        'Режим: только paper BUY. Реальные покупки 0, автоторговля OFF, BUY-веса +0.',
+        'Fix v19.11.10.1: active PAPER BUY status подключён до runtime; 6ч checkpoint виден в открытых сделках.',
+        '',
+        f'Создано новых paper BUY: {len(created)}',
+        f'Активных paper BUY: {active_count}',
+    ]
+    if res_error:
+        lines += ['', f'⚠️ create-layer warning: {res_error}']
+    if created:
+        lines += ['', 'Новые paper BUY:'] + [v1911101_fmt_created_paper_buy(t) for t in created]
+    if active_rows:
+        lines += ['', 'Открытые paper BUY:'] + active_rows
+    else:
+        lines += ['', 'Открытых paper BUY пока нет. Если кандидаты ниже проходят зелёный BUY — отправь /paper_buy для открытия и мгновенного сохранения.']
+    try:
+        # Compact persistence to avoid duplicate old durable lines.
+        journal = data.get(V191194_PAPER_BUY_JOURNAL_KEY, []) if isinstance(data.get(V191194_PAPER_BUY_JOURNAL_KEY, []), list) else []
+        state = v1911101_load_buy_state()
+        durable_active = state.get('active_buys', []) if isinstance(state, dict) else []
+        if not isinstance(durable_active, list):
+            durable_active = []
+        lines += ['', 'Persistence:', f'• active paper BUY в store: {active_count}', f'• journal записей: {len(journal)}', f'• active BUY в durable-state: {len(durable_active)}']
+    except Exception as e:
+        lines += ['', f'Persistence: ⚠️ {str(e)[:120]}']
+    lines += ['', 'Кандидаты/отсев сейчас:']
+    cand = v1911101_candidate_lines(decisions, limit=8)
+    lines += cand if cand else ['• нет кандидатов']
+    lines += ['', 'Правило 6ч: если active BUY ослаб до WATCH или ушёл ниже -1%, новые paper BUY не добавлять до 24ч.']
+    lines += ['', *v1911101_paper_buy_6h_lines(), '', *v1911101_lesson_router_lines()]
+    lines += ['', 'Проверка результата: 6ч/24ч/48ч через обычный paper finalizer.', 'Команды: /paper_buy | /paper_buy_status | /paper | /lesson_engine | /audit_file']
+    return '\n'.join(lines)
+
+
+def v19119_paper_buy_audit_report():
+    return v19119_paper_buy_decision_report(create=False)
+
+# === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
+# === v20.9.5 AUDIT FINAL LABEL CLEANUP ===
+# Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
+# active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
+# а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
+# Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
+# восстановленный shadow report. Торговая логика и live BUY не меняются.
+
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+
+
+def v1911102_count_active_buy_in_data(data=None):
+    try:
+        if not isinstance(data, dict):
+            data = paper_store()
+        op = data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}
+        return sum(1 for t in op.values() if isinstance(t, dict) and v19119_is_paper_buy_decision(t))
+    except Exception:
+        return 0
+
+
+def v1911102_state_active_count(state=None):
+    try:
+        if not isinstance(state, dict):
+            state = v1911101_load_buy_state()
+        active = state.get('active_buys', []) if isinstance(state, dict) else []
+        return len(active) if isinstance(active, list) else 0
+    except Exception:
+        return 0
+
+
+def v1911102_ensure_durable_state_synced(data=None, reason='status_or_audit_polish'):
+    """If paper_store has active PAPER BUY but durable-state is stale/empty, repair it immediately."""
+    result = {
+        'ok': False,
+        'mode': 'not-needed',
+        'store_active': 0,
+        'durable_active_before': 0,
+        'durable_active_after': 0,
+        'synced_files': 0,
+        'error': '',
+        'reason': reason,
+        'at': v1911101_now() if 'v1911101_now' in globals() else time.time(),
+    }
+    try:
+        if not isinstance(data, dict):
+            data = paper_store()
+        store_active = v1911102_count_active_buy_in_data(data)
+        state_before = v1911101_load_buy_state() if 'v1911101_load_buy_state' in globals() else {}
+        durable_before = v1911102_state_active_count(state_before)
+        result.update({'store_active': store_active, 'durable_active_before': durable_before, 'durable_active_after': durable_before})
+        if store_active <= 0:
+            result.update({'ok': True, 'mode': 'no-active-buy'})
+            return result
+        if durable_before >= store_active:
+            result.update({'ok': True, 'mode': 'already-synced'})
+            return result
+        if 'v1911101_save_buy_state_now' in globals():
+            st = v1911101_save_buy_state_now(data, reason='v19.11.10.2_durable_repair_' + str(reason))
+            state_after = v1911101_load_buy_state() if 'v1911101_load_buy_state' in globals() else {}
+            durable_after = v1911102_state_active_count(state_after)
+            result.update({
+                'ok': durable_after >= store_active,
+                'mode': 'repaired' if durable_after >= store_active else 'repair-attempted',
+                'durable_active_after': durable_after,
+                'synced_files': int(st.get('synced_files', 0) or 0) if isinstance(st, dict) else 0,
+                'error': str(st.get('error',''))[:180] if isinstance(st, dict) else '',
+            })
+        else:
+            result.update({'ok': False, 'mode': 'save-function-missing'})
+        return result
+    except Exception as e:
+        result.update({'ok': False, 'mode': 'error', 'error': str(e)[:180]})
+        return result
+
+
+# Correct alias: v19.11.10.1 safe audit called v191181_fast_shadow_report, but the real function
+# is v191181_fast_shadow_portfolio_report.
+def v191181_fast_shadow_report():
+    try:
+        return v191181_fast_shadow_portfolio_report()
+    except Exception as e:
+        return f"💼 FAST SHADOW PORTFOLIO\n\n⚠️ shadow report error: {str(e)[:180]}"
+
+
+def v1911102_fast_score_value():
+    """Fast/cache quality score with lesson penalties. Purely paper/risk telemetry."""
+    try:
+        lessons = v1911101_lessons() if 'v1911101_lessons' in globals() else []
+        good = neutral = bad = 0
+        for r in lessons:
+            if not isinstance(r, dict):
+                continue
+            cls = str(r.get('classification') or r.get('label') or r.get('status') or '').lower()
+            if any(x in cls for x in ['good','useful','полез','хорош']):
+                good += 1
+            elif any(x in cls for x in ['bad','early','drawdown','плох','ранн','просад']):
+                bad += 1
+            else:
+                neutral += 1
+        if good + neutral + bad > 0:
+            score = 72 + good * 3 + neutral * 1 - bad * 2
+            try:
+                # additional small pressure when active paper BUY 6h checkpoints are weak
+                cps = v1911101_active_checkpoints(limit=8) if 'v1911101_active_checkpoints' in globals() else []
+                weak = sum(1 for c in cps if isinstance(c, dict) and (c.get('status') or '').find('🟠') >= 0)
+                score -= min(4, weak)
+            except Exception:
+                pass
+            return max(0, min(100, int(score)))
+    except Exception:
+        pass
+    try:
+        return int(v191161_quality_score_value(default=70))
+    except Exception:
+        return 70
+
+
+def v1911102_fast_audit_short():
+    try:
+        data = paper_store()
+        # Repair durable-state before reporting audit numbers.
+        repair = v1911102_ensure_durable_state_synced(data, reason='audit_short')
+        op = data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}
+        closed = data.get('closed', []) if isinstance(data.get('closed', []), list) else []
+        active_buy = v1911102_count_active_buy_in_data(data)
+        lessons = v1911101_lessons() if 'v1911101_lessons' in globals() else []
+        score = v1911102_fast_score_value()
+        repair_txt = ''
+        if repair.get('mode') in ['repaired', 'repair-attempted']:
+            repair_txt = f"\nDurable-state: {repair.get('mode')} | active {repair.get('durable_active_after')}/{active_buy}"
+        return (
+            "🧾 Короткий аудит FAST\n\n"
+            f"Версия: {BOT_VERSION}\n"
+            f"Оценка бота: {score}/100 (fast/cache)\n"
+            f"Paper: открыто {len(op)} | закрыто {len(closed)} | уроков {len(lessons)} | active PAPER BUY {active_buy}\n"
+            "Режим: быстрый audit без тяжёлого price-refresh.\n"
+            "Покупки: 🔴 НЕТ | автоторговля выключена | BUY-веса +0."
+            f"{repair_txt}"
+        )
+    except Exception as e:
+        return f"🧾 Короткий аудит FAST\n⚠️ error: {str(e)[:180]}"
+
+
+def v1911101_durable_state_lines():
+    try:
+        data = paper_store()
+        repair = v1911102_ensure_durable_state_synced(data, reason='durable_state_lines')
+        state = v1911101_load_buy_state() if 'v1911101_load_buy_state' in globals() else {}
+        active = state.get('active_buys', []) if isinstance(state, dict) else []
+        if not isinstance(active, list):
+            active = []
+        last_restore = {}
+        try:
+            last_restore = data.get(V1911101_RESTORE_META_KEY, {}) if isinstance(data.get(V1911101_RESTORE_META_KEY, {}), dict) else {}
+        except Exception:
+            last_restore = {}
+        mode = repair.get('mode', 'unknown')
+        ok = '✅' if repair.get('ok') else ('ℹ️' if mode in ['no-active-buy'] else '⚠️')
+        lines = [
+            'Durable state:',
+            '• файл: paper_buy_state.json',
+            f"• active BUY в store: {repair.get('store_active', v1911102_count_active_buy_in_data(data))}",
+            f"• active BUY в durable-state: {len(active)}",
+            f"• sync check: {ok} {mode}",
+            f"• synced_files: {repair.get('synced_files', 0)}",
+            f"• last restore: {last_restore.get('restored', 'нет')}" if last_restore else '• last restore: нет',
+        ]
+        if repair.get('error'):
+            lines.append(f"• error: {repair.get('error')}")
+        if active:
+            rows = []
+            for t in active[:5]:
+                if not isinstance(t, dict):
+                    continue
+                asset = str(t.get('asset') or v19119_trade_asset(t) or '?').upper()
+                ep = t.get('entry_price')
+                rows.append(f"  - {asset}: entry {v19119_format_price(ep)} | stop {v19119_format_price((t.get('entry_plan') or {}).get('stop') if isinstance(t.get('entry_plan'), dict) else t.get('stop'))}")
+            if rows:
+                lines += ['• durable BUY:'] + rows
+        return lines
+    except Exception as e:
+        return ['Durable state:', f'• error: {str(e)[:180]}']
+
+
+def v1911102_persistence_lines(data=None, active_count=None):
+    try:
+        if not isinstance(data, dict):
+            data = paper_store()
+        if active_count is None:
+            active_count = v1911102_count_active_buy_in_data(data)
+        repair = v1911102_ensure_durable_state_synced(data, reason='status_persistence')
+        journal = data.get(V191194_PAPER_BUY_JOURNAL_KEY, []) if isinstance(data.get(V191194_PAPER_BUY_JOURNAL_KEY, []), list) else []
+        state = v1911101_load_buy_state() if 'v1911101_load_buy_state' in globals() else {}
+        durable_active = state.get('active_buys', []) if isinstance(state, dict) else []
+        if not isinstance(durable_active, list):
+            durable_active = []
+        sync_icon = '✅' if len(durable_active) >= int(active_count or 0) and int(active_count or 0) > 0 else ('ℹ️' if int(active_count or 0) == 0 else '⚠️')
+        return [
+            'Persistence:',
+            f'• active paper BUY в store: {int(active_count or 0)}',
+            f'• journal записей: {len(journal)}',
+            f'• active BUY в durable-state: {len(durable_active)}',
+            f"• durable sync: {sync_icon} {repair.get('mode', 'unknown')} | synced_files {repair.get('synced_files', 0)}",
+        ]
+    except Exception as e:
+        return [f'Persistence: ⚠️ {str(e)[:120]}']
+
+
+def v19119_paper_buy_decision_report(create=False):
+    created = []
+    res_error = ''
+    if create:
+        try:
+            res = _v1911101_old_v19119_open_paper_buy_decisions(create=True, max_new=2, force_one=False) if '_v1911101_old_v19119_open_paper_buy_decisions' in globals() and _v1911101_old_v19119_open_paper_buy_decisions else None
+            if isinstance(res, dict):
+                created = res.get('created', []) if isinstance(res.get('created', []), list) else []
+        except Exception as e:
+            res_error = str(e)[:180]
+    try:
+        data, open_trades, active_count, decisions = v1911101_status_snapshot()
+    except Exception:
+        data, open_trades, active_count, decisions = paper_store(), {}, 0, []
+    if created:
+        try:
+            v1911101_save_buy_state_now(data, reason='paper_buy_create_v1911102')
+        except Exception:
+            pass
+    else:
+        try:
+            v1911102_ensure_durable_state_synced(data, reason='paper_buy_status_v1911102')
+        except Exception:
+            pass
+    active_rows = v19119_active_paper_buy_rows(limit=8)
+    if active_rows:
+        active_count = max(active_count, len(active_rows))
+    lines = [
+        '🟢 Paper BUY Decision Layer',
+        f'Версия: {BOT_VERSION}',
+        '',
+        'Режим: только paper BUY. Реальные покупки 0, автоторговля OFF, BUY-веса +0.',
+        'Fix v19.11.10.2: durable-state синхронизируется со store; audit score/shadow восстановлены.',
+        '',
+        f'Создано новых paper BUY: {len(created)}',
+        f'Активных paper BUY: {active_count}',
+    ]
+    if res_error:
+        lines += ['', f'⚠️ create-layer warning: {res_error}']
+    if created:
+        lines += ['', 'Новые paper BUY:'] + [v1911101_fmt_created_paper_buy(t) for t in created]
+    if active_rows:
+        lines += ['', 'Открытые paper BUY:'] + active_rows
+    else:
+        lines += ['', 'Открытых paper BUY пока нет. Если кандидаты ниже проходят зелёный BUY — отправь /paper_buy для открытия и мгновенного сохранения.']
+    lines += [''] + v1911102_persistence_lines(data, active_count=active_count)
+    lines += ['', 'Кандидаты/отсев сейчас:']
+    cand = v1911101_candidate_lines(decisions, limit=8)
+    lines += cand if cand else ['• нет кандидатов']
+    lines += ['', 'Правило 6ч: если active BUY ослаб до WATCH или ушёл ниже -1%, новые paper BUY не добавлять до 24ч.']
+    lines += ['', *v1911101_paper_buy_6h_lines(), '', *v1911101_lesson_router_lines()]
+    lines += ['', 'Проверка результата: 6ч/24ч/48ч через обычный paper finalizer.', 'Команды: /paper_buy | /paper_buy_status | /paper | /lesson_engine | /audit_file']
+    return '\n'.join(lines)
+
+
+def v19119_paper_buy_audit_report():
+    return v19119_paper_buy_decision_report(create=False)
+
+
+def v191181_fast_audit_build_content():
+    parts = []
+    parts.append('ALEX EDGE ULTRA FAST TECH AUDIT FILE')
+    parts.append(v1911101_section('VERSION', f'BOT_VERSION: {BOT_VERSION}'))
+    parts.append(v1911101_section('AUDIT SHORT FAST', v1911102_fast_audit_short()))
+    parts.append(v1911101_section('FAST PROBE SCORING', v1911101_safe_call('v191181_fast_probe_scoring_report')))
+    parts.append(v1911101_section('FAST SHADOW PORTFOLIO', v1911101_safe_call('v191181_fast_shadow_report')))
+    parts.append(v1911101_section('FAST LESSON ENGINE', v1911101_safe_call('v191181_fast_lesson_engine_report')))
+    parts.append(v1911101_section('PAPER BUY DECISION LAYER V19.11.10.2', v1911101_safe_call('v19119_paper_buy_audit_report')))
+    parts.append(v1911101_section('PAPER BUY DURABLE STATE V19.11.10.2', '\n'.join(v1911101_durable_state_lines())))
+    parts.append(v1911101_section('PAPER BUY 6H CHECKPOINT V19.11.10.2', '\n'.join(v1911101_paper_buy_6h_lines()) if 'v1911101_paper_buy_6h_lines' in globals() else 'no checkpoint data'))
+    parts.append(v1911101_section('LESSON WEIGHT ROUTER V19.11.10.2', '\n'.join(v1911101_lesson_router_lines()) if 'v1911101_lesson_router_lines' in globals() else 'no router data'))
+    return ''.join(parts)
+
+
+try:
+    _v1911102_old_version_user_report = version_user_report
+except Exception:
+    _v1911102_old_version_user_report = None
+
+
+def version_user_report():
+    return (
+        f'✅ Версия: {BOT_VERSION}\n\n'
+        'Что исправлено:\n'
+        '• durable-state paper_buy_state.json теперь автосинхронизируется, если store видит active PAPER BUY;\n'
+        '• /paper_buy_status больше не должен показывать active store 2, durable-state 0;\n'
+        '• /audit_file снова показывает числовую оценку бота;\n'
+        '• FAST SHADOW PORTFOLIO восстановлен;\n'
+        '• 6H checkpoint и Lesson Router из v19.11.10.1 сохранены.\n\n'
+        'Сохранено:\n'
+        '• реальные покупки 0;\n'
+        '• автоторговля OFF;\n'
+        '• BUY-веса +0;\n'
+        '• Risk Engine unchanged;\n'
+        '• backup/persistence fixes сохранены.\n\n'
+        'Команды проверки: /version | /paper_buy_status | /audit_file | /lesson_engine'
+    )
+
+# === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
+
+# === v20.9.5 AUDIT FINAL LABEL CLEANUP ===
+# Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
+# Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
+# Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
+# Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
+# Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+
+try:
+    AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
+except Exception:
+    AUTO_AUDIT_SILENT_LOG_FILE = '/tmp/auto_audit_silent_log.json'
+
+try:
+    PROTECTED_STATE_BASENAMES.add('auto_audit_silent_log.json')
+except Exception:
+    pass
+
+try:
+    _v1911103_prev_auto_audit_check_and_send = auto_audit_check_and_send
+    if getattr(_v1911103_prev_auto_audit_check_and_send, '_v1911103_silent', False):
+        _v1911103_old_auto_audit_check_and_send = globals().get('_v1911103_old_auto_audit_check_and_send')
+    else:
+        _v1911103_old_auto_audit_check_and_send = _v1911103_prev_auto_audit_check_and_send
+except Exception:
+    _v1911103_old_auto_audit_check_and_send = None
+
+try:
+    _v1911103_old_auto_audit_status_text = auto_audit_status_text
+except Exception:
+    _v1911103_old_auto_audit_status_text = None
+
+try:
+    _v1911103_old_v191181_fast_audit_build_content = v191181_fast_audit_build_content
+except Exception:
+    _v1911103_old_v191181_fast_audit_build_content = None
+
+try:
+    _v1911103_old_version_user_report = version_user_report
+except Exception:
+    _v1911103_old_version_user_report = None
+
+
+def _v1911103_ts():
+    try:
+        return (datetime.utcnow() + timedelta(hours=MOSCOW_OFFSET_HOURS)).strftime('%Y-%m-%d %H:%M:%S')
+    except Exception:
+        return datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+
+
+def _v1911103_score():
+    try:
+        return int(v1911102_fast_score_value())
+    except Exception:
+        try:
+            qm = _v191162_quality_metrics()
+            return int(qm.get('score', 70) or 70)
+        except Exception:
+            return 70
+
+
+def _v1911103_load_log():
+    try:
+        data = load_json(AUTO_AUDIT_SILENT_LOG_FILE)
+        if not isinstance(data, dict):
+            data = {}
+    except Exception:
+        data = {}
+    items = data.get('items', []) if isinstance(data.get('items', []), list) else []
+    data['items'] = items
+    return data
+
+
+def _v1911103_append_log(entry):
+    try:
+        data = _v1911103_load_log()
+        items = data.get('items', []) if isinstance(data.get('items', []), list) else []
+        items.append(entry if isinstance(entry, dict) else {'note': str(entry)})
+        data['items'] = items[-80:]
+        data['version'] = BOT_VERSION
+        data['updated_at'] = time.time()
+        save_json(AUTO_AUDIT_SILENT_LOG_FILE, data)
+        try:
+            mark_github_dirty(AUTO_AUDIT_SILENT_LOG_FILE)
+        except Exception:
+            pass
+        return True
+    except Exception as e:
+        try:
+            print(f'v19.11.10.3 silent auto-audit log error: {e}')
+        except Exception:
+            pass
+        return False
+
+
+def _v1911103_compact_reason_lines(prev, paper, learning, risk, btc_bucket, closed_n=0, errors=None):
+    reasons = []
+    errors = errors or []
+    try:
+        if closed_n:
+            reasons.append(f'закрылись новые Paper-сделки: {closed_n}')
+        if prev.get('last_paper_closed') is not None and int(paper.get('closed', 0) or 0) > int(prev.get('last_paper_closed') or 0):
+            reasons.append(f"Paper closed: {prev.get('last_paper_closed')} → {paper.get('closed', 0)}")
+        if prev.get('last_paper_saved') is not None and int(paper.get('saved', 0) or 0) > int(prev.get('last_paper_saved') or 0):
+            reasons.append(f"защита: {prev.get('last_paper_saved')} → {paper.get('saved', 0)}")
+        if int(paper.get('overdue', 0) or 0) > 0:
+            reasons.append(f"overdue paper >=48ч: {paper.get('overdue', 0)}")
+        if prev.get('last_risk') and prev.get('last_risk') != risk:
+            reasons.append(f"режим рынка: {prev.get('last_risk')} → {risk}")
+        if prev.get('last_btc_bucket') and prev.get('last_btc_bucket') != btc_bucket:
+            reasons.append(f"BTC bucket: {prev.get('last_btc_bucket')} → {btc_bucket}")
+        if prev.get('last_learning_closed') is not None and int(learning.get('closed', 0) or 0) > int(prev.get('last_learning_closed') or 0):
+            reasons.append(f"Learning closed48: {prev.get('last_learning_closed')} → {learning.get('closed', 0)}")
+        for e in errors[:3]:
+            reasons.append('ошибка: ' + str(e)[:90])
+    except Exception as e:
+        reasons.append('reason-build error: ' + str(e)[:80])
+    if not reasons:
+        reasons = ['плановая silent-проверка: критических изменений нет']
+    return reasons[:8]
+
+
+def auto_audit_check_and_send(chat_id=None, force=False):
+    """v19.11.10.3: scheduled Auto-Audit is silent; manual /auto_audit_now still sends."""
+    if force:
+        if callable(_v1911103_old_auto_audit_check_and_send):
+            return _v1911103_old_auto_audit_check_and_send(chat_id=chat_id, force=True)
+        return False
+
+    target_chat_id = chat_id or (ADMIN_CHAT_ID if ADMIN_CHAT_ID else load_chat_id())
+    if not target_chat_id:
+        return False
+
+    state = auto_audit_load_state()
+    if not state.get('enabled'):
+        return False
+
+    now_ts = time.time()
+    mode, interval_min, min_gap_min, critical_only = auto_audit_effective_settings(state)
+    if now_ts - float(state.get('last_check_at', 0) or 0) < interval_min * 60:
+        return False
+
+    prev = dict(state)
+    state['last_check_at'] = now_ts
+    errors = []
+    closed_n = 0
+    try:
+        _changed, _updated, closed_n = paper_update_from_cache()
+    except Exception as e:
+        errors.append('paper sweep ' + str(e)[:80])
+
+    try:
+        ctx = market_context()
+    except Exception as e:
+        ctx = {}
+        errors.append('market_context ' + str(e)[:80])
+
+    try:
+        paper = auto_audit_paper_stats()
+    except Exception as e:
+        paper = {}
+        errors.append('paper_stats ' + str(e)[:80])
+
+    try:
+        learning = auto_audit_learning_stats()
+    except Exception as e:
+        learning = {}
+        errors.append('learning_stats ' + str(e)[:80])
+
+    try:
+        risk = auto_audit_market_label(ctx) if isinstance(ctx, dict) else 'unknown'
+    except Exception:
+        risk = 'unknown'
+    try:
+        btc_bucket = auto_audit_btc_bucket(ctx.get('btc_change', 0) if isinstance(ctx, dict) else 0)
+    except Exception:
+        btc_bucket = 'unknown'
+
+    reasons = _v1911103_compact_reason_lines(prev, paper, learning, risk, btc_bucket, closed_n=closed_n, errors=errors)
+
+    state.update({
+        'version': BOT_VERSION,
+        'mode': mode,
+        'telegram_push': 'silent-disabled-v19.11.10.3',
+        'last_paper_closed': int(paper.get('closed', 0) or 0),
+        'last_paper_saved': int(paper.get('saved', 0) or 0),
+        'last_paper_open': int(paper.get('open', 0) or 0),
+        'last_learning_open': int(learning.get('open', 0) or 0),
+        'last_learning_closed': int(learning.get('closed', 0) or 0),
+        'last_risk': risk,
+        'last_btc_bucket': btc_bucket,
+        'last_timing_checked': int(learning.get('timing_checked', 0) or 0),
+        'last_reason_lines': reasons,
+        'last_silent_logged_at': now_ts,
+    })
+    auto_audit_save_state(state, sync=False)
+
+    entry = {
+        'ts': _v1911103_ts(),
+        'version': BOT_VERSION,
+        'mode': mode,
+        'telegram_sent': False,
+        'score': _v1911103_score(),
+        'risk': risk,
+        'btc_bucket': btc_bucket,
+        'paper_open': int(paper.get('open', 0) or 0),
+        'paper_closed': int(paper.get('closed', 0) or 0),
+        'paper_saved': int(paper.get('saved', 0) or 0),
+        'paper_missed': int(paper.get('missed', 0) or 0),
+        'learning_open': int(learning.get('open', 0) or 0),
+        'learning_closed': int(learning.get('closed', 0) or 0),
+        'reason_lines': reasons,
+        'note': 'scheduled auto-audit is silent; details are stored for /audit_file',
+    }
+    _v1911103_append_log(entry)
+    return False
+
+auto_audit_check_and_send._v1911103_silent = True
+
+
+def v1911103_auto_audit_silent_log_report():
+    data = _v1911103_load_log()
+    items = data.get('items', []) if isinstance(data.get('items', []), list) else []
+    lines = [
+        '🤫 AUTO-AUDIT SILENT LOG',
+        '',
+        f'Версия: {BOT_VERSION}',
+        'Telegram hourly messages: OFF',
+        'Фоновая проверка: ON, но пишет только state/log для /audit_file.',
+        'Ручная проверка: /auto_audit_now по-прежнему отправляет карточку по запросу пользователя.',
+        f'Записей в silent-log: {len(items)}',
+    ]
+    if not items:
+        lines += ['', 'Последние записи: пока нет — появятся после следующего планового silent-cycle.']
+        return '\n'.join(lines)
+    lines += ['', 'Последние записи:']
+    for e in items[-6:]:
+        if not isinstance(e, dict):
+            continue
+        reasons = e.get('reason_lines', []) if isinstance(e.get('reason_lines', []), list) else []
+        reason = '; '.join([str(x) for x in reasons[:3]]) if reasons else 'без изменений'
+        lines.append(
+            f"• {e.get('ts','?')} | score {e.get('score','?')}/100 | {e.get('risk','?')} | "
+            f"paper {e.get('paper_open',0)}/{e.get('paper_closed',0)} | sent: NO | {reason}"
+        )
+    return '\n'.join(lines)
+
+
+def auto_audit_status_text():
+    try:
+        state = auto_audit_load_state()
+    except Exception:
+        state = {}
+    enabled = 'включена' if state.get('enabled') else 'выключена'
+    try:
+        mode, interval_min, min_gap_min, critical_only = auto_audit_effective_settings(state)
+        mode_label = auto_audit_mode_label(mode)
+    except Exception:
+        interval_min, mode_label = 60, 'critical-only'
+    last_ts = state.get('last_silent_logged_at') or state.get('last_check_at') or 0
+    last_txt = 'нет'
+    try:
+        if float(last_ts or 0) > 0:
+            last_txt = format_age(time.time() - float(last_ts)) + ' назад'
+    except Exception:
+        pass
+    return (
+        '🧠 Автопроверка\n\n'
+        f'Статус фоновой проверки: **{enabled}**\n'
+        'Telegram-уведомления по расписанию: **OFF / silent**\n'
+        f'Режим расчёта: **{mode_label}**\n'
+        f'Плановый silent-cycle: каждые **{interval_min} мин**\n'
+        f'Последняя silent-запись: **{last_txt}**\n\n'
+        'Теперь почасовые карточки в чат не отправляются.\n'
+        'Данные для самообучения и проверки пишутся в /audit_file.\n\n'
+        'Команды: /auto_audit_now — ручная карточка | /audit_file — технический лог | /auto_audit_off — выключить фон полностью'
+    )
+
+
+def v191181_fast_audit_build_content():
+    if callable(_v1911103_old_v191181_fast_audit_build_content):
+        base = str(_v1911103_old_v191181_fast_audit_build_content())
+    else:
+        base = 'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n' + v1911103_auto_audit_silent_log_report()
+    marker = 'AUTO-AUDIT SILENT LOG V19.11.10.3'
+    if marker in base:
+        return base
+    return base + '\n\n' + '='*80 + '\n' + marker + '\n' + '='*80 + '\n' + v1911103_auto_audit_silent_log_report()
+
+
+def version_user_report():
+    return (
+        f'✅ Версия: {BOT_VERSION}\n\n'
+        'Что исправлено:\n'
+        '• почасовая Автопроверка больше НЕ присылает карточки в Telegram;\n'
+        '• фоновый auto-audit оставлен только как silent-cycle для самообучения/финализации;\n'
+        '• результаты silent-cycle пишутся в state/log и отображаются в /audit_file;\n'
+        '• /auto_audit_status теперь показывает, что Telegram-уведомления по расписанию OFF;\n'
+        '• /auto_audit_now сохранён как ручная проверка по запросу пользователя.\n\n'
+        'Сохранено:\n'
+        '• реальные покупки 0;\n'
+        '• автоторговля OFF;\n'
+        '• BUY-веса +0;\n'
+        '• Risk Engine unchanged;\n'
+        '• v19.11.10.2 durable-state, 6H checkpoint, Lesson Router и audit/shadow fixes сохранены.\n\n'
+        'Команды проверки: /version | /auto_audit_status | /audit_file | /paper_buy_status'
+    )
+
+
+# Re-apply v19.11.11 after legacy post-__main__ overrides when imported by tests/workers.
+v191111_install()
+
+# === v20.9.5 AUDIT FINAL LABEL CLEANUP ===
+# Cosmetic-only cleanup after v20.9.4: keep SOL alerts, quarantine and trading logic unchanged.
+# Purpose: remove leftover v20.9.3/v20.9.4 audit labels from current technical report.
+BOT_VERSION = "v20.9.5 AUDIT FINAL LABEL CLEANUP"
+
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
     pass
 
 try:
-    _v2096_prev_fast_audit_build_content = v191181_fast_audit_build_content
+    _v2095_prev_fast_audit_build_content = v191181_fast_audit_build_content
 except Exception:
-    _v2096_prev_fast_audit_build_content = None
-
-try:
-    _v2096_prev_audit_content = v191111_audit_content
-except Exception:
-    _v2096_prev_audit_content = None
+    _v2095_prev_fast_audit_build_content = None
 
 
-def v2096_clean_audit_labels(text):
+def v2095_clean_audit_labels(text):
     s = str(text or '')
-    # Fix only uppercase/current technical section labels. Lowercase version history remains historical.
-    for old in ('V20.9.2', 'V20.9.3', 'V20.9.4', 'V20.9.5'):
-        s = s.replace(old, 'V20.9.6')
+    # Current-section uppercase labels only; historical lower-case history is intentionally preserved.
+    s = s.replace('FIXED BENCHMARK + REPORT CLARITY FIX V20.9.4', 'FIXED BENCHMARK + REPORT CLARITY FIX V20.9.5')
+    s = s.replace('EFFECTIVENESS CONTROL CENTER V20.9.4', 'EFFECTIVENESS CONTROL CENTER V20.9.5')
+    s = s.replace('MEASURABLE LEARNING PROGRESS V20.9.4', 'MEASURABLE LEARNING PROGRESS V20.9.5')
+    s = s.replace('VALIDATED POLICY FORWARD SHADOW V20.9.4', 'VALIDATED POLICY FORWARD SHADOW V20.9.5')
+    s = s.replace('CHAMPION-CHALLENGER FORWARD LAB V20.9.4', 'CHAMPION-CHALLENGER FORWARD LAB V20.9.5')
+    s = s.replace('AUTO QUALITY PROBE QUARANTINE V20.9.4', 'AUTO QUALITY PROBE QUARANTINE V20.9.5')
+    s = s.replace('UNIFIED PAPER DECISION GATE V20.9.4', 'UNIFIED PAPER DECISION GATE V20.9.5')
+    s = s.replace('MOMENTUM POST GUARD V20.9.3', 'MOMENTUM POST GUARD V20.9.5')
     s = s.replace('BOT_VERSION: v20.9.5 AUDIT FINAL LABEL CLEANUP', f'BOT_VERSION: {BOT_VERSION}')
     s = s.replace('Версия: v20.9.5 AUDIT FINAL LABEL CLEANUP', f'Версия: {BOT_VERSION}')
-    s = s.replace('Версия: v20.9.4 AUDIT LABEL POLISH', f'Версия: {BOT_VERSION}')
-    s = s.replace('Версия: v20.9.3 SOL ALERTS WIRING FIX', f'Версия: {BOT_VERSION}')
-    # Current audit title clarity.
-    s = s.replace('FIXED BENCHMARK + REPORT CLARITY FIX V20.9.6', 'FIXED BENCHMARK + RUNTIME AUDIT LABEL FIX V20.9.6')
-    s = s.replace('MOMENTUM POST GUARD V20.9.6', 'MOMENTUM POST GUARD V20.9.6')
+    # Keep historical score rows untouched, but make the active current version clear where v20.9.4 was used as current.
+    s = s.replace('Версия: v20.9.3 SOL ALERTS WIRING FIX\nСтатус: ⛔ создание новых автопроб заблокировано',
+                  f'Версия: {BOT_VERSION}\nСтатус: ⛔ создание новых автопроб заблокировано')
     return s
 
 
 def v191181_fast_audit_build_content():
-    try:
-        base = _v2096_prev_fast_audit_build_content() if callable(_v2096_prev_fast_audit_build_content) else (
-            _v2096_prev_audit_content() if callable(_v2096_prev_audit_content) else 'ALEX EDGE ULTRA FAST TECH AUDIT FILE'
-        )
-    except Exception as exc:
-        base = 'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n\n' + f'BOT_VERSION: {BOT_VERSION}\nAudit cleanup error: {exc}'
-    return v2096_clean_audit_labels(base)
+    base = _v2095_prev_fast_audit_build_content() if callable(_v2095_prev_fast_audit_build_content) else 'ALEX EDGE ULTRA FAST TECH AUDIT FILE'
+    return v2095_clean_audit_labels(base)
 
 
 def v191111_audit_content():
-    return v191181_fast_audit_build_content()
+    try:
+        return v191181_fast_audit_build_content()
+    except Exception:
+        return 'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n\n' + f'BOT_VERSION: {BOT_VERSION}'
 
 
 def version_user_report():
     return (
-        '✅ Версия: v20.9.6\n'
-        'Название: ИСПРАВЛЕНИЕ АУДИТА В РАБОЧЕМ ЗАПУСКЕ\n\n'
+        '✅ Версия: v20.9.5\n'
+        'Название: ФИНАЛЬНАЯ ЧИСТКА НАЗВАНИЙ АУДИТА\n\n'
         'Что исправлено:\n'
-        '• старые подписи v20.9.3/v20.9.4/v20.9.5 в /audit_file больше не должны появляться в текущих разделах;\n'
-        '• исправление стоит до запуска бота, поэтому реально применяется на Render;\n'
-        '• /alerts и /sol по SOL сохранены;\n'
+        '• /alerts продолжает показывать SOL и другие сильные quality-импульсы;\n'
+        '• /sol и /alerts согласованы;\n'
         '• карантин слабых автопроб сохранён;\n'
+        '• в /audit_file убраны оставшиеся старые подписи v20.9.3/v20.9.4 в текущих технических разделах;\n'
         '• v20.7 остаётся удержанным ориентиром: 44/100;\n'
         '• торговая логика и виртуальные сделки не менялись.\n\n'
         'Безопасность:\n'
@@ -32457,15 +34728,5 @@ try:
     globals()['version_user_report'] = version_user_report
     globals()['v191181_fast_audit_build_content'] = v191181_fast_audit_build_content
     globals()['v191111_audit_content'] = v191111_audit_content
-    globals()['BOT_VERSION'] = BOT_VERSION
 except Exception:
     pass
-
-
-if __name__ == "__main__":
-    try:
-        restore_state_from_github_if_richer()
-    except Exception as e:
-        print(f"startup state restore guard error: {e}")
-    keep_alive()
-    main()
