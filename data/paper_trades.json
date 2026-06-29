@@ -1,5 +1,5 @@
 {
-  "version": "v20.1.2 FRESHNESS & FORWARD RACE GUARD",
+  "version": "v20.2 CHAMPION CHALLENGER FORWARD LAB",
   "open": {
     "UB:AVOID_PUMP_TEST:495156": {
       "id": "UB:AVOID_PUMP_TEST:495156",
@@ -285,9 +285,9 @@
         "entry_time": 1782571510.5493264,
         "entry_score": 62
       },
-      "probe_scoring_version": "v19.12.4 POLICY FORWARD SHADOW",
-      "current_price_v19117": 72.92,
-      "current_pnl_v19117": 0.10982976386600535,
+      "probe_scoring_version": "v20.2 CHAMPION CHALLENGER FORWARD LAB",
+      "current_price_v19117": 72.42,
+      "current_pnl_v19117": -0.5766062602965426,
       "probe_lesson_24h_v19118": {
         "key": "SOL:1782571510:24h_prelesson",
         "asset": "SOL",
@@ -409,9 +409,9 @@
         "entry_time": 1782571518.2102144,
         "entry_score": 62
       },
-      "probe_scoring_version": "v19.12.4 POLICY FORWARD SHADOW",
-      "current_price_v19117": 0.6915,
-      "current_pnl_v19117": -2.0399490012749637,
+      "probe_scoring_version": "v20.2 CHAMPION CHALLENGER FORWARD LAB",
+      "current_price_v19117": 0.6903,
+      "current_pnl_v19117": -2.209944751381208,
       "probe_lesson_24h_v19118": {
         "key": "SUI:1782571518:24h_prelesson",
         "asset": "SUI",
@@ -533,9 +533,9 @@
         "entry_time": 1782571518.2102144,
         "entry_score": 62
       },
-      "probe_scoring_version": "v19.12.4 POLICY FORWARD SHADOW",
-      "current_price_v19117": 1.847,
-      "current_pnl_v19117": -1.10831503988863,
+      "probe_scoring_version": "v20.2 CHAMPION CHALLENGER FORWARD LAB",
+      "current_price_v19117": 1.8378,
+      "current_pnl_v19117": -1.6008995020613492,
       "probe_lesson_24h_v19118": {
         "key": "NEAR:1782571518:24h_prelesson",
         "asset": "NEAR",
@@ -657,9 +657,9 @@
         "entry_time": 1782571518.2102144,
         "entry_score": 62
       },
-      "probe_scoring_version": "v19.12.4 POLICY FORWARD SHADOW",
-      "current_price_v19117": 7.3164,
-      "current_pnl_v19117": -1.297790249035433,
+      "probe_scoring_version": "v20.2 CHAMPION CHALLENGER FORWARD LAB",
+      "current_price_v19117": 7.3021,
+      "current_pnl_v19117": -1.4907050157839359,
       "probe_lesson_24h_v19118": {
         "key": "LINK:1782571518:24h_prelesson",
         "asset": "LINK",
@@ -847,9 +847,9 @@
         "entry_time": 1782574592.1408331,
         "entry_score": 62
       },
-      "probe_scoring_version": "v19.12.4 POLICY FORWARD SHADOW",
-      "current_price_v19117": 6.573,
-      "current_pnl_v19117": -0.9195055773289107,
+      "probe_scoring_version": "v20.2 CHAMPION CHALLENGER FORWARD LAB",
+      "current_price_v19117": 6.588,
+      "current_pnl_v19117": -0.6933976484775439,
       "probe_lesson_24h_v19118": {
         "key": "AVAX:1782574592:24h_prelesson",
         "asset": "AVAX",
@@ -971,9 +971,9 @@
         "entry_time": 1782576393.2249265,
         "entry_score": 62
       },
-      "probe_scoring_version": "v19.12.4 POLICY FORWARD SHADOW",
-      "current_price_v19117": 91.583,
-      "current_pnl_v19117": -4.671545003174734,
+      "probe_scoring_version": "v20.2 CHAMPION CHALLENGER FORWARD LAB",
+      "current_price_v19117": 92.346,
+      "current_pnl_v19117": -3.8773407167615557,
       "probe_lesson_24h_v19118": {
         "key": "AAVE:1782576393:24h_prelesson",
         "asset": "AAVE",
@@ -9554,11 +9554,21 @@
       "version": "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
     }
   ],
-  "last_policy_forward_scan_at": 1782730010.9886587,
+  "last_policy_forward_scan_at": 1782733864.2760766,
   "last_policy_forward_scan_result": {
     "scanned": 10,
     "matched": 0,
     "created": 0,
-    "version": "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
+    "version": "v20.2 CHAMPION CHALLENGER FORWARD LAB",
+    "challenger": {
+      "updated": 0,
+      "closed": 0,
+      "created": 0,
+      "matches": {
+        "balanced": 0,
+        "exploration": 5
+      },
+      "active": 4
+    }
   }
 }
