@@ -1,7 +1,7 @@
 {
-  "version": "v19.12.1 ENTRY POLICY SEARCH",
-  "updated_at": 1782717927.6643605,
-  "updated_at_iso": "2026-06-29T07:25:27.664378",
+  "version": "v19.12.2 RISK REWARD WALKFORWARD",
+  "updated_at": 1782718267.5378516,
+  "updated_at_iso": "2026-06-29T07:31:07.537964",
   "method": "4h chronological walk-forward 70/30; features use past candles only; stride 12h",
   "assets_requested": [
     "SOL",
@@ -53,7 +53,10 @@
       "win_rate": 0.384,
       "bad_rate": 0.332,
       "avg_mae": -5.256,
-      "avg_mfe": 4.432
+      "avg_mfe": 4.432,
+      "plan_expectancy": -0.057,
+      "plan_win_rate": 0.562,
+      "plan_stop_rate": 0.39
     },
     {
       "threshold": 60,
@@ -63,7 +66,10 @@
       "win_rate": 0.391,
       "bad_rate": 0.324,
       "avg_mae": -5.078,
-      "avg_mfe": 4.478
+      "avg_mfe": 4.478,
+      "plan_expectancy": -0.006,
+      "plan_win_rate": 0.571,
+      "plan_stop_rate": 0.38
     },
     {
       "threshold": 65,
@@ -73,7 +79,10 @@
       "win_rate": 0.392,
       "bad_rate": 0.325,
       "avg_mae": -5.032,
-      "avg_mfe": 4.455
+      "avg_mfe": 4.455,
+      "plan_expectancy": 0.04,
+      "plan_win_rate": 0.579,
+      "plan_stop_rate": 0.371
     },
     {
       "threshold": 70,
@@ -83,7 +92,10 @@
       "win_rate": 0.41,
       "bad_rate": 0.307,
       "avg_mae": -4.761,
-      "avg_mfe": 4.62
+      "avg_mfe": 4.62,
+      "plan_expectancy": 0.15,
+      "plan_win_rate": 0.602,
+      "plan_stop_rate": 0.348
     },
     {
       "threshold": 75,
@@ -93,7 +105,10 @@
       "win_rate": 0.42,
       "bad_rate": 0.287,
       "avg_mae": -4.417,
-      "avg_mfe": 4.757
+      "avg_mfe": 4.757,
+      "plan_expectancy": 0.321,
+      "plan_win_rate": 0.631,
+      "plan_stop_rate": 0.311
     }
   ],
   "validation_thresholds": [
@@ -105,7 +120,10 @@
       "win_rate": 0.395,
       "bad_rate": 0.245,
       "avg_mae": -3.634,
-      "avg_mfe": 4.478
+      "avg_mfe": 4.478,
+      "plan_expectancy": 0.089,
+      "plan_win_rate": 0.57,
+      "plan_stop_rate": 0.343
     },
     {
       "threshold": 60,
@@ -115,7 +133,10 @@
       "win_rate": 0.395,
       "bad_rate": 0.238,
       "avg_mae": -3.537,
-      "avg_mfe": 4.508
+      "avg_mfe": 4.508,
+      "plan_expectancy": 0.152,
+      "plan_win_rate": 0.581,
+      "plan_stop_rate": 0.33
     },
     {
       "threshold": 65,
@@ -125,7 +146,10 @@
       "win_rate": 0.389,
       "bad_rate": 0.236,
       "avg_mae": -3.539,
-      "avg_mfe": 4.377
+      "avg_mfe": 4.377,
+      "plan_expectancy": 0.11,
+      "plan_win_rate": 0.576,
+      "plan_stop_rate": 0.341
     },
     {
       "threshold": 70,
@@ -135,7 +159,10 @@
       "win_rate": 0.387,
       "bad_rate": 0.231,
       "avg_mae": -3.476,
-      "avg_mfe": 4.327
+      "avg_mfe": 4.327,
+      "plan_expectancy": 0.155,
+      "plan_win_rate": 0.586,
+      "plan_stop_rate": 0.333
     },
     {
       "threshold": 75,
@@ -145,71 +172,81 @@
       "win_rate": 0.39,
       "bad_rate": 0.228,
       "avg_mae": -3.364,
-      "avg_mfe": 4.296
+      "avg_mfe": 4.296,
+      "plan_expectancy": 0.193,
+      "plan_win_rate": 0.593,
+      "plan_stop_rate": 0.324
     }
   ],
   "selected_threshold": 60,
   "selected_train": {
     "threshold": 60,
-    "n": 93,
-    "avg48": 0.693,
-    "median48": 0.494,
-    "win_rate": 0.473,
-    "bad_rate": 0.183,
-    "avg_mae": -3.327,
-    "avg_mfe": 5.086,
+    "n": 88,
+    "avg48": 0.834,
+    "median48": 0.396,
+    "win_rate": 0.466,
+    "bad_rate": 0.227,
+    "avg_mae": -3.53,
+    "avg_mfe": 5.703,
+    "plan_expectancy": 0.949,
+    "plan_win_rate": 0.761,
+    "plan_stop_rate": 0.193,
     "policy": {
       "threshold": 60,
-      "btc_min": 0.5,
-      "ret4_min": -1.0,
+      "btc_min": 0.0,
+      "ret4_min": 0.0,
       "ret24_min": -3.0,
       "ret24_max": 4.5,
       "volume_min": 1.2,
       "rsi_max": 66,
       "above_ema_required": true,
-      "btc_ema_required": false
+      "btc_ema_required": true
     }
   },
   "selected_validation": {
     "threshold": 60,
-    "n": 77,
-    "avg48": 0.776,
-    "median48": 0.299,
-    "win_rate": 0.442,
-    "bad_rate": 0.13,
-    "avg_mae": -2.895,
-    "avg_mfe": 4.309,
+    "n": 67,
+    "avg48": 0.953,
+    "median48": 0.508,
+    "win_rate": 0.463,
+    "bad_rate": 0.134,
+    "avg_mae": -3.032,
+    "avg_mfe": 4.394,
+    "plan_expectancy": 0.398,
+    "plan_win_rate": 0.627,
+    "plan_stop_rate": 0.284,
     "policy": {
       "threshold": 60,
-      "btc_min": 0.5,
-      "ret4_min": -1.0,
+      "btc_min": 0.0,
+      "ret4_min": 0.0,
       "ret24_min": -3.0,
       "ret24_max": 4.5,
       "volume_min": 1.2,
       "rsi_max": 66,
       "above_ema_required": true,
-      "btc_ema_required": false
+      "btc_ema_required": true
     }
   },
   "selected_policy": {
     "threshold": 60,
-    "btc_min": 0.5,
-    "ret4_min": -1.0,
+    "btc_min": 0.0,
+    "ret4_min": 0.0,
     "ret24_min": -3.0,
     "ret24_max": 4.5,
     "volume_min": 1.2,
     "rsi_max": 66,
     "above_ema_required": true,
-    "btc_ema_required": false
+    "btc_ema_required": true
   },
   "policy_search_count": 720,
   "readiness_checks": {
     "validation_n_60": true,
     "validation_avg_positive": true,
     "validation_win_rate": false,
-    "validation_bad_rate": true
+    "validation_bad_rate": true,
+    "validation_plan_expectancy": true
   },
-  "readiness_passed": 3,
+  "readiness_passed": 4,
   "ready_for_live": false,
   "note": "Historical validation only. It cannot enable live BUY or autotrading."
 }
