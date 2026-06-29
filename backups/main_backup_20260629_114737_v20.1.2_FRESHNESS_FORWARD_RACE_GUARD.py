@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -254,10 +254,6 @@ def _state_score(path, data, raw_size=0):
         if name == "effectiveness_history_v201.json":
             records = data.get("records") if isinstance(data.get("records"), list) else []
             return len(records) * 10 + int(raw_size / 1000)
-        if name == "forward_challenger_lab_v202.json":
-            open_rows = data.get("open") if isinstance(data.get("open"), dict) else {}
-            closed_rows = data.get("closed") if isinstance(data.get("closed"), list) else []
-            return len(open_rows) * 5 + len(closed_rows) * 20 + int(raw_size / 1000)
         if name == "admin_deploy_state.json":
             return int(raw_size / 100) + (5 if data else 0)
     except Exception:
@@ -16835,7 +16831,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17943,7 +17939,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18418,7 +18414,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18582,7 +18578,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18927,7 +18923,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19308,7 +19304,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19615,7 +19611,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20129,7 +20125,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20270,7 +20266,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20581,7 +20577,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20872,7 +20868,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21732,7 +21728,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22136,7 +22132,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22705,7 +22701,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23213,7 +23209,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23519,7 +23515,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24047,7 +24043,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25264,7 +25260,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 
 def _v191191_branch_ref_name():
@@ -25409,7 +25405,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25697,7 +25693,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25926,7 +25922,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26293,13 +26289,13 @@ def version_user_report():
 
 
 
-# === v20.2 CHAMPION CHALLENGER FORWARD LAB ===
+# === v20.1.2 FRESHNESS & FORWARD RACE GUARD ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26913,7 +26909,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 
 def v1911101_section(title, body):
@@ -26968,7 +26964,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27069,7 +27065,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 
 def v1911101_load_buy_state():
@@ -27185,14 +27181,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v20.2 CHAMPION CHALLENGER FORWARD LAB ===
+# === v20.1.2 FRESHNESS & FORWARD RACE GUARD ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27493,13 +27489,13 @@ def version_user_report():
 
 
 
-# === v20.2 CHAMPION CHALLENGER FORWARD LAB ===
+# === v20.1.2 FRESHNESS & FORWARD RACE GUARD ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27802,21 +27798,17 @@ def version_user_report():
     )
 
 
-# === v20.2 CHAMPION CHALLENGER FORWARD LAB ===
+# === v20.1.2 FRESHNESS & FORWARD RACE GUARD ===
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+V191111_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
-V202_FORWARD_LAB_FILE = data_path("forward_challenger_lab_v202.json")
-V202_FORWARD_LAB_LOCK = Lock()
-V202_POLICY_SCHEMA = "walkforward_regime_guard_v1"
 
 try:
     PROTECTED_STATE_BASENAMES.add("effectiveness_history_v201.json")
-    PROTECTED_STATE_BASENAMES.add("forward_challenger_lab_v202.json")
 except Exception:
     pass
 
@@ -28563,7 +28555,6 @@ def v191120_run_walkforward(candles_by_asset=None):
     }
     result = {
         'version': V191111_VERSION,
-        'policy_schema': V202_POLICY_SCHEMA,
         'updated_at': time.time(),
         'updated_at_iso': datetime.utcnow().isoformat(),
         'method': '4h chronological walk-forward 70/30; features use past candles only; stride 12h',
@@ -28618,27 +28609,6 @@ def v191120_load_entry_lab():
         return {}
 
 
-def v202_entry_lab_compatible(data):
-    if not isinstance(data, dict) or not data:
-        return False
-    if str(data.get('version') or '') == V191111_VERSION:
-        return True
-    schema_ok = str(data.get('policy_schema') or '') == V202_POLICY_SCHEMA
-    legacy_ok = str(data.get('version') or '') == 'v20.1.2 FRESHNESS & FORWARD RACE GUARD'
-    if not (schema_ok or legacy_ok):
-        return False
-    checks = data.get('readiness_checks', {}) if isinstance(data.get('readiness_checks', {}), dict) else {}
-    validation = data.get('selected_validation', {}) if isinstance(data.get('selected_validation', {}), dict) else {}
-    return (
-        str(data.get('policy_mode') or '') == 'global_policy'
-        and int(data.get('stable_windows', 0) or 0) == 3
-        and sum(1 for ok in checks.values() if ok) >= 5
-        and int(validation.get('n', 0) or 0) >= 60
-        and float(validation.get('plan_expectancy', 0) or 0) >= 0.20
-        and float(validation.get('bad_rate', 1) or 1) <= 0.25
-    )
-
-
 def v191120_entry_lab_lines():
     data = v191120_load_entry_lab()
     lines = ['🧪 WALK-FORWARD ENTRY LAB']
@@ -28646,13 +28616,7 @@ def v191120_entry_lab_lines():
         return lines + ['• результат ещё не собран; фоновый replay запущен или ожидает запуска']
     lab_version = str(data.get('version') or '')
     lab_fresh = lab_version == V191111_VERSION
-    lab_compatible = v202_entry_lab_compatible(data)
-    if not lab_fresh and lab_compatible:
-        lines += [
-            f"• статус: ✅ validated carry-forward из {lab_version}; свежий пересчёт выполняется в фоне",
-            '• policy разрешена только для PAPER Forward Lab; live BUY остаётся OFF.',
-        ]
-    elif not lab_fresh:
+    if not lab_fresh:
         lines += [
             f"• статус: ⏳ пересчёт выполняется; ниже cached результат {lab_version or 'неизвестной версии'}",
             '• cached policy не используется Forward Shadow и не записывается как эффективность новой версии.',
@@ -28667,7 +28631,7 @@ def v191120_entry_lab_lines():
         f"• assets loaded: {len(data.get('assets_loaded', []) or [])}/{len(data.get('assets_requested', []) or [])}",
         f"• history depth: up to {max((data.get('candle_counts', {}) or {'?': 0}).values())} candles per asset",
         f"• model: {'REGIME EXPERTS' if policy_mode == 'regime_experts' else 'GLOBAL POLICY'}"
-        + ('' if lab_fresh else (' (VALIDATED CARRY-FORWARD)' if lab_compatible else ' (CACHED / NOT DEPLOYED)')),
+        + ('' if lab_fresh else ' (CACHED / NOT DEPLOYED)'),
         f"• selected PAPER threshold: {data.get('selected_threshold', '?')}/100",
         (
             f"• policy: BTC ≥{float(policy.get('btc_min', 0) or 0):+.1f}% | 4ч ≥{float(policy.get('ret4_min', 0) or 0):+.1f}% | "
@@ -28775,192 +28739,12 @@ def v191120_learn_fast_report(start=False):
         f"Старый daily bootstrap: {'запущен' if old_started else 'есть/недавно запускался'}",
         f"Walk-forward Entry Lab: {'запущен в фоне' if lab_started else 'есть/уже выполняется'}",
         f"Policy Forward Shadow: {'запущен в фоне' if forward_started else 'есть/ожидает следующего цикла'}",
-        'Champion–Challenger Lab: подключён к Forward Shadow, отдельное PAPER-хранилище',
         '',
         *v191120_entry_lab_lines(),
         '',
         'Реальные покупки 0, автоторговля OFF.',
     ]
     return '\n'.join(lines)
-
-
-def v202_forward_lab_load():
-    try:
-        data = load_json(V202_FORWARD_LAB_FILE)
-        if not isinstance(data, dict):
-            data = {}
-    except Exception:
-        data = {}
-    data.setdefault('open', {})
-    data.setdefault('closed', [])
-    return data
-
-
-def v202_forward_lab_save(data):
-    if not isinstance(data, dict):
-        return
-    data['version'] = V191111_VERSION
-    save_json(V202_FORWARD_LAB_FILE, data)
-    try:
-        mark_github_dirty(V202_FORWARD_LAB_FILE)
-    except Exception:
-        pass
-
-
-def v202_challenger_policies(champion):
-    champion = dict(champion or {})
-    if not champion:
-        return {}
-    balanced = dict(champion)
-    balanced.update({
-        'threshold': max(65, int(champion.get('threshold', 80) or 80) - 5),
-        'btc_min': min(float(champion.get('btc_min', 0) or 0), -0.5),
-        'ret4_min': min(float(champion.get('ret4_min', -1) or -1), -1.5),
-        'volume_min': min(float(champion.get('volume_min', 1) or 1), 0.8),
-        'rsi_max': max(float(champion.get('rsi_max', 60) or 60), 66),
-    })
-    exploration = dict(champion)
-    exploration.update({
-        'threshold': max(60, int(champion.get('threshold', 80) or 80) - 15),
-        'btc_min': -1.0,
-        'ret4_min': -2.0,
-        'volume_min': 0.7,
-        'rsi_max': 70,
-        'above_ema_required': False,
-        'btc_ema_required': False,
-    })
-    return {
-        'balanced': balanced,
-        'exploration': exploration,
-    }
-
-
-def v202_forward_lab_cycle(features_by_asset, lab):
-    result = {'updated': 0, 'closed': 0, 'created': 0, 'matches': {}, 'active': 0}
-    if not V202_FORWARD_LAB_LOCK.acquire(False):
-        result['error'] = 'cycle already running'
-        return result
-    try:
-        data = v202_forward_lab_load()
-        open_rows = data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}
-        closed_rows = data.get('closed', []) if isinstance(data.get('closed', []), list) else []
-        now = time.time()
-
-        for key, trade in list(open_rows.items()):
-            if not isinstance(trade, dict):
-                open_rows.pop(key, None)
-                continue
-            feature = features_by_asset.get(str(trade.get('asset') or '').upper())
-            price = float((feature or {}).get('price', 0) or 0)
-            entry = float(trade.get('entry_price', 0) or 0)
-            entry_time = float(trade.get('entry_time', 0) or 0)
-            if price <= 0 or entry <= 0 or entry_time <= 0:
-                continue
-            age_h = max(0.0, (now - entry_time) / 3600.0)
-            pct = round(v191120_pct(entry, price), 3)
-            trade['last_price'] = price
-            trade['last_pct'] = pct
-            trade['last_update_at'] = now
-            results = trade.setdefault('results', {})
-            for name, hours in [('1h', 1), ('4h', 4), ('12h', 12), ('24h', 24), ('48h', 48)]:
-                if age_h >= hours and name not in results:
-                    results[name] = pct
-                    result['updated'] += 1
-            if age_h >= 48:
-                trade['status'] = 'closed'
-                trade['closed_at'] = now
-                trade['final_pct'] = float(results.get('48h', pct) or pct)
-                closed_rows.append(trade)
-                open_rows.pop(key, None)
-                result['closed'] += 1
-
-        champion = lab.get('selected_policy', {}) if isinstance(lab.get('selected_policy'), dict) else {}
-        policies = v202_challenger_policies(champion)
-        known_keys = set(open_rows)
-        known_keys.update(str(row.get('id') or '') for row in closed_rows if isinstance(row, dict))
-        active_by_cohort = {}
-        active_assets = {}
-        for trade in open_rows.values():
-            if not isinstance(trade, dict):
-                continue
-            cohort = str(trade.get('cohort') or '')
-            active_by_cohort[cohort] = active_by_cohort.get(cohort, 0) + 1
-            active_assets.setdefault(cohort, set()).add(str(trade.get('asset') or '').upper())
-
-        for cohort, policy in policies.items():
-            matches = [
-                feature for feature in features_by_asset.values()
-                if isinstance(feature, dict) and v191121_policy_match(feature, policy)
-            ]
-            result['matches'][cohort] = len(matches)
-            for feature in sorted(matches, key=lambda row: int(row.get('score', 0) or 0), reverse=True):
-                if result['created'] >= 4 or active_by_cohort.get(cohort, 0) >= 4:
-                    break
-                asset = str(feature.get('asset') or '').upper()
-                candle_ts = int(feature.get('ts', 0) or 0)
-                price = float(feature.get('price', 0) or 0)
-                key = f"{cohort}:{asset}:{candle_ts}"
-                if not asset or price <= 0 or key in known_keys or asset in active_assets.get(cohort, set()):
-                    continue
-                trade = {
-                    'id': key,
-                    'cohort': cohort,
-                    'asset': asset,
-                    'entry_time': now,
-                    'entry_price': price,
-                    'last_price': price,
-                    'last_pct': 0.0,
-                    'status': 'open',
-                    'policy': dict(policy),
-                    'entry_features': dict(feature),
-                    'results': {},
-                    'created_by': V191111_VERSION,
-                    'note': 'Experimental forward PAPER only; excluded from main gate and live BUY.',
-                }
-                open_rows[key] = trade
-                known_keys.add(key)
-                active_assets.setdefault(cohort, set()).add(asset)
-                active_by_cohort[cohort] = active_by_cohort.get(cohort, 0) + 1
-                result['created'] += 1
-
-        result['active'] = len(open_rows)
-        data['open'] = open_rows
-        data['closed'] = closed_rows[-300:]
-        data['last_cycle_at'] = now
-        data['last_cycle_result'] = dict(result)
-        data['policy_source_version'] = str(lab.get('version') or '')
-        v202_forward_lab_save(data)
-        return result
-    except Exception as exc:
-        result['error'] = str(exc)[:180]
-        return result
-    finally:
-        V202_FORWARD_LAB_LOCK.release()
-
-
-def v202_forward_lab_lines():
-    data = v202_forward_lab_load()
-    open_rows = data.get('open', {}) if isinstance(data.get('open', {}), dict) else {}
-    closed_rows = data.get('closed', []) if isinstance(data.get('closed', []), list) else []
-    last = data.get('last_cycle_result', {}) if isinstance(data.get('last_cycle_result', {}), dict) else {}
-    lines = [
-        '🧬 CHAMPION–CHALLENGER FORWARD LAB',
-        '• основной champion не ослабляется; challengers существуют только как отдельные PAPER-эксперименты.',
-        f"• last cycle: matches {last.get('matches', {})} | created {last.get('created', 0)} | updated {last.get('updated', 0)}",
-        f"• active experiments: {len(open_rows)} | completed 48h: {len(closed_rows)} | real BUY: 0",
-    ]
-    for cohort in ['balanced', 'exploration']:
-        active = [row for row in open_rows.values() if isinstance(row, dict) and row.get('cohort') == cohort]
-        closed = [row for row in closed_rows if isinstance(row, dict) and row.get('cohort') == cohort]
-        values = [float(row.get('final_pct', 0) or 0) for row in closed]
-        avg = sum(values) / len(values) if values else 0.0
-        positive = sum(1 for value in values if value > 0)
-        lines.append(
-            f"• {cohort}: active {len(active)} | closed {len(closed)} | "
-            f"avg48 {avg:+.2f}% | positive {positive}/{len(values)}"
-        )
-    lines.append('• challengers не влияют на эффективность и веса до достаточной независимой выборки.')
-    return lines
 
 
 def v191124_forward_shadow_rows(data=None):
@@ -28979,7 +28763,7 @@ def v191124_run_forward_shadow_scan():
     result = {'scanned': 0, 'matched': 0, 'created': 0, 'active': 0, 'error': ''}
     try:
         lab = v191120_load_entry_lab()
-        if not v202_entry_lab_compatible(lab):
+        if str(lab.get('version') or '') != V191111_VERSION:
             result['error'] = 'entry lab belongs to previous version; wait for current recalculation'
             return result
         policy = lab.get('selected_policy', {}) if isinstance(lab.get('selected_policy'), dict) else {}
@@ -29001,15 +28785,13 @@ def v191124_run_forward_shadow_scan():
         now = time.time()
         created = []
         matches = []
-        features_by_asset = {}
         for asset in V191120_ENTRY_LAB_ASSETS:
             candles = v191120_fetch_4h_candles(asset, pages=1, bars_per_page=90)
             if len(candles) < 40:
                 continue
             result['scanned'] += 1
             feature = v191120_feature_score(candles, len(candles) - 1, btc_features)
-            feature.update({'asset': asset, 'ts': candles[-1]['ts'], 'price': float(candles[-1]['close'])})
-            features_by_asset[asset] = feature
+            feature.update({'asset': asset, 'ts': candles[-1]['ts']})
             live_policy, regime = v2000_policy_for_live(lab, feature)
             if not live_policy or not v191121_policy_match(feature, live_policy):
                 continue
@@ -29051,7 +28833,6 @@ def v191124_run_forward_shadow_scan():
             open_trades[key] = trade
             created.append(trade)
             active_assets.add(asset)
-        challenger_result = v202_forward_lab_cycle(features_by_asset, lab)
         if created:
             data['open'] = open_trades
         data['last_policy_forward_scan_at'] = now
@@ -29060,7 +28841,6 @@ def v191124_run_forward_shadow_scan():
             'matched': len(matches),
             'created': len(created),
             'version': V191111_VERSION,
-            'challenger': challenger_result,
         }
         save_paper_store(data, sync=False)
         result.update({'matched': len(matches), 'created': len(created), 'active': len(active) + len(created)})
@@ -29077,7 +28857,7 @@ def v191124_maybe_forward_background(force=False):
         last = float(data.get('last_policy_forward_scan_at', 0) or 0) if isinstance(data, dict) else 0
     except Exception:
         last = 0
-    if not force and ((last and now - last < 3600) or now - float(V191124_FORWARD_LAST_START or 0) < 900):
+    if not force and ((last and now - last < 4 * 3600) or now - float(V191124_FORWARD_LAST_START or 0) < 1800):
         return False
     V191124_FORWARD_LAST_START = now
 
@@ -29923,11 +29703,7 @@ def v201_technical_reliability(data, lab):
         'version': bool(V191111_VERSION),
         'walkforward': (
             bool(lab)
-            and (
-                v202_entry_lab_compatible(lab)
-                if 'v202_entry_lab_compatible' in globals()
-                else str(lab.get('version') or '') == V191111_VERSION
-            )
+            and str(lab.get('version') or '') == V191111_VERSION
             and int(lab.get('total_samples', 0) or 0) > 0
         ),
         'silent_audit': bool(getattr(auto_audit_check_and_send, '_v1911103_silent', False)),
@@ -29955,11 +29731,7 @@ def v201_effectiveness_snapshot():
     lessons = v191111_lesson_stats()
     lab = v191120_load_entry_lab()
     lab_version = str(lab.get('version') or '') if isinstance(lab, dict) else ''
-    lab_fresh = (
-        bool(v202_entry_lab_compatible(lab))
-        if 'v202_entry_lab_compatible' in globals()
-        else bool(lab_version and lab_version == V191111_VERSION)
-    )
+    lab_fresh = bool(lab_version and lab_version == V191111_VERSION)
     validation = lab.get('selected_validation', {}) if isinstance(lab.get('selected_validation', {}), dict) else {}
     lab_checks = lab.get('readiness_checks', {}) if isinstance(lab.get('readiness_checks', {}), dict) else {}
 
@@ -29977,9 +29749,6 @@ def v201_effectiveness_snapshot():
         if lab_checks else 0
     )
     forward = v201_forward_proof(data)
-    forward_lab = v202_forward_lab_load() if 'v202_forward_lab_load' in globals() else {}
-    experiment_open = forward_lab.get('open', {}) if isinstance(forward_lab.get('open', {}), dict) else {}
-    experiment_closed = forward_lab.get('closed', []) if isinstance(forward_lab.get('closed', []), list) else []
     learning = v201_learning_speed(data, lessons)
     reliability = v201_technical_reliability(data, lab)
     forecast_accuracy = v201_clamp(
@@ -30030,8 +29799,6 @@ def v201_effectiveness_snapshot():
             'validation_expectancy': round(float(validation.get('plan_expectancy', 0) or 0), 2),
             'forward_closed': forward['total'],
             'forward_avg_pct': forward['avg_pct'],
-            'experiment_forward_active': len(experiment_open),
-            'experiment_forward_closed': len(experiment_closed),
             'checkpoints': learning['checkpoints'],
             'evidence_ready_assets': learning['ready_assets'],
             'evidence_tracked_assets': learning['tracked_assets'],
@@ -30150,7 +29917,6 @@ def v201_effectiveness_report(record=True):
         '',
         f"Данные: закрыто PAPER {evidence['paper_closed']} | BUY-уроков {evidence['lessons']} | "
         f"validation {evidence['validation_n']} | forward {evidence['forward_closed']} | checkpoints {evidence['checkpoints']}",
-        f"Forward Lab: экспериментов active {evidence.get('experiment_forward_active', 0)} | closed {evidence.get('experiment_forward_closed', 0)}",
         f"Главный ограничитель: {blocker}.",
         f"История: {history_line}",
         '',
@@ -30167,16 +29933,15 @@ def v191111_audit_content():
         decisions = v191111_ranked_paper_buy_decisions()
     sections = [
         ('VERSION', f'BOT_VERSION: {V191111_VERSION}'),
-        ('EFFECTIVENESS CONTROL CENTER V20.2', effectiveness_section),
-        ('MEASURABLE LEARNING PROGRESS V20.2', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
+        ('EFFECTIVENESS CONTROL CENTER V20.1.2', effectiveness_section),
+        ('MEASURABLE LEARNING PROGRESS V20.1.2', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
         ('HISTORICAL POLICY VS ENTRY CALIBRATION', '\n'.join(v191113_policy_calibration_lines(backfill))),
-        ('WALK-FORWARD ENTRY LAB V20.2', '\n'.join(v191120_entry_lab_lines())),
-        ('VALIDATED POLICY FORWARD SHADOW V20.2', '\n'.join(v191124_forward_shadow_lines())),
-        ('CHAMPION-CHALLENGER FORWARD LAB V20.2', '\n'.join(v202_forward_lab_lines())),
+        ('WALK-FORWARD ENTRY LAB V20.1.2', '\n'.join(v191120_entry_lab_lines())),
+        ('VALIDATED POLICY FORWARD SHADOW V20.1.2', '\n'.join(v191124_forward_shadow_lines())),
         ('FAST PROBE SCORING', v1911101_safe_call('v191181_fast_probe_scoring_report')),
         ('FAST SHADOW PORTFOLIO', v1911101_safe_call('v191181_fast_shadow_report')),
         ('FAST LESSON ENGINE', v1911101_safe_call('v191181_fast_lesson_engine_report')),
-        ('UNIFIED PAPER DECISION GATE V20.2', v191111_paper_buy_report(create=False)),
+        ('UNIFIED PAPER DECISION GATE V20.1.2', v191111_paper_buy_report(create=False)),
         ('PAPER CHECKPOINT LIFECYCLE', '\n'.join(v191111_checkpoint_lines(decisions))),
         ('CONFIDENCE LESSON ROUTER', '\n'.join(v191111_router_lines())),
         ('HOURLY FAST EVIDENCE ROUTER', '\n'.join(v191112_fast_evidence_lines(decisions))),
@@ -30194,12 +29959,11 @@ def v191111_version_report():
     return (
         f'✅ Версия: {V191111_VERSION}\n\n'
         'Что изменено:\n'
-        '• добавлен отдельный Champion–Challenger Forward Lab;\n'
-        '• balanced и exploration policy собирают независимые PAPER-примеры параллельно champion;\n'
-        '• эксперименты хранятся отдельно и не занимают лимит основных PAPER BUY;\n'
-        '• сохраняются checkpoints 1ч/4ч/12ч/24ч/48ч и итог каждой когорты;\n'
-        '• challengers не влияют на score, веса и основной gate до достаточной выборки;\n'
-        '• forward-скан выполняется каждый час без дублей одной 4ч свечи;\n'
+        '• cached Entry Lab предыдущей версии явно помечается как устаревший;\n'
+        '• старый результат не записывается в историю эффективности новой версии;\n'
+        '• Forward Shadow физически не может использовать policy предыдущей версии;\n'
+        '• устранена гонка между фоновым пересчётом Entry Lab и Forward Shadow;\n'
+        '• после свежего пересчёта regime validation guard выбирает безопасную policy;\n'
         '• live BUY и автоторговля остаются выключены.\n\n'
         'Безопасность:\n'
         '• реальные покупки 0;\n'
@@ -30275,7 +30039,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -30576,7 +30340,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -31009,13 +30773,13 @@ def version_user_report():
 
 
 
-# === v20.2 CHAMPION CHALLENGER FORWARD LAB ===
+# === v20.1.2 FRESHNESS & FORWARD RACE GUARD ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -31629,7 +31393,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 
 def v1911101_section(title, body):
@@ -31684,7 +31448,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -31785,7 +31549,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 
 def v1911101_load_buy_state():
@@ -31900,14 +31664,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v20.2 CHAMPION CHALLENGER FORWARD LAB ===
+# === v20.1.2 FRESHNESS & FORWARD RACE GUARD ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -32208,13 +31972,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v20.2 CHAMPION CHALLENGER FORWARD LAB ===
+# === v20.1.2 FRESHNESS & FORWARD RACE GUARD ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.2 CHAMPION CHALLENGER FORWARD LAB"
+BOT_VERSION = "v20.1.2 FRESHNESS & FORWARD RACE GUARD"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
