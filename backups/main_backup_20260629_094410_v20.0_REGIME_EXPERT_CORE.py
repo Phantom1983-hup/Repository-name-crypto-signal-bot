@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -251,9 +251,6 @@ def _state_score(path, data, raw_size=0):
             return n * 5 + int(raw_size / 2000)
         if name == "historical_backtest_stats.json":
             return int(raw_size / 1000) + len(data.keys())
-        if name == "effectiveness_history_v201.json":
-            records = data.get("records") if isinstance(data.get("records"), list) else []
-            return len(records) * 10 + int(raw_size / 1000)
         if name == "admin_deploy_state.json":
             return int(raw_size / 100) + (5 if data else 0)
     except Exception:
@@ -2258,7 +2255,6 @@ def weekday_report():
 
 BUTTON_TO_COMMAND = {
     "📊 Сигнал": "/signal",
-    "📈 Эффективность": "/effectiveness",
     "🔎 Монета": "/coin",
     "🟠 BTC": "/btc",
     "🟣 SOL": "/sol",
@@ -2403,10 +2399,6 @@ COMMAND_POOL_ALIASES = {
     "signal": "/signal",
     "сигнал": "/signal",
     "📊 сигнал": "/signal",
-    "effectiveness": "/effectiveness",
-    "efficiency": "/effectiveness",
-    "эффективность": "/effectiveness",
-    "📈 эффективность": "/effectiveness",
     "paper": "/paper",
     "paper_classifier": "/paper_classifier",
     "paper_profile": "/paper_classifier",
@@ -2692,7 +2684,9 @@ def coin_search_prompt():
 
 def keyboard(chat_id=None):
     """
-    Главное меню: ключевые пользовательские отчёты доступны одним нажатием.
+    v17.8.5:
+    Главное меню без кнопки отчёта.
+    Для ускорения тестов Paper вынесен на главный экран, а редкое осталось в 🛠 Сервис.
     """
     return {
         "keyboard": [
@@ -2700,7 +2694,7 @@ def keyboard(chat_id=None):
             ["🟠 BTC", "🟣 SOL"],
             ["🌍 Рынок", "⚡ Alerts"],
             ["📚 Обучение", "🧪 Paper"],
-            ["📈 Эффективность", "🛠 Сервис"],
+            ["🛠 Сервис"],
         ],
         "resize_keyboard": True
     }
@@ -16831,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17939,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18414,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18578,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18923,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19304,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19611,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20125,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20266,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20577,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20868,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21354,9 +21348,6 @@ def main():
                 elif text in ["/accuracy", "/performance", "/score"]:
                     send_message(chat_id, v198_accuracy_score_report())
 
-                elif text in ["/effectiveness", "/efficiency", "/bot_effectiveness"]:
-                    send_message(chat_id, v201_effectiveness_report(record=True))
-
                 elif text == "/signal_unlock":
                     if is_admin(chat_id) or not ADMIN_CHAT_ID:
                         force_clear_signal_lock()
@@ -21728,7 +21719,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22132,7 +22123,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22701,7 +22692,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23209,7 +23200,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23515,7 +23506,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24043,7 +24034,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25260,7 +25251,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 
 def _v191191_branch_ref_name():
@@ -25405,7 +25396,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25693,7 +25684,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25922,7 +25913,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26289,13 +26280,13 @@ def version_user_report():
 
 
 
-# === v20.1 EFFECTIVENESS CONTROL CENTER ===
+# === v20.0 REGIME EXPERT CORE ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26909,7 +26900,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 
 def v1911101_section(title, body):
@@ -26964,7 +26955,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27065,7 +27056,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 
 def v1911101_load_buy_state():
@@ -27181,14 +27172,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v20.1 EFFECTIVENESS CONTROL CENTER ===
+# === v20.0 REGIME EXPERT CORE ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27489,13 +27480,13 @@ def version_user_report():
 
 
 
-# === v20.1 EFFECTIVENESS CONTROL CENTER ===
+# === v20.0 REGIME EXPERT CORE ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27798,19 +27789,13 @@ def version_user_report():
     )
 
 
-# === v20.1 EFFECTIVENESS CONTROL CENTER ===
+# === v20.0 REGIME EXPERT CORE ===
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+V191111_VERSION = "v20.0 REGIME EXPERT CORE"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
-V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
-
-try:
-    PROTECTED_STATE_BASENAMES.add("effectiveness_history_v201.json")
-except Exception:
-    pass
 
 try:
     _V191111_BASE_OPEN = v19119_open_paper_buy_decisions
@@ -29580,270 +29565,6 @@ def v191111_paper_buy_report(create=False):
     return '\n'.join(lines)
 
 
-def v201_clamp(value):
-    try:
-        return max(0, min(100, int(round(float(value)))))
-    except Exception:
-        return 0
-
-
-def v201_forward_proof(data):
-    rows = []
-    closed = data.get('closed', []) if isinstance(data, dict) and isinstance(data.get('closed', []), list) else []
-    for trade in closed:
-        if not isinstance(trade, dict) or str(trade.get('virtual_type') or '') != V191124_FORWARD_TYPE:
-            continue
-        results = trade.get('results', {}) if isinstance(trade.get('results', {}), dict) else {}
-        value = results.get('48h')
-        if not isinstance(value, (int, float)):
-            value = results.get('24h')
-        if isinstance(value, (int, float)):
-            rows.append(float(value))
-    if not rows:
-        return {'total': 0, 'positive': 0, 'bad': 0, 'avg_pct': 0.0, 'score': 0}
-    positive = sum(1 for value in rows if value > 0)
-    bad = sum(1 for value in rows if value <= -3.0)
-    avg_pct = sum(rows) / len(rows)
-    positive_rate = positive / float(len(rows))
-    bad_rate = bad / float(len(rows))
-    score = 50 + avg_pct * 10 + (positive_rate - 0.5) * 40 - bad_rate * 30
-    return {
-        'total': len(rows),
-        'positive': positive,
-        'bad': bad,
-        'avg_pct': round(avg_pct, 2),
-        'score': v201_clamp(score),
-    }
-
-
-def v201_learning_speed(data, lesson_stats):
-    log = data.get(V191111_FAST_CHECKPOINT_KEY, []) if isinstance(data, dict) else []
-    log = log if isinstance(log, list) else []
-    grouped = {}
-    for row in log:
-        if not isinstance(row, dict) or row.get('kind') != 'paper_candidate':
-            continue
-        asset = str(row.get('asset') or '').upper().strip()
-        if asset:
-            grouped.setdefault(asset, []).append(row)
-    ready = 0
-    for rows in grouped.values():
-        times = sorted(float(row.get('captured_at', 0) or 0) for row in rows)
-        if len(times) >= 2 and times[-1] - times[0] >= 2700:
-            ready += 1
-    coverage = ready / float(len(grouped)) if grouped else 0.0
-    checkpoint_score = min(35.0, len(log) / 50.0 * 35.0)
-    lesson_score = min(35.0, int(lesson_stats.get('total', 0) or 0) / 20.0 * 35.0)
-    score = checkpoint_score + lesson_score + coverage * 30.0
-    return {
-        'score': v201_clamp(score),
-        'checkpoints': len(log),
-        'tracked_assets': len(grouped),
-        'ready_assets': ready,
-    }
-
-
-def v201_technical_reliability(data, lab):
-    checks = {
-        'paper_store': isinstance(data, dict),
-        'version': bool(V191111_VERSION),
-        'walkforward': bool(lab) and int(lab.get('total_samples', 0) or 0) > 0,
-        'silent_audit': bool(getattr(auto_audit_check_and_send, '_v1911103_silent', False)),
-        'durable_state': False,
-    }
-    try:
-        active = int(v1911102_count_active_buy_in_data(data))
-        durable = int(v1911102_state_active_count())
-        checks['durable_state'] = durable >= active
-    except Exception:
-        checks['durable_state'] = False
-    passed = sum(1 for ok in checks.values() if ok)
-    return {'score': v201_clamp(passed / float(len(checks)) * 100), 'passed': passed, 'total': len(checks)}
-
-
-def v201_effectiveness_snapshot():
-    try:
-        data = paper_store()
-    except Exception:
-        data = {}
-    try:
-        metrics = _v1982_metrics()
-    except Exception:
-        metrics = {}
-    lessons = v191111_lesson_stats()
-    lab = v191120_load_entry_lab()
-    validation = lab.get('selected_validation', {}) if isinstance(lab.get('selected_validation', {}), dict) else {}
-    lab_checks = lab.get('readiness_checks', {}) if isinstance(lab.get('readiness_checks', {}), dict) else {}
-
-    protection = v201_clamp(metrics.get('protection_score', 0))
-    total_lessons = int(lessons.get('total', 0) or 0)
-    good = int(lessons.get('good', 0) or 0)
-    bad = int(lessons.get('bad', 0) or 0)
-    avg_pct = float(lessons.get('avg_pct', 0) or 0)
-    entry_accuracy = v201_clamp(
-        50 + avg_pct * 8 + good * 4 - bad * 6 + min(total_lessons, 20)
-        if total_lessons else 0
-    )
-    historical = v201_clamp(
-        sum(1 for ok in lab_checks.values() if ok) / float(len(lab_checks)) * 100
-        if lab_checks else 0
-    )
-    forward = v201_forward_proof(data)
-    learning = v201_learning_speed(data, lessons)
-    reliability = v201_technical_reliability(data, lab)
-    forecast_accuracy = v201_clamp(
-        protection * 0.30
-        + entry_accuracy * 0.35
-        + historical * 0.25
-        + forward['score'] * 0.10
-    )
-    overall = v201_clamp(
-        protection * 0.20
-        + entry_accuracy * 0.25
-        + historical * 0.25
-        + forward['score'] * 0.15
-        + learning['score'] * 0.10
-        + reliability['score'] * 0.05
-    )
-    validation_n = int(validation.get('n', 0) or 0)
-    evidence_confidence = v201_clamp(
-        min(int(metrics.get('closed', 0) or 0), 80) / 80.0 * 35
-        + min(total_lessons, 20) / 20.0 * 25
-        + min(validation_n, 150) / 150.0 * 25
-        + min(forward['total'], 20) / 20.0 * 15
-    )
-    return {
-        'timestamp': time.time(),
-        'version': V191111_VERSION,
-        'overall': overall,
-        'forecast_accuracy': forecast_accuracy,
-        'evidence_confidence': evidence_confidence,
-        'scores': {
-            'protection': protection,
-            'entry_accuracy': entry_accuracy,
-            'historical_validation': historical,
-            'forward_proof': forward['score'],
-            'learning_speed': learning['score'],
-            'technical_reliability': reliability['score'],
-        },
-        'evidence': {
-            'paper_closed': int(metrics.get('closed', 0) or 0),
-            'lessons': total_lessons,
-            'good_lessons': good,
-            'bad_lessons': bad,
-            'lesson_avg_pct': round(avg_pct, 2),
-            'validation_n': validation_n,
-            'validation_expectancy': round(float(validation.get('plan_expectancy', 0) or 0), 2),
-            'forward_closed': forward['total'],
-            'forward_avg_pct': forward['avg_pct'],
-            'checkpoints': learning['checkpoints'],
-            'evidence_ready_assets': learning['ready_assets'],
-            'evidence_tracked_assets': learning['tracked_assets'],
-            'technical_checks': f"{reliability['passed']}/{reliability['total']}",
-        },
-    }
-
-
-def v201_load_effectiveness_history():
-    try:
-        data = load_json(V201_EFFECTIVENESS_HISTORY_FILE)
-        if not isinstance(data, dict):
-            return {'records': []}
-        records = data.get('records', [])
-        data['records'] = records if isinstance(records, list) else []
-        return data
-    except Exception:
-        return {'records': []}
-
-
-def v201_record_effectiveness(snapshot):
-    history = v201_load_effectiveness_history()
-    records = history.get('records', [])
-    now = float(snapshot.get('timestamp', time.time()) or time.time())
-    last = records[-1] if records and isinstance(records[-1], dict) else {}
-    version_changed = str(last.get('version') or '') != str(snapshot.get('version') or '')
-    score_changed = abs(int(last.get('overall', -999) or 0) - int(snapshot.get('overall', 0) or 0)) >= 1
-    old_enough = now - float(last.get('timestamp', 0) or 0) >= 1800
-    if not records or version_changed or (score_changed and old_enough):
-        records.append(snapshot)
-        history['records'] = records[-200:]
-        save_json(V201_EFFECTIVENESS_HISTORY_FILE, history)
-        try:
-            background_github_sync([V201_EFFECTIVENESS_HISTORY_FILE], max_files=1)
-        except Exception:
-            pass
-    return history
-
-
-def v201_effectiveness_label(score):
-    if score >= 85:
-        return 'почти готов к ограниченному live-тесту'
-    if score >= 75:
-        return 'сильный PAPER-уровень'
-    if score >= 60:
-        return 'рабочий, но не готов к автопокупкам'
-    if score >= 45:
-        return 'развивается'
-    return 'эффективность слабая'
-
-
-def v201_effectiveness_report(record=True):
-    snapshot = v201_effectiveness_snapshot()
-    history = v201_record_effectiveness(snapshot) if record else v201_load_effectiveness_history()
-    records = [row for row in history.get('records', []) if isinstance(row, dict)]
-    previous = next(
-        (row for row in reversed(records) if str(row.get('version') or '') != V191111_VERSION),
-        None,
-    )
-    if previous:
-        delta = int(snapshot['overall']) - int(previous.get('overall', 0) or 0)
-        trend = 'растёт' if delta > 1 else ('падает' if delta < -1 else 'без заметного изменения')
-        trend_line = f"{trend}: {delta:+d} к {previous.get('version')}"
-    else:
-        trend_line = 'базовая точка; сравнение начнётся со следующей версии'
-
-    scores = snapshot['scores']
-    evidence = snapshot['evidence']
-    unique_versions = []
-    seen = set()
-    for row in reversed(records):
-        version = str(row.get('version') or '')
-        if version and version not in seen:
-            seen.add(version)
-            unique_versions.append(f"{version}: {int(row.get('overall', 0) or 0)}/100")
-        if len(unique_versions) >= 5:
-            break
-    history_line = ' → '.join(reversed(unique_versions)) if unique_versions else 'история начинается сейчас'
-    blocker = (
-        'нет завершённых forward BUY-тестов'
-        if int(evidence.get('forward_closed', 0) or 0) == 0
-        else 'качество входов ещё ниже целевого уровня'
-    )
-    return '\n'.join([
-        '📈 ЭФФЕКТИВНОСТЬ ALEX EDGE',
-        f"Версия: {V191111_VERSION}",
-        '',
-        f"Итоговая оценка: {snapshot['overall']}/100 — {v201_effectiveness_label(snapshot['overall'])}",
-        f"Точность прогнозов: {snapshot['forecast_accuracy']}/100",
-        f"Достоверность оценки: {snapshot['evidence_confidence']}/100",
-        f"Тренд обновлений: {trend_line}",
-        '',
-        f"1. Защита от плохих входов: {scores['protection']}/100",
-        f"2. Качество BUY-входов: {scores['entry_accuracy']}/100",
-        f"3. Историческая validation: {scores['historical_validation']}/100",
-        f"4. Реальный forward PAPER: {scores['forward_proof']}/100",
-        f"5. Скорость обучения: {scores['learning_speed']}/100",
-        f"6. Техническая надёжность: {scores['technical_reliability']}/100",
-        '',
-        f"Данные: закрыто PAPER {evidence['paper_closed']} | BUY-уроков {evidence['lessons']} | "
-        f"validation {evidence['validation_n']} | forward {evidence['forward_closed']} | checkpoints {evidence['checkpoints']}",
-        f"Главный ограничитель: {blocker}.",
-        f"История: {history_line}",
-        '',
-        'Автопокупки: OFF. Высокая историческая оценка сама по себе их не включит.',
-    ])
-
-
 def v191111_audit_content():
     backfill = v191113_historical_buy_backfill()
     decisions = v191111_ranked_paper_buy_decisions()
@@ -29852,15 +29573,14 @@ def v191111_audit_content():
         decisions = v191111_ranked_paper_buy_decisions()
     sections = [
         ('VERSION', f'BOT_VERSION: {V191111_VERSION}'),
-        ('EFFECTIVENESS CONTROL CENTER V20.1', v201_effectiveness_report(record=True)),
-        ('MEASURABLE LEARNING PROGRESS V20.1', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
+        ('MEASURABLE LEARNING PROGRESS V20.0', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
         ('HISTORICAL POLICY VS ENTRY CALIBRATION', '\n'.join(v191113_policy_calibration_lines(backfill))),
-        ('WALK-FORWARD ENTRY LAB V20.1', '\n'.join(v191120_entry_lab_lines())),
-        ('VALIDATED POLICY FORWARD SHADOW V20.1', '\n'.join(v191124_forward_shadow_lines())),
+        ('WALK-FORWARD ENTRY LAB V20.0', '\n'.join(v191120_entry_lab_lines())),
+        ('VALIDATED POLICY FORWARD SHADOW V20.0', '\n'.join(v191124_forward_shadow_lines())),
         ('FAST PROBE SCORING', v1911101_safe_call('v191181_fast_probe_scoring_report')),
         ('FAST SHADOW PORTFOLIO', v1911101_safe_call('v191181_fast_shadow_report')),
         ('FAST LESSON ENGINE', v1911101_safe_call('v191181_fast_lesson_engine_report')),
-        ('UNIFIED PAPER DECISION GATE V20.1', v191111_paper_buy_report(create=False)),
+        ('UNIFIED PAPER DECISION GATE V20.0', v191111_paper_buy_report(create=False)),
         ('PAPER CHECKPOINT LIFECYCLE', '\n'.join(v191111_checkpoint_lines(decisions))),
         ('CONFIDENCE LESSON ROUTER', '\n'.join(v191111_router_lines())),
         ('HOURLY FAST EVIDENCE ROUTER', '\n'.join(v191112_fast_evidence_lines(decisions))),
@@ -29878,18 +29598,18 @@ def v191111_version_report():
     return (
         f'✅ Версия: {V191111_VERSION}\n\n'
         'Что изменено:\n'
-        '• добавлена единая итоговая оценка эффективности бота;\n'
-        '• отдельно оцениваются защита, BUY-входы, validation, forward PAPER, скорость обучения и надёжность;\n'
-        '• история по версиям показывает, улучшилось обновление или ухудшило результат;\n'
-        '• добавлены команда /effectiveness и кнопка 📈 Эффективность на главном экране;\n'
-        '• историческая проверка отделена от реальной forward-точности;\n'
+        '• рынок разделён на рост, падение, боковик, панику и восстановление;\n'
+        '• для каждого режима обучается отдельная entry-policy;\n'
+        '• meta-router сравнивает режимные модели с общей и выбирает лучшую только по train;\n'
+        '• выбранная модель отдельно проверяется на validation и трёх временных окнах;\n'
+        '• Forward Shadow применяет policy текущего режима;\n'
         '• live BUY и автоторговля остаются выключены.\n\n'
         'Безопасность:\n'
         '• реальные покупки 0;\n'
         '• автоторговля OFF;\n'
         '• BUY-веса +0;\n'
         '• force-one не обходит единый gate.\n\n'
-        'Команды проверки: /version | /effectiveness | /paper_buy_status | /audit_file'
+        'Команды проверки: /version | /paper_buy_status | /paper | /lesson_engine | /audit_file'
     )
 
 
@@ -29958,7 +29678,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -30259,7 +29979,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -30692,13 +30412,13 @@ def version_user_report():
 
 
 
-# === v20.1 EFFECTIVENESS CONTROL CENTER ===
+# === v20.0 REGIME EXPERT CORE ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -31312,7 +31032,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 
 def v1911101_section(title, body):
@@ -31367,7 +31087,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -31468,7 +31188,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 
 def v1911101_load_buy_state():
@@ -31583,14 +31303,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v20.1 EFFECTIVENESS CONTROL CENTER ===
+# === v20.0 REGIME EXPERT CORE ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -31891,13 +31611,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v20.1 EFFECTIVENESS CONTROL CENTER ===
+# === v20.0 REGIME EXPERT CORE ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.1 EFFECTIVENESS CONTROL CENTER"
+BOT_VERSION = "v20.0 REGIME EXPERT CORE"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
