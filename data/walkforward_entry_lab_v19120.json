@@ -1,7 +1,7 @@
 {
-  "version": "v19.12.0.1 PAGINATED ENTRY HISTORY",
-  "updated_at": 1782716056.7142963,
-  "updated_at_iso": "2026-06-29T06:54:16.714310",
+  "version": "v19.12.1 ENTRY POLICY SEARCH",
+  "updated_at": 1782717581.3624163,
+  "updated_at_iso": "2026-06-29T07:19:41.362494",
   "method": "4h chronological walk-forward 70/30; features use past candles only; stride 12h",
   "assets_requested": [
     "SOL",
@@ -148,34 +148,68 @@
       "avg_mfe": 4.296
     }
   ],
-  "selected_threshold": 75,
+  "selected_threshold": 60,
   "selected_train": {
-    "threshold": 75,
-    "n": 1087,
-    "avg48": 0.041,
-    "median48": -0.252,
-    "win_rate": 0.42,
-    "bad_rate": 0.287,
-    "avg_mae": -4.417,
-    "avg_mfe": 4.757
+    "threshold": 60,
+    "n": 93,
+    "avg48": 0.693,
+    "median48": 0.494,
+    "win_rate": 0.473,
+    "bad_rate": 0.183,
+    "avg_mae": -3.327,
+    "avg_mfe": 5.086,
+    "policy": {
+      "threshold": 60,
+      "btc_min": 0.5,
+      "ret4_min": -1.0,
+      "ret24_min": -3.0,
+      "ret24_max": 4.5,
+      "volume_min": 1.2,
+      "rsi_max": 66,
+      "above_ema_required": true,
+      "btc_ema_required": false
+    }
   },
   "selected_validation": {
-    "threshold": 75,
-    "n": 649,
-    "avg48": 0.268,
-    "median48": -0.005,
-    "win_rate": 0.39,
-    "bad_rate": 0.228,
-    "avg_mae": -3.364,
-    "avg_mfe": 4.296
+    "threshold": 60,
+    "n": 77,
+    "avg48": 0.776,
+    "median48": 0.299,
+    "win_rate": 0.442,
+    "bad_rate": 0.13,
+    "avg_mae": -2.895,
+    "avg_mfe": 4.309,
+    "policy": {
+      "threshold": 60,
+      "btc_min": 0.5,
+      "ret4_min": -1.0,
+      "ret24_min": -3.0,
+      "ret24_max": 4.5,
+      "volume_min": 1.2,
+      "rsi_max": 66,
+      "above_ema_required": true,
+      "btc_ema_required": false
+    }
   },
+  "selected_policy": {
+    "threshold": 60,
+    "btc_min": 0.5,
+    "ret4_min": -1.0,
+    "ret24_min": -3.0,
+    "ret24_max": 4.5,
+    "volume_min": 1.2,
+    "rsi_max": 66,
+    "above_ema_required": true,
+    "btc_ema_required": false
+  },
+  "policy_search_count": 720,
   "readiness_checks": {
     "validation_n_60": true,
-    "validation_avg_positive": false,
+    "validation_avg_positive": true,
     "validation_win_rate": false,
     "validation_bad_rate": true
   },
-  "readiness_passed": 2,
+  "readiness_passed": 3,
   "ready_for_live": false,
   "note": "Historical validation only. It cannot enable live BUY or autotrading."
 }
