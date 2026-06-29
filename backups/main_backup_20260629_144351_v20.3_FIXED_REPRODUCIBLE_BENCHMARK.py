@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16849,7 +16849,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17957,7 +17957,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18432,7 +18432,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18596,7 +18596,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18941,7 +18941,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19322,7 +19322,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19629,7 +19629,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20143,7 +20143,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20284,7 +20284,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20595,7 +20595,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20886,7 +20886,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21746,7 +21746,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22150,7 +22150,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22719,7 +22719,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23227,7 +23227,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23533,7 +23533,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24061,7 +24061,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25278,7 +25278,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 
 def _v191191_branch_ref_name():
@@ -25423,7 +25423,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25711,7 +25711,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25940,7 +25940,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26307,13 +26307,13 @@ def version_user_report():
 
 
 
-# === v20.4 ADAPTIVE EVIDENCE MODEL ===
+# === v20.3 FIXED REPRODUCIBLE BENCHMARK ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26927,7 +26927,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 
 def v1911101_section(title, body):
@@ -26982,7 +26982,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27083,7 +27083,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 
 def v1911101_load_buy_state():
@@ -27199,14 +27199,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v20.4 ADAPTIVE EVIDENCE MODEL ===
+# === v20.3 FIXED REPRODUCIBLE BENCHMARK ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27507,13 +27507,13 @@ def version_user_report():
 
 
 
-# === v20.4 ADAPTIVE EVIDENCE MODEL ===
+# === v20.3 FIXED REPRODUCIBLE BENCHMARK ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27816,11 +27816,11 @@ def version_user_report():
     )
 
 
-# === v20.4 ADAPTIVE EVIDENCE MODEL ===
+# === v20.3 FIXED REPRODUCIBLE BENCHMARK ===
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+V191111_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
@@ -27829,7 +27829,7 @@ V2023_CHAMPION_FILE = data_path("deployment_champion_v203.json")
 V203_BENCHMARK_FILE = data_path("fixed_market_benchmark_v203.json")
 V203_BENCHMARK_RESULT_FILE = data_path("fixed_benchmark_result_v203.json")
 V203_BENCHMARK_SCHEMA = "fixed_market_benchmark_v203_1"
-V203_EVALUATOR_SCHEMA = "adaptive_evidence_evaluator_v204_1"
+V203_EVALUATOR_SCHEMA = "fixed_policy_evaluator_v203_1"
 V203_BENCHMARK_LOCK = Lock()
 V203_BENCHMARK_LAST_START = 0
 V202_FORWARD_LAB_LOCK = Lock()
@@ -30797,274 +30797,6 @@ def v203_policy_key(policy):
     return v203_canonical_bytes(policy).decode('utf-8')
 
 
-V204_FEATURES = [
-    'score', 'ret_4h', 'ret_24h', 'rsi14', 'volume_ratio',
-    'drawdown20', 'range14', 'btc_24h', 'momentum_12h',
-    'momentum_48h', 'ema_gap', 'ema_slope', 'relative_24h',
-    'up_ratio_6', 'volume_trend',
-]
-
-
-def v204_enrich_samples(candles_by_asset):
-    samples = v191120_build_dataset(candles_by_asset)
-    indexes = {}
-    for asset, candles in candles_by_asset.items():
-        indexes[asset] = {
-            int(row.get('ts', 0) or 0): index
-            for index, row in enumerate(candles)
-        }
-    enriched = []
-    for source in samples:
-        row = dict(source)
-        asset = str(row.get('asset') or '')
-        candles = candles_by_asset.get(asset, [])
-        index = indexes.get(asset, {}).get(int(row.get('ts', 0) or 0))
-        if index is None or index < 30:
-            continue
-        try:
-            closes = [float(item['close']) for item in candles[:index + 1]]
-            volumes = [float(item['volume']) for item in candles[:index + 1]]
-            price = closes[-1]
-            ema_now = v191120_ema(closes[-20:], 20)
-            ema_before = v191120_ema(closes[-23:-3], 20) if len(closes) >= 23 else ema_now
-            recent_changes = [
-                v191120_pct(closes[pos - 1], closes[pos])
-                for pos in range(max(1, len(closes) - 6), len(closes))
-            ]
-            recent_volume = sum(volumes[-3:]) / 3.0
-            previous_volume = sum(volumes[-12:-3]) / 9.0 if len(volumes) >= 12 else recent_volume
-            row.update({
-                'momentum_12h': round(v191120_pct(closes[-4], price), 4),
-                'momentum_48h': round(v191120_pct(closes[-13], price), 4),
-                'ema_gap': round(v191120_pct(ema_now, price), 4),
-                'ema_slope': round(v191120_pct(ema_before, ema_now), 4),
-                'relative_24h': round(
-                    float(row.get('ret_24h', 0) or 0) - float(row.get('btc_24h', 0) or 0),
-                    4,
-                ),
-                'up_ratio_6': round(
-                    sum(1 for value in recent_changes if value > 0) / float(len(recent_changes) or 1),
-                    4,
-                ),
-                'volume_trend': round(
-                    recent_volume / previous_volume if previous_volume > 0 else 1.0,
-                    4,
-                ),
-            })
-            enriched.append(row)
-        except Exception:
-            continue
-    return enriched
-
-
-def v204_quantile_edges(values, bins=5):
-    ordered = sorted(float(value) for value in values)
-    if not ordered:
-        return []
-    edges = []
-    for index in range(1, int(bins)):
-        pos = min(len(ordered) - 1, int(len(ordered) * index / bins))
-        value = ordered[pos]
-        if not edges or value > edges[-1]:
-            edges.append(value)
-    return edges
-
-
-def v204_bin_index(value, edges):
-    value = float(value or 0)
-    for index, edge in enumerate(edges):
-        if value <= float(edge):
-            return index
-    return len(edges)
-
-
-def v204_fit_model(rows, prior=30.0):
-    if not rows:
-        raise ValueError('empty model training set')
-    global_return = sum(float(row.get('plan_return', 0) or 0) for row in rows) / len(rows)
-    global_bad = sum(1 for row in rows if float(row.get('48h', 0) or 0) <= -3.0) / len(rows)
-    features = {}
-    for feature in V204_FEATURES:
-        edges = v204_quantile_edges([row.get(feature, 0) for row in rows], bins=5)
-        buckets = []
-        for bin_index in range(len(edges) + 1):
-            selected = [
-                row for row in rows
-                if v204_bin_index(row.get(feature, 0), edges) == bin_index
-            ]
-            count = len(selected)
-            return_sum = sum(float(row.get('plan_return', 0) or 0) for row in selected)
-            bad_sum = sum(1 for row in selected if float(row.get('48h', 0) or 0) <= -3.0)
-            buckets.append({
-                'n': count,
-                'expected_return': round(
-                    (return_sum + prior * global_return) / (count + prior),
-                    6,
-                ),
-                'bad_probability': round(
-                    (bad_sum + prior * global_bad) / (count + prior),
-                    6,
-                ),
-            })
-        features[feature] = {'edges': edges, 'buckets': buckets}
-    return {
-        'schema': 'adaptive_binned_evidence_v204_1',
-        'prior': prior,
-        'global_return': round(global_return, 6),
-        'global_bad': round(global_bad, 6),
-        'features': features,
-    }
-
-
-def v204_predict(row, model):
-    expected_parts = []
-    bad_parts = []
-    for feature in V204_FEATURES:
-        spec = (model.get('features') or {}).get(feature, {})
-        buckets = spec.get('buckets', []) if isinstance(spec, dict) else []
-        index = v204_bin_index(row.get(feature, 0), spec.get('edges', []))
-        if 0 <= index < len(buckets):
-            expected_parts.append(float(buckets[index].get('expected_return', 0) or 0))
-            bad_parts.append(float(buckets[index].get('bad_probability', 0) or 0))
-    expected = sum(expected_parts) / len(expected_parts) if expected_parts else float(model.get('global_return', 0) or 0)
-    bad_probability = sum(bad_parts) / len(bad_parts) if bad_parts else float(model.get('global_bad', 0) or 0)
-    evidence_score = expected - bad_probability * 1.5
-    return {
-        'expected_return': round(expected, 6),
-        'bad_probability': round(bad_probability, 6),
-        'evidence_score': round(evidence_score, 6),
-    }
-
-
-def v204_score_rows(rows, model):
-    result = []
-    for source in rows:
-        row = dict(source)
-        row.update(v204_predict(row, model))
-        result.append(row)
-    return result
-
-
-def v204_metrics(rows, cutoff):
-    selected = [
-        row for row in rows
-        if float(row.get('evidence_score', -999) or -999) >= float(cutoff)
-    ]
-    metrics = v191120_metrics(selected, threshold=0)
-    metrics['cutoff'] = round(float(cutoff), 6)
-    return metrics
-
-
-def v204_cutoff_candidates(rows):
-    values = sorted(float(row.get('evidence_score', -999) or -999) for row in rows)
-    candidates = []
-    for quantile in [0.50, 0.60, 0.70, 0.80, 0.85, 0.90]:
-        position = min(len(values) - 1, int(len(values) * quantile)) if values else 0
-        if values:
-            candidates.append(values[position])
-    return sorted(set(candidates))
-
-
-def v204_calibration_objective(metrics):
-    n = int(metrics.get('n', 0) or 0)
-    if n < 35:
-        return -10000.0
-    return (
-        float(metrics.get('plan_expectancy', 0) or 0) * 14
-        + float(metrics.get('avg48', 0) or 0) * 6
-        + float(metrics.get('win_rate', 0) or 0) * 8
-        - float(metrics.get('bad_rate', 0) or 0) * 25
-        - float(metrics.get('plan_stop_rate', 0) or 0) * 8
-        + min(2.0, n / 100.0)
-    )
-
-
-def v204_validation_windows(rows, cutoff, window_count=3):
-    timestamps = sorted({int(row.get('ts', 0) or 0) for row in rows})
-    windows = []
-    for index in range(int(window_count)):
-        start = int(len(timestamps) * index / window_count)
-        end = int(len(timestamps) * (index + 1) / window_count)
-        allowed = set(timestamps[start:end])
-        metrics = v204_metrics(
-            [row for row in rows if int(row.get('ts', 0) or 0) in allowed],
-            cutoff,
-        )
-        metrics['window'] = index + 1
-        metrics['stable'] = (
-            int(metrics.get('n', 0) or 0) >= 12
-            and float(metrics.get('plan_expectancy', 0) or 0) > 0
-            and v191120_bad_rate_value(metrics) <= 0.25
-        )
-        windows.append(metrics)
-    return windows
-
-
-def v204_evaluate_once(candles_by_asset, benchmark_hash):
-    samples = v204_enrich_samples(candles_by_asset)
-    timestamps = sorted({int(row.get('ts', 0) or 0) for row in samples})
-    if len(timestamps) < 100:
-        raise ValueError('not enough benchmark timestamps')
-    fit_split = timestamps[min(len(timestamps) - 1, int(len(timestamps) * 0.60))]
-    calibration_split = timestamps[min(len(timestamps) - 1, int(len(timestamps) * 0.80))]
-    outcome_horizon = 48 * 3600
-    fit = [
-        row for row in samples
-        if int(row.get('ts', 0) or 0) + outcome_horizon <= fit_split
-    ]
-    calibration = [
-        row for row in samples
-        if fit_split < int(row.get('ts', 0) or 0)
-        and int(row.get('ts', 0) or 0) + outcome_horizon <= calibration_split
-    ]
-    validation = [row for row in samples if int(row.get('ts', 0) or 0) > calibration_split]
-    model = v204_fit_model(fit)
-    calibration_scored = v204_score_rows(calibration, model)
-    candidates = [
-        v204_metrics(calibration_scored, cutoff)
-        for cutoff in v204_cutoff_candidates(calibration_scored)
-    ]
-    selected_calibration = max(candidates, key=v204_calibration_objective) if candidates else {}
-    cutoff = float(selected_calibration.get('cutoff', 0) or 0)
-    validation_scored = v204_score_rows(validation, model)
-    validation_metrics = v204_metrics(validation_scored, cutoff)
-    windows = v204_validation_windows(validation_scored, cutoff, window_count=3)
-    readiness = v2022_policy_readiness(validation_metrics, windows)
-    model_hash = v203_sha256(model)
-    core = {
-        'benchmark_hash': benchmark_hash,
-        'evaluator_schema': V203_EVALUATOR_SCHEMA,
-        'method': 'adaptive binned evidence; chronological 60/20/20 fit/calibration/final validation',
-        'total_samples': len(samples),
-        'train_samples': len(fit),
-        'calibration_samples': len(calibration),
-        'validation_samples': len(validation),
-        'fit_split_ts': fit_split,
-        'calibration_split_ts': calibration_split,
-        'boundary_embargo_hours': 48,
-        'policy_search_count': len(candidates),
-        'model_schema': model.get('schema'),
-        'model_hash': model_hash,
-        'model': model,
-        'selected_policy': {
-            'type': 'adaptive_evidence',
-            'cutoff': round(cutoff, 6),
-            'model_hash': model_hash,
-        },
-        'selected_train': {'n': len(fit)},
-        'selected_calibration': selected_calibration,
-        'selected_validation': validation_metrics,
-        'validation_windows': windows,
-        'readiness_checks': readiness.get('checks', {}),
-        'readiness_passed': readiness.get('passed', 0),
-        'stable_windows': readiness.get('stable_windows', 0),
-        'qualified_for_forward_shadow': bool(readiness.get('qualified')),
-        'ready_for_live': False,
-    }
-    core['evaluation_hash'] = v203_sha256(core)
-    return core
-
-
 def v203_evaluate_once(candles_by_asset, benchmark_hash):
     samples = v191120_build_dataset(candles_by_asset)
     timestamps = sorted({int(row.get('ts', 0) or 0) for row in samples})
@@ -31151,8 +30883,8 @@ def v203_build_and_evaluate():
         save_json(V203_BENCHMARK_FILE, benchmark)
 
     candles_by_asset = v203_unpack_candles(packed)
-    first = v204_evaluate_once(candles_by_asset, benchmark.get('data_hash'))
-    second = v204_evaluate_once(candles_by_asset, benchmark.get('data_hash'))
+    first = v203_evaluate_once(candles_by_asset, benchmark.get('data_hash'))
+    second = v203_evaluate_once(candles_by_asset, benchmark.get('data_hash'))
     repeatable = first.get('evaluation_hash') == second.get('evaluation_hash')
     result = {
         **first,
@@ -31227,7 +30959,7 @@ def v203_benchmark_lines():
     benchmark = v203_load_benchmark()
     result = v203_load_result()
     benchmark_valid, benchmark_error = v203_validate_benchmark(benchmark, require_full=True)
-    lines = ['📐 FIXED BENCHMARK + ADAPTIVE EVIDENCE V20.4']
+    lines = ['📐 FIXED REPRODUCIBLE BENCHMARK V20.3']
     if not benchmark_valid:
         lines.append(f"• status: building or blocked | reason: {result.get('error') or benchmark_error}")
         lines.append('• published effectiveness: disabled until checksum and repeat test pass')
@@ -31241,10 +30973,8 @@ def v203_benchmark_lines():
     if result:
         validation = result.get('selected_validation', {}) if isinstance(result.get('selected_validation'), dict) else {}
         lines += [
-            f"• samples: total {result.get('total_samples', 0)} | fit {result.get('train_samples', 0)} | "
-            f"calibration {result.get('calibration_samples', 0)} | final validation {result.get('validation_samples', 0)}",
-            f"• model: {result.get('model_schema', '?')} | features {len(V204_FEATURES)} | model hash {str(result.get('model_hash') or '')[:16]}",
-            f"• threshold candidates: {result.get('policy_search_count', 0)} on calibration only",
+            f"• samples: total {result.get('total_samples', 0)} | train {result.get('train_samples', 0)} | validation {result.get('validation_samples', 0)}",
+            f"• fixed policy search: {result.get('policy_search_count', 0)} train-only variants",
             f"• validation: n {validation.get('n', 0)} | avg48 {float(validation.get('avg48', 0) or 0):+.2f}% | "
             f"plan expectancy {float(validation.get('plan_expectancy', 0) or 0):+.2f}% | bad {float(validation.get('bad_rate', 0) or 0)*100:.1f}%",
             f"• checks: {result.get('readiness_passed', 0)}/6 | stable windows {result.get('stable_windows', 0)}/3",
@@ -31325,7 +31055,6 @@ def v203_learn_fast_report(start=False):
         f'Версия: {v2021_user_version()}',
         '',
         'Состояние: единый исторический эталон готов и защищён.',
-        'Модель: обучаемая оценка по 15 рыночным признакам.',
         f"Историческая проверка: {result.get('readiness_passed', 0)}/6",
         f"Стабильные периоды: {result.get('stable_windows', 0)}/3",
         f"Средний результат через 48 часов: {float(validation.get('avg48', 0) or 0):+.2f}%",
@@ -31347,17 +31076,17 @@ def v191111_audit_content():
         decisions = v191111_ranked_paper_buy_decisions()
     sections = [
         ('VERSION', f'BOT_VERSION: {V191111_VERSION}'),
-        ('FIXED BENCHMARK + ADAPTIVE EVIDENCE V20.4', '\n'.join(v203_benchmark_lines())),
-        ('EFFECTIVENESS CONTROL CENTER V20.4', effectiveness_section),
-        ('MEASURABLE LEARNING PROGRESS V20.4', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
+        ('FIXED REPRODUCIBLE BENCHMARK V20.3', '\n'.join(v203_benchmark_lines())),
+        ('EFFECTIVENESS CONTROL CENTER V20.3', effectiveness_section),
+        ('MEASURABLE LEARNING PROGRESS V20.3', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
         ('HISTORICAL POLICY VS ENTRY CALIBRATION', '\n'.join(v191113_policy_calibration_lines(backfill))),
         ('LEGACY WALK-FORWARD ENTRY LAB (RESEARCH ONLY)', '\n'.join(v191120_entry_lab_lines())),
-        ('VALIDATED POLICY FORWARD SHADOW V20.4', '\n'.join(v191124_forward_shadow_lines())),
-        ('CHAMPION-CHALLENGER FORWARD LAB V20.4', '\n'.join(v202_forward_lab_lines())),
+        ('VALIDATED POLICY FORWARD SHADOW V20.3', '\n'.join(v191124_forward_shadow_lines())),
+        ('CHAMPION-CHALLENGER FORWARD LAB V20.3', '\n'.join(v202_forward_lab_lines())),
         ('FAST PROBE SCORING', v1911101_safe_call('v191181_fast_probe_scoring_report')),
         ('FAST SHADOW PORTFOLIO', v1911101_safe_call('v191181_fast_shadow_report')),
         ('FAST LESSON ENGINE', v1911101_safe_call('v191181_fast_lesson_engine_report')),
-        ('UNIFIED PAPER DECISION GATE V20.4', v191111_paper_buy_report(create=False)),
+        ('UNIFIED PAPER DECISION GATE V20.3', v191111_paper_buy_report(create=False)),
         ('PAPER CHECKPOINT LIFECYCLE', '\n'.join(v191111_checkpoint_lines(decisions))),
         ('CONFIDENCE LESSON ROUTER', '\n'.join(v191111_router_lines())),
         ('HOURLY FAST EVIDENCE ROUTER', '\n'.join(v191112_fast_evidence_lines(decisions))),
@@ -31374,13 +31103,13 @@ def v191111_audit_content():
 def v191111_version_report():
     return (
         f'✅ Версия: {v2021_user_version()}\n'
-        'Название: ОБУЧАЕМАЯ МОДЕЛЬ РЫНОЧНЫХ ДОКАЗАТЕЛЬСТВ\n\n'
+        'Название: ЕДИНЫЙ ВОСПРОИЗВОДИМЫЙ ЭТАЛОН\n\n'
         'Что изменено:\n'
-        '• сохранён неизменяемый исторический эталон v20.3;\n'
-        '• модель оценивает 15 признаков движения, тренда, объёма и связи с BTC;\n'
-        '• данные разделены на обучение, настройку порога и отдельную финальную проверку;\n'
-        '• финальная проверка не участвует в обучении и подборе параметров;\n'
-        '• результат по-прежнему рассчитывается дважды и сверяется по контрольной сумме;\n'
+        '• исторические данные фиксируются один раз и защищаются контрольной суммой;\n'
+        '• все будущие версии проверяются на одном и том же наборе данных;\n'
+        '• результат рассчитывается дважды и публикуется только при полном совпадении;\n'
+        '• данные, оценка и действующая стратегия хранятся отдельно;\n'
+        '• старые недостоверные оценки не используются;\n'
         '• торговая логика и виртуальные сделки не изменялись;\n'
         '• простой русский формат пользовательских отчётов сохранён.\n\n'
         'Безопасность:\n'
@@ -31457,7 +31186,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -31758,7 +31487,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -32191,13 +31920,13 @@ def version_user_report():
 
 
 
-# === v20.4 ADAPTIVE EVIDENCE MODEL ===
+# === v20.3 FIXED REPRODUCIBLE BENCHMARK ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -32811,7 +32540,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 
 def v1911101_section(title, body):
@@ -32866,7 +32595,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -32967,7 +32696,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 
 def v1911101_load_buy_state():
@@ -33082,14 +32811,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v20.4 ADAPTIVE EVIDENCE MODEL ===
+# === v20.3 FIXED REPRODUCIBLE BENCHMARK ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -33390,13 +33119,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v20.4 ADAPTIVE EVIDENCE MODEL ===
+# === v20.3 FIXED REPRODUCIBLE BENCHMARK ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.4 ADAPTIVE EVIDENCE MODEL"
+BOT_VERSION = "v20.3 FIXED REPRODUCIBLE BENCHMARK"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
