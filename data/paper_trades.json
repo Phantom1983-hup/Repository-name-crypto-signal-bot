@@ -8899,7 +8899,42 @@
         }
       },
       "closed_time": 1782748821.8453312,
-      "outcome": "paper_neutral"
+      "outcome": "paper_neutral",
+      "probe_lesson_48h_v19118": {
+        "key": "AVAX:1782574592:48h_final",
+        "asset": "AVAX",
+        "stage": "48h_final",
+        "version": "v20.6 CONTEXT MODEL & FORWARD PROOF",
+        "entry_time": 1782574592.1408331,
+        "lesson_time": 1782749012.4871757,
+        "age_h": 48.4500962067975,
+        "entry_price": 6.634,
+        "current_price": 6.588,
+        "pct": 0.41,
+        "bucket": "neutral",
+        "label": "🟡 нейтрально",
+        "lesson": "преимущества входа нет; веса не усиливать",
+        "paper_delta": 0,
+        "lesson_score": 55,
+        "entry_score": 62,
+        "results": {
+          "1h": -0.21,
+          "3h": -1.64,
+          "6h": -3.62,
+          "12h": -4.04,
+          "24h": -4.52,
+          "48h": 0.41
+        },
+        "snapshot": {
+          "btc_change": -0.5,
+          "fear": 18,
+          "news": 0,
+          "rsi": 21.7,
+          "volume_trend": 1.19,
+          "risk_level": "caution",
+          "change_24": -3.44
+        }
+      }
     }
   ],
   "last_created_at": 1782748835.697448,
@@ -9293,9 +9328,44 @@
         "risk_level": "caution",
         "change_24": -1.0999999999999999
       }
+    },
+    {
+      "key": "AVAX:1782574592:48h_final",
+      "asset": "AVAX",
+      "stage": "48h_final",
+      "version": "v20.6 CONTEXT MODEL & FORWARD PROOF",
+      "entry_time": 1782574592.1408331,
+      "lesson_time": 1782749012.4871757,
+      "age_h": 48.4500962067975,
+      "entry_price": 6.634,
+      "current_price": 6.588,
+      "pct": 0.41,
+      "bucket": "neutral",
+      "label": "🟡 нейтрально",
+      "lesson": "преимущества входа нет; веса не усиливать",
+      "paper_delta": 0,
+      "lesson_score": 55,
+      "entry_score": 62,
+      "results": {
+        "1h": -0.21,
+        "3h": -1.64,
+        "6h": -3.62,
+        "12h": -4.04,
+        "24h": -4.52,
+        "48h": 0.41
+      },
+      "snapshot": {
+        "btc_change": -0.5,
+        "fear": 18,
+        "news": 0,
+        "rsi": 21.7,
+        "volume_trend": 1.19,
+        "risk_level": "caution",
+        "change_24": -3.44
+      }
     }
   ],
-  "last_probe_lesson_engine_at": 1782744570.6480136,
+  "last_probe_lesson_engine_at": 1782749012.487208,
   "unified_fast_checkpoint_log_v1911111": [
     {
       "snapshot_key": "active:NEAR:PAPER_BUY_DECISION_TEST:495179:12–24ч",
@@ -10664,6 +10734,50 @@
       "decision": "🔴 PAPER BUY ЗАПРЕЩЁН",
       "captured_at": 1782744567.999617,
       "version": "v20.4 ADAPTIVE EVIDENCE MODEL"
+    },
+    {
+      "snapshot_key": "active:NEAR:PAPER_BUY_DECISION_TEST:495179:h28",
+      "kind": "active_paper_buy",
+      "asset": "NEAR",
+      "stage": "24–48ч",
+      "hour_bucket": 28,
+      "age_h": 28.5,
+      "pnl_pct": 0.63,
+      "probe_score": 62,
+      "severity": -1,
+      "status": "🟢 24–48ч умеренно полезно",
+      "captured_at": 1782749010.0843344,
+      "version": "v20.6 CONTEXT MODEL & FORWARD PROOF"
+    },
+    {
+      "snapshot_key": "active:LINK:PAPER_BUY_DECISION_TEST:495179:h28",
+      "kind": "active_paper_buy",
+      "asset": "LINK",
+      "stage": "24–48ч",
+      "hour_bucket": 28,
+      "age_h": 28.5,
+      "pnl_pct": -0.39,
+      "probe_score": 62,
+      "severity": 1,
+      "status": "🟡 24–48ч нейтрально",
+      "captured_at": 1782749010.0843344,
+      "version": "v20.6 CONTEXT MODEL & FORWARD PROOF"
+    },
+    {
+      "snapshot_key": "candidate:AAVE:VIRTUAL_PROBE_ENTRY_TEST:495160:h47",
+      "kind": "paper_candidate",
+      "asset": "AAVE",
+      "stage": "24–48ч",
+      "hour_bucket": 47,
+      "age_h": 47.9,
+      "pnl_pct": -5.83,
+      "probe_score": 18,
+      "raw_score": 23,
+      "adjusted_score": 17,
+      "gate": "BLOCK",
+      "decision": "🔴 PAPER BUY ЗАПРЕЩЁН",
+      "captured_at": 1782749010.0843344,
+      "version": "v20.6 CONTEXT MODEL & FORWARD PROOF"
     }
   ],
   "last_policy_forward_scan_at": 1782733864.2760766,
