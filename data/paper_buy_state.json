@@ -1,6 +1,6 @@
 {
-  "version": "v19.11.12 HOURLY EVIDENCE LEARNING",
-  "created_at": 1782707974.9774063,
+  "version": "v19.11.13 HISTORICAL BUY LESSON BACKFILL",
+  "created_at": 1782709783.661566,
   "active_count": 2,
   "active_buys": [
     {
@@ -92,16 +92,16 @@
       "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
       "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
       "last_price_time": 1782669895.8735402,
-      "durable_saved_by": "v19.11.12 HOURLY EVIDENCE LEARNING",
-      "durable_saved_at": 1782707974.9774003
+      "durable_saved_by": "v19.11.13 HISTORICAL BUY LESSON BACKFILL",
+      "durable_saved_at": 1782709783.661555
     },
     {
       "id": "LINK:PAPER_BUY_DECISION_TEST:495179",
       "asset": "LINK",
       "entry_time": 1782646362.306717,
       "entry_price": 7.3031,
-      "last_price": 7.313,
-      "last_pct": 0.14,
+      "last_price": 7.3062,
+      "last_pct": 0.04,
       "score": 68,
       "entry_score": 62,
       "probe_score_at_decision": 55,
@@ -183,9 +183,9 @@
       "persistence_version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
       "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
       "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
-      "last_price_time": 1782706099.7863884,
-      "durable_saved_by": "v19.11.12 HOURLY EVIDENCE LEARNING",
-      "durable_saved_at": 1782707974.977402
+      "last_price_time": 1782706809.2552948,
+      "durable_saved_by": "v19.11.13 HISTORICAL BUY LESSON BACKFILL",
+      "durable_saved_at": 1782709783.661559
     }
   ],
   "journal": [
