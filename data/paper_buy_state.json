@@ -1,6 +1,6 @@
 {
-  "version": "v20.1.2 FRESHNESS & FORWARD RACE GUARD",
-  "created_at": 1782730148.7001946,
+  "version": "v20.2 CHAMPION CHALLENGER FORWARD LAB",
+  "created_at": 1782733878.1809196,
   "active_count": 2,
   "active_buys": [
     {
@@ -8,8 +8,8 @@
       "asset": "NEAR",
       "entry_time": 1782646362.306717,
       "entry_price": 1.8596,
-      "last_price": 1.847,
-      "last_pct": -0.68,
+      "last_price": 1.8549,
+      "last_pct": -0.25,
       "score": 68,
       "entry_score": 62,
       "probe_score_at_decision": 55,
@@ -52,7 +52,8 @@
         "1h": -0.01,
         "3h": 1.12,
         "6h": -1.08,
-        "12h": -1.74
+        "12h": -1.74,
+        "24h": -0.25
       },
       "result_details": {
         "15m": {
@@ -84,6 +85,11 @@
           "checkpoint_time": 1782669895.8735402,
           "checkpoint_price": 1.8273,
           "source": "learning_cache:paper_last_price_fallback"
+        },
+        "24h": {
+          "checkpoint_time": 1782730021.274496,
+          "checkpoint_price": 1.8549,
+          "source": "learning_cache:snapshot"
         }
       },
       "status": "open",
@@ -91,17 +97,17 @@
       "persistence_version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
       "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
       "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
-      "last_price_time": 1782724926.82097,
-      "durable_saved_by": "v20.1.2 FRESHNESS & FORWARD RACE GUARD",
-      "durable_saved_at": 1782730148.700187
+      "last_price_time": 1782730021.274496,
+      "durable_saved_by": "v20.2 CHAMPION CHALLENGER FORWARD LAB",
+      "durable_saved_at": 1782733878.180911
     },
     {
       "id": "LINK:PAPER_BUY_DECISION_TEST:495179",
       "asset": "LINK",
       "entry_time": 1782646362.306717,
       "entry_price": 7.3031,
-      "last_price": 7.3509,
-      "last_pct": 0.65,
+      "last_price": 7.3044,
+      "last_pct": 0.02,
       "score": 68,
       "entry_score": 62,
       "probe_score_at_decision": 55,
@@ -144,7 +150,8 @@
         "1h": -0.29,
         "3h": -0.29,
         "6h": -0.29,
-        "12h": -0.29
+        "12h": -0.29,
+        "24h": -0.05
       },
       "result_details": {
         "15m": {
@@ -176,6 +183,11 @@
           "checkpoint_time": 1782648756.8752608,
           "checkpoint_price": 7.2819,
           "source": "learning_cache:paper_last_price_fallback"
+        },
+        "24h": {
+          "checkpoint_time": 1782731829.7805996,
+          "checkpoint_price": 7.2992,
+          "source": "learning_cache:snapshot"
         }
       },
       "status": "open",
@@ -183,9 +195,9 @@
       "persistence_version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
       "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
       "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
-      "last_price_time": 1782728869.5906174,
-      "durable_saved_by": "v20.1.2 FRESHNESS & FORWARD RACE GUARD",
-      "durable_saved_at": 1782730148.7001896
+      "last_price_time": 1782733625.477095,
+      "durable_saved_by": "v20.2 CHAMPION CHALLENGER FORWARD LAB",
+      "durable_saved_at": 1782733878.1809137
     }
   ],
   "journal": [
