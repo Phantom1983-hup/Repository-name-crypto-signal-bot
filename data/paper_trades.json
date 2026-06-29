@@ -1,5 +1,5 @@
 {
-  "version": "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH",
+  "version": "v19.12.0 WALK-FORWARD ENTRY LAB",
   "open": {
     "SOL:VIRTUAL_WATCH_ENTRY_TEST:495150": {
       "id": "SOL:VIRTUAL_WATCH_ENTRY_TEST:495150",
@@ -63,9 +63,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 71.55,
-      "last_price_time": 1782709435.363969,
-      "last_pct": -0.98
+      "last_price": 71.41,
+      "last_price_time": 1782711181.3209655,
+      "last_pct": -1.18
     },
     "SYN:AVOID_PUMP_TEST:495151": {
       "id": "SYN:AVOID_PUMP_TEST:495151",
@@ -129,9 +129,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.4032,
-      "last_price_time": 1782709435.363969,
-      "last_pct": 8.47
+      "last_price": 0.3834,
+      "last_price_time": 1782711181.3209655,
+      "last_pct": 3.15
     },
     "PIEVERSE:AVOID_PUMP_TEST:495152": {
       "id": "PIEVERSE:AVOID_PUMP_TEST:495152",
@@ -459,9 +459,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.6846,
-      "last_price_time": 1782709435.363969,
-      "last_pct": -3.17
+      "last_price": 0.6827,
+      "last_price_time": 1782711181.3209655,
+      "last_pct": -3.44
     },
     "INJ:VIRTUAL_WATCH_ENTRY_TEST:495157": {
       "id": "INJ:VIRTUAL_WATCH_ENTRY_TEST:495157",
@@ -534,8 +534,8 @@
       "asset": "SOL",
       "entry_time": 1782571510.5493264,
       "entry_price": 72.84,
-      "last_price": 71.55,
-      "last_pct": -1.77,
+      "last_price": 71.41,
+      "last_pct": -1.96,
       "score": 62,
       "master_score": 62,
       "source_action": "PAPER_PROBE",
@@ -596,7 +596,7 @@
       "status": "open",
       "note": "quality paper probe only: реальные сделки и автопокупки выключены",
       "created_by": "single_coin_user_report",
-      "last_price_time": 1782709435.363969,
+      "last_price_time": 1782711181.3209655,
       "probe_entry_snapshot_v19117": {
         "asset": "SOL",
         "version": "v19.11.7 PROBE RESULT SCORING",
@@ -658,8 +658,8 @@
       "asset": "SUI",
       "entry_time": 1782571518.2102144,
       "entry_price": 0.7059,
-      "last_price": 0.6846,
-      "last_pct": -3.02,
+      "last_price": 0.6827,
+      "last_pct": -3.29,
       "score": 62,
       "master_score": 62,
       "source_action": "PAPER_PROBE",
@@ -720,7 +720,7 @@
       "status": "open",
       "note": "quality paper probe only: реальные сделки и автопокупки выключены",
       "created_by": "quality_probe_command",
-      "last_price_time": 1782709435.363969,
+      "last_price_time": 1782711181.3209655,
       "probe_entry_snapshot_v19117": {
         "asset": "SUI",
         "version": "v19.11.7 PROBE RESULT SCORING",
@@ -906,8 +906,8 @@
       "asset": "LINK",
       "entry_time": 1782571518.2102144,
       "entry_price": 7.4126,
-      "last_price": 7.3062,
-      "last_pct": -1.44,
+      "last_price": 7.2582,
+      "last_pct": -2.08,
       "score": 62,
       "master_score": 62,
       "source_action": "PAPER_PROBE",
@@ -968,7 +968,7 @@
       "status": "open",
       "note": "quality paper probe only: реальные сделки и автопокупки выключены",
       "created_by": "quality_probe_command",
-      "last_price_time": 1782706809.2552948,
+      "last_price_time": 1782711181.3209655,
       "probe_entry_snapshot_v19117": {
         "asset": "LINK",
         "version": "v19.11.7 PROBE RESULT SCORING",
@@ -1096,8 +1096,8 @@
       "asset": "AVAX",
       "entry_time": 1782574592.1408331,
       "entry_price": 6.634,
-      "last_price": 6.575,
-      "last_pct": -0.89,
+      "last_price": 6.542,
+      "last_pct": -1.39,
       "score": 62,
       "master_score": 62,
       "source_action": "PAPER_PROBE",
@@ -1158,7 +1158,7 @@
       "status": "open",
       "note": "quality paper probe only: реальные сделки и автопокупки выключены",
       "created_by": "auto_quality_probe_scheduler",
-      "last_price_time": 1782709435.363969,
+      "last_price_time": 1782711181.3209655,
       "probe_entry_snapshot_v19117": {
         "asset": "AVAX",
         "version": "v19.11.7 PROBE RESULT SCORING",
@@ -1746,8 +1746,8 @@
       "asset": "LINK",
       "entry_time": 1782646362.306717,
       "entry_price": 7.3031,
-      "last_price": 7.3062,
-      "last_pct": 0.04,
+      "last_price": 7.2582,
+      "last_pct": -0.61,
       "score": 68,
       "entry_score": 62,
       "probe_score_at_decision": 55,
@@ -1829,7 +1829,7 @@
       "persistence_version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
       "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
       "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
-      "last_price_time": 1782706809.2552948
+      "last_price_time": 1782711181.3209655
     },
     "GWEI:AVOID_PUMP_TEST:495181": {
       "id": "GWEI:AVOID_PUMP_TEST:495181",
@@ -1887,9 +1887,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.161363,
-      "last_price_time": 1782709435.363969,
-      "last_pct": 7.4
+      "last_price": 0.16283,
+      "last_price_time": 1782711181.3209655,
+      "last_pct": 8.38
     },
     "BILL:AVOID_PUMP_TEST:495182": {
       "id": "BILL:AVOID_PUMP_TEST:495182",
@@ -2061,9 +2061,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 59747.4,
-      "last_price_time": 1782709435.363969,
-      "last_pct": 0.41
+      "last_price": 59715.1,
+      "last_price_time": 1782711181.3209655,
+      "last_pct": 0.36
     },
     "ETH:VIRTUAL_WATCH_ENTRY_TEST:495185": {
       "id": "ETH:VIRTUAL_WATCH_ENTRY_TEST:495185",
@@ -2115,9 +2115,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 1571.55,
-      "last_price_time": 1782709435.363969,
-      "last_pct": 0.18
+      "last_price": 1570.48,
+      "last_price_time": 1782711181.3209655,
+      "last_pct": 0.12
     },
     "VELVET:AVOID_PUMP_TEST:495185": {
       "id": "VELVET:AVOID_PUMP_TEST:495185",
@@ -2385,9 +2385,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.38088,
-      "last_price_time": 1782709435.363969,
-      "last_pct": -13.87
+      "last_price": 0.38113,
+      "last_price_time": 1782711181.3209655,
+      "last_pct": -13.82
     },
     "RAVE:AVOID_PUMP_TEST:495195": {
       "id": "RAVE:AVOID_PUMP_TEST:495195",
@@ -2427,9 +2427,9 @@
       },
       "status": "open",
       "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.412,
-      "last_price_time": 1782709435.363969,
-      "last_pct": -7.0
+      "last_price": 0.434,
+      "last_price_time": 1782711181.3209655,
+      "last_pct": -2.03
     }
   },
   "closed": [
@@ -8706,6 +8706,34 @@
       "decision": "🔴 PAPER BUY ЗАПРЕЩЁН",
       "captured_at": 1782709790.2764068,
       "version": "v19.11.13 HISTORICAL BUY LESSON BACKFILL"
+    },
+    {
+      "snapshot_key": "active:NEAR:PAPER_BUY_DECISION_TEST:495179:h18",
+      "kind": "active_paper_buy",
+      "asset": "NEAR",
+      "stage": "12–24ч",
+      "hour_bucket": 18,
+      "age_h": 18.0,
+      "pnl_pct": -1.74,
+      "probe_score": 35,
+      "severity": 3,
+      "status": "🟠 12–24ч слабость / WATCH",
+      "captured_at": 1782711190.5203345,
+      "version": "v19.12.0 WALK-FORWARD ENTRY LAB"
+    },
+    {
+      "snapshot_key": "active:LINK:PAPER_BUY_DECISION_TEST:495179:h18",
+      "kind": "active_paper_buy",
+      "asset": "LINK",
+      "stage": "12–24ч",
+      "hour_bucket": 18,
+      "age_h": 18.0,
+      "pnl_pct": -0.61,
+      "probe_score": 35,
+      "severity": 3,
+      "status": "🟠 12–24ч слабость / WATCH",
+      "captured_at": 1782711190.5203345,
+      "version": "v19.12.0 WALK-FORWARD ENTRY LAB"
     }
   ]
 }
