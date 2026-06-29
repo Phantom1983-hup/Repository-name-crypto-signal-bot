@@ -1,72 +1,6 @@
 {
-  "version": "v19.12.3 MULTI-WINDOW ROBUSTNESS",
+  "version": "v19.12.4 POLICY FORWARD SHADOW",
   "open": {
-    "PIEVERSE:AVOID_PUMP_TEST:495152": {
-      "id": "PIEVERSE:AVOID_PUMP_TEST:495152",
-      "asset": "PIEVERSE",
-      "entry_time": 1782548140.1977568,
-      "entry_price": 0.7222,
-      "score": 55,
-      "master_score": 55,
-      "source_action": "WATCH",
-      "virtual_type": "AVOID_PUMP_TEST",
-      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
-      "is_quality": false,
-      "change_24": 12.4,
-      "btc_change": 0.36,
-      "macro_mod": -2,
-      "results": {
-        "15m": 0.0,
-        "30m": 0.0,
-        "1h": -3.14,
-        "3h": 2.85,
-        "6h": 9.06,
-        "12h": 13.82,
-        "24h": 4.64
-      },
-      "result_details": {
-        "15m": {
-          "checkpoint_time": 1782548137.0713103,
-          "checkpoint_price": 0.7222,
-          "source": "learning_cache:snapshot"
-        },
-        "30m": {
-          "checkpoint_time": 1782548137.0713103,
-          "checkpoint_price": 0.7222,
-          "source": "learning_cache:snapshot"
-        },
-        "1h": {
-          "checkpoint_time": 1782551232.1291566,
-          "checkpoint_price": 0.6995,
-          "source": "learning_cache:snapshot"
-        },
-        "3h": {
-          "checkpoint_time": 1782559543.9444861,
-          "checkpoint_price": 0.7428,
-          "source": "learning_cache:snapshot"
-        },
-        "6h": {
-          "checkpoint_time": 1782568626.5633247,
-          "checkpoint_price": 0.7876,
-          "source": "learning_cache:snapshot"
-        },
-        "12h": {
-          "checkpoint_time": 1782591928.9301097,
-          "checkpoint_price": 0.822,
-          "source": "learning_cache:snapshot"
-        },
-        "24h": {
-          "checkpoint_time": 1782633537.19939,
-          "checkpoint_price": 0.7557,
-          "source": "learning_cache:snapshot"
-        }
-      },
-      "status": "open",
-      "note": "paper trading only: реальные сделки и автопокупки выключены",
-      "last_price": 0.794,
-      "last_price_time": 1782669895.8735402,
-      "last_pct": 9.94
-    },
     "GRASS:AVOID_PUMP_TEST:495152": {
       "id": "GRASS:AVOID_PUMP_TEST:495152",
       "asset": "GRASS",
@@ -8230,10 +8164,84 @@
       "last_pct": 7.4,
       "closed_time": 1782717572.0653822,
       "outcome": "pump_continued_no_pullback"
+    },
+    {
+      "id": "PIEVERSE:AVOID_PUMP_TEST:495152",
+      "asset": "PIEVERSE",
+      "entry_time": 1782548140.1977568,
+      "entry_price": 0.7222,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 12.4,
+      "btc_change": 0.36,
+      "macro_mod": -2,
+      "results": {
+        "15m": 0.0,
+        "30m": 0.0,
+        "1h": -3.14,
+        "3h": 2.85,
+        "6h": 9.06,
+        "12h": 13.82,
+        "24h": 4.64,
+        "48h": -0.24
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782548137.0713103,
+          "checkpoint_price": 0.7222,
+          "source": "learning_cache:snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782548137.0713103,
+          "checkpoint_price": 0.7222,
+          "source": "learning_cache:snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782551232.1291566,
+          "checkpoint_price": 0.6995,
+          "source": "learning_cache:snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782559543.9444861,
+          "checkpoint_price": 0.7428,
+          "source": "learning_cache:snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782568626.5633247,
+          "checkpoint_price": 0.7876,
+          "source": "learning_cache:snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782591928.9301097,
+          "checkpoint_price": 0.822,
+          "source": "learning_cache:snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782633537.19939,
+          "checkpoint_price": 0.7557,
+          "source": "learning_cache:snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782721367.6912208,
+          "checkpoint_price": 0.7205,
+          "source": "learning_cache:kucoin_live_overdue"
+        }
+      },
+      "status": "closed",
+      "note": "paper trading only: реальные сделки и автопокупки выключены",
+      "last_price": 0.7205,
+      "last_price_time": 1782721367.6912208,
+      "last_pct": -0.24,
+      "closed_time": 1782721367.6912208,
+      "outcome": "avoid_neutral"
     }
   ],
   "last_created_at": 1782718264.9340305,
-  "last_update_at": 1782720904.156296,
+  "last_update_at": 1782721367.6912208,
   "last_quality_probe_created_at": 1782576393.2249265,
   "last_probe_scoring_snapshot_at": 1782633516.4294314,
   "paper_buy_journal_v191194": [
@@ -8959,5 +8967,12 @@
       "captured_at": 1782714623.2153518,
       "version": "v19.12.0.1 PAGINATED ENTRY HISTORY"
     }
-  ]
+  ],
+  "last_policy_forward_scan_at": 1782721328.206854,
+  "last_policy_forward_scan_result": {
+    "scanned": 10,
+    "matched": 0,
+    "created": 0,
+    "version": "v19.12.4 POLICY FORWARD SHADOW"
+  }
 }
