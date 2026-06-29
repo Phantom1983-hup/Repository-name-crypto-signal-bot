@@ -1,5 +1,5 @@
 {
-  "version": "v19.12.0 WALK-FORWARD ENTRY LAB",
+  "version": "v19.12.0.1 PAGINATED ENTRY HISTORY",
   "open": {
     "SOL:VIRTUAL_WATCH_ENTRY_TEST:495150": {
       "id": "SOL:VIRTUAL_WATCH_ENTRY_TEST:495150",
@@ -2436,7 +2436,8 @@
       "results": {
         "15m": -5.19,
         "30m": -4.06,
-        "1h": -6.09
+        "1h": -6.09,
+        "3h": 9.71
       },
       "result_details": {
         "15m": {
@@ -2452,6 +2453,11 @@
         "1h": {
           "checkpoint_time": 1782706809.2552948,
           "checkpoint_price": 0.416,
+          "source": "learning_cache:snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782713012.3335373,
+          "checkpoint_price": 0.486,
           "source": "learning_cache:snapshot"
         }
       },
@@ -8163,7 +8169,7 @@
     }
   ],
   "last_created_at": 1782703152.3426392,
-  "last_update_at": 1782713015.2242925,
+  "last_update_at": 1782714600.1169324,
   "last_quality_probe_created_at": 1782576393.2249265,
   "last_probe_scoring_snapshot_at": 1782633516.4294314,
   "paper_buy_journal_v191194": [
