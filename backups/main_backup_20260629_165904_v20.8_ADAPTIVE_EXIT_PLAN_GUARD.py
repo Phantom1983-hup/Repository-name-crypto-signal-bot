@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16849,7 +16849,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17957,7 +17957,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18432,7 +18432,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18596,7 +18596,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18941,7 +18941,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19322,7 +19322,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19629,7 +19629,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20143,7 +20143,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20284,7 +20284,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20595,7 +20595,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20886,7 +20886,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21746,7 +21746,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22150,7 +22150,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22719,7 +22719,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23227,7 +23227,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23533,7 +23533,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24061,7 +24061,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25278,7 +25278,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 
 def _v191191_branch_ref_name():
@@ -25423,7 +25423,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25711,7 +25711,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25940,7 +25940,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26307,13 +26307,13 @@ def version_user_report():
 
 
 
-# === v20.9 PROBE QUARANTINE GUARD ===
+# === v20.8 ADAPTIVE EXIT PLAN GUARD ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26927,7 +26927,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 
 def v1911101_section(title, body):
@@ -26982,7 +26982,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27083,7 +27083,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 
 def v1911101_load_buy_state():
@@ -27199,14 +27199,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v20.9 PROBE QUARANTINE GUARD ===
+# === v20.8 ADAPTIVE EXIT PLAN GUARD ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27507,13 +27507,13 @@ def version_user_report():
 
 
 
-# === v20.9 PROBE QUARANTINE GUARD ===
+# === v20.8 ADAPTIVE EXIT PLAN GUARD ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27816,11 +27816,11 @@ def version_user_report():
     )
 
 
-# === v20.9 PROBE QUARANTINE GUARD ===
+# === v20.8 ADAPTIVE EXIT PLAN GUARD ===
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+V191111_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
@@ -27829,7 +27829,7 @@ V2023_CHAMPION_FILE = data_path("deployment_champion_v203.json")
 V203_BENCHMARK_FILE = data_path("fixed_market_benchmark_v203.json")
 V203_BENCHMARK_RESULT_FILE = data_path("fixed_benchmark_result_v203.json")
 V203_BENCHMARK_SCHEMA = "fixed_market_benchmark_v203_1"
-V203_EVALUATOR_SCHEMA = "probe_quarantine_guard_v209_1"
+V203_EVALUATOR_SCHEMA = "adaptive_exit_plan_guard_v208_1"
 V203_BENCHMARK_LOCK = Lock()
 V203_BENCHMARK_LAST_START = 0
 V202_FORWARD_LAB_LOCK = Lock()
@@ -27854,7 +27854,6 @@ V2022_INVALID_EFFECTIVENESS_VERSIONS = {
     'v20.2.3 ATOMIC CHAMPION RECOVERY',
     'v20.2.4 FAST CHAMPION RECOVERY',
     'v20.2.5 HONEST SCORE RESET',
-    'v20.8 ADAPTIVE EXIT PLAN GUARD',
 }
 
 
@@ -29700,7 +29699,7 @@ def v206_maybe_forward_background(force=False):
                 return
             v206_adaptive_forward_cycle()
         except Exception as exc:
-            print(f'v20.9 adaptive forward error: {exc}')
+            print(f'v20.8 adaptive forward error: {exc}')
         finally:
             if shared_acquired:
                 V202_FORWARD_LAB_LOCK.release()
@@ -30837,14 +30836,6 @@ def v201_effectiveness_report(record=True, technical=False):
                 else 'Состояние оценки: идёт пересчёт, результат пока предварительный'
             ),
             f"Изменение после обновления: {trend_line}",
-            *(
-                [
-                    f"Активный ориентир: {evidence.get('retained_best_version')} — {int(evidence.get('retained_best_score', 0) or 0)}/100",
-                    f"Отклонённый исследовательский слой: {evidence.get('rejected_research_version')}",
-                ]
-                if evidence.get('retained_best_version')
-                else []
-            ),
             '',
             f"✅ Защита от плохих входов: {scores['protection']}/100",
             f"🟡 Историческая проверка: {scores['historical_validation']}/100",
@@ -30893,14 +30884,6 @@ def v201_effectiveness_report(record=True, technical=False):
         f"validation {evidence['validation_n']} | forward {evidence['forward_closed']} | checkpoints {evidence['checkpoints']}",
         f"Forward Lab: экспериментов active {evidence.get('experiment_forward_active', 0)} | closed {evidence.get('experiment_forward_closed', 0)}",
         f"Главный ограничитель: {blocker}.",
-        *(
-            [
-                f"Удержанный ориентир: {evidence.get('retained_best_version')} — {int(evidence.get('retained_best_score', 0) or 0)}/100",
-                f"Отклонённый исследовательский слой: {evidence.get('rejected_research_version')}",
-            ]
-            if evidence.get('retained_best_version')
-            else []
-        ),
         f"История: {history_line}",
         '',
         'Автопокупки: OFF. Высокая историческая оценка сама по себе их не включит.',
@@ -31843,7 +31826,7 @@ def v203_benchmark_lines():
     benchmark = v203_load_benchmark()
     result = v203_load_result()
     benchmark_valid, benchmark_error = v203_validate_benchmark(benchmark, require_full=True)
-    lines = ['📐 FIXED BENCHMARK + PROBE QUARANTINE GUARD V20.9']
+    lines = ['📐 FIXED BENCHMARK + ADAPTIVE EXIT PLAN GUARD V20.8']
     if not benchmark_valid:
         lines.append(f"• status: building or blocked | reason: {result.get('error') or benchmark_error}")
         lines.append('• published effectiveness: disabled until checksum and repeat test pass')
@@ -31957,8 +31940,8 @@ def v203_learn_fast_report(start=False):
         f'Версия: {v2021_user_version()}',
         '',
         'Состояние: единый исторический эталон готов и защищён.',
-        'Активный ориентир: v20.7, потому что v20.8 не улучшил результат.',
-        'Автопробы качества: новые не создаются, пока стратегия не прошла guard.',
+        'Модель: выбран лучший вариант входа и плана выхода.',
+        f"План: {result.get('selected_plan_label') or v208_plan_label(result.get('selected_plan_key'))}",
         f"Историческая проверка: {result.get('readiness_passed', 0)}/6",
         f"Стабильные периоды: {result.get('stable_windows', 0)}/3",
         f"Средний результат через 48 часов: {float(validation.get('avg48', 0) or 0):+.2f}%",
@@ -31966,9 +31949,9 @@ def v203_learn_fast_report(start=False):
         f"Новые независимые тесты: открыто {len(forward_open)} | завершено {len(forward_closed)}",
         '',
         (
-            'Вывод: стратегия прошла защитный отбор и может открывать новые виртуальные проверки.'
+            'Вывод: модель прошла защитный отбор и может открывать новые виртуальные проверки.'
             if result.get('qualified_for_forward_shadow')
-            else 'Вывод: стратегия не прошла защитный отбор; новые автопробы и forward-входы заблокированы.'
+            else 'Вывод: модель не прошла защитный отбор; новые виртуальные входы от неё заблокированы.'
         ),
         'Реальные покупки и автоторговля выключены.',
         '',
@@ -31985,17 +31968,17 @@ def v191111_audit_content():
         decisions = v191111_ranked_paper_buy_decisions()
     sections = [
         ('VERSION', f'BOT_VERSION: {V191111_VERSION}'),
-        ('FIXED BENCHMARK + PROBE QUARANTINE GUARD V20.9', '\n'.join(v203_benchmark_lines())),
-        ('EFFECTIVENESS CONTROL CENTER V20.9', effectiveness_section),
-        ('MEASURABLE LEARNING PROGRESS V20.9', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
+        ('FIXED BENCHMARK + ADAPTIVE EXIT PLAN GUARD V20.8', '\n'.join(v203_benchmark_lines())),
+        ('EFFECTIVENESS CONTROL CENTER V20.8', effectiveness_section),
+        ('MEASURABLE LEARNING PROGRESS V20.8', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
         ('HISTORICAL POLICY VS ENTRY CALIBRATION', '\n'.join(v191113_policy_calibration_lines(backfill))),
         ('LEGACY WALK-FORWARD ENTRY LAB (RESEARCH ONLY)', '\n'.join(v191120_entry_lab_lines())),
-        ('VALIDATED POLICY FORWARD SHADOW V20.9', '\n'.join(v191124_forward_shadow_lines())),
-        ('CHAMPION-CHALLENGER FORWARD LAB V20.9', '\n'.join(v202_forward_lab_lines())),
+        ('VALIDATED POLICY FORWARD SHADOW V20.8', '\n'.join(v191124_forward_shadow_lines())),
+        ('CHAMPION-CHALLENGER FORWARD LAB V20.8', '\n'.join(v202_forward_lab_lines())),
         ('FAST PROBE SCORING', v1911101_safe_call('v191181_fast_probe_scoring_report')),
         ('FAST SHADOW PORTFOLIO', v1911101_safe_call('v191181_fast_shadow_report')),
         ('FAST LESSON ENGINE', v1911101_safe_call('v191181_fast_lesson_engine_report')),
-        ('UNIFIED PAPER DECISION GATE V20.9', v191111_paper_buy_report(create=False)),
+        ('UNIFIED PAPER DECISION GATE V20.8', v191111_paper_buy_report(create=False)),
         ('PAPER CHECKPOINT LIFECYCLE', '\n'.join(v191111_checkpoint_lines(decisions))),
         ('CONFIDENCE LESSON ROUTER', '\n'.join(v191111_router_lines())),
         ('HOURLY FAST EVIDENCE ROUTER', '\n'.join(v191112_fast_evidence_lines(decisions))),
@@ -32009,122 +31992,18 @@ def v191111_audit_content():
     return base
 
 
-V209_RETAINED_BEST_VERSION = 'v20.7 MODEL SELECTION GUARD'
-V209_RETAINED_BEST_SCORE = 44
-V209_REJECTED_RESEARCH_VERSION = 'v20.8 ADAPTIVE EXIT PLAN GUARD'
-
-
-def v209_forward_guard_ready():
-    try:
-        result = v203_load_result()
-        return bool(v203_result_is_valid(result) and result.get('qualified_for_forward_shadow'))
-    except Exception:
-        return False
-
-
-try:
-    _v209_old_auto_quality_probe_scheduler = v19116_auto_quality_probe_scheduler
-except Exception:
-    _v209_old_auto_quality_probe_scheduler = None
-try:
-    _v209_old_auto_quality_probe_status_report = auto_quality_probe_status_report
-except Exception:
-    _v209_old_auto_quality_probe_status_report = None
-
-
-def v19116_auto_quality_probe_scheduler(force=False, chat_id=None):
-    """v20.9: legacy quality auto-probe cannot create new probes while benchmark guard blocks forward."""
-    if not v209_forward_guard_ready():
-        st = v19116_auto_probe_state() if 'v19116_auto_probe_state' in globals() else {}
-        now = time.time()
-        if isinstance(st, dict):
-            st.update({
-                'last_run': now,
-                'version': V191111_VERSION,
-                'last_created': 0,
-                'last_new_assets': [],
-                'last_blocked_reason': 'benchmark forward guard is BLOCK; auto quality probes are quarantined',
-                'last_error': '',
-            })
-            try:
-                v19116_save_auto_probe_state(st, sync=False)
-            except Exception:
-                pass
-        return {
-            'ran': True,
-            'created': 0,
-            'active': len(v19116_probe_assets_from_store()) if 'v19116_probe_assets_from_store' in globals() else 0,
-            'new_assets': [],
-            'sent': False,
-            'blocked': True,
-            'reason': 'benchmark_guard_block',
-            'state': st,
-        }
-    if callable(_v209_old_auto_quality_probe_scheduler):
-        return _v209_old_auto_quality_probe_scheduler(force=force, chat_id=chat_id)
-    return {'ran': False, 'reason': 'scheduler unavailable'}
-
-
-def auto_quality_probe_status_report():
-    base = ''
-    try:
-        if callable(_v209_old_auto_quality_probe_status_report):
-            base = str(_v209_old_auto_quality_probe_status_report())
-    except Exception:
-        base = ''
-    if v209_forward_guard_ready():
-        return base or '🟡 Авто-пробы качества\n\nСтатус: включено. Реальные покупки выключены.'
-    return '\n'.join([
-        '🟡 Авто-пробы качества',
-        '',
-        f'Версия: {V191111_VERSION}',
-        'Статус: ⛔ создание новых автопроб заблокировано',
-        'Причина: новая стратегия не прошла защитный benchmark guard.',
-        'Уже открытые paper-пробы только наблюдаются до 24/48ч.',
-        '',
-        'Реальные покупки: 0. Автоторговля выключена.',
-    ])
-
-
-_V209_BASE_EFFECTIVENESS_SNAPSHOT = v203_effectiveness_snapshot
-
-
-def v203_effectiveness_snapshot():
-    snapshot = _V209_BASE_EFFECTIVENESS_SNAPSHOT()
-    snapshot['version'] = V191111_VERSION
-    try:
-        current_overall = int(snapshot.get('overall', 0) or 0)
-        evidence = snapshot.get('evidence', {}) if isinstance(snapshot.get('evidence', {}), dict) else {}
-        evidence.update({
-            'retained_best_version': V209_RETAINED_BEST_VERSION,
-            'retained_best_score': V209_RETAINED_BEST_SCORE,
-            'rejected_research_version': V209_REJECTED_RESEARCH_VERSION,
-            'research_overall': current_overall,
-            'auto_quality_probe_guard': 'blocked until benchmark forward guard passes',
-        })
-        snapshot['evidence'] = evidence
-        if current_overall < V209_RETAINED_BEST_SCORE:
-            snapshot['overall'] = V209_RETAINED_BEST_SCORE
-            snapshot['forecast_accuracy'] = max(
-                int(snapshot.get('forecast_accuracy', 0) or 0),
-                42,
-            )
-    except Exception:
-        pass
-    return snapshot
-
-
 def v191111_version_report():
     return (
         f'✅ Версия: {v2021_user_version()}\n'
-        'Название: КАРАНТИН СЛАБЫХ АВТОПРОБ\n\n'
+        'Название: АДАПТИВНЫЙ ПЛАН ВЫХОДА\n\n'
         'Что изменено:\n'
         '• сохранён неизменяемый исторический эталон v20.3;\n'
-        '• v20.8 отклонён как исследовательский вариант: он не улучшил v20.7;\n'
-        '• лучшим ориентиром оставлен v20.7: 44/100;\n'
-        '• старый auto quality-probe больше не может сам создавать новые paper-пробы, пока benchmark guard блокирует стратегию;\n'
-        '• уже созданные paper-пробы только наблюдаются до 24/48ч;\n'
-        '• новые forward-входы остаются заблокированы до прохождения защитной проверки;\n'
+        '• бот теперь подбирает не только точку входа, но и виртуальный план цель/стоп;\n'
+        '• проверяются несколько вариантов цели и стопа;\n'
+        '• план выбирается только на промежуточной проверке, не на финальной;\n'
+        '• финальная проверка остаётся честным экзаменом для модели и плана;\n'
+        '• слабая модель по-прежнему не может открывать новые forward PAPER-входы;\n'
+        '• уже открытые forward PAPER продолжают обновляться до 48 часов;\n'
         '• результат по-прежнему рассчитывается дважды и сверяется по контрольной сумме;\n'
         '• торговая логика и виртуальные сделки не изменялись;\n'
         '• простой русский формат пользовательских отчётов сохранён.\n\n'
@@ -32202,7 +32081,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -32503,7 +32382,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -32936,13 +32815,13 @@ def version_user_report():
 
 
 
-# === v20.9 PROBE QUARANTINE GUARD ===
+# === v20.8 ADAPTIVE EXIT PLAN GUARD ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -33556,7 +33435,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 
 def v1911101_section(title, body):
@@ -33611,7 +33490,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -33712,7 +33591,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 
 def v1911101_load_buy_state():
@@ -33827,14 +33706,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v20.9 PROBE QUARANTINE GUARD ===
+# === v20.8 ADAPTIVE EXIT PLAN GUARD ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -34135,13 +34014,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v20.9 PROBE QUARANTINE GUARD ===
+# === v20.8 ADAPTIVE EXIT PLAN GUARD ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.9 PROBE QUARANTINE GUARD"
+BOT_VERSION = "v20.8 ADAPTIVE EXIT PLAN GUARD"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
