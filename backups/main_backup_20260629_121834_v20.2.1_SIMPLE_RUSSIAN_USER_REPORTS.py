@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16835,7 +16835,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17943,7 +17943,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18418,7 +18418,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18582,7 +18582,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18927,7 +18927,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19308,7 +19308,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19615,7 +19615,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20129,7 +20129,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20270,7 +20270,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20581,7 +20581,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20872,7 +20872,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21732,7 +21732,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22136,7 +22136,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22705,7 +22705,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23213,7 +23213,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23519,7 +23519,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24047,7 +24047,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25264,7 +25264,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 
 def _v191191_branch_ref_name():
@@ -25409,7 +25409,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25697,7 +25697,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25926,7 +25926,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26293,13 +26293,13 @@ def version_user_report():
 
 
 
-# === v20.2.2 CHAMPION RETENTION GUARD ===
+# === v20.2.1 SIMPLE RUSSIAN USER REPORTS ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26913,7 +26913,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 
 def v1911101_section(title, body):
@@ -26968,7 +26968,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27069,7 +27069,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 
 def v1911101_load_buy_state():
@@ -27185,14 +27185,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v20.2.2 CHAMPION RETENTION GUARD ===
+# === v20.2.1 SIMPLE RUSSIAN USER REPORTS ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27493,13 +27493,13 @@ def version_user_report():
 
 
 
-# === v20.2.2 CHAMPION RETENTION GUARD ===
+# === v20.2.1 SIMPLE RUSSIAN USER REPORTS ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27802,31 +27802,17 @@ def version_user_report():
     )
 
 
-# === v20.2.2 CHAMPION RETENTION GUARD ===
+# === v20.2.1 SIMPLE RUSSIAN USER REPORTS ===
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+V191111_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
 V202_FORWARD_LAB_FILE = data_path("forward_challenger_lab_v202.json")
 V202_FORWARD_LAB_LOCK = Lock()
 V202_POLICY_SCHEMA = "walkforward_regime_guard_v1"
-V2022_BASELINE_POLICY = {
-    'threshold': 80,
-    'btc_min': 0.0,
-    'ret4_min': -1.0,
-    'ret24_min': -3.0,
-    'ret24_max': 4.5,
-    'volume_min': 1.0,
-    'rsi_max': 60,
-    'above_ema_required': False,
-    'btc_ema_required': False,
-}
-V2022_INVALID_EFFECTIVENESS_VERSIONS = {
-    'v20.2.1 SIMPLE RUSSIAN USER REPORTS',
-}
 
 
 def v2021_user_version():
@@ -28407,14 +28393,6 @@ def v191121_policy_objective(metrics):
     )
 
 
-def v191120_bad_rate_value(metrics):
-    try:
-        value = (metrics or {}).get('bad_rate')
-        return float(value) if value is not None else 1.0
-    except Exception:
-        return 1.0
-
-
 V2000_REGIMES = ['growth', 'decline', 'sideways', 'panic', 'recovery']
 
 
@@ -28479,7 +28457,7 @@ def v2000_validation_windows(validation, regime_experts, window_count=3):
         metrics['stable'] = (
             int(metrics.get('n', 0) or 0) >= 15
             and float(metrics.get('plan_expectancy', 0) or 0) > 0
-            and v191120_bad_rate_value(metrics) <= 0.25
+            and float(metrics.get('bad_rate', 1) or 1) <= 0.25
         )
         windows.append(metrics)
     return windows
@@ -28501,66 +28479,13 @@ def v191123_validation_windows(validation, policy, window_count=3):
         metrics['stable'] = (
             int(metrics.get('n', 0) or 0) >= 15
             and float(metrics.get('plan_expectancy', 0) or 0) > 0
-            and v191120_bad_rate_value(metrics) <= 0.25
+            and float(metrics.get('bad_rate', 1) or 1) <= 0.25
         )
         windows.append(metrics)
     return windows
 
 
-def v2022_policy_readiness(validation_metrics, windows):
-    validation_metrics = validation_metrics if isinstance(validation_metrics, dict) else {}
-    windows = windows if isinstance(windows, list) else []
-    stable_windows = sum(1 for row in windows if isinstance(row, dict) and row.get('stable'))
-    checks = {
-        'validation_n_60': int(validation_metrics.get('n', 0) or 0) >= 60,
-        'validation_avg_positive': float(validation_metrics.get('avg48', 0) or 0) >= 0.4,
-        'validation_win_rate': float(validation_metrics.get('win_rate', 0) or 0) >= 0.52,
-        'validation_bad_rate': v191120_bad_rate_value(validation_metrics) <= 0.25,
-        'validation_plan_expectancy': float(validation_metrics.get('plan_expectancy', 0) or 0) >= 0.20,
-        'validation_window_stability': len(windows) == 3 and stable_windows == 3,
-    }
-    passed = sum(1 for ok in checks.values() if ok)
-    qualified = (
-        passed >= 5
-        and int(validation_metrics.get('n', 0) or 0) >= 60
-        and stable_windows == 3
-    )
-    strength = (
-        passed * 100
-        + stable_windows * 20
-        + float(validation_metrics.get('avg48', 0) or 0) * 8
-        + float(validation_metrics.get('plan_expectancy', 0) or 0) * 12
-        - float(validation_metrics.get('bad_rate', 0) or 0) * 30
-        + min(2.0, int(validation_metrics.get('n', 0) or 0) / 100.0)
-    )
-    return {
-        'checks': checks,
-        'passed': passed,
-        'stable_windows': stable_windows,
-        'qualified': qualified,
-        'strength': round(strength, 3),
-    }
-
-
-def v2022_evaluate_deployment_policy(name, policy, train, validation):
-    if not isinstance(policy, dict) or not policy:
-        return {}
-    train_metrics = v191121_policy_metrics(train, policy)
-    validation_metrics = v191121_policy_metrics(validation, policy)
-    windows = v191123_validation_windows(validation, policy, window_count=3)
-    readiness = v2022_policy_readiness(validation_metrics, windows)
-    return {
-        'name': name,
-        'policy': dict(policy),
-        'train': train_metrics,
-        'validation': validation_metrics,
-        'windows': windows,
-        **readiness,
-    }
-
-
 def v191120_run_walkforward(candles_by_asset=None):
-    incumbent_lab = v191120_load_entry_lab()
     if candles_by_asset is None:
         candles_by_asset = {'BTC': v191120_fetch_4h_candles('BTC')}
         for asset in V191120_ENTRY_LAB_ASSETS:
@@ -28619,7 +28544,7 @@ def v191120_run_walkforward(candles_by_asset=None):
         and int(regime_validation.get('n', 0) or 0) >= 60
         and float(regime_validation.get('avg48', 0) or 0) >= 0.40
         and float(regime_validation.get('plan_expectancy', 0) or 0) >= 0.20
-        and v191120_bad_rate_value(regime_validation) <= 0.25
+        and float(regime_validation.get('bad_rate', 1) or 1) <= 0.25
         and len(regime_validation_windows) == 3
         and all(bool(row.get('stable')) for row in regime_validation_windows)
     )
@@ -28637,7 +28562,7 @@ def v191120_run_walkforward(candles_by_asset=None):
         'validation_n_60': int(selected_validation.get('n', 0) or 0) >= 60,
         'validation_avg_positive': float(selected_validation.get('avg48', 0) or 0) >= 0.4,
         'validation_win_rate': float(selected_validation.get('win_rate', 0) or 0) >= 0.52,
-        'validation_bad_rate': v191120_bad_rate_value(selected_validation) <= 0.25,
+        'validation_bad_rate': float(selected_validation.get('bad_rate', 1) or 1) <= 0.25,
         'validation_plan_expectancy': float(selected_validation.get('plan_expectancy', 0) or 0) >= 0.20,
         'validation_window_stability': len(validation_windows) == 3 and stable_windows == 3,
     }
@@ -28682,68 +28607,6 @@ def v191120_run_walkforward(candles_by_asset=None):
         'ready_for_live': False,
         'note': 'Historical validation only. It cannot enable live BUY or autotrading.',
     }
-
-    current_readiness = v2022_policy_readiness(
-        result.get('selected_validation', {}),
-        result.get('validation_windows', []),
-    )
-    deployment_candidates = [
-        v2022_evaluate_deployment_policy('baseline_v20', V2022_BASELINE_POLICY, train, validation),
-    ]
-    incumbent_policy = (
-        incumbent_lab.get('selected_policy', {})
-        if isinstance(incumbent_lab, dict) and isinstance(incumbent_lab.get('selected_policy', {}), dict)
-        else {}
-    )
-    if incumbent_policy and incumbent_policy != V2022_BASELINE_POLICY:
-        deployment_candidates.append(
-            v2022_evaluate_deployment_policy('incumbent', incumbent_policy, train, validation)
-        )
-    qualified_candidates = [
-        row for row in deployment_candidates
-        if isinstance(row, dict) and row.get('qualified')
-    ]
-    retained = max(qualified_candidates, key=lambda row: float(row.get('strength', 0) or 0)) if qualified_candidates else {}
-    if retained and (
-        not current_readiness.get('qualified')
-        or float(retained.get('strength', 0) or 0) > float(current_readiness.get('strength', 0) or 0) + 1.0
-    ):
-        result['research_candidate'] = {
-            'policy_mode': result.get('policy_mode'),
-            'policy': result.get('selected_policy', {}),
-            'validation': result.get('selected_validation', {}),
-            'validation_windows': result.get('validation_windows', []),
-            'readiness_checks': result.get('readiness_checks', {}),
-            'readiness_passed': result.get('readiness_passed', 0),
-            'reason': 'candidate did not beat deployment champion',
-        }
-        result.update({
-            'selected_threshold': int(retained.get('policy', {}).get('threshold', 80) or 80),
-            'selected_train': retained.get('train', {}),
-            'selected_validation': retained.get('validation', {}),
-            'selected_policy': retained.get('policy', {}),
-            'policy_mode': 'global_policy',
-            'global_train': retained.get('train', {}),
-            'global_validation': retained.get('validation', {}),
-            'global_validation_windows': retained.get('windows', []),
-            'validation_windows': retained.get('windows', []),
-            'stable_windows': int(retained.get('stable_windows', 0) or 0),
-            'readiness_checks': retained.get('checks', {}),
-            'readiness_passed': int(retained.get('passed', 0) or 0),
-            'champion_retained': True,
-            'champion_source': retained.get('name'),
-            'champion_strength': retained.get('strength'),
-            'rejected_candidate_strength': current_readiness.get('strength'),
-            'deployment_guard': 'stronger validated champion retained; weaker recalculation kept as research only',
-        })
-    else:
-        result.update({
-            'champion_retained': False,
-            'champion_source': 'new_train_candidate',
-            'champion_strength': current_readiness.get('strength'),
-            'deployment_guard': 'new candidate passed retention guard',
-        })
-
     save_json(V191120_ENTRY_LAB_FILE, result)
     try:
         background_github_sync([V191120_ENTRY_LAB_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
@@ -28777,7 +28640,7 @@ def v202_entry_lab_compatible(data):
         and sum(1 for ok in checks.values() if ok) >= 5
         and int(validation.get('n', 0) or 0) >= 60
         and float(validation.get('plan_expectancy', 0) or 0) >= 0.20
-        and v191120_bad_rate_value(validation) <= 0.25
+        and float(validation.get('bad_rate', 1) or 1) <= 0.25
     )
 
 
@@ -28834,12 +28697,6 @@ def v191120_entry_lab_lines():
     ]
     if data.get('regime_candidate') and not data.get('regime_validation_approved'):
         lines.append('• regime experts: validation guard rejected deployment; stable GLOBAL POLICY retained.')
-    if data.get('champion_retained'):
-        research = data.get('research_candidate', {}) if isinstance(data.get('research_candidate', {}), dict) else {}
-        lines.append(
-            f"• champion retention: stronger policy retained from {data.get('champion_source')} | "
-            f"rejected candidate checks {research.get('readiness_passed', 0)}/6"
-        )
     experts = data.get('regime_experts', {}) if isinstance(data.get('regime_experts'), dict) else {}
     if experts:
         lines.append('• regime experts:')
@@ -30169,11 +30026,6 @@ def v201_effectiveness_snapshot():
         if 'v202_entry_lab_compatible' in globals()
         else bool(lab_version and lab_version == V191111_VERSION)
     )
-    try:
-        if V191120_ENTRY_LAB_LOCK.locked():
-            lab_fresh = False
-    except Exception:
-        pass
     validation = lab.get('selected_validation', {}) if isinstance(lab.get('selected_validation', {}), dict) else {}
     lab_checks = lab.get('readiness_checks', {}) if isinstance(lab.get('readiness_checks', {}), dict) else {}
 
@@ -30310,7 +30162,6 @@ def v201_effectiveness_report(record=True, technical=False):
             row for row in reversed(records)
             if str(row.get('version') or '') != V191111_VERSION
             and row.get('measurement_valid') is True
-            and str(row.get('version') or '') not in V2022_INVALID_EFFECTIVENESS_VERSIONS
         ),
         None,
     )
@@ -30331,8 +30182,6 @@ def v201_effectiveness_report(record=True, technical=False):
         if row.get('measurement_valid') is not True:
             continue
         version = str(row.get('version') or '')
-        if version in V2022_INVALID_EFFECTIVENESS_VERSIONS:
-            continue
         if version and version not in seen:
             seen.add(version)
             unique_versions.append(f"{version}: {int(row.get('overall', 0) or 0)}/100")
@@ -30358,11 +30207,6 @@ def v201_effectiveness_report(record=True, technical=False):
             f"Общая оценка: {snapshot['overall']}/100 — {v201_effectiveness_label(snapshot['overall'])}",
             f"Точность прогнозов: {snapshot['forecast_accuracy']}/100",
             f"Достоверность оценки: {snapshot['evidence_confidence']}/100",
-            (
-                'Состояние оценки: актуальный результат'
-                if measurement_valid
-                else 'Состояние оценки: идёт пересчёт, результат пока предварительный'
-            ),
             f"Изменение после обновления: {trend_line}",
             '',
             f"✅ Защита от плохих входов: {scores['protection']}/100",
@@ -30418,16 +30262,16 @@ def v191111_audit_content():
         decisions = v191111_ranked_paper_buy_decisions()
     sections = [
         ('VERSION', f'BOT_VERSION: {V191111_VERSION}'),
-        ('EFFECTIVENESS CONTROL CENTER V20.2.2', effectiveness_section),
-        ('MEASURABLE LEARNING PROGRESS V20.2.2', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
+        ('EFFECTIVENESS CONTROL CENTER V20.2.1', effectiveness_section),
+        ('MEASURABLE LEARNING PROGRESS V20.2.1', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
         ('HISTORICAL POLICY VS ENTRY CALIBRATION', '\n'.join(v191113_policy_calibration_lines(backfill))),
-        ('WALK-FORWARD ENTRY LAB V20.2.2', '\n'.join(v191120_entry_lab_lines())),
-        ('VALIDATED POLICY FORWARD SHADOW V20.2.2', '\n'.join(v191124_forward_shadow_lines())),
-        ('CHAMPION-CHALLENGER FORWARD LAB V20.2.2', '\n'.join(v202_forward_lab_lines())),
+        ('WALK-FORWARD ENTRY LAB V20.2.1', '\n'.join(v191120_entry_lab_lines())),
+        ('VALIDATED POLICY FORWARD SHADOW V20.2.1', '\n'.join(v191124_forward_shadow_lines())),
+        ('CHAMPION-CHALLENGER FORWARD LAB V20.2.1', '\n'.join(v202_forward_lab_lines())),
         ('FAST PROBE SCORING', v1911101_safe_call('v191181_fast_probe_scoring_report')),
         ('FAST SHADOW PORTFOLIO', v1911101_safe_call('v191181_fast_shadow_report')),
         ('FAST LESSON ENGINE', v1911101_safe_call('v191181_fast_lesson_engine_report')),
-        ('UNIFIED PAPER DECISION GATE V20.2.2', v191111_paper_buy_report(create=False)),
+        ('UNIFIED PAPER DECISION GATE V20.2.1', v191111_paper_buy_report(create=False)),
         ('PAPER CHECKPOINT LIFECYCLE', '\n'.join(v191111_checkpoint_lines(decisions))),
         ('CONFIDENCE LESSON ROUTER', '\n'.join(v191111_router_lines())),
         ('HOURLY FAST EVIDENCE ROUTER', '\n'.join(v191112_fast_evidence_lines(decisions))),
@@ -30444,14 +30288,14 @@ def v191111_audit_content():
 def v191111_version_report():
     return (
         f'✅ Версия: {v2021_user_version()}\n'
-        'Название: ЗАЩИТА ЛУЧШЕЙ СТРАТЕГИИ\n\n'
+        'Название: ПРОСТЫЕ ПОЛЬЗОВАТЕЛЬСКИЕ ОТЧЁТЫ\n\n'
         'Что изменено:\n'
-        '• новый расчёт сравнивается с действующей лучшей стратегией;\n'
-        '• слабая стратегия больше не может автоматически заменить сильную;\n'
-        '• результат 1/6 сохраняется только как неудачный исследовательский вариант;\n'
-        '• основная стратегия 5/6 восстанавливается после контрольного пересчёта;\n'
-        '• оценка во время фонового расчёта помечается как предварительная;\n'
-        '• простой русский формат пользовательских отчётов сохранён.\n\n'
+        '• пользовательские отчёты переведены на простой русский язык;\n'
+        '• /learn_fast теперь показывает только результат обучения и понятный вывод;\n'
+        '• /effectiveness показывает сильные и слабые стороны без технических терминов;\n'
+        '• /paper_buy_status показывает открытые проверки, кандидатов и причину остановки;\n'
+        '• вся внутренняя диагностика собрана только в /audit_file;\n'
+        '• алгоритм параллельных виртуальных проверок сохранён.\n\n'
         'Безопасность:\n'
         '• реальные покупки: 0;\n'
         '• автоторговля: выключена;\n'
@@ -30525,7 +30369,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -30826,7 +30670,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -31259,13 +31103,13 @@ def version_user_report():
 
 
 
-# === v20.2.2 CHAMPION RETENTION GUARD ===
+# === v20.2.1 SIMPLE RUSSIAN USER REPORTS ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -31879,7 +31723,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 
 def v1911101_section(title, body):
@@ -31934,7 +31778,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -32035,7 +31879,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 
 def v1911101_load_buy_state():
@@ -32150,14 +31994,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v20.2.2 CHAMPION RETENTION GUARD ===
+# === v20.2.1 SIMPLE RUSSIAN USER REPORTS ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -32458,13 +32302,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v20.2.2 CHAMPION RETENTION GUARD ===
+# === v20.2.1 SIMPLE RUSSIAN USER REPORTS ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.2.2 CHAMPION RETENTION GUARD"
+BOT_VERSION = "v20.2.1 SIMPLE RUSSIAN USER REPORTS"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
