@@ -1,6 +1,6 @@
 {
   "benchmark_hash": "7fea2d252e303565de5523093c21a0af31eab5c828c5162028a434379388caa9",
-  "evaluator_schema": "adaptive_evidence_evaluator_v204_1",
+  "evaluator_schema": "robust_precision_evaluator_v205_1",
   "method": "adaptive binned evidence; chronological 60/20/20 fit/calibration/final validation",
   "total_samples": 7860,
   "train_samples": 4680,
@@ -9,9 +9,9 @@
   "fit_split_ts": 1768968000,
   "calibration_split_ts": 1775750400,
   "boundary_embargo_hours": 48,
-  "policy_search_count": 6,
+  "policy_search_count": 42,
   "model_schema": "adaptive_binned_evidence_v204_1",
-  "model_hash": "68e1181049d61447b552062843eec8090e630cd6c4bb92f84e505db24e8d9aaa",
+  "model_hash": "ab2d1538c5d017e31f96899618c384fbdae37bab4c0cf8ad6b0ff4dddb1765c2",
   "model": {
     "schema": "adaptive_binned_evidence_v204_1",
     "prior": 30.0,
@@ -51,7 +51,9 @@
             "expected_return": 0.105439,
             "bad_probability": 0.256894
           }
-        ]
+        ],
+        "raw_weight": 0.286168,
+        "weight": 0.622921
       },
       "ret_4h": {
         "edges": [
@@ -86,7 +88,9 @@
             "expected_return": -0.010262,
             "bad_probability": 0.313118
           }
-        ]
+        ],
+        "raw_weight": 0.267046,
+        "weight": 0.581297
       },
       "ret_24h": {
         "edges": [
@@ -121,7 +125,9 @@
             "expected_return": -0.077688,
             "bad_probability": 0.361499
           }
-        ]
+        ],
+        "raw_weight": 0.409622,
+        "weight": 0.891651
       },
       "rsi14": {
         "edges": [
@@ -156,7 +162,9 @@
             "expected_return": 0.073342,
             "bad_probability": 0.348027
           }
-        ]
+        ],
+        "raw_weight": 0.454055,
+        "weight": 0.988371
       },
       "volume_ratio": {
         "edges": [
@@ -191,7 +199,9 @@
             "expected_return": -0.101357,
             "bad_probability": 0.319342
           }
-        ]
+        ],
+        "raw_weight": 0.326704,
+        "weight": 0.711158
       },
       "drawdown20": {
         "edges": [
@@ -226,7 +236,9 @@
             "expected_return": 0.310697,
             "bad_probability": 0.279633
           }
-        ]
+        ],
+        "raw_weight": 0.668345,
+        "weight": 1.454831
       },
       "range14": {
         "edges": [
@@ -261,7 +273,9 @@
             "expected_return": -0.021529,
             "bad_probability": 0.299322
           }
-        ]
+        ],
+        "raw_weight": 0.986492,
+        "weight": 2.147362
       },
       "btc_24h": {
         "edges": [
@@ -296,7 +310,9 @@
             "expected_return": -0.234951,
             "bad_probability": 0.344049
           }
-        ]
+        ],
+        "raw_weight": 0.769478,
+        "weight": 1.674973
       },
       "momentum_12h": {
         "edges": [
@@ -331,7 +347,9 @@
             "expected_return": -0.076162,
             "bad_probability": 0.323157
           }
-        ]
+        ],
+        "raw_weight": 0.274651,
+        "weight": 0.597851
       },
       "momentum_48h": {
         "edges": [
@@ -366,7 +384,9 @@
             "expected_return": -0.042045,
             "bad_probability": 0.409167
           }
-        ]
+        ],
+        "raw_weight": 0.502707,
+        "weight": 1.094275
       },
       "ema_gap": {
         "edges": [
@@ -401,7 +421,9 @@
             "expected_return": -0.037424,
             "bad_probability": 0.408131
           }
-        ]
+        ],
+        "raw_weight": 0.583681,
+        "weight": 1.270537
       },
       "ema_slope": {
         "edges": [
@@ -436,7 +458,9 @@
             "expected_return": 0.110084,
             "bad_probability": 0.373934
           }
-        ]
+        ],
+        "raw_weight": 0.383748,
+        "weight": 0.83533
       },
       "relative_24h": {
         "edges": [
@@ -471,7 +495,9 @@
             "expected_return": -0.063558,
             "bad_probability": 0.361874
           }
-        ]
+        ],
+        "raw_weight": 0.452592,
+        "weight": 0.985187
       },
       "up_ratio_6": {
         "edges": [
@@ -500,7 +526,9 @@
             "expected_return": 0.193735,
             "bad_probability": 0.291847
           }
-        ]
+        ],
+        "raw_weight": 0.275668,
+        "weight": 0.600065
       },
       "volume_trend": {
         "edges": [
@@ -535,92 +563,165 @@
             "expected_return": -0.049841,
             "bad_probability": 0.287923
           }
-        ]
+        ],
+        "raw_weight": 0.25,
+        "weight": 0.544191
       }
     }
   },
   "selected_policy": {
-    "type": "adaptive_evidence",
-    "cutoff": -0.411218,
-    "model_hash": "68e1181049d61447b552062843eec8090e630cd6c4bb92f84e505db24e8d9aaa"
+    "type": "robust_precision_evidence",
+    "cutoff": -0.37453,
+    "bad_max": 0.3,
+    "expected_min": 0.0,
+    "model_hash": "ab2d1538c5d017e31f96899618c384fbdae37bab4c0cf8ad6b0ff4dddb1765c2"
   },
   "selected_train": {
     "n": 4680
   },
   "selected_calibration": {
     "threshold": 0,
-    "n": 765,
-    "avg48": -0.682,
-    "median48": -0.584,
-    "win_rate": 0.353,
-    "bad_rate": 0.297,
-    "avg_mae": -5.209,
-    "avg_mfe": 4.151,
-    "plan_expectancy": -0.613,
-    "plan_win_rate": 0.451,
-    "plan_stop_rate": 0.493,
-    "cutoff": -0.411218
+    "n": 454,
+    "avg48": -0.866,
+    "median48": -0.622,
+    "win_rate": 0.348,
+    "bad_rate": 0.315,
+    "avg_mae": -5.431,
+    "avg_mfe": 3.927,
+    "plan_expectancy": -0.784,
+    "plan_win_rate": 0.421,
+    "plan_stop_rate": 0.526,
+    "cutoff": -0.37453,
+    "bad_max": 0.3,
+    "expected_min": 0.0,
+    "calibration_windows": [
+      {
+        "threshold": 0,
+        "n": 188,
+        "avg48": -2.296,
+        "median48": -2.006,
+        "win_rate": 0.287,
+        "bad_rate": 0.426,
+        "avg_mae": -7.937,
+        "avg_mfe": 3.374,
+        "plan_expectancy": -1.263,
+        "plan_win_rate": 0.33,
+        "plan_stop_rate": 0.628,
+        "cutoff": -0.37453,
+        "bad_max": 0.3,
+        "expected_min": 0.0,
+        "window": 1,
+        "stable": false
+      },
+      {
+        "threshold": 0,
+        "n": 104,
+        "avg48": 0.867,
+        "median48": 0.635,
+        "win_rate": 0.442,
+        "bad_rate": 0.231,
+        "avg_mae": -3.374,
+        "avg_mfe": 5.476,
+        "plan_expectancy": -0.018,
+        "plan_win_rate": 0.587,
+        "plan_stop_rate": 0.385,
+        "cutoff": -0.37453,
+        "bad_max": 0.3,
+        "expected_min": 0.0,
+        "window": 2,
+        "stable": false
+      },
+      {
+        "threshold": 0,
+        "n": 162,
+        "avg48": -0.319,
+        "median48": -0.257,
+        "win_rate": 0.358,
+        "bad_rate": 0.241,
+        "avg_mae": -3.844,
+        "avg_mfe": 3.574,
+        "plan_expectancy": -0.72,
+        "plan_win_rate": 0.42,
+        "plan_stop_rate": 0.5,
+        "cutoff": -0.37453,
+        "bad_max": 0.3,
+        "expected_min": 0.0,
+        "window": 3,
+        "stable": false
+      }
+    ],
+    "stable_windows": 0,
+    "precision_qualified": false
   },
+  "calibration_precision_qualified": false,
   "selected_validation": {
     "threshold": 0,
-    "n": 955,
-    "avg48": -0.318,
-    "median48": -0.301,
-    "win_rate": 0.355,
-    "bad_rate": 0.242,
-    "avg_mae": -3.947,
-    "avg_mfe": 3.793,
-    "plan_expectancy": -0.065,
-    "plan_win_rate": 0.524,
-    "plan_stop_rate": 0.36,
-    "cutoff": -0.411218
+    "n": 727,
+    "avg48": -0.459,
+    "median48": -0.328,
+    "win_rate": 0.347,
+    "bad_rate": 0.23,
+    "avg_mae": -3.738,
+    "avg_mfe": 3.435,
+    "plan_expectancy": -0.054,
+    "plan_win_rate": 0.514,
+    "plan_stop_rate": 0.348,
+    "cutoff": -0.37453,
+    "bad_max": 0.3,
+    "expected_min": 0.0
   },
   "validation_windows": [
     {
       "threshold": 0,
-      "n": 355,
-      "avg48": 0.647,
-      "median48": 0.342,
-      "win_rate": 0.366,
-      "bad_rate": 0.101,
-      "avg_mae": -2.244,
-      "avg_mfe": 3.541,
-      "plan_expectancy": 0.526,
-      "plan_win_rate": 0.594,
-      "plan_stop_rate": 0.206,
-      "cutoff": -0.411218,
+      "n": 300,
+      "avg48": 0.794,
+      "median48": 0.372,
+      "win_rate": 0.383,
+      "bad_rate": 0.067,
+      "avg_mae": -1.989,
+      "avg_mfe": 3.352,
+      "plan_expectancy": 0.599,
+      "plan_win_rate": 0.593,
+      "plan_stop_rate": 0.177,
+      "cutoff": -0.37453,
+      "bad_max": 0.3,
+      "expected_min": 0.0,
       "window": 1,
       "stable": true
     },
     {
       "threshold": 0,
-      "n": 307,
-      "avg48": -0.24,
-      "median48": -1.023,
-      "win_rate": 0.336,
-      "bad_rate": 0.248,
-      "avg_mae": -3.633,
-      "avg_mfe": 3.732,
-      "plan_expectancy": -0.285,
-      "plan_win_rate": 0.502,
-      "plan_stop_rate": 0.41,
-      "cutoff": -0.411218,
+      "n": 223,
+      "avg48": -0.85,
+      "median48": -1.684,
+      "win_rate": 0.283,
+      "bad_rate": 0.265,
+      "avg_mae": -3.668,
+      "avg_mfe": 2.973,
+      "plan_expectancy": -0.514,
+      "plan_win_rate": 0.448,
+      "plan_stop_rate": 0.453,
+      "cutoff": -0.37453,
+      "bad_max": 0.3,
+      "expected_min": 0.0,
       "window": 2,
       "stable": false
     },
     {
       "threshold": 0,
-      "n": 293,
-      "avg48": -1.568,
-      "median48": -1.273,
-      "win_rate": 0.362,
-      "bad_rate": 0.406,
-      "avg_mae": -6.339,
-      "avg_mfe": 4.163,
-      "plan_expectancy": -0.552,
-      "plan_win_rate": 0.461,
-      "plan_stop_rate": 0.495,
-      "cutoff": -0.411218,
+      "n": 204,
+      "avg48": -1.874,
+      "median48": -1.736,
+      "win_rate": 0.363,
+      "bad_rate": 0.431,
+      "avg_mae": -6.386,
+      "avg_mfe": 4.062,
+      "plan_expectancy": -0.512,
+      "plan_win_rate": 0.471,
+      "plan_stop_rate": 0.485,
+      "cutoff": -0.37453,
+      "bad_max": 0.3,
+      "expected_min": 0.0,
       "window": 3,
       "stable": false
     }
@@ -637,13 +738,13 @@
   "stable_windows": 1,
   "qualified_for_forward_shadow": false,
   "ready_for_live": false,
-  "evaluation_hash": "afffae59d600b5b832829f767ebc624b876e0bbb652c077eeb829310ff16270c",
-  "version": "v20.4 ADAPTIVE EVIDENCE MODEL",
+  "evaluation_hash": "a88a8ce1f2b7cf596fb0cd98f348a20b21f6979f5009aa062317cb5726519232",
+  "version": "v20.5 ROBUST PRECISION GATE",
   "benchmark_schema": "fixed_market_benchmark_v203_1",
-  "evaluated_at": 1782744354.706579,
-  "evaluated_at_iso": "2026-06-29T14:45:54.712570",
+  "evaluated_at": 1782745178.3921764,
+  "evaluated_at_iso": "2026-06-29T14:59:38.487378",
   "repeatable": true,
   "measurement_valid": true,
-  "repeat_check_hash": "afffae59d600b5b832829f767ebc624b876e0bbb652c077eeb829310ff16270c",
+  "repeat_check_hash": "a88a8ce1f2b7cf596fb0cd98f348a20b21f6979f5009aa062317cb5726519232",
   "note": "Research and PAPER measurement only. Live BUY and autotrading remain disabled."
 }
