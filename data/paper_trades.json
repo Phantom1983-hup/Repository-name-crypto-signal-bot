@@ -1727,7 +1727,28 @@
       "result_details": {},
       "status": "open",
       "note": "quality paper probe only: реальные сделки и автопокупки выключены",
-      "created_by": "auto_quality_probe_scheduler"
+      "created_by": "auto_quality_probe_scheduler",
+      "probe_entry_snapshot_v19117": {
+        "asset": "SOL",
+        "version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
+        "snapshot_ts": 1782751587.7199652,
+        "price": 73.69,
+        "score": 52,
+        "rsi": 64.3,
+        "volume_trend": 0.77,
+        "change_24": 3.45,
+        "btc_change": 0.38,
+        "fear": 12,
+        "news": 12,
+        "risk_level": "caution",
+        "btc_text": "BTC зелёный, но подтверждение слабое",
+        "entry_price": 73.65,
+        "entry_time": 1782751580.5157573,
+        "entry_score": 62
+      },
+      "probe_scoring_version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
+      "current_price_v19117": 73.68,
+      "current_pnl_v19117": 0.04073319755600969
     },
     "SUI:VIRTUAL_PROBE_ENTRY_TEST:495208": {
       "id": "SUI:VIRTUAL_PROBE_ENTRY_TEST:495208",
@@ -1751,7 +1772,28 @@
       "result_details": {},
       "status": "open",
       "note": "quality paper probe only: реальные сделки и автопокупки выключены",
-      "created_by": "auto_quality_probe_scheduler"
+      "created_by": "auto_quality_probe_scheduler",
+      "probe_entry_snapshot_v19117": {
+        "asset": "SUI",
+        "version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
+        "snapshot_ts": 1782751613.1170652,
+        "price": 0.6936,
+        "score": 60,
+        "rsi": 60.1,
+        "volume_trend": 0.85,
+        "change_24": 1.8499999999999999,
+        "btc_change": 0.38,
+        "fear": 12,
+        "news": 12,
+        "risk_level": "caution",
+        "btc_text": "BTC зелёный, но подтверждение слабое",
+        "entry_price": 0.6935,
+        "entry_time": 1782751580.5157573,
+        "entry_score": 62
+      },
+      "probe_scoring_version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
+      "current_price_v19117": 0.6936,
+      "current_pnl_v19117": 0.014419610670510308
     },
     "LINK:VIRTUAL_PROBE_ENTRY_TEST:495208": {
       "id": "LINK:VIRTUAL_PROBE_ENTRY_TEST:495208",
@@ -1775,7 +1817,28 @@
       "result_details": {},
       "status": "open",
       "note": "quality paper probe only: реальные сделки и автопокупки выключены",
-      "created_by": "auto_quality_probe_scheduler"
+      "created_by": "auto_quality_probe_scheduler",
+      "probe_entry_snapshot_v19117": {
+        "asset": "LINK",
+        "version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
+        "snapshot_ts": 1782751617.2164443,
+        "price": 7.3234,
+        "score": 74,
+        "rsi": 53.0,
+        "volume_trend": 1.24,
+        "change_24": 1.24,
+        "btc_change": 0.38,
+        "fear": 12,
+        "news": 12,
+        "risk_level": "caution",
+        "btc_text": "BTC зелёный, но подтверждение слабое",
+        "entry_price": 7.3324,
+        "entry_time": 1782751580.5157573,
+        "entry_score": 62
+      },
+      "probe_scoring_version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
+      "current_price_v19117": 7.3234,
+      "current_pnl_v19117": -0.12274289455020804
     },
     "INJ:VIRTUAL_PROBE_ENTRY_TEST:495208": {
       "id": "INJ:VIRTUAL_PROBE_ENTRY_TEST:495208",
@@ -1799,7 +1862,28 @@
       "result_details": {},
       "status": "open",
       "note": "quality paper probe only: реальные сделки и автопокупки выключены",
-      "created_by": "auto_quality_probe_scheduler"
+      "created_by": "auto_quality_probe_scheduler",
+      "probe_entry_snapshot_v19117": {
+        "asset": "INJ",
+        "version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
+        "snapshot_ts": 1782751627.0152464,
+        "price": 4.734,
+        "score": 79,
+        "rsi": 64.6,
+        "volume_trend": 1.58,
+        "change_24": 3.7199999999999998,
+        "btc_change": 0.38,
+        "fear": 12,
+        "news": 12,
+        "risk_level": "caution",
+        "btc_text": "BTC зелёный, но подтверждение слабое",
+        "entry_price": 4.734,
+        "entry_time": 1782751580.5157573,
+        "entry_score": 72
+      },
+      "probe_scoring_version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
+      "current_price_v19117": 4.728,
+      "current_pnl_v19117": -0.1267427122940479
     }
   },
   "closed": [
@@ -9173,7 +9257,7 @@
   "last_created_at": 1782749888.6416292,
   "last_update_at": 1782751435.920053,
   "last_quality_probe_created_at": 1782751580.5157573,
-  "last_probe_scoring_snapshot_at": 1782633516.4294314,
+  "last_probe_scoring_snapshot_at": 1782751632.7169902,
   "paper_buy_journal_v191194": [
     {
       "key": "NEAR:PAPER_BUY_DECISION_TEST:495179",
