@@ -1,5 +1,5 @@
 {
-  "version": "v20.9 PROBE QUARANTINE GUARD",
+  "version": "v20.9.1 REPORT CLARITY FIX",
   "open": {
     "ILY:AVOID_PUMP_TEST:495166": {
       "id": "ILY:AVOID_PUMP_TEST:495166",
@@ -741,7 +741,8 @@
         "1h": 0.2,
         "3h": 0.28,
         "6h": 0.49,
-        "12h": 1.03
+        "12h": 1.03,
+        "24h": 1.67
       },
       "result_details": {
         "15m": {
@@ -773,6 +774,11 @@
           "checkpoint_time": 1782713012.3335373,
           "checkpoint_price": 60112.9,
           "source": "learning_cache:snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782754489.9177384,
+          "checkpoint_price": 60494.6,
+          "source": "learning_cache:snapshot"
         }
       },
       "status": "open",
@@ -801,7 +807,8 @@
         "1h": 0.21,
         "3h": 0.27,
         "6h": 0.54,
-        "12h": 1.01
+        "12h": 1.01,
+        "24h": 3.57
       },
       "result_details": {
         "15m": {
@@ -833,6 +840,11 @@
           "checkpoint_time": 1782713012.3335373,
           "checkpoint_price": 1584.46,
           "source": "learning_cache:snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782754489.9177384,
+          "checkpoint_price": 1624.58,
+          "source": "learning_cache:snapshot"
         }
       },
       "status": "open",
@@ -861,7 +873,8 @@
         "1h": 2.08,
         "3h": 1.33,
         "6h": 5.25,
-        "12h": 4.76
+        "12h": 4.76,
+        "24h": -2.98
       },
       "result_details": {
         "15m": {
@@ -893,6 +906,11 @@
           "checkpoint_time": 1782706809.2552948,
           "checkpoint_price": 1.84953,
           "source": "learning_cache:snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782735237.3980873,
+          "checkpoint_price": 1.71287,
+          "source": "learning_cache:snapshot"
         }
       },
       "status": "open",
@@ -921,7 +939,8 @@
         "1h": 4.75,
         "3h": 3.34,
         "6h": 3.34,
-        "12h": -7.77
+        "12h": -7.77,
+        "24h": -9.49
       },
       "result_details": {
         "15m": {
@@ -952,6 +971,11 @@
         "12h": {
           "checkpoint_time": 1782704377.3332403,
           "checkpoint_price": 0.0855,
+          "source": "learning_cache:snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782735237.3980873,
+          "checkpoint_price": 0.0839,
           "source": "learning_cache:snapshot"
         }
       },
@@ -1518,7 +1542,8 @@
       "results": {
         "15m": 1.3,
         "30m": 1.3,
-        "1h": 1.3
+        "1h": 1.3,
+        "3h": 3.61
       },
       "result_details": {
         "15m": {
@@ -1534,6 +1559,11 @@
         "1h": {
           "checkpoint_time": 1782747017.5867784,
           "checkpoint_price": 74.04,
+          "source": "learning_cache:snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782754489.9177384,
+          "checkpoint_price": 75.73,
           "source": "learning_cache:snapshot"
         }
       },
@@ -1773,7 +1803,8 @@
       "macro_mod": 12,
       "results": {
         "15m": 0.04,
-        "30m": 2.82
+        "30m": 2.82,
+        "1h": 2.82
       },
       "result_details": {
         "15m": {
@@ -1782,6 +1813,11 @@
           "source": "learning_cache:snapshot"
         },
         "30m": {
+          "checkpoint_time": 1782754489.9177384,
+          "checkpoint_price": 75.73,
+          "source": "learning_cache:snapshot"
+        },
+        "1h": {
           "checkpoint_time": 1782754489.9177384,
           "checkpoint_price": 75.73,
           "source": "learning_cache:snapshot"
@@ -1833,7 +1869,8 @@
       "macro_mod": 12,
       "results": {
         "15m": -0.01,
-        "30m": 1.5
+        "30m": 1.5,
+        "1h": 1.5
       },
       "result_details": {
         "15m": {
@@ -1842,6 +1879,11 @@
           "source": "learning_cache:snapshot"
         },
         "30m": {
+          "checkpoint_time": 1782754489.9177384,
+          "checkpoint_price": 0.7039,
+          "source": "learning_cache:snapshot"
+        },
+        "1h": {
           "checkpoint_time": 1782754489.9177384,
           "checkpoint_price": 0.7039,
           "source": "learning_cache:snapshot"
@@ -1893,7 +1935,8 @@
       "macro_mod": 12,
       "results": {
         "15m": -0.15,
-        "30m": 1.74
+        "30m": 1.74,
+        "1h": 1.74
       },
       "result_details": {
         "15m": {
@@ -1902,6 +1945,11 @@
           "source": "learning_cache:snapshot"
         },
         "30m": {
+          "checkpoint_time": 1782754489.9177384,
+          "checkpoint_price": 7.46,
+          "source": "learning_cache:snapshot"
+        },
+        "1h": {
           "checkpoint_time": 1782754489.9177384,
           "checkpoint_price": 7.46,
           "source": "learning_cache:snapshot"
@@ -1953,7 +2001,8 @@
       "macro_mod": 12,
       "results": {
         "15m": -0.06,
-        "30m": 1.08
+        "30m": 1.08,
+        "1h": 1.08
       },
       "result_details": {
         "15m": {
@@ -1962,6 +2011,11 @@
           "source": "learning_cache:snapshot"
         },
         "30m": {
+          "checkpoint_time": 1782754489.9177384,
+          "checkpoint_price": 4.785,
+          "source": "learning_cache:snapshot"
+        },
+        "1h": {
           "checkpoint_time": 1782754489.9177384,
           "checkpoint_price": 4.785,
           "source": "learning_cache:snapshot"
@@ -9363,7 +9417,7 @@
     }
   ],
   "last_created_at": 1782749888.6416292,
-  "last_update_at": 1782754491.9281983,
+  "last_update_at": 1782755925.5441315,
   "last_quality_probe_created_at": 1782751580.5157573,
   "last_probe_scoring_snapshot_at": 1782751632.7169902,
   "paper_buy_journal_v191194": [
