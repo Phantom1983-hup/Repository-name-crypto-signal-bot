@@ -29,6 +29,39 @@
         "evidence_tracked_assets": 6,
         "technical_checks": "5/5"
       }
+    },
+    {
+      "timestamp": 1782730146.9076421,
+      "version": "v20.1.2 FRESHNESS & FORWARD RACE GUARD",
+      "measurement_valid": true,
+      "overall": 54,
+      "forecast_accuracy": 53,
+      "evidence_confidence": 65,
+      "scores": {
+        "protection": 92,
+        "entry_accuracy": 12,
+        "historical_validation": 83,
+        "forward_proof": 0,
+        "learning_speed": 73,
+        "technical_reliability": 100
+      },
+      "evidence": {
+        "paper_closed": 82,
+        "lessons": 6,
+        "good_lessons": 0,
+        "bad_lessons": 4,
+        "lesson_avg_pct": -2.47,
+        "validation_n": 135,
+        "entry_lab_version": "v20.1.2 FRESHNESS & FORWARD RACE GUARD",
+        "entry_lab_fresh": true,
+        "validation_expectancy": 0.33,
+        "forward_closed": 0,
+        "forward_avg_pct": 0.0,
+        "checkpoints": 54,
+        "evidence_ready_assets": 6,
+        "evidence_tracked_assets": 6,
+        "technical_checks": "5/5"
+      }
     }
   ]
 }
