@@ -11588,6 +11588,34 @@
       "decision": "🟡 BUY-КАНДИДАТ, ВХОД ЗАБЛОКИРОВАН",
       "captured_at": 1782759506.2194123,
       "version": "v20.9.4 AUDIT LABEL POLISH"
+    },
+    {
+      "snapshot_key": "active:NEAR:PAPER_BUY_DECISION_TEST:495179:h32",
+      "kind": "active_paper_buy",
+      "asset": "NEAR",
+      "stage": "24–48ч",
+      "hour_bucket": 32,
+      "age_h": 32.0,
+      "pnl_pct": 1.68,
+      "probe_score": 62,
+      "severity": -1,
+      "status": "🟢 24–48ч умеренно полезно",
+      "captured_at": 1782761612.405585,
+      "version": "v20.9.6 RUNTIME AUDIT LABEL FIX"
+    },
+    {
+      "snapshot_key": "active:LINK:PAPER_BUY_DECISION_TEST:495179:h32",
+      "kind": "active_paper_buy",
+      "asset": "LINK",
+      "stage": "24–48ч",
+      "hour_bucket": 32,
+      "age_h": 32.0,
+      "pnl_pct": 2.0,
+      "probe_score": 68,
+      "severity": -2,
+      "status": "🟢 24–48ч подтверждение",
+      "captured_at": 1782761612.405585,
+      "version": "v20.9.6 RUNTIME AUDIT LABEL FIX"
     }
   ],
   "last_policy_forward_scan_at": 1782733864.2760766,
