@@ -627,7 +627,8 @@
         "30m": 1.23,
         "1h": 0.75,
         "3h": 1.15,
-        "6h": 0.86
+        "6h": 0.86,
+        "12h": -2.85
       },
       "price_points": [
         {
@@ -809,6 +810,15 @@
           "checkpoint_pct": 0.86,
           "source": "cache_due_snapshot",
           "cache_price_time": 1782694057.2344368,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782719083.357533,
+          "target_time": 1782714655.3635085,
+          "checkpoint_price": 1.75857,
+          "checkpoint_pct": -2.85,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782719083.357533,
           "cache_price_source": "snapshot"
         }
       }
@@ -2186,7 +2196,8 @@
         "30m": 0.0,
         "1h": 0.0,
         "3h": -0.11,
-        "6h": 0.59
+        "6h": 0.59,
+        "12h": 2.33
       },
       "price_points": [
         {
@@ -2368,6 +2379,15 @@
           "source": "cache_due_late_estimate",
           "cache_price_time": 1782697692.430946,
           "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782720900.966011,
+          "target_time": 1782720870.841845,
+          "checkpoint_price": 72.76,
+          "checkpoint_pct": 2.33,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782723190.4711196,
+          "cache_price_source": "snapshot"
         }
       },
       "last_price": 72.99,
@@ -2430,7 +2450,8 @@
         "30m": 0.0,
         "1h": 0.0,
         "3h": 0.42,
-        "6h": 1.23
+        "6h": 1.23,
+        "12h": 1.68
       },
       "price_points": [
         {
@@ -2603,6 +2624,15 @@
           "checkpoint_pct": 1.23,
           "source": "cache_due_snapshot",
           "cache_price_time": 1782701330.9313822,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782723190.4711196,
+          "target_time": 1782722697.0331764,
+          "checkpoint_price": 6.551,
+          "checkpoint_pct": 1.68,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782723190.4711196,
           "cache_price_source": "snapshot"
         }
       },
@@ -3506,7 +3536,8 @@
         "15m": 0.0,
         "30m": 0.33,
         "1h": 0.23,
-        "3h": 0.23
+        "3h": 0.23,
+        "6h": 0.2
       },
       "price_points": [
         {
@@ -3633,6 +3664,15 @@
           "source": "cache_due_snapshot",
           "cache_price_time": 1782718247.9296987,
           "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782721375.367151,
+          "target_time": 1782722930.9313822,
+          "checkpoint_price": 7.3106,
+          "checkpoint_pct": 0.2,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782721375.367151,
+          "cache_price_source": "snapshot"
         }
       },
       "last_price": 7.3106,
@@ -3694,7 +3734,8 @@
         "15m": 0.0,
         "30m": 0.95,
         "1h": 0.85,
-        "3h": 0.66
+        "3h": 0.66,
+        "6h": 1.04
       },
       "price_points": [
         {
@@ -3828,6 +3869,15 @@
           "checkpoint_pct": 0.66,
           "source": "cache_due_snapshot",
           "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782723190.4711196,
+          "target_time": 1782722930.9313822,
+          "checkpoint_price": 0.6909,
+          "checkpoint_pct": 1.04,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782723190.4711196,
           "cache_price_source": "snapshot"
         }
       },
@@ -4087,7 +4137,8 @@
       "results": {
         "15m": 0.55,
         "30m": -0.14,
-        "1h": 0.0
+        "1h": 0.0,
+        "3h": 0.0
       },
       "price_points": [
         {
@@ -4173,6 +4224,15 @@
           "checkpoint_price": 0.1452,
           "checkpoint_pct": 0.0,
           "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782718247.9296987,
+          "target_time": 1782723812.3335373,
+          "checkpoint_price": 0.1452,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
           "cache_price_time": 1782718247.9296987,
           "cache_price_source": "snapshot"
         }
