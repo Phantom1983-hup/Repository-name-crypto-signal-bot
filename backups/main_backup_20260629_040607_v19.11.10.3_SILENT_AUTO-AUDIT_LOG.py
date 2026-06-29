@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16825,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17933,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18408,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18572,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18917,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19298,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19605,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20119,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20260,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20571,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20862,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21719,7 +21719,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22123,7 +22123,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22692,7 +22692,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23200,7 +23200,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23506,7 +23506,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24034,7 +24034,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25251,7 +25251,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 
 def _v191191_branch_ref_name():
@@ -25396,7 +25396,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25684,7 +25684,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25913,7 +25913,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26280,13 +26280,13 @@ def version_user_report():
 
 
 
-# === v19.11.11 UNIFIED PAPER DECISION GATE ===
+# === v19.11.10.3 SILENT AUTO-AUDIT LOG ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26900,7 +26900,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 
 def v1911101_section(title, body):
@@ -26955,7 +26955,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27056,7 +27056,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 
 def v1911101_load_buy_state():
@@ -27172,14 +27172,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v19.11.11 UNIFIED PAPER DECISION GATE ===
+# === v19.11.10.3 SILENT AUTO-AUDIT LOG ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27480,13 +27480,13 @@ def version_user_report():
 
 
 
-# === v19.11.11 UNIFIED PAPER DECISION GATE ===
+# === v19.11.10.3 SILENT AUTO-AUDIT LOG ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27788,606 +27788,6 @@ def version_user_report():
         'Команды проверки: /version | /auto_audit_status | /audit_file | /paper_buy_status'
     )
 
-
-# === v19.11.11 UNIFIED PAPER DECISION GATE ===
-# One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
-# Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
-
-V191111_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
-V191111_MIN_ASSET_LESSONS = 3
-
-try:
-    _V191111_BASE_OPEN = v19119_open_paper_buy_decisions
-except Exception:
-    _V191111_BASE_OPEN = None
-try:
-    _V191111_RAW_RANKER = _v1911101_old_v19119_ranked_paper_buy_decisions
-except Exception:
-    _V191111_RAW_RANKER = v19119_ranked_paper_buy_decisions
-try:
-    _V191111_BASE_AUDIT = v191181_fast_audit_build_content
-except Exception:
-    _V191111_BASE_AUDIT = None
-
-
-def v191111_lessons():
-    try:
-        rows = v19118_load_lessons()
-        return rows if isinstance(rows, list) else []
-    except Exception:
-        return []
-
-
-def v191111_lesson_class(row):
-    text = str(
-        (row or {}).get('classification')
-        or (row or {}).get('label')
-        or (row or {}).get('status')
-        or ''
-    ).lower()
-    if any(x in text for x in ['good', 'useful', 'полез', 'хорош']):
-        return 'good'
-    if any(x in text for x in ['bad', 'early', 'drawdown', 'плох', 'ранн', 'просад']):
-        return 'bad'
-    return 'neutral'
-
-
-def v191111_lesson_stats(asset=None):
-    asset = str(asset or '').upper().strip()
-    rows = []
-    for row in v191111_lessons():
-        if not isinstance(row, dict):
-            continue
-        row_asset = str(row.get('asset') or '').upper().strip()
-        if asset and row_asset != asset:
-            continue
-        rows.append(row)
-    stats = {
-        'asset': asset,
-        'total': len(rows),
-        'good': 0,
-        'neutral': 0,
-        'bad': 0,
-        'avg_pct': 0.0,
-        'paper_delta': 0,
-    }
-    pnl_values = []
-    for row in rows:
-        stats[v191111_lesson_class(row)] += 1
-        try:
-            stats['paper_delta'] += int(row.get('paper_delta') or row.get('paperΔ') or 0)
-        except Exception:
-            pass
-        try:
-            value = row.get('pct') if row.get('pct') is not None else row.get('pnl_pct')
-            if value is not None:
-                pnl_values.append(float(value))
-        except Exception:
-            pass
-    if pnl_values:
-        stats['avg_pct'] = round(sum(pnl_values) / len(pnl_values), 2)
-    return stats
-
-
-def v191111_global_router_state():
-    stats = v191111_lesson_stats()
-    total = int(stats.get('total', 0) or 0)
-    good = int(stats.get('good', 0) or 0)
-    bad = int(stats.get('bad', 0) or 0)
-    neutral = int(stats.get('neutral', 0) or 0)
-    if total <= 0:
-        label = '🟡 learning / no final lessons'
-    elif good == 0 and bad >= max(2, total // 2):
-        label = '🟠 cautious / weak lesson set'
-    elif good > bad and total >= 6:
-        label = '🟢 selective paper learning'
-    else:
-        label = '🟡 learning / insufficient confidence'
-    return {
-        **stats,
-        'label': label,
-        'max_active_paper_buy': 2,
-        'confidence': min(100, int(round(total / 12.0 * 100.0))),
-        'neutral_count': neutral,
-    }
-
-
-def v191111_lesson_router_adjustment(asset):
-    """Use soft shrinkage for 1-2 lessons and asset penalties only from 3 samples."""
-    asset = str(asset or '').upper().strip()
-    local = v191111_lesson_stats(asset)
-    global_stats = v191111_global_router_state()
-    total = int(local.get('total', 0) or 0)
-    bad = int(local.get('bad', 0) or 0)
-    good = int(local.get('good', 0) or 0)
-    delta = int(local.get('paper_delta', 0) or 0)
-    adj = 0
-    cap = 100
-    reasons = []
-
-    global_total = int(global_stats.get('total', 0) or 0)
-    global_bad = int(global_stats.get('bad', 0) or 0)
-    if global_total >= 4 and global_bad > global_total / 2.0:
-        adj -= 4
-        cap = min(cap, 72)
-        reasons.append('global weak-lesson penalty')
-
-    if total == 1:
-        if bad:
-            adj -= 2
-            cap = min(cap, 68)
-            reasons.append('1 bad lesson: soft penalty only')
-        elif good:
-            reasons.append('1 good lesson: no boost before confirmation')
-        else:
-            adj -= 1
-            cap = min(cap, 72)
-            reasons.append('1 neutral lesson: confidence low')
-    elif total == 2:
-        if bad >= 1 and good == 0:
-            adj -= 5
-            cap = min(cap, 62)
-            reasons.append('2 lessons: provisional weakness')
-        elif good >= 1 and bad == 0:
-            reasons.append('2 lessons: positive but unconfirmed')
-    elif total >= V191111_MIN_ASSET_LESSONS:
-        bad_rate = bad / float(total)
-        good_rate = good / float(total)
-        if bad_rate >= 0.67 and good == 0:
-            adj -= 12
-            cap = min(cap, 45)
-            reasons.append('confirmed asset weakness')
-        elif bad_rate >= 0.50:
-            adj -= 7
-            cap = min(cap, 55)
-            reasons.append('asset bad-rate >= 50%')
-        elif good_rate >= 0.60 and good >= 2:
-            adj += 3
-            cap = min(cap, 78)
-            reasons.append('confirmed paper-only quality')
-        if delta <= -6:
-            adj -= 4
-            cap = min(cap, 42)
-            reasons.append('confirmed negative paper delta')
-
-    return {
-        'asset': asset,
-        'adj': adj,
-        'cap': cap,
-        'asset_stats': local,
-        'global': global_stats,
-        'reason': '; '.join(reasons) if reasons else 'no confident asset adjustment',
-        'confidence_ready': total >= V191111_MIN_ASSET_LESSONS,
-    }
-
-
-def v191111_probe_pnl(decision):
-    for key in ['pnl', 'probe_pnl', 'pct', 'last_pct']:
-        try:
-            value = decision.get(key)
-            if isinstance(value, (int, float)):
-                return round(float(value), 2)
-        except Exception:
-            pass
-    return 0.0
-
-
-def v191111_signal_from_score(score, probe_score):
-    if probe_score <= 18 or score < 45:
-        return '🔴 PAPER BUY ЗАПРЕЩЁН', 'reject', '0%'
-    if probe_score <= 35 or score < 60:
-        return '🟠 PAPER WATCH, BUY ЖДАТЬ', 'watch_only', '0%'
-    if score < 66:
-        return '🟡 PAPER MICRO-BUY', 'micro_buy_test', '1.0% paper-capital'
-    return '🟢 PAPER BUY', 'quality_buy_test', '2.0% paper-capital'
-
-
-def v191111_checkpoint_stage(age_h):
-    age_h = max(0.0, float(age_h or 0))
-    if age_h < 0.5:
-        return '15–30м'
-    if age_h < 1:
-        return '30–60м'
-    if age_h < 3:
-        return '1–3ч'
-    if age_h < 6:
-        return '3–6ч'
-    if age_h < 12:
-        return '6–12ч'
-    if age_h < 24:
-        return '12–24ч'
-    if age_h < 48:
-        return '24–48ч'
-    return '48ч+'
-
-
-def v191111_active_checkpoints(decisions=None, limit=8):
-    decision_map = {}
-    for row in decisions or []:
-        if isinstance(row, dict):
-            asset = str(row.get('asset') or '').upper().strip()
-            if asset:
-                decision_map[asset] = row
-    try:
-        _, open_trades = v19119_open_trades()
-    except Exception:
-        open_trades = {}
-    checkpoints = []
-    for trade in list((open_trades or {}).values()):
-        if not isinstance(trade, dict) or not v19119_is_paper_buy_decision(trade):
-            continue
-        asset = v19119_trade_asset(trade)
-        entry = v19119_safe_float(trade.get('entry_price'), 0)
-        last = v19119_safe_float(trade.get('last_price'), entry) or entry
-        pct = v19119_pnl_pct(trade)
-        age_h = v19119_trade_age_h(trade)
-        stage = v191111_checkpoint_stage(age_h)
-        plan = trade.get('entry_plan', {}) if isinstance(trade.get('entry_plan'), dict) else {}
-        stop = v19119_safe_float(plan.get('stop'), 0)
-        target1 = v19119_safe_float(plan.get('target1'), 0)
-        current = decision_map.get(asset, {})
-        probe_score = v19119_safe_int(
-            current.get('probe_score', current.get('entry_score', trade.get('entry_score', 55))),
-            55,
-        )
-        signal_tier = str(current.get('signal_tier') or current.get('tier') or '')
-        stop_hit = bool(stop and last <= stop)
-        weak = stop_hit or pct <= -1.0 or probe_score <= 35 or signal_tier in ['watch_only', 'reject']
-        if stop_hit:
-            status = f'🔴 {stage} STOP HIT'
-            action = 'закрыть paper-тест и записать ошибку входа'
-            severity = 4
-        elif weak:
-            status = f'🟠 {stage} слабость / WATCH'
-            action = 'новые PAPER BUY заблокированы; собирать следующие checkpoints'
-            severity = 3 if pct <= -1.0 or probe_score <= 35 else 2
-        elif pct >= 1.8 or (target1 and last >= target1):
-            status = f'🟢 {stage} подтверждение'
-            action = 'сохранить полезный checkpoint; live BUY остаётся запрещён'
-            severity = -2
-        elif pct >= 0.3:
-            status = f'🟢 {stage} умеренно полезно'
-            action = 'продолжать paper-наблюдение без усиления весов'
-            severity = -1
-        else:
-            status = f'🟡 {stage} нейтрально'
-            action = 'продолжать ускоренные checkpoints'
-            severity = 1
-        checkpoints.append({
-            'asset': asset,
-            'entry': entry,
-            'last': last,
-            'pct': round(float(pct or 0), 2),
-            'age_h': round(float(age_h or 0), 1),
-            'stage': stage,
-            'stop': stop,
-            'target1': target1,
-            'probe_score': probe_score,
-            'status': status,
-            'action': action,
-            'severity': severity,
-            'weak': weak,
-            'stop_hit': stop_hit,
-        })
-        if len(checkpoints) >= int(limit or 8):
-            break
-    return checkpoints
-
-
-def v191111_gate_state(decisions=None):
-    decisions = decisions if isinstance(decisions, list) else []
-    checkpoints = v191111_active_checkpoints(decisions=decisions, limit=12)
-    global_router = v191111_global_router_state()
-    active_count = len(checkpoints)
-    max_active = int(global_router.get('max_active_paper_buy', 2) or 2)
-    reasons = []
-    if active_count >= max_active:
-        reasons.append(f'active limit {active_count}/{max_active}')
-    weak_early = [
-        row for row in checkpoints
-        if row.get('weak') and float(row.get('age_h', 0) or 0) < 24
-    ]
-    if weak_early:
-        reasons.append('weak active BUY before 24h: ' + ', '.join(row.get('asset', '?') for row in weak_early))
-    if any(row.get('stop_hit') for row in checkpoints):
-        reasons.append('active PAPER BUY hit stop')
-    return {
-        'allowed': not reasons,
-        'status': 'ALLOW' if not reasons else 'BLOCK',
-        'reasons': reasons or ['all paper gates passed'],
-        'active_count': active_count,
-        'max_active': max_active,
-        'checkpoints': checkpoints,
-    }
-
-
-def v191111_ranked_paper_buy_decisions():
-    try:
-        base = _V191111_RAW_RANKER() if callable(_V191111_RAW_RANKER) else []
-    except Exception:
-        base = []
-    out = []
-    for row in base or []:
-        if not isinstance(row, dict):
-            continue
-        item = dict(row)
-        asset = str(item.get('asset') or '').upper().strip()
-        route = v191111_lesson_router_adjustment(asset)
-        raw_score = v19119_safe_int(
-            item.get('decision_score_before_router', item.get('raw_decision_score', item.get('decision_score', 0))),
-            0,
-        )
-        adjusted = max(0, min(int(route.get('cap', 100) or 100), raw_score + int(route.get('adj', 0) or 0)))
-        probe_score = v19119_safe_int(item.get('probe_score', item.get('entry_score', 55)), 55)
-        signal, signal_tier, paper_size = v191111_signal_from_score(adjusted, probe_score)
-        item.update({
-            'raw_decision': item.get('decision'),
-            'raw_decision_score': raw_score,
-            'decision_score_before_router': raw_score,
-            'decision_score': adjusted,
-            'adjusted_decision_score': adjusted,
-            'decision': signal,
-            'signal_decision': signal,
-            'signal_tier': signal_tier,
-            'tier': signal_tier,
-            'paper_size': paper_size,
-            'probe_score': probe_score,
-            'probe_pnl': v191111_probe_pnl(item),
-            'lesson_router_adj': int(route.get('adj', 0) or 0),
-            'lesson_router_cap': int(route.get('cap', 100) or 100),
-            'lesson_router_reason': route.get('reason'),
-            'lesson_router_confidence_ready': bool(route.get('confidence_ready')),
-        })
-        out.append(item)
-    out.sort(key=lambda row: (int(row.get('decision_score', 0) or 0), float(row.get('probe_pnl', 0) or 0)), reverse=True)
-
-    gate = v191111_gate_state(out)
-    for item in out:
-        signal_tier = item.get('signal_tier')
-        signal_eligible = signal_tier in ['quality_buy_test', 'micro_buy_test']
-        allowed = bool(gate.get('allowed')) and signal_eligible
-        item['gate_allowed'] = allowed
-        item['global_gate'] = gate.get('status')
-        item['global_gate_reasons'] = list(gate.get('reasons', []))
-        item['executable_tier'] = signal_tier if allowed else 'watch_only'
-        if signal_eligible and not gate.get('allowed'):
-            item['decision'] = '🟡 BUY-КАНДИДАТ, ВХОД ЗАБЛОКИРОВАН'
-            item['tier'] = 'watch_only'
-            item['paper_size'] = '0%'
-        elif not signal_eligible:
-            item['tier'] = signal_tier
-    return out
-
-
-def v191111_open_paper_buy_decisions(create=True, max_new=2, force_one=False):
-    decisions = v191111_ranked_paper_buy_decisions()
-    gate = v191111_gate_state(decisions)
-    if not create:
-        try:
-            base = _V191111_BASE_OPEN(create=False, max_new=max_new, force_one=False) if callable(_V191111_BASE_OPEN) else {}
-        except Exception:
-            base = {}
-        result = dict(base) if isinstance(base, dict) else {}
-        result.update({
-            'created': [],
-            'decisions': decisions,
-            'skipped': decisions,
-            'gate': gate,
-            'active': gate.get('active_count', 0),
-        })
-        return result
-    if not gate.get('allowed') or not any(row.get('gate_allowed') for row in decisions):
-        return {
-            'created': [],
-            'decisions': decisions,
-            'skipped': decisions,
-            'gate': gate,
-            'active': gate.get('active_count', 0),
-            'blocked_by_unified_gate': True,
-        }
-    try:
-        result = _V191111_BASE_OPEN(
-            create=True,
-            max_new=min(int(max_new or 0), max(0, gate.get('max_active', 2) - gate.get('active_count', 0))),
-            force_one=False,
-        ) if callable(_V191111_BASE_OPEN) else {}
-    except Exception as exc:
-        result = {'created': [], 'error': str(exc)[:180]}
-    result = dict(result) if isinstance(result, dict) else {}
-    result['decisions'] = decisions
-    result['gate'] = gate
-    result['active'] = max(gate.get('active_count', 0), int(result.get('active', 0) or 0))
-    return result
-
-
-def v191111_checkpoint_lines(decisions=None):
-    checkpoints = v191111_active_checkpoints(decisions=decisions, limit=8)
-    lines = ['🧭 PAPER BUY CHECKPOINT LIFECYCLE']
-    if not checkpoints:
-        return lines + ['• активных PAPER BUY нет']
-    for row in checkpoints:
-        lines.append(
-            f"• {row.get('asset')}: {row.get('status')} | {float(row.get('pct', 0)):+.2f}% | "
-            f"{float(row.get('age_h', 0)):.1f}ч | probe-score {row.get('probe_score')}/100"
-        )
-        lines.append(f"  Действие: {row.get('action')}")
-    weak = [row for row in checkpoints if row.get('weak')]
-    lines.append('')
-    if weak:
-        lines.append(f"Итог: 🟠 слабых active BUY: {len(weak)}; единый gate блокирует новые входы.")
-    else:
-        lines.append('Итог: checkpoints без критичной слабости; решение всё равно проходит через единый gate.')
-    return lines
-
-
-def v191111_router_lines():
-    global_state = v191111_global_router_state()
-    lines = [
-        '🧠 CONFIDENCE LESSON ROUTER',
-        f"• режим: {global_state.get('label')} | lessons {global_state.get('total')} | "
-        f"good {global_state.get('good')} | neutral {global_state.get('neutral')} | bad {global_state.get('bad')}",
-        f"• глобальная confidence: {global_state.get('confidence')}% | asset penalty требует минимум {V191111_MIN_ASSET_LESSONS} урока",
-        '• asset routing:',
-    ]
-    assets = sorted({
-        str(row.get('asset') or '').upper().strip()
-        for row in v191111_lessons()
-        if isinstance(row, dict) and row.get('asset')
-    })
-    if not assets:
-        lines.append('  - уроков пока нет')
-    for asset in assets[:10]:
-        route = v191111_lesson_router_adjustment(asset)
-        stats = route.get('asset_stats', {})
-        confidence = 'confirmed' if route.get('confidence_ready') else 'low-sample'
-        lines.append(
-            f"  - {asset}: {confidence} | n {stats.get('total')} | good {stats.get('good')} "
-            f"neutral {stats.get('neutral')} bad {stats.get('bad')} | avg {float(stats.get('avg_pct', 0)):+.2f}% | "
-            f"adj {int(route.get('adj', 0)):+d} cap {route.get('cap')}"
-        )
-    lines.append('• live BUY: +0, автоторговля OFF.')
-    return lines
-
-
-def v191111_trace_lines(decisions=None):
-    decisions = decisions if isinstance(decisions, list) else v191111_ranked_paper_buy_decisions()
-    gate = v191111_gate_state(decisions)
-    lines = [
-        '🔎 PAPER DECISION TRACE',
-        f"• Global gate: {gate.get('status')} | active {gate.get('active_count')}/{gate.get('max_active')}",
-        '• Причина: ' + '; '.join(gate.get('reasons', [])),
-    ]
-    for row in decisions[:8]:
-        lines.append(
-            f"• {row.get('asset')}: raw {row.get('raw_decision_score')}/100 → "
-            f"router {int(row.get('lesson_router_adj', 0)):+d} → adjusted {row.get('decision_score')}/100 → "
-            f"gate {row.get('global_gate')} → {row.get('decision')} | probe {float(row.get('probe_pnl', 0)):+.2f}%"
-        )
-    return lines
-
-
-def v191111_candidate_lines(decisions, limit=8):
-    lines = []
-    for row in list(decisions or [])[:int(limit or 8)]:
-        confidence = 'confirmed' if row.get('lesson_router_confidence_ready') else 'low-sample'
-        lines.append(
-            f"• {row.get('asset')}: {row.get('decision')} | raw {row.get('raw_decision_score')}/100 → "
-            f"paper-score {row.get('decision_score')}/100 | probe-score {row.get('probe_score')}/100 | "
-            f"probe {float(row.get('probe_pnl', 0)):+.2f}% | router {int(row.get('lesson_router_adj', 0)):+d} ({confidence})"
-        )
-    return lines
-
-
-def v191111_paper_buy_report(create=False):
-    result = v191111_open_paper_buy_decisions(create=bool(create), max_new=2, force_one=False)
-    decisions = result.get('decisions', []) if isinstance(result.get('decisions'), list) else []
-    created = result.get('created', []) if isinstance(result.get('created'), list) else []
-    gate = result.get('gate', {}) if isinstance(result.get('gate'), dict) else v191111_gate_state(decisions)
-    try:
-        data = paper_store()
-        active_count = v1911102_count_active_buy_in_data(data)
-    except Exception:
-        data, active_count = {}, int(gate.get('active_count', 0) or 0)
-    checkpoints = v191111_active_checkpoints(decisions=decisions, limit=8)
-    lines = [
-        '🧠 Unified PAPER BUY Decision Gate',
-        f'Версия: {V191111_VERSION}',
-        '',
-        'Режим: только PAPER. Реальные покупки 0, автоторговля OFF, BUY-веса +0.',
-        f"Global gate: {'✅ ALLOW' if gate.get('allowed') else '⛔ BLOCK'} | active {active_count}/{gate.get('max_active', 2)}",
-        'Причина: ' + '; '.join(gate.get('reasons', [])),
-        '',
-        f'Создано новых PAPER BUY: {len(created)}',
-        f'Активных PAPER BUY: {active_count}',
-    ]
-    if created:
-        lines += ['', 'Новые PAPER BUY:'] + [v1911101_fmt_created_paper_buy(row) for row in created]
-    if checkpoints:
-        lines += ['', 'Открытые PAPER BUY:']
-        for row in checkpoints:
-            lines.append(
-                f"• {row.get('asset')}: {row.get('status')} | {v19119_format_price(row.get('entry'))} → "
-                f"{v19119_format_price(row.get('last'))} ({float(row.get('pct', 0)):+.2f}%) | {float(row.get('age_h', 0)):.1f}ч\n"
-                f"  Действие: {row.get('action')}"
-            )
-    else:
-        lines += ['', 'Открытых PAPER BUY нет. Создание возможно только после ALLOW единого gate.']
-    try:
-        lines += [''] + v1911102_persistence_lines(data, active_count=active_count)
-    except Exception:
-        pass
-    lines += ['', 'Кандидаты и итоговое разрешение:']
-    lines += v191111_candidate_lines(decisions) or ['• кандидатов нет']
-    lines += ['', *v191111_checkpoint_lines(decisions), '', *v191111_router_lines(), '', *v191111_trace_lines(decisions)]
-    lines += ['', 'Fast-learning: checkpoints обновляются без ожидания 24/48ч; постоянные asset-веса меняются только при достаточной выборке.']
-    return '\n'.join(lines)
-
-
-def v191111_audit_content():
-    try:
-        base = str(_V191111_BASE_AUDIT()) if callable(_V191111_BASE_AUDIT) else 'ALEX EDGE ULTRA FAST TECH AUDIT FILE'
-    except Exception as exc:
-        base = f'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n⚠️ base audit error: {str(exc)[:180]}'
-    marker = 'UNIFIED PAPER DECISION GATE V19.11.11'
-    if marker in base:
-        return base
-    decisions = v191111_ranked_paper_buy_decisions()
-    sections = [
-        (marker, v191111_paper_buy_report(create=False)),
-        ('PAPER CHECKPOINT LIFECYCLE V19.11.11', '\n'.join(v191111_checkpoint_lines(decisions))),
-        ('CONFIDENCE LESSON ROUTER V19.11.11', '\n'.join(v191111_router_lines())),
-        ('PAPER DECISION TRACE V19.11.11', '\n'.join(v191111_trace_lines(decisions))),
-    ]
-    for title, body in sections:
-        base += '\n\n' + '=' * 80 + '\n' + title + '\n' + '=' * 80 + '\n' + str(body)
-    return base
-
-
-def v191111_version_report():
-    return (
-        f'✅ Версия: {V191111_VERSION}\n\n'
-        'Что изменено:\n'
-        '• raw signal, Lesson Router, checkpoint gate и итоговое действие сведены в одну цепочку;\n'
-        '• единый gate физически блокирует создание PAPER BUY, если active BUY слабый или лимит заполнен;\n'
-        '• статусы теперь соответствуют возрасту: от 15–30м до 48ч+;\n'
-        '• candidate probe показывает реальный PnL snapshot вместо ложного +0.00%;\n'
-        '• один урок больше не создаёт тяжёлый asset penalty: подтверждение начинается с 3 уроков;\n'
-        '• /audit_file получил CHECKPOINT LIFECYCLE, CONFIDENCE ROUTER и DECISION TRACE.\n\n'
-        'Безопасность:\n'
-        '• реальные покупки 0;\n'
-        '• автоторговля OFF;\n'
-        '• BUY-веса +0;\n'
-        '• force-one не обходит единый gate.\n\n'
-        'Команды проверки: /version | /paper_buy_status | /paper | /lesson_engine | /audit_file'
-    )
-
-
-def v191111_install():
-    global BOT_VERSION
-    BOT_VERSION = V191111_VERSION
-    globals()['v1911101_lesson_router_adjustment'] = v191111_lesson_router_adjustment
-    globals()['v1911101_global_lesson_router_state'] = v191111_global_router_state
-    globals()['v19119_ranked_paper_buy_decisions'] = v191111_ranked_paper_buy_decisions
-    globals()['v19119_open_paper_buy_decisions'] = v191111_open_paper_buy_decisions
-    globals()['v19119_active_paper_buy_rows'] = lambda limit=8: [
-        (
-            f"• {row.get('asset')}: {row.get('status')} | {v19119_format_price(row.get('entry'))} → "
-            f"{v19119_format_price(row.get('last'))} ({float(row.get('pct', 0)):+.2f}%) | {float(row.get('age_h', 0)):.1f}ч\n"
-            f"  Действие: {row.get('action')}"
-        )
-        for row in v191111_active_checkpoints(v191111_ranked_paper_buy_decisions(), limit=limit)
-    ]
-    globals()['v1911101_paper_buy_6h_lines'] = lambda: v191111_checkpoint_lines(v191111_ranked_paper_buy_decisions())
-    globals()['v1911101_lesson_router_lines'] = v191111_router_lines
-    globals()['v1911101_candidate_lines'] = v191111_candidate_lines
-    globals()['v19119_paper_buy_decision_report'] = v191111_paper_buy_report
-    globals()['v19119_paper_buy_audit_report'] = lambda: v191111_paper_buy_report(create=False)
-    globals()['v191181_fast_audit_build_content'] = v191111_audit_content
-    globals()['version_user_report'] = v191111_version_report
-
-
-v191111_install()
-
 if __name__ == "__main__":
     try:
         restore_state_from_github_if_richer()
@@ -28418,7 +27818,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -28719,7 +28119,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -29152,13 +28552,13 @@ def version_user_report():
 
 
 
-# === v19.11.11 UNIFIED PAPER DECISION GATE ===
+# === v19.11.10.3 SILENT AUTO-AUDIT LOG ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -29772,7 +29172,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 
 def v1911101_section(title, body):
@@ -29827,7 +29227,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -29928,7 +29328,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 
 def v1911101_load_buy_state():
@@ -30043,14 +29443,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v19.11.11 UNIFIED PAPER DECISION GATE ===
+# === v19.11.10.3 SILENT AUTO-AUDIT LOG ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -30351,13 +29751,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v19.11.11 UNIFIED PAPER DECISION GATE ===
+# === v19.11.10.3 SILENT AUTO-AUDIT LOG ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v19.11.11 UNIFIED PAPER DECISION GATE"
+BOT_VERSION = "v19.11.10.3 SILENT AUTO-AUDIT LOG"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -30659,6 +30059,3 @@ def version_user_report():
         'Команды проверки: /version | /auto_audit_status | /audit_file | /paper_buy_status'
     )
 
-
-# Re-apply v19.11.11 after legacy post-__main__ overrides when imported by tests/workers.
-v191111_install()
