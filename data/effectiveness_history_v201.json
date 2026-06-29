@@ -62,6 +62,41 @@
         "evidence_tracked_assets": 6,
         "technical_checks": "5/5"
       }
+    },
+    {
+      "timestamp": 1782733869.8754878,
+      "version": "v20.2 CHAMPION CHALLENGER FORWARD LAB",
+      "measurement_valid": true,
+      "overall": 55,
+      "forecast_accuracy": 53,
+      "evidence_confidence": 65,
+      "scores": {
+        "protection": 92,
+        "entry_accuracy": 12,
+        "historical_validation": 83,
+        "forward_proof": 0,
+        "learning_speed": 78,
+        "technical_reliability": 100
+      },
+      "evidence": {
+        "paper_closed": 82,
+        "lessons": 6,
+        "good_lessons": 0,
+        "bad_lessons": 4,
+        "lesson_avg_pct": -2.47,
+        "validation_n": 135,
+        "entry_lab_version": "v20.2 CHAMPION CHALLENGER FORWARD LAB",
+        "entry_lab_fresh": true,
+        "validation_expectancy": 0.33,
+        "forward_closed": 0,
+        "forward_avg_pct": 0.0,
+        "experiment_forward_active": 4,
+        "experiment_forward_closed": 0,
+        "checkpoints": 62,
+        "evidence_ready_assets": 6,
+        "evidence_tracked_assets": 6,
+        "technical_checks": "5/5"
+      }
     }
   ]
 }
