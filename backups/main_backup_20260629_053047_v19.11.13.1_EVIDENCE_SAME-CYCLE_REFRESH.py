@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16825,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17933,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18408,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18572,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18917,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19298,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19605,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20119,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20260,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20571,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20862,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21719,7 +21719,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22123,7 +22123,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22692,7 +22692,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23200,7 +23200,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23506,7 +23506,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24034,7 +24034,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25251,7 +25251,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 
 def _v191191_branch_ref_name():
@@ -25396,7 +25396,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25684,7 +25684,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25913,7 +25913,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26280,13 +26280,13 @@ def version_user_report():
 
 
 
-# === v19.12.0 WALK-FORWARD ENTRY LAB ===
+# === v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26900,7 +26900,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 
 def v1911101_section(title, body):
@@ -26955,7 +26955,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27056,7 +27056,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 
 def v1911101_load_buy_state():
@@ -27172,14 +27172,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v19.12.0 WALK-FORWARD ENTRY LAB ===
+# === v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27480,13 +27480,13 @@ def version_user_report():
 
 
 
-# === v19.12.0 WALK-FORWARD ENTRY LAB ===
+# === v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27789,11 +27789,11 @@ def version_user_report():
     )
 
 
-# === v19.12.0 WALK-FORWARD ENTRY LAB ===
+# === v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH ===
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+V191111_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 
@@ -28011,355 +28011,6 @@ def v191113_policy_calibration_lines(backfill=None):
         f"• historical BUY backfill: eligible {backfill.get('eligible', 0)} | added {backfill.get('added', 0)} | already {backfill.get('already', 0)}",
         '• защитная precision не считается готовностью к автопокупкам; для неё нужны успешные BUY-входы.',
     ]
-
-
-V191120_ENTRY_LAB_FILE = data_path("walkforward_entry_lab_v19120.json")
-V191120_ENTRY_LAB_ASSETS = ["SOL", "LINK", "NEAR", "AVAX", "AAVE", "SUI", "INJ", "TAO", "ADA", "BNB"]
-V191120_ENTRY_LAB_LOCK = Lock()
-V191120_ENTRY_LAB_LAST_START = 0
-
-try:
-    PROTECTED_STATE_BASENAMES.add("walkforward_entry_lab_v19120.json")
-except Exception:
-    pass
-try:
-    _V191120_OLD_LEARN_FAST_REPORT = learn_fast_report
-except Exception:
-    _V191120_OLD_LEARN_FAST_REPORT = None
-
-
-def v191120_fetch_4h_candles(asset):
-    try:
-        response = requests.get(
-            "https://api.kucoin.com/api/v1/market/candles",
-            params={"symbol": f"{asset}-USDT", "type": "4hour"},
-            timeout=10,
-        ).json()
-        if response.get("code") != "200000":
-            return []
-        rows = []
-        for candle in sorted(response.get("data", []), key=lambda item: int(item[0])):
-            try:
-                rows.append({
-                    'ts': int(candle[0]),
-                    'open': float(candle[1]),
-                    'close': float(candle[2]),
-                    'high': float(candle[3]),
-                    'low': float(candle[4]),
-                    'volume': float(candle[5]),
-                })
-            except Exception:
-                continue
-        return rows
-    except Exception as exc:
-        print(f"walk-forward candles error {asset}: {exc}")
-        return []
-
-
-def v191120_ema(values, period):
-    values = [float(value) for value in values]
-    if not values:
-        return 0.0
-    alpha = 2.0 / (float(period) + 1.0)
-    result = values[0]
-    for value in values[1:]:
-        result = alpha * value + (1.0 - alpha) * result
-    return result
-
-
-def v191120_rsi(values, period=14):
-    values = [float(value) for value in values]
-    if len(values) < period + 1:
-        return 50.0
-    gains, losses = [], []
-    for before, after in zip(values[-period - 1:-1], values[-period:]):
-        delta = after - before
-        gains.append(max(0.0, delta))
-        losses.append(max(0.0, -delta))
-    avg_gain = sum(gains) / period
-    avg_loss = sum(losses) / period
-    if avg_loss <= 0:
-        return 100.0 if avg_gain > 0 else 50.0
-    rs = avg_gain / avg_loss
-    return 100.0 - 100.0 / (1.0 + rs)
-
-
-def v191120_pct(start, end):
-    try:
-        start = float(start)
-        end = float(end)
-        return (end - start) / start * 100.0 if start else 0.0
-    except Exception:
-        return 0.0
-
-
-def v191120_feature_score(candles, index, btc_by_ts):
-    current = candles[index]
-    closes = [row['close'] for row in candles[:index + 1]]
-    volumes = [row['volume'] for row in candles[:index + 1]]
-    price = float(current['close'])
-    ret_4h = v191120_pct(closes[index - 1], price)
-    ret_24h = v191120_pct(closes[index - 6], price)
-    ema20 = v191120_ema(closes[-20:], 20)
-    rsi14 = v191120_rsi(closes, 14)
-    volume_base = sum(volumes[index - 12:index]) / 12.0 if index >= 12 else 0.0
-    volume_ratio = volumes[index] / volume_base if volume_base > 0 else 1.0
-    high20 = max(row['high'] for row in candles[index - 19:index + 1])
-    low14 = min(row['low'] for row in candles[index - 13:index + 1])
-    drawdown20 = v191120_pct(high20, price)
-    range14 = v191120_pct(low14, max(row['high'] for row in candles[index - 13:index + 1]))
-    btc = btc_by_ts.get(int(current['ts']), {})
-    btc_24h = float(btc.get('ret_24h', 0) or 0)
-    btc_above_ema = bool(btc.get('above_ema20', False))
-
-    score = 50
-    reasons = []
-    if -3.0 <= ret_24h <= 4.5:
-        score += 7; reasons.append('controlled 24h move')
-    elif ret_24h > 9:
-        score -= 10; reasons.append('overheated 24h move')
-    elif ret_24h < -6:
-        score -= 7; reasons.append('strong 24h weakness')
-    if -1.5 <= ret_4h <= 2.5:
-        score += 4
-    elif ret_4h > 5:
-        score -= 6
-    if 42 <= rsi14 <= 62:
-        score += 7; reasons.append('balanced RSI')
-    elif rsi14 >= 72:
-        score -= 9; reasons.append('overbought RSI')
-    elif rsi14 <= 30:
-        score -= 4
-    if 0.9 <= volume_ratio <= 2.2:
-        score += 5; reasons.append('confirmed volume')
-    elif volume_ratio < 0.65:
-        score -= 4
-    if price >= ema20:
-        score += 5
-    else:
-        score -= 3
-    if -8 <= drawdown20 <= -1:
-        score += 4; reasons.append('not chasing local high')
-    elif drawdown20 > -0.5:
-        score -= 3
-    if range14 >= 24:
-        score -= 5; reasons.append('high volatility')
-    if btc_24h >= 0 and btc_above_ema:
-        score += 7; reasons.append('BTC supportive')
-    elif btc_24h <= -2:
-        score -= 10; reasons.append('BTC pressure')
-    elif not btc_above_ema:
-        score -= 4
-    return {
-        'score': max(0, min(100, int(round(score)))),
-        'ret_4h': round(ret_4h, 3),
-        'ret_24h': round(ret_24h, 3),
-        'rsi14': round(rsi14, 2),
-        'volume_ratio': round(volume_ratio, 3),
-        'drawdown20': round(drawdown20, 3),
-        'range14': round(range14, 3),
-        'btc_24h': round(btc_24h, 3),
-        'reasons': reasons[:5],
-    }
-
-
-def v191120_btc_features(candles):
-    result = {}
-    closes = []
-    for index, row in enumerate(candles):
-        closes.append(float(row['close']))
-        if index < 20:
-            continue
-        result[int(row['ts'])] = {
-            'ret_24h': v191120_pct(closes[index - 6], closes[index]) if index >= 6 else 0.0,
-            'above_ema20': closes[index] >= v191120_ema(closes[-20:], 20),
-        }
-    return result
-
-
-def v191120_build_dataset(candles_by_asset):
-    btc = candles_by_asset.get('BTC', [])
-    btc_by_ts = v191120_btc_features(btc)
-    samples = []
-    for asset, candles in candles_by_asset.items():
-        if asset == 'BTC' or len(candles) < 60:
-            continue
-        for index in range(30, len(candles) - 12, 3):
-            try:
-                features = v191120_feature_score(candles, index, btc_by_ts)
-                entry = float(candles[index]['close'])
-                future = candles[index + 1:index + 13]
-                row = {
-                    'asset': asset,
-                    'ts': int(candles[index]['ts']),
-                    **features,
-                    '4h': round(v191120_pct(entry, candles[index + 1]['close']), 3),
-                    '12h': round(v191120_pct(entry, candles[index + 3]['close']), 3),
-                    '24h': round(v191120_pct(entry, candles[index + 6]['close']), 3),
-                    '48h': round(v191120_pct(entry, candles[index + 12]['close']), 3),
-                    'mae48': round(v191120_pct(entry, min(item['low'] for item in future)), 3),
-                    'mfe48': round(v191120_pct(entry, max(item['high'] for item in future)), 3),
-                }
-                samples.append(row)
-            except Exception:
-                continue
-    return sorted(samples, key=lambda row: (row['ts'], row['asset']))
-
-
-def v191120_metrics(samples, threshold):
-    selected = [row for row in samples if int(row.get('score', 0) or 0) >= int(threshold)]
-    if not selected:
-        return {'threshold': threshold, 'n': 0, 'avg48': 0.0, 'median48': 0.0, 'win_rate': 0.0, 'bad_rate': 0.0, 'avg_mae': 0.0}
-    outcomes = sorted(float(row.get('48h', 0) or 0) for row in selected)
-    middle = len(outcomes) // 2
-    median = outcomes[middle] if len(outcomes) % 2 else (outcomes[middle - 1] + outcomes[middle]) / 2.0
-    return {
-        'threshold': int(threshold),
-        'n': len(selected),
-        'avg48': round(sum(outcomes) / len(outcomes), 3),
-        'median48': round(median, 3),
-        'win_rate': round(sum(1 for value in outcomes if value >= 1.0) / len(outcomes), 3),
-        'bad_rate': round(sum(1 for value in outcomes if value <= -3.0) / len(outcomes), 3),
-        'avg_mae': round(sum(float(row.get('mae48', 0) or 0) for row in selected) / len(selected), 3),
-        'avg_mfe': round(sum(float(row.get('mfe48', 0) or 0) for row in selected) / len(selected), 3),
-    }
-
-
-def v191120_run_walkforward(candles_by_asset=None):
-    if candles_by_asset is None:
-        candles_by_asset = {'BTC': v191120_fetch_4h_candles('BTC')}
-        for asset in V191120_ENTRY_LAB_ASSETS:
-            candles_by_asset[asset] = v191120_fetch_4h_candles(asset)
-    samples = v191120_build_dataset(candles_by_asset)
-    timestamps = sorted({int(row['ts']) for row in samples})
-    split_ts = timestamps[int(len(timestamps) * 0.70)] if timestamps else 0
-    train = [row for row in samples if int(row['ts']) <= split_ts]
-    validation = [row for row in samples if int(row['ts']) > split_ts]
-    thresholds = [55, 60, 65, 70, 75]
-    train_metrics = [v191120_metrics(train, threshold) for threshold in thresholds]
-    valid_metrics = [v191120_metrics(validation, threshold) for threshold in thresholds]
-    eligible = [row for row in train_metrics if int(row.get('n', 0)) >= 40]
-    def objective(row):
-        return (
-            float(row.get('avg48', 0)) * 8
-            + float(row.get('win_rate', 0)) * 20
-            - float(row.get('bad_rate', 0)) * 30
-        )
-    selected_train = max(eligible, key=objective) if eligible else (max(train_metrics, key=lambda row: row.get('n', 0)) if train_metrics else {})
-    selected_threshold = int(selected_train.get('threshold', 70) or 70)
-    selected_validation = next((row for row in valid_metrics if row.get('threshold') == selected_threshold), {})
-    readiness_checks = {
-        'validation_n_60': int(selected_validation.get('n', 0) or 0) >= 60,
-        'validation_avg_positive': float(selected_validation.get('avg48', 0) or 0) >= 0.4,
-        'validation_win_rate': float(selected_validation.get('win_rate', 0) or 0) >= 0.52,
-        'validation_bad_rate': float(selected_validation.get('bad_rate', 1) or 1) <= 0.25,
-    }
-    result = {
-        'version': V191111_VERSION,
-        'updated_at': time.time(),
-        'updated_at_iso': datetime.utcnow().isoformat(),
-        'method': '4h chronological walk-forward 70/30; features use past candles only; stride 12h',
-        'assets_requested': list(V191120_ENTRY_LAB_ASSETS),
-        'assets_loaded': [asset for asset, rows in candles_by_asset.items() if asset != 'BTC' and len(rows) >= 60],
-        'total_samples': len(samples),
-        'train_samples': len(train),
-        'validation_samples': len(validation),
-        'split_ts': split_ts,
-        'train_thresholds': train_metrics,
-        'validation_thresholds': valid_metrics,
-        'selected_threshold': selected_threshold,
-        'selected_train': selected_train,
-        'selected_validation': selected_validation,
-        'readiness_checks': readiness_checks,
-        'readiness_passed': sum(1 for value in readiness_checks.values() if value),
-        'ready_for_live': False,
-        'note': 'Historical validation only. It cannot enable live BUY or autotrading.',
-    }
-    save_json(V191120_ENTRY_LAB_FILE, result)
-    try:
-        background_github_sync([V191120_ENTRY_LAB_FILE, CHAT_ID_FILE, LAST_UPDATE_FILE], max_files=3)
-    except Exception:
-        pass
-    return result
-
-
-def v191120_load_entry_lab():
-    try:
-        data = load_json(V191120_ENTRY_LAB_FILE)
-        return data if isinstance(data, dict) else {}
-    except Exception:
-        return {}
-
-
-def v191120_entry_lab_lines():
-    data = v191120_load_entry_lab()
-    lines = ['🧪 WALK-FORWARD ENTRY LAB']
-    if not data:
-        return lines + ['• результат ещё не собран; фоновый replay запущен или ожидает запуска']
-    validation = data.get('selected_validation', {}) if isinstance(data.get('selected_validation'), dict) else {}
-    checks = data.get('readiness_checks', {}) if isinstance(data.get('readiness_checks'), dict) else {}
-    lines += [
-        f"• samples: total {data.get('total_samples', 0)} | train {data.get('train_samples', 0)} | validation {data.get('validation_samples', 0)}",
-        f"• assets loaded: {len(data.get('assets_loaded', []) or [])}/{len(data.get('assets_requested', []) or [])}",
-        f"• selected PAPER threshold: {data.get('selected_threshold', '?')}/100",
-        f"• validation: n {validation.get('n', 0)} | avg48 {float(validation.get('avg48', 0) or 0):+.2f}% | "
-        f"win {float(validation.get('win_rate', 0) or 0)*100:.1f}% | bad {float(validation.get('bad_rate', 0) or 0)*100:.1f}% | "
-        f"MAE {float(validation.get('avg_mae', 0) or 0):+.2f}%",
-        f"• historical checks: {sum(1 for value in checks.values() if value)}/{len(checks)} | live BUY: ALWAYS OFF",
-        '• threshold is research-only until paper/live-forward results confirm it.',
-    ]
-    return lines
-
-
-def v191120_maybe_run_background(force=False):
-    global V191120_ENTRY_LAB_LAST_START
-    now = time.time()
-    if not force:
-        data = v191120_load_entry_lab()
-        updated = float(data.get('updated_at', 0) or 0) if isinstance(data, dict) else 0
-        if updated and now - updated < 24 * 3600:
-            return False
-        if now - float(V191120_ENTRY_LAB_LAST_START or 0) < 3600:
-            return False
-    V191120_ENTRY_LAB_LAST_START = now
-
-    def worker():
-        acquired = V191120_ENTRY_LAB_LOCK.acquire(False)
-        if not acquired:
-            return
-        try:
-            v191120_run_walkforward()
-        except Exception as exc:
-            print(f"walk-forward entry lab error: {exc}")
-        finally:
-            V191120_ENTRY_LAB_LOCK.release()
-
-    try:
-        Thread(target=worker, daemon=True).start()
-        return True
-    except Exception:
-        return False
-
-
-def v191120_learn_fast_report(start=False):
-    old_started = False
-    try:
-        old_started = maybe_run_backtest_background(force=bool(start))
-    except Exception:
-        pass
-    lab_started = v191120_maybe_run_background(force=bool(start))
-    lines = [
-        '🧠 Ускоренное обучение',
-        f'Версия: {V191111_VERSION}',
-        '',
-        f"Старый daily bootstrap: {'запущен' if old_started else 'есть/недавно запускался'}",
-        f"Walk-forward Entry Lab: {'запущен в фоне' if lab_started else 'есть/уже выполняется'}",
-        '',
-        *v191120_entry_lab_lines(),
-        '',
-        'Реальные покупки 0, автоторговля OFF.',
-    ]
-    return '\n'.join(lines)
 
 
 def v191111_global_router_state():
@@ -29090,13 +28741,12 @@ def v191111_audit_content():
         decisions = v191111_ranked_paper_buy_decisions()
     sections = [
         ('VERSION', f'BOT_VERSION: {V191111_VERSION}'),
-        ('MEASURABLE LEARNING PROGRESS V19.12.0', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
+        ('MEASURABLE LEARNING PROGRESS V19.11.13.1', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
         ('HISTORICAL POLICY VS ENTRY CALIBRATION', '\n'.join(v191113_policy_calibration_lines(backfill))),
-        ('WALK-FORWARD ENTRY LAB V19.12.0', '\n'.join(v191120_entry_lab_lines())),
         ('FAST PROBE SCORING', v1911101_safe_call('v191181_fast_probe_scoring_report')),
         ('FAST SHADOW PORTFOLIO', v1911101_safe_call('v191181_fast_shadow_report')),
         ('FAST LESSON ENGINE', v1911101_safe_call('v191181_fast_lesson_engine_report')),
-        ('UNIFIED PAPER DECISION GATE V19.12.0', v191111_paper_buy_report(create=False)),
+        ('UNIFIED PAPER DECISION GATE V19.11.13.1', v191111_paper_buy_report(create=False)),
         ('PAPER CHECKPOINT LIFECYCLE', '\n'.join(v191111_checkpoint_lines(decisions))),
         ('CONFIDENCE LESSON ROUTER', '\n'.join(v191111_router_lines())),
         ('HOURLY FAST EVIDENCE ROUTER', '\n'.join(v191112_fast_evidence_lines(decisions))),
@@ -29114,12 +28764,10 @@ def v191111_version_report():
     return (
         f'✅ Версия: {V191111_VERSION}\n\n'
         'Что изменено:\n'
-        '• добавлен исторический 4ч walk-forward Entry Lab без look-ahead;\n'
-        '• первые 70% истории используются для выбора PAPER-порога, последние 30% — только для validation;\n'
-        '• проверяются win-rate, средний 48ч PnL, bad-rate и MAE;\n'
-        '• replay работает в фоне и даёт независимые BUY-примеры без ожидания рынка;\n'
-        '• результат не может включить live BUY или автоторговлю;\n'
-        '• hourly evidence, same-cycle refresh и historical policy calibration сохранены.\n\n'
+        '• новый hourly snapshot сохраняется и сразу участвует в том же расчёте;\n'
+        '• /paper_buy_status и /audit_file больше не расходятся по evidence ready;\n'
+        '• после добавления snapshot повторно вычисляются trajectory, score и gate;\n'
+        '• historical BUY backfill сохранён; WATCH/AVOID по-прежнему исключены.\n\n'
         'Безопасность:\n'
         '• реальные покупки 0;\n'
         '• автоторговля OFF;\n'
@@ -29151,16 +28799,9 @@ def v191111_install():
     globals()['v19119_paper_buy_audit_report'] = lambda: v191111_paper_buy_report(create=False)
     globals()['v191181_fast_audit_build_content'] = v191111_audit_content
     globals()['version_user_report'] = v191111_version_report
-    globals()['learn_fast_report'] = v191120_learn_fast_report
 
 
 v191111_install()
-
-try:
-    if BOT_TOKEN:
-        v191120_maybe_run_background(force=False)
-except Exception:
-    pass
 
 if __name__ == "__main__":
     try:
@@ -29192,7 +28833,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -29493,7 +29134,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -29926,13 +29567,13 @@ def version_user_report():
 
 
 
-# === v19.12.0 WALK-FORWARD ENTRY LAB ===
+# === v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -30546,7 +30187,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 
 def v1911101_section(title, body):
@@ -30601,7 +30242,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -30702,7 +30343,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 
 def v1911101_load_buy_state():
@@ -30817,14 +30458,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v19.12.0 WALK-FORWARD ENTRY LAB ===
+# === v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -31125,13 +30766,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v19.12.0 WALK-FORWARD ENTRY LAB ===
+# === v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v19.12.0 WALK-FORWARD ENTRY LAB"
+BOT_VERSION = "v19.11.13.1 EVIDENCE SAME-CYCLE REFRESH"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
