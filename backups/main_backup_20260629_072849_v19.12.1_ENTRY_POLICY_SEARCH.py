@@ -20,7 +20,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16825,7 +16825,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17933,7 +17933,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18408,7 +18408,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18572,7 +18572,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18917,7 +18917,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19298,7 +19298,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19605,7 +19605,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20119,7 +20119,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20260,7 +20260,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20571,7 +20571,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20862,7 +20862,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21719,7 +21719,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22123,7 +22123,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22692,7 +22692,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23200,7 +23200,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23506,7 +23506,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24034,7 +24034,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25251,7 +25251,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 
 def _v191191_branch_ref_name():
@@ -25396,7 +25396,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25684,7 +25684,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25913,7 +25913,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26280,13 +26280,13 @@ def version_user_report():
 
 
 
-# === v19.12.2 RISK REWARD WALKFORWARD ===
+# === v19.12.1 ENTRY POLICY SEARCH ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26900,7 +26900,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 
 def v1911101_section(title, body):
@@ -26955,7 +26955,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27056,7 +27056,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 
 def v1911101_load_buy_state():
@@ -27172,14 +27172,14 @@ def v19119_paper_buy_audit_report():
 
 
 
-# === v19.12.2 RISK REWARD WALKFORWARD ===
+# === v19.12.1 ENTRY POLICY SEARCH ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27480,13 +27480,13 @@ def version_user_report():
 
 
 
-# === v19.12.2 RISK REWARD WALKFORWARD ===
+# === v19.12.1 ENTRY POLICY SEARCH ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27789,11 +27789,11 @@ def version_user_report():
     )
 
 
-# === v19.12.2 RISK REWARD WALKFORWARD ===
+# === v19.12.1 ENTRY POLICY SEARCH ===
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+V191111_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 
@@ -28198,26 +28198,6 @@ def v191120_btc_features(candles):
     return result
 
 
-def v191122_simulate_plan(entry, future, target_pct=2.0, stop_pct=-3.0):
-    """Conservative 4h-bar simulation: if target and stop touch together, stop wins."""
-    entry = float(entry or 0)
-    if entry <= 0 or not future:
-        return {'return_pct': 0.0, 'outcome': 'no_data', 'bars': 0}
-    target = entry * (1.0 + float(target_pct) / 100.0)
-    stop = entry * (1.0 + float(stop_pct) / 100.0)
-    for bar_index, bar in enumerate(future, start=1):
-        low = float(bar.get('low', entry) or entry)
-        high = float(bar.get('high', entry) or entry)
-        stop_hit = low <= stop
-        target_hit = high >= target
-        if stop_hit:
-            return {'return_pct': float(stop_pct), 'outcome': 'stop', 'bars': bar_index}
-        if target_hit:
-            return {'return_pct': float(target_pct), 'outcome': 'target', 'bars': bar_index}
-    final_return = v191120_pct(entry, future[-1].get('close', entry))
-    return {'return_pct': round(final_return, 3), 'outcome': 'timeout', 'bars': len(future)}
-
-
 def v191120_build_dataset(candles_by_asset):
     btc = candles_by_asset.get('BTC', [])
     btc_by_ts = v191120_btc_features(btc)
@@ -28230,7 +28210,6 @@ def v191120_build_dataset(candles_by_asset):
                 features = v191120_feature_score(candles, index, btc_by_ts)
                 entry = float(candles[index]['close'])
                 future = candles[index + 1:index + 13]
-                plan = v191122_simulate_plan(entry, future)
                 row = {
                     'asset': asset,
                     'ts': int(candles[index]['ts']),
@@ -28241,9 +28220,6 @@ def v191120_build_dataset(candles_by_asset):
                     '48h': round(v191120_pct(entry, candles[index + 12]['close']), 3),
                     'mae48': round(v191120_pct(entry, min(item['low'] for item in future)), 3),
                     'mfe48': round(v191120_pct(entry, max(item['high'] for item in future)), 3),
-                    'plan_return': round(float(plan.get('return_pct', 0) or 0), 3),
-                    'plan_outcome': plan.get('outcome'),
-                    'plan_bars': int(plan.get('bars', 0) or 0),
                 }
                 samples.append(row)
             except Exception:
@@ -28254,13 +28230,8 @@ def v191120_build_dataset(candles_by_asset):
 def v191120_metrics(samples, threshold):
     selected = [row for row in samples if int(row.get('score', 0) or 0) >= int(threshold)]
     if not selected:
-        return {
-            'threshold': threshold, 'n': 0, 'avg48': 0.0, 'median48': 0.0,
-            'win_rate': 0.0, 'bad_rate': 0.0, 'avg_mae': 0.0,
-            'plan_expectancy': 0.0, 'plan_win_rate': 0.0, 'plan_stop_rate': 0.0,
-        }
+        return {'threshold': threshold, 'n': 0, 'avg48': 0.0, 'median48': 0.0, 'win_rate': 0.0, 'bad_rate': 0.0, 'avg_mae': 0.0}
     outcomes = sorted(float(row.get('48h', 0) or 0) for row in selected)
-    plan_returns = [float(row.get('plan_return', 0) or 0) for row in selected]
     middle = len(outcomes) // 2
     median = outcomes[middle] if len(outcomes) % 2 else (outcomes[middle - 1] + outcomes[middle]) / 2.0
     return {
@@ -28272,9 +28243,6 @@ def v191120_metrics(samples, threshold):
         'bad_rate': round(sum(1 for value in outcomes if value <= -3.0) / len(outcomes), 3),
         'avg_mae': round(sum(float(row.get('mae48', 0) or 0) for row in selected) / len(selected), 3),
         'avg_mfe': round(sum(float(row.get('mfe48', 0) or 0) for row in selected) / len(selected), 3),
-        'plan_expectancy': round(sum(plan_returns) / len(plan_returns), 3),
-        'plan_win_rate': round(sum(1 for row in selected if row.get('plan_outcome') == 'target') / len(selected), 3),
-        'plan_stop_rate': round(sum(1 for row in selected if row.get('plan_outcome') == 'stop') / len(selected), 3),
     }
 
 
@@ -28325,13 +28293,10 @@ def v191121_policy_candidates():
 
 def v191121_policy_objective(metrics):
     return (
-        float(metrics.get('avg48', 0) or 0) * 6
+        float(metrics.get('avg48', 0) or 0) * 10
         + float(metrics.get('median48', 0) or 0) * 4
-        + float(metrics.get('win_rate', 0) or 0) * 12
-        + float(metrics.get('plan_expectancy', 0) or 0) * 12
-        + float(metrics.get('plan_win_rate', 0) or 0) * 8
+        + float(metrics.get('win_rate', 0) or 0) * 18
         - float(metrics.get('bad_rate', 0) or 0) * 28
-        - float(metrics.get('plan_stop_rate', 0) or 0) * 8
         + min(2.0, float(metrics.get('n', 0) or 0) / 250.0)
     )
 
@@ -28383,7 +28348,6 @@ def v191120_run_walkforward(candles_by_asset=None):
         'validation_avg_positive': float(selected_validation.get('avg48', 0) or 0) >= 0.4,
         'validation_win_rate': float(selected_validation.get('win_rate', 0) or 0) >= 0.52,
         'validation_bad_rate': float(selected_validation.get('bad_rate', 1) or 1) <= 0.25,
-        'validation_plan_expectancy': float(selected_validation.get('plan_expectancy', 0) or 0) >= 0.20,
     }
     result = {
         'version': V191111_VERSION,
@@ -28446,8 +28410,6 @@ def v191120_entry_lab_lines():
         f"• validation: n {validation.get('n', 0)} | avg48 {float(validation.get('avg48', 0) or 0):+.2f}% | "
         f"win {float(validation.get('win_rate', 0) or 0)*100:.1f}% | bad {float(validation.get('bad_rate', 0) or 0)*100:.1f}% | "
         f"MAE {float(validation.get('avg_mae', 0) or 0):+.2f}%",
-        f"• plan T1 +2% / stop -3%: expectancy {float(validation.get('plan_expectancy', 0) or 0):+.2f}% | "
-        f"target {float(validation.get('plan_win_rate', 0) or 0)*100:.1f}% | stop {float(validation.get('plan_stop_rate', 0) or 0)*100:.1f}%",
         f"• historical checks: {sum(1 for value in checks.values() if value)}/{len(checks)} | live BUY: ALWAYS OFF",
         '• threshold is research-only until paper/live-forward results confirm it.',
     ]
@@ -29233,13 +29195,13 @@ def v191111_audit_content():
         decisions = v191111_ranked_paper_buy_decisions()
     sections = [
         ('VERSION', f'BOT_VERSION: {V191111_VERSION}'),
-        ('MEASURABLE LEARNING PROGRESS V19.12.2', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
+        ('MEASURABLE LEARNING PROGRESS V19.12.1', '\n'.join(v191111_learning_progress_lines(snapshot_result))),
         ('HISTORICAL POLICY VS ENTRY CALIBRATION', '\n'.join(v191113_policy_calibration_lines(backfill))),
-        ('WALK-FORWARD ENTRY LAB V19.12.2', '\n'.join(v191120_entry_lab_lines())),
+        ('WALK-FORWARD ENTRY LAB V19.12.1', '\n'.join(v191120_entry_lab_lines())),
         ('FAST PROBE SCORING', v1911101_safe_call('v191181_fast_probe_scoring_report')),
         ('FAST SHADOW PORTFOLIO', v1911101_safe_call('v191181_fast_shadow_report')),
         ('FAST LESSON ENGINE', v1911101_safe_call('v191181_fast_lesson_engine_report')),
-        ('UNIFIED PAPER DECISION GATE V19.12.2', v191111_paper_buy_report(create=False)),
+        ('UNIFIED PAPER DECISION GATE V19.12.1', v191111_paper_buy_report(create=False)),
         ('PAPER CHECKPOINT LIFECYCLE', '\n'.join(v191111_checkpoint_lines(decisions))),
         ('CONFIDENCE LESSON ROUTER', '\n'.join(v191111_router_lines())),
         ('HOURLY FAST EVIDENCE ROUTER', '\n'.join(v191112_fast_evidence_lines(decisions))),
@@ -29257,10 +29219,9 @@ def v191111_version_report():
     return (
         f'✅ Версия: {V191111_VERSION}\n\n'
         'Что изменено:\n'
-        '• Entry Lab проверяет не только рост цены, но и торговый план;\n'
-        '• для каждого входа моделируются цель +2% и stop -3%;\n'
-        '• если цель и stop задеты в одной 4ч свече, консервативно считается stop;\n'
-        '• policy выбирается по доходности, просадке и expectancy только на train;\n'
+        '• Entry Lab ищет более строгую комбинацию условий входа только на train;\n'
+        '• отдельно перебираются порог score, BTC, 4ч движение, объём и RSI;\n'
+        '• выбранная комбинация затем один раз проверяется на независимой validation;\n'
         '• live BUY и автоторговля остаются выключены.\n\n'
         'Безопасность:\n'
         '• реальные покупки 0;\n'
@@ -29334,7 +29295,7 @@ if __name__ == "__main__":
 # восстанавливаем active PAPER BUY из него, если общий paper_trades.json поднялся пустым.
 # Реальные покупки, автоторговля, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 V191195_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V191195_STATE_KEY = "paper_buy_durable_state_v191195"
@@ -29635,7 +29596,7 @@ def version_user_report():
 # управления открытой paper-сделкой: 6h checkpoint, risk-watch и lesson-router.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 V191110_ROUTER_KEY = "paper_buy_lesson_router_v191110"
 V191110_CHECKPOINT_KEY = "paper_buy_checkpoint_v191110"
@@ -30068,13 +30029,13 @@ def version_user_report():
 
 
 
-# === v19.12.2 RISK REWARD WALKFORWARD ===
+# === v19.12.1 ENTRY POLICY SEARCH ===
 # Critical wiring fix: the previous v19.11.10 block was appended after __main__,
 # so production runtime used the old PAPER BUY report. This block is intentionally
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -30688,7 +30649,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 
 def v1911101_section(title, body):
@@ -30743,7 +30704,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -30844,7 +30805,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 
 def v1911101_load_buy_state():
@@ -30959,14 +30920,14 @@ def v19119_paper_buy_audit_report():
     return v19119_paper_buy_decision_report(create=False)
 
 # === v19.11.10.2 EOF IMPORT PARITY OVERRIDE ===
-# === v19.12.2 RISK REWARD WALKFORWARD ===
+# === v19.12.1 ENTRY POLICY SEARCH ===
 # Причина: v19.11.10.1 подключил 6H checkpoint, но отчёт показывал
 # active BUY в durable-state: 0 при active paper BUY в store: 2; audit short потерял числовой score,
 # а FAST SHADOW PORTFOLIO был пустым из-за неправильного имени функции.
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -31267,13 +31228,13 @@ def version_user_report():
 
 # === v19.11.10.3 EOF IMPORT PARITY OVERRIDE ===
 
-# === v19.12.2 RISK REWARD WALKFORWARD ===
+# === v19.12.1 ENTRY POLICY SEARCH ===
 # Причина: почасовая автопроверка засоряла Telegram-чат пользователя.
 # Исправление: плановый Auto-Audit больше НЕ отправляет сообщения в Telegram.
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v19.12.2 RISK REWARD WALKFORWARD"
+BOT_VERSION = "v19.12.1 ENTRY POLICY SEARCH"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
