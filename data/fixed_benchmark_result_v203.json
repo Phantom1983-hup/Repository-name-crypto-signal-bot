@@ -1,6 +1,6 @@
 {
   "benchmark_hash": "7fea2d252e303565de5523093c21a0af31eab5c828c5162028a434379388caa9",
-  "evaluator_schema": "adaptive_exit_plan_guard_v208_1",
+  "evaluator_schema": "probe_quarantine_guard_v209_1",
   "method": "model family selection guard; chronological 50/20/10/20 fit/calibration/selection/final validation",
   "total_samples": 7860,
   "train_samples": 3900,
@@ -883,13 +883,13 @@
   "stable_windows": 2,
   "qualified_for_forward_shadow": false,
   "ready_for_live": false,
-  "evaluation_hash": "4f8771614b7f5bf299066b8726a38c9b29088686ac71f2acf53e2de6b7075ce6",
-  "version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
+  "evaluation_hash": "5174d9786aba016b0b1f2eaa01267b82dfa5957b2508ad5ddfe7364f38ffbf7b",
+  "version": "v20.9 PROBE QUARANTINE GUARD",
   "benchmark_schema": "fixed_market_benchmark_v203_1",
-  "evaluated_at": 1782751659.226034,
-  "evaluated_at_iso": "2026-06-29T16:47:39.226113",
+  "evaluated_at": 1782752770.1226647,
+  "evaluated_at_iso": "2026-06-29T17:06:10.122774",
   "repeatable": true,
   "measurement_valid": true,
-  "repeat_check_hash": "4f8771614b7f5bf299066b8726a38c9b29088686ac71f2acf53e2de6b7075ce6",
+  "repeat_check_hash": "5174d9786aba016b0b1f2eaa01267b82dfa5957b2508ad5ddfe7364f38ffbf7b",
   "note": "Research and PAPER measurement only. Live BUY and autotrading remain disabled."
 }
