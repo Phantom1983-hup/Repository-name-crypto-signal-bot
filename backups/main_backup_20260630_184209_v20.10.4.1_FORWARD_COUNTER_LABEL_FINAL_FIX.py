@@ -24,7 +24,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16853,7 +16853,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17961,7 +17961,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18436,7 +18436,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18600,7 +18600,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18945,7 +18945,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19326,7 +19326,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19633,7 +19633,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20147,7 +20147,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20288,7 +20288,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 def v19115_quality_probe_candidate(c):
     """Качественный актив растёт умеренно: реальный BUY ещё запрещён,
     но нужна виртуальная проба, чтобы бот не учился только на пропусках.
@@ -20597,7 +20597,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 def v191151_collect_quality_probe_candidates():
     """Собрать текущие quality-probe кандидаты без сетевого перебора всего рынка."""
     out = []
@@ -20886,7 +20886,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
 except Exception:
@@ -21601,12 +21601,6 @@ def main():
                 elif text in ["/paper_buy_status", "/buy_decisions", "/paper_decisions"]:
                     send_message(chat_id, v19119_paper_buy_decision_report(create=False))
 
-                elif text in ["/next_check", "/next_forward_check", "/when_check", "/check_time"]:
-                    send_message(chat_id, v20105_next_check_report())
-
-                elif text in ["/forward_status", "/forward_cycle", "/cycle_status"]:
-                    send_message(chat_id, v20105_forward_status_report())
-
                 elif text in ["/probe_lessons", "/lesson_engine", "/probe_finalizer", "/quality_lessons"]:
                     send_message(chat_id, v19118_probe_lesson_engine_report())
 
@@ -21751,7 +21745,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     _v191161_old_unified_signal_report = unified_signal_report
 except Exception:
@@ -22154,7 +22148,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
 except Exception:
@@ -22722,7 +22716,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
 except Exception:
@@ -23229,7 +23223,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
 except Exception:
@@ -23534,7 +23528,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     _v19118_old_build_audit_file = build_audit_file
 except Exception:
@@ -24061,7 +24055,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     _v191181_old_build_audit_file = build_audit_file
 except Exception:
@@ -25277,7 +25271,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 def _v191191_branch_ref_name():
     try:
         br = str(GITHUB_BRANCH or "main").strip()
@@ -25420,7 +25414,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 def v191192_probe_sync_classification(pnl):
     """Возвращает текущий drawdown-aware probe bucket/score по той же шкале, что FAST PROBE SCORING."""
     try:
@@ -25706,7 +25700,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 def v191193_backup_in_recent_list(path, limit=50):
     """Возвращает запись из /backups, если exact path найден в списке GitHub contents."""
     try:
@@ -25933,7 +25927,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
 
@@ -26305,7 +26299,7 @@ def version_user_report():
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
 V1911101_RESTORE_META_KEY = "paper_buy_restore_v1911101"
@@ -26918,7 +26912,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 def v1911101_section(title, body):
     return "\n\n" + "="*80 + "\n" + str(title) + "\n" + "="*80 + "\n" + str(body or "")
 
@@ -26971,7 +26965,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 def v1911101_fmt_created_paper_buy(trade):
     try:
         asset = v19119_trade_asset(trade)
@@ -27070,7 +27064,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 def v1911101_load_buy_state():
     try:
         if os.path.exists(V1911101_PAPER_BUY_STATE_FILE):
@@ -27191,7 +27185,7 @@ def v19119_paper_buy_audit_report():
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 def v1911102_count_active_buy_in_data(data=None):
     try:
         if not isinstance(data, dict):
@@ -27496,7 +27490,7 @@ def version_user_report():
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
 except Exception:
@@ -27802,7 +27796,7 @@ def version_user_report():
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+V191111_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
@@ -32367,7 +32361,7 @@ except Exception:
 # === v20.9.7 REPORT CONSISTENCY FULL PASS ===
 # Runtime-safe cleanup: this block is deliberately placed BEFORE __main__.
 # It fixes labels that v20.9.5 could not clean because its cleanup code was appended after main().
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32447,7 +32441,7 @@ except Exception:
 # - make /effectiveness, /learn_fast, /paper_buy_status and /audit_file count open observations consistently;
 # - do not count open observations in final score until 24/48h;
 # - no trading logic changes.
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32930,11 +32924,11 @@ except Exception:
 
 
 
-# === v20.10.3 OBSERVABILITY + NEXT CHECK UX ===
+# === v20.10.3 FORWARD COUNTER LABEL FINAL FIX ===
 # One final report-consistency pass based on live audit evidence from v20.9.7.
 # Fix: open quality-probe average in /effectiveness, /paper_buy_status and audit must match FAST PROBE SCORING.
 # No trading logic changes: real BUY 0, autotrading OFF, open observations do not increase effectiveness before 24/48h close.
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -33384,11 +33378,11 @@ try:
 except Exception:
     pass
 
-# === v20.10.3 OBSERVABILITY + NEXT CHECK UX ===
+# === v20.10.3 FORWARD COUNTER LABEL FINAL FIX ===
 # Purpose: PAPER mode is a training lab, not a live-risk clone.
 # Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
 # Open observations still do not increase effectiveness until 24/48h close.
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     V191111_VERSION = BOT_VERSION
     V19119_PAPER_BUY_MAX_ACTIVE = 6
@@ -33908,11 +33902,11 @@ except Exception:
     pass
 
 
-# === v20.10.3 OBSERVABILITY + NEXT CHECK UX ===
+# === v20.10.3 FORWARD COUNTER LABEL FINAL FIX ===
 # Fix: /paper_buy_status must move PAPER training forward when gate is ALLOW.
 # Previously it showed PAPER MICRO-BUY candidates but created 0 because the report default was create=False.
 # Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34007,13 +34001,13 @@ except Exception:
     pass
 
 
-# === v20.10.3 OBSERVABILITY + NEXT CHECK UX ===
+# === v20.10.3 FORWARD COUNTER LABEL FINAL FIX ===
 # Root cause: the Telegram handler calls v19119_paper_buy_decision_report(create=False)
 # for /paper_buy_status. The previous fix changed the default only, so the handler still disabled creation.
 # Fix: the status wrapper ignores that legacy False and runs safe PAPER training creation.
 # Also keep user-facing effectiveness honest: research learning speed cannot replace the 44/100 benchmark
 # before closed 24/48h forward evidence exists.
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34150,10 +34144,10 @@ except Exception:
 
 
 
-# === v20.10.3 OBSERVABILITY + NEXT CHECK UX ===
+# === v20.10.3 FORWARD COUNTER LABEL FINAL FIX ===
 # Service-fix only: do not change BUY thresholds, weights, asset selection, entry/exit scoring,
 # real buying or autotrading. The goal is to make PAPER BUY lifecycle and score reporting consistent.
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34663,7 +34657,7 @@ def v20103_audit_section():
     closed_now_text = ', '.join(closed_now) if closed_now else 'none'
     checkpointed_now_text = ', '.join(checkpointed_now) if checkpointed_now else 'none'
     return '\n'.join([
-        '🧩 OBSERVABILITY + NEXT CHECK UX',
+        '🧩 FORWARD COUNTER LABEL FINAL FIX',
         '',
         f"Версия: {v2021_user_version()}",
         '',
@@ -34701,7 +34695,7 @@ def v191181_fast_audit_build_content():
         base = _v20103_base_fast_audit_build_content() if callable(_v20103_base_fast_audit_build_content) else 'ALEX EDGE ULTRA FAST TECH AUDIT FILE'
     except Exception as exc:
         base = f'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n\nBOT_VERSION: {BOT_VERSION}\nAudit error: {exc}'
-    title = 'OBSERVABILITY + NEXT CHECK UX V20.10.4.1'
+    title = 'FORWARD COUNTER LABEL FINAL FIX V20.10.4.1'
     marker = '\n' + '=' * 80 + '\n' + title + '\n' + '=' * 80 + '\n'
     if marker in base:
         base = base.split(marker)[0].rstrip()
@@ -34714,7 +34708,7 @@ def v191111_audit_content():
 
 def version_user_report():
     return (
-        '✅ Версия: v20.10.5\n'
+        '✅ Версия: v20.10.4.1\n'
         'Название: FORWARD COUNTER LABEL FIX\n\n'
         'Что исправлено:\n'
         '• /effectiveness и /audit_file получили единый источник оценки;\n'
@@ -34744,10 +34738,10 @@ try:
 except Exception:
     pass
 
-# === v20.10.5 OBSERVABILITY + NEXT CHECK UX ===
+# === v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX ===
 # Service-fix only: no trading logic changes. This layer fixes labels/counters so
 # historical closed PAPER lessons are not shown as current forward BUY closes.
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
+BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -35096,7 +35090,7 @@ def v20103_audit_section():
     checkpointed_now_text = ', '.join(checkpointed_now) if checkpointed_now else 'none'
     denom = max(1, int(eff.get('current_cycle_total', 0) or eff.get('active_paper_buy', 0) or 0))
     return '\n'.join([
-        '🧩 OBSERVABILITY + NEXT CHECK UX',
+        '🧩 FORWARD COUNTER LABEL FIX',
         '',
         f"Версия: {v2021_user_version()}",
         '',
@@ -35137,13 +35131,13 @@ def v191181_fast_audit_build_content():
     except Exception as exc:
         base = f'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n\nBOT_VERSION: {BOT_VERSION}\nAudit error: {exc}'
     for old_title in (
-        'OBSERVABILITY + NEXT CHECK UX V20.10.4.1',
-        'OBSERVABILITY + NEXT CHECK UX V20.10.5',
+        'FORWARD COUNTER LABEL FINAL FIX V20.10.4.1',
+        'FORWARD COUNTER LABEL FIX V20.10.4',
     ):
         marker = '\n' + '=' * 80 + '\n' + old_title + '\n' + '=' * 80 + '\n'
         if marker in base:
             base = base.split(marker)[0].rstrip()
-    title = 'OBSERVABILITY + NEXT CHECK UX V20.10.5'
+    title = 'FORWARD COUNTER LABEL FIX V20.10.4'
     return base.rstrip() + '\n\n' + '=' * 80 + '\n' + title + '\n' + '=' * 80 + '\n' + v20103_audit_section()
 
 
@@ -35153,7 +35147,7 @@ def v191111_audit_content():
 
 def version_user_report():
     return (
-        '✅ Версия: v20.10.5\n'
+        '✅ Версия: v20.10.4.1\n'
         'Название: FORWARD COUNTER LABEL FIX\n\n'
         'Что исправлено:\n'
         '• старые закрытые PAPER-уроки больше не считаются как закрытый forward BUY текущего цикла;\n'
@@ -35183,372 +35177,6 @@ try:
     globals()['v20103_audit_section'] = v20103_audit_section
     globals()['v191181_fast_audit_build_content'] = v191181_fast_audit_build_content
     globals()['v191111_audit_content'] = v191111_audit_content
-    globals()['version_user_report'] = version_user_report
-except Exception:
-    pass
-
-
-# === v20.10.5 OBSERVABILITY + NEXT CHECK UX ===
-# Safe service layer only: no BUY thresholds, no weights, no coin selection, no entry/exit logic changed.
-BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
-try:
-    V191111_VERSION = BOT_VERSION
-except Exception:
-    pass
-
-V20105_COMMAND_LIST = [
-    "/paper_buy_status",
-    "/effectiveness",
-    "/learn_fast",
-    "/audit_file",
-]
-
-
-def v20105_user_version():
-    return "v20.10.5"
-
-
-def v2021_user_version():
-    return v20105_user_version()
-
-
-def v20105_msk_dt_from_ts(ts):
-    try:
-        return datetime.utcfromtimestamp(float(ts)) + timedelta(hours=MOSCOW_OFFSET_HOURS)
-    except Exception:
-        return moscow_now()
-
-
-def v20105_format_msk_ts(ts):
-    try:
-        return v20105_msk_dt_from_ts(ts).strftime("%d.%m.%Y в %H:%M МСК")
-    except Exception:
-        return "время недоступно"
-
-
-def v20105_round_up_msk_ts(ts, step_minutes=5, buffer_minutes=3):
-    """Return a timestamp rounded up by Moscow wall-clock time, with a small safety buffer.
-    This prevents the user from sending the commands a few seconds before the checkpoint is actually due.
-    """
-    try:
-        step = max(1, int(step_minutes))
-        dt = v20105_msk_dt_from_ts(float(ts) + int(buffer_minutes) * 60)
-        minute = ((dt.minute + step - 1) // step) * step
-        if minute >= 60:
-            dt = dt.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
-        else:
-            dt = dt.replace(minute=minute, second=0, microsecond=0)
-        # convert Moscow naive datetime back to UTC timestamp approximation
-        utc_dt = dt - timedelta(hours=MOSCOW_OFFSET_HOURS)
-        return utc_dt.timestamp()
-    except Exception:
-        return float(ts or time.time())
-
-
-def v20105_commands_block():
-    return "\n".join(V20105_COMMAND_LIST)
-
-
-def v20105_forward_schedule_payload(now=None):
-    now = time.time() if now is None else float(now)
-    try:
-        rows = v20103_forward_timer_rows(now=now)
-    except Exception:
-        rows = []
-    try:
-        counts = v20103_forward_counts()
-    except Exception:
-        counts = {}
-
-    active = int(counts.get('current_cycle_active', counts.get('active_paper_buy', 0)) or 0)
-    current_total = int(counts.get('current_cycle_total', active) or active or 0)
-    checkpoint_24 = int(counts.get('current_cycle_checkpoint_24', 0) or 0)
-    closed_48 = int(counts.get('current_cycle_closed', 0) or 0)
-    denom = max(1, current_total or active or len(rows))
-
-    if not rows:
-        return {
-            'rows': [],
-            'counts': counts,
-            'active': active,
-            'denom': denom,
-            'full_24_due_ts': None,
-            'full_48_due_ts': None,
-            'recommended_24_ts': None,
-            'recommended_48_ts': None,
-            'checkpoint_24': checkpoint_24,
-            'closed_48': closed_48,
-        }
-
-    full_24_due_ts = None
-    full_48_due_ts = None
-    try:
-        full_24_due_ts = max(now + max(0.0, float(r.get('left_24_h', 0) or 0)) * 3600 for r in rows)
-    except Exception:
-        full_24_due_ts = None
-    try:
-        full_48_due_ts = max(now + max(0.0, float(r.get('left_48_h', 0) or 0)) * 3600 for r in rows)
-    except Exception:
-        full_48_due_ts = None
-
-    return {
-        'rows': rows,
-        'counts': counts,
-        'active': active,
-        'denom': denom,
-        'full_24_due_ts': full_24_due_ts,
-        'full_48_due_ts': full_48_due_ts,
-        'recommended_24_ts': v20105_round_up_msk_ts(full_24_due_ts) if full_24_due_ts else None,
-        'recommended_48_ts': v20105_round_up_msk_ts(full_48_due_ts) if full_48_due_ts else None,
-        'checkpoint_24': checkpoint_24,
-        'closed_48': closed_48,
-    }
-
-
-def v20105_asset_schedule_lines(now=None):
-    now = time.time() if now is None else float(now)
-    try:
-        rows = v20103_forward_timer_rows(now=now)
-    except Exception:
-        rows = []
-    if not rows:
-        return ["• активных PAPER BUY нет"]
-    lines = []
-    for row in rows:
-        asset = row.get('asset') or '?'
-        left24 = max(0.0, float(row.get('left_24_h', 0) or 0))
-        left48 = max(0.0, float(row.get('left_48_h', 0) or 0))
-        if row.get('checkpoint_24_done'):
-            t24 = "24ч уже готов"
-        else:
-            t24 = "24ч: " + v20105_format_msk_ts(now + left24 * 3600)
-        if row.get('final_48_done'):
-            t48 = "48ч уже закрыт"
-        else:
-            t48 = "48ч: " + v20105_format_msk_ts(now + left48 * 3600)
-        lines.append(f"• {asset}: {t24} | {t48}")
-    return lines
-
-
-def v20105_next_action_block():
-    p = v20105_forward_schedule_payload()
-    if not p.get('rows'):
-        return "Следующее действие: активных PAPER BUY нет. Новую forward-проверку ждать не нужно."
-    r24 = p.get('recommended_24_ts')
-    r48 = p.get('recommended_48_ts')
-    checkpoint_24 = int(p.get('checkpoint_24', 0) or 0)
-    closed_48 = int(p.get('closed_48', 0) or 0)
-    denom = max(1, int(p.get('denom', 1) or 1))
-
-    if checkpoint_24 < denom:
-        action_time = v20105_format_msk_ts(r24)
-        action_name = "24ч checkpoint"
-        expected = f"Текущий цикл: active {int(p.get('active', 0) or 0)} | 24ч checkpoints {denom}/{denom} | closed {closed_48}/{denom}"
-    elif closed_48 < denom:
-        action_time = v20105_format_msk_ts(r48)
-        action_name = "48ч final close"
-        expected = f"Текущий цикл: active 0 | 24ч checkpoints {denom}/{denom} | closed {denom}/{denom}"
-    else:
-        action_time = "цикл уже закрыт"
-        action_name = "новая проверка не требуется"
-        expected = f"Текущий цикл: active 0 | 24ч checkpoints {denom}/{denom} | closed {denom}/{denom}"
-
-    return "\n".join([
-        "📌 Следующее действие пользователя:",
-        f"• {action_name}: {action_time}",
-        "• команды прислать одним сообщением:",
-        v20105_commands_block(),
-        f"• ожидаем: {expected}",
-    ])
-
-
-def v20105_early_conclusion_guard():
-    try:
-        p = v20105_forward_schedule_payload()
-        denom = max(1, int(p.get('denom', 1) or 1))
-        checkpoint_24 = int(p.get('checkpoint_24', 0) or 0)
-        closed_48 = int(p.get('closed_48', 0) or 0)
-    except Exception:
-        return ""
-    if checkpoint_24 < denom:
-        return "⚠️ Рано делать вывод. Текущий цикл ещё не дошёл до полной 24ч проверки. Оценка качества входов не обновляется."
-    if closed_48 < denom:
-        return "🟡 24ч checkpoint уже можно оценивать, но финальный вывод будет только после 48ч close."
-    return "✅ Текущий forward-цикл дошёл до финальной 48ч проверки. Можно анализировать закрытые уроки."
-
-
-def v20105_next_check_report():
-    p = v20105_forward_schedule_payload()
-    lines = [
-        "🗓 Следующая проверка forward-цикла",
-        f"Версия: {v20105_user_version()}",
-        "Часовой пояс: МСК",
-        "",
-        v20104_forward_counter_summary() if callable(globals().get('v20104_forward_counter_summary')) else "Forward counters unavailable",
-        "",
-        "По активам:",
-        *v20105_asset_schedule_lines(),
-        "",
-    ]
-    if p.get('recommended_24_ts'):
-        lines.append(f"Полная 24ч проверка всех активов: {v20105_format_msk_ts(p.get('recommended_24_ts'))}")
-    if p.get('recommended_48_ts'):
-        lines.append(f"Финальная 48ч проверка всех активов: {v20105_format_msk_ts(p.get('recommended_48_ts'))}")
-    lines += [
-        "",
-        "Команды прислать в указанное время одним сообщением:",
-        v20105_commands_block(),
-        "",
-        v20105_early_conclusion_guard(),
-    ]
-    return "\n".join(lines)
-
-
-def v20105_forward_status_report():
-    p = v20105_forward_schedule_payload()
-    lines = [
-        "🧭 Forward status",
-        f"Версия: {v20105_user_version()}",
-        "",
-        v20104_forward_counter_summary() if callable(globals().get('v20104_forward_counter_summary')) else "Forward counters unavailable",
-        "",
-        v20103_forward_timers_report() if callable(globals().get('v20103_forward_timers_report')) else "Таймеры недоступны",
-        "",
-        v20105_early_conclusion_guard(),
-        "",
-        v20105_next_action_block(),
-    ]
-    return "\n".join(lines)
-
-
-def v20105_observability_audit_section():
-    p = v20105_forward_schedule_payload()
-    rows = p.get('rows') or []
-    lines = [
-        "🧭 OBSERVABILITY + NEXT CHECK UX",
-        "",
-        f"Версия: {BOT_VERSION}",
-        "",
-        "Назначение:",
-        "• добавить точное время следующих проверок по МСК;",
-        "• добавить команды /next_check и /forward_status;",
-        "• защитить пользователя от ранних выводов до 24/48ч;",
-        "• не менять BUY-пороги, веса, выбор монет и entry/exit-логику;",
-        "• реальные покупки: 0; автоторговля: OFF; BUY-веса: +0.",
-        "",
-        "Forward schedule по активам:",
-        *v20105_asset_schedule_lines(),
-        "",
-    ]
-    if p.get('recommended_24_ts'):
-        lines.append("Recommended full 24h check: " + v20105_format_msk_ts(p.get('recommended_24_ts')))
-    if p.get('recommended_48_ts'):
-        lines.append("Recommended full 48h close: " + v20105_format_msk_ts(p.get('recommended_48_ts')))
-    lines += [
-        "",
-        "User command pack:",
-        v20105_commands_block(),
-        "",
-        "Early conclusion guard:",
-        v20105_early_conclusion_guard(),
-    ]
-    return "\n".join(lines)
-
-
-try:
-    _v20105_base_paper_training_status_report = v20103_paper_training_status_report
-except Exception:
-    _v20105_base_paper_training_status_report = None
-
-
-def v20103_paper_training_status_report():
-    base = _v20105_base_paper_training_status_report() if callable(_v20105_base_paper_training_status_report) else "🧪 Виртуальные покупки и обучение"
-    return base.rstrip() + "\n\n" + v20105_next_action_block()
-
-
-def v2021_paper_buy_user_report(create=False):
-    return v20103_paper_training_status_report()
-
-
-def v19119_paper_buy_decision_report(create=False):
-    return v20103_paper_training_status_report()
-
-
-try:
-    _v20105_base_effectiveness_report = v201_effectiveness_report
-except Exception:
-    _v20105_base_effectiveness_report = None
-
-
-def v201_effectiveness_report(record=True, technical=False):
-    base = _v20105_base_effectiveness_report(record=record, technical=technical) if callable(_v20105_base_effectiveness_report) else "📈 Эффективность ALEX EDGE"
-    if technical:
-        return base
-    return base.rstrip() + "\n\n" + v20105_early_conclusion_guard() + "\n\n" + v20105_next_action_block()
-
-
-try:
-    _v20105_base_learn_fast_report = learn_fast_report
-except Exception:
-    try:
-        _v20105_base_learn_fast_report = v203_learn_fast_report
-    except Exception:
-        _v20105_base_learn_fast_report = None
-
-
-def v203_learn_fast_report(start=False):
-    base = _v20105_base_learn_fast_report(start=start) if callable(_v20105_base_learn_fast_report) else "🧠 Ускоренное обучение"
-    return base.rstrip() + "\n\n" + v20105_early_conclusion_guard() + "\n\n" + v20105_next_action_block()
-
-
-def learn_fast_report(start=False):
-    return v203_learn_fast_report(start=start)
-
-
-try:
-    _v20105_base_audit_section = v20103_audit_section
-except Exception:
-    _v20105_base_audit_section = None
-
-
-def v20103_audit_section():
-    base = _v20105_base_audit_section() if callable(_v20105_base_audit_section) else ""
-    return base.rstrip() + "\n\n" + "=" * 80 + "\nOBSERVABILITY + NEXT CHECK UX V20.10.5\n" + "=" * 80 + "\n" + v20105_observability_audit_section()
-
-
-def version_user_report():
-    return (
-        "✅ Версия: v20.10.5\n"
-        "Название: OBSERVABILITY + NEXT CHECK UX\n\n"
-        "Что добавлено:\n"
-        "• /next_check — точное время следующих 24ч/48ч проверок по МСК;\n"
-        "• /forward_status — короткий статус текущего forward-цикла;\n"
-        "• /paper_buy_status, /effectiveness и /learn_fast теперь пишут следующее действие пользователя;\n"
-        "• audit_file получил отдельную observability-секцию;\n"
-        "• добавлена защита от ранних выводов до полной 24ч/48ч проверки.\n\n"
-        "Безопасность:\n"
-        "• BUY-пороги не менялись;\n"
-        "• BUY-веса не менялись;\n"
-        "• выбор монет не менялся;\n"
-        "• entry/exit-логика не менялась;\n"
-        "• реальные покупки: 0;\n"
-        "• автоторговля: OFF.\n\n"
-        "Команды проверки: /version | /next_check | /forward_status | /paper_buy_status | /effectiveness | /learn_fast | /audit_file"
-    )
-
-try:
-    globals()['BOT_VERSION'] = BOT_VERSION
-    globals()['V191111_VERSION'] = BOT_VERSION
-    globals()['v2021_user_version'] = v2021_user_version
-    globals()['v20105_next_check_report'] = v20105_next_check_report
-    globals()['v20105_forward_status_report'] = v20105_forward_status_report
-    globals()['v20103_paper_training_status_report'] = v20103_paper_training_status_report
-    globals()['v2021_paper_buy_user_report'] = v2021_paper_buy_user_report
-    globals()['v19119_paper_buy_decision_report'] = v19119_paper_buy_decision_report
-    globals()['v201_effectiveness_report'] = v201_effectiveness_report
-    globals()['v203_learn_fast_report'] = v203_learn_fast_report
-    globals()['learn_fast_report'] = learn_fast_report
-    globals()['v20103_audit_section'] = v20103_audit_section
     globals()['version_user_report'] = version_user_report
 except Exception:
     pass
