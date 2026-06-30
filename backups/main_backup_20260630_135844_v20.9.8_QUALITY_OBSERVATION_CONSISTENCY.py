@@ -24,7 +24,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16853,7 +16853,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17961,7 +17961,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18436,7 +18436,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18600,7 +18600,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18945,7 +18945,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19326,7 +19326,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19633,7 +19633,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20147,7 +20147,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20288,7 +20288,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20599,7 +20599,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20890,7 +20890,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21750,7 +21750,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22154,7 +22154,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22723,7 +22723,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23231,7 +23231,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23537,7 +23537,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24065,7 +24065,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25282,7 +25282,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 
 def _v191191_branch_ref_name():
@@ -25427,7 +25427,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25715,7 +25715,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25944,7 +25944,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26317,7 +26317,7 @@ def version_user_report():
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26931,7 +26931,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 
 def v1911101_section(title, body):
@@ -26986,7 +26986,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27087,7 +27087,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 
 def v1911101_load_buy_state():
@@ -27210,7 +27210,7 @@ def v19119_paper_buy_audit_report():
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27517,7 +27517,7 @@ def version_user_report():
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27824,7 +27824,7 @@ def version_user_report():
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+V191111_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
@@ -32389,7 +32389,7 @@ except Exception:
 # === v20.9.7 REPORT CONSISTENCY FULL PASS ===
 # Runtime-safe cleanup: this block is deliberately placed BEFORE __main__.
 # It fixes labels that v20.9.5 could not clean because its cleanup code was appended after main().
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32469,7 +32469,7 @@ except Exception:
 # - make /effectiveness, /learn_fast, /paper_buy_status and /audit_file count open observations consistently;
 # - do not count open observations in final score until 24/48h;
 # - no trading logic changes.
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32952,11 +32952,11 @@ except Exception:
 
 
 
-# === v20.10 PAPER ENTRY EXIT TRAINING LAB ===
+# === v20.9.8 QUALITY OBSERVATION CONSISTENCY ===
 # One final report-consistency pass based on live audit evidence from v20.9.7.
 # Fix: open quality-probe average in /effectiveness, /paper_buy_status and audit must match FAST PROBE SCORING.
 # No trading logic changes: real BUY 0, autotrading OFF, open observations do not increase effectiveness before 24/48h close.
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
+BOT_VERSION = "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32995,7 +32995,7 @@ def v2098_trade_label_from_pct(pct):
 
 
 def v2097_open_observation_stats():
-    """v20.10 override. Quality avg now matches FAST PROBE SCORING exactly."""
+    """v20.9.8 override. Quality avg now matches FAST PROBE SCORING exactly."""
     stats = {
         'paper_buy_open': 0,
         'quality_probe_open': 0,
@@ -33104,7 +33104,7 @@ def v201_effectiveness_snapshot():
         'open_quality_probe_neutral': st['quality_neutral'],
         'open_quality_probe_weak': st['quality_weak'],
         'open_observation_rule': 'visible in reports, not counted into effectiveness until 24/48h close',
-        'report_consistency_fix': 'v20.10',
+        'report_consistency_fix': 'v20.9.8',
     })
     snapshot['evidence'] = evidence
     return snapshot
@@ -33359,7 +33359,7 @@ def v191181_fast_audit_build_content():
     except Exception as exc:
         base = f'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n\nBOT_VERSION: {BOT_VERSION}\nAudit error: {exc}'
     base = v2098_clean_current_text(base)
-    # Remove old v20.9.7 consistency block if present, then append fresh v20.10 block.
+    # Remove old v20.9.7 consistency block if present, then append fresh v20.9.8 block.
     marker = '\n' + '=' * 80 + '\nOPEN OBSERVATION CONSISTENCY V20.9.8\n' + '=' * 80 + '\n'
     if marker in base:
         base = base.split(marker)[0].rstrip()
@@ -33373,7 +33373,7 @@ def v191111_audit_content():
 
 def version_user_report():
     return (
-        '✅ Версия: v20.10\n'
+        '✅ Версия: v20.9.8\n'
         'Название: ФИНАЛЬНАЯ СВЕРКА QUALITY-ПРОБ И ОТЧЁТОВ\n\n'
         'Что исправлено одним проходом:\n'
         '• средний PnL quality-проб в /effectiveness, /paper_buy_status и /audit_file берётся из одного источника — FAST PROBE SCORING;\n'
@@ -33405,530 +33405,6 @@ try:
     globals()['version_user_report'] = version_user_report
 except Exception:
     pass
-
-# === v20.10 PAPER ENTRY EXIT TRAINING LAB ===
-# Purpose: PAPER mode is a training lab, not a live-risk clone.
-# Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
-# Open observations still do not increase effectiveness until 24/48h close.
-BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
-try:
-    V191111_VERSION = BOT_VERSION
-    V19119_PAPER_BUY_MAX_ACTIVE = 6
-except Exception:
-    pass
-
-V2010_TRAINING_MAX_ACTIVE = 6
-V2010_STRONG_PAPER_MAX_ACTIVE = 2
-V2010_MIN_MICRO_SCORE = 60
-V2010_MIN_QUALITY_SCORE = 66
-
-try:
-    _v2010_old_active_checkpoints = v191111_active_checkpoints
-except Exception:
-    _v2010_old_active_checkpoints = None
-try:
-    _v2010_old_fast_audit = v191181_fast_audit_build_content
-except Exception:
-    _v2010_old_fast_audit = None
-try:
-    _v2010_old_effectiveness_report = v201_effectiveness_report
-except Exception:
-    _v2010_old_effectiveness_report = None
-
-
-def v2010_entry_reason(row):
-    reasons = []
-    try:
-        if int(row.get('decision_score', 0) or 0) >= V2010_MIN_QUALITY_SCORE:
-            reasons.append('score входа >=66')
-        elif int(row.get('decision_score', 0) or 0) >= V2010_MIN_MICRO_SCORE:
-            reasons.append('micro-score >=60')
-    except Exception:
-        pass
-    try:
-        probe_pnl = float(row.get('probe_pnl', row.get('pnl', 0)) or 0)
-        if -0.9 <= probe_pnl <= 0.8:
-            reasons.append('не догоняет свечу')
-        elif probe_pnl < -0.9:
-            reasons.append('учебный вход после просадки')
-        else:
-            reasons.append('есть импульс без сильного перегрева')
-    except Exception:
-        pass
-    try:
-        if int(row.get('probe_score', 55) or 55) >= 55:
-            reasons.append('probe не в красной зоне')
-    except Exception:
-        pass
-    try:
-        adj = int(row.get('fast_evidence_adj', 0) or 0)
-        if adj > 0:
-            reasons.append('короткая динамика улучшается')
-        elif adj < 0:
-            reasons.append('короткая динамика слабеет, поэтому только micro')
-    except Exception:
-        pass
-    return '; '.join(reasons[:4]) or 'учебная paper-точка для проверки входа'
-
-
-def v2010_exit_plan_for_score(price, tier):
-    try:
-        p = float(price or 0)
-    except Exception:
-        p = 0.0
-    quality = str(tier or '') == 'quality_buy_test'
-    stop_pct = -3.0 if quality else -2.2
-    target1_pct = 2.5 if quality else 1.6
-    target2_pct = 5.0 if quality else 3.2
-    if p <= 0:
-        return {'stop': 0, 'target1': 0, 'target2': 0, 'stop_pct': stop_pct, 'target1_pct': target1_pct, 'target2_pct': target2_pct}
-    return {
-        'stop': round(p * (1 + stop_pct / 100.0), 10),
-        'target1': round(p * (1 + target1_pct / 100.0), 10),
-        'target2': round(p * (1 + target2_pct / 100.0), 10),
-        'stop_pct': stop_pct,
-        'target1_pct': target1_pct,
-        'target2_pct': target2_pct,
-    }
-
-
-def v191111_active_checkpoints(decisions=None, limit=8):
-    rows = _v2010_old_active_checkpoints(decisions=decisions, limit=limit) if callable(_v2010_old_active_checkpoints) else []
-    fixed = []
-    for row in rows if isinstance(rows, list) else []:
-        if not isinstance(row, dict):
-            continue
-        item = dict(row)
-        if item.get('stop_hit'):
-            item['action'] = 'закрыть paper-тест и записать причину ошибки входа'
-        elif item.get('weak'):
-            item['action'] = 'разобрать слабость; training продолжается на других паттернах'
-        elif float(item.get('pct', 0) or 0) >= 0.3:
-            item['action'] = 'проверить частичный выход/перенос стопа в уроках'
-        else:
-            item['action'] = 'продолжать checkpoints до 24/48ч'
-        fixed.append(item)
-    return fixed
-
-
-def v191111_gate_state(decisions=None):
-    decisions = decisions if isinstance(decisions, list) else []
-    checkpoints = v191111_active_checkpoints(decisions=decisions, limit=20)
-    active_count = len(checkpoints)
-    strong_count = 0
-    weak_assets = []
-    stop_assets = []
-    for row in checkpoints:
-        if not isinstance(row, dict):
-            continue
-        if str(row.get('status') or '').find('STOP') >= 0 or row.get('stop_hit'):
-            stop_assets.append(str(row.get('asset') or '?'))
-        if row.get('weak'):
-            weak_assets.append(str(row.get('asset') or '?'))
-        try:
-            if int(row.get('probe_score', 0) or 0) >= 66:
-                strong_count += 1
-        except Exception:
-            pass
-    reasons = []
-    if active_count >= V2010_TRAINING_MAX_ACTIVE:
-        reasons.append(f'training active limit {active_count}/{V2010_TRAINING_MAX_ACTIVE}')
-    if stop_assets:
-        reasons.append('stop-hit требует разбора: ' + ', '.join(stop_assets[:4]))
-    notes = []
-    if weak_assets:
-        notes.append('слабые PAPER не блокируют всё обучение: ' + ', '.join(weak_assets[:4]))
-    if strong_count >= V2010_STRONG_PAPER_MAX_ACTIVE:
-        notes.append(f'сильные PAPER BUY заняли лимит {strong_count}/{V2010_STRONG_PAPER_MAX_ACTIVE}; micro-training ещё возможен')
-    return {
-        'allowed': not reasons,
-        'status': 'ALLOW' if not reasons else 'BLOCK',
-        'reasons': reasons or ['paper training allowed'],
-        'notes': notes,
-        'active_count': active_count,
-        'max_active': V2010_TRAINING_MAX_ACTIVE,
-        'strong_count': strong_count,
-        'strong_max': V2010_STRONG_PAPER_MAX_ACTIVE,
-        'weak_assets': weak_assets,
-        'checkpoints': checkpoints,
-    }
-
-
-def v191111_ranked_paper_buy_decisions():
-    try:
-        base = _V191111_RAW_RANKER() if callable(_V191111_RAW_RANKER) else []
-    except Exception:
-        base = []
-    out = []
-    for row in base or []:
-        if not isinstance(row, dict):
-            continue
-        item = dict(row)
-        asset = str(item.get('asset') or '').upper().strip()
-        route = v191111_lesson_router_adjustment(asset)
-        raw_score = v19119_safe_int(item.get('decision_score_before_router', item.get('raw_decision_score', item.get('decision_score', 0))), 0)
-        lesson_adjusted = max(0, min(int(route.get('cap', 100) or 100), raw_score + int(route.get('adj', 0) or 0)))
-        evidence = v191112_fast_evidence(asset)
-        adjusted = max(0, min(int(route.get('cap', 100) or 100), int(evidence.get('cap', 100) or 100), lesson_adjusted + int(evidence.get('adj', 0) or 0)))
-        probe_score = v19119_safe_int(item.get('probe_score', item.get('entry_score', 55)), 55)
-        signal, signal_tier, paper_size = v191111_signal_from_score(adjusted, probe_score)
-        item.update({
-            'raw_decision': item.get('decision'),
-            'raw_decision_score': raw_score,
-            'decision_score_before_router': raw_score,
-            'decision_score': adjusted,
-            'adjusted_decision_score': adjusted,
-            'lesson_adjusted_score': lesson_adjusted,
-            'decision': signal,
-            'signal_decision': signal,
-            'signal_tier': signal_tier,
-            'tier': signal_tier,
-            'paper_size': paper_size,
-            'probe_score': probe_score,
-            'probe_pnl': v191111_probe_pnl(item),
-            'lesson_router_adj': int(route.get('adj', 0) or 0),
-            'lesson_router_cap': int(route.get('cap', 100) or 100),
-            'lesson_router_reason': route.get('reason'),
-            'lesson_router_confidence_ready': bool(route.get('confidence_ready')),
-            'fast_evidence_adj': int(evidence.get('adj', 0) or 0),
-            'fast_evidence_count': int(evidence.get('count', 0) or 0),
-            'fast_evidence_span_h': float(evidence.get('span_h', 0) or 0),
-            'fast_evidence_trend_pct': float(evidence.get('trend_pct', 0) or 0),
-            'fast_evidence_reason': evidence.get('reason'),
-        })
-        item['entry_reason'] = v2010_entry_reason(item)
-        out.append(item)
-    out.sort(key=lambda row: (int(row.get('decision_score', 0) or 0), float(row.get('probe_pnl', 0) or 0)), reverse=True)
-    gate = v191111_gate_state(out)
-    for item in out:
-        tier = item.get('signal_tier')
-        signal_eligible = tier in ['quality_buy_test', 'micro_buy_test']
-        allowed = bool(gate.get('allowed')) and signal_eligible
-        if tier == 'quality_buy_test' and int(gate.get('strong_count', 0) or 0) >= V2010_STRONG_PAPER_MAX_ACTIVE:
-            item['decision'] = '🟡 PAPER MICRO-BUY'
-            item['tier'] = 'micro_buy_test'
-            item['signal_tier'] = 'micro_buy_test'
-            item['paper_size'] = '1.0% paper-capital'
-            tier = 'micro_buy_test'
-        item['gate_allowed'] = allowed
-        item['global_gate'] = gate.get('status')
-        item['global_gate_reasons'] = list(gate.get('reasons', []))
-        item['global_gate_notes'] = list(gate.get('notes', []))
-        item['executable_tier'] = tier if allowed else 'watch_only'
-        if signal_eligible and not gate.get('allowed'):
-            item['decision'] = '🟡 PAPER-КАНДИДАТ, TRAINING ЛИМИТ ЗАНЯТ'
-            item['tier'] = 'watch_only'
-            item['paper_size'] = '0%'
-        elif not signal_eligible:
-            item['tier'] = tier
-    return out
-
-
-def v191111_open_paper_buy_decisions(create=True, max_new=2, force_one=False):
-    decisions = v191111_ranked_paper_buy_decisions()
-    snapshot_result = v191111_record_fast_snapshots(decisions)
-    if int(snapshot_result.get('added', 0) or 0) > 0:
-        decisions = v191111_ranked_paper_buy_decisions()
-    gate = v191111_gate_state(decisions)
-    data, open_trades = v19119_open_trades()
-    if not isinstance(data, dict):
-        data = paper_store()
-    if not isinstance(open_trades, dict):
-        open_trades = {}
-    active_assets = v19119_active_paper_buy_assets(open_trades)
-    created = []
-    if create and gate.get('allowed'):
-        slots = max(0, int(gate.get('max_active', V2010_TRAINING_MAX_ACTIVE) or V2010_TRAINING_MAX_ACTIVE) - int(gate.get('active_count', 0) or 0))
-        limit = min(max(0, int(max_new or 0)), slots)
-        now = time.time()
-        for row in decisions:
-            if len(created) >= limit:
-                break
-            if not isinstance(row, dict) or not row.get('gate_allowed'):
-                continue
-            asset = str(row.get('asset') or '').upper().strip()
-            if not asset or asset in active_assets:
-                continue
-            price = v19119_safe_float(row.get('price', row.get('_paper_price', row.get('entry_price', 0))), 0)
-            if price <= 0:
-                continue
-            tier = str(row.get('tier') or row.get('signal_tier') or 'micro_buy_test')
-            plan = v2010_exit_plan_for_score(price, tier)
-            key = paper_trade_key(asset, V19119_PAPER_BUY_TYPE, now)
-            if key in open_trades:
-                continue
-            trade = {
-                'id': key,
-                'asset': asset,
-                'entry_time': now,
-                'entry_price': round(price, 10),
-                'last_price': round(price, 10),
-                'last_pct': 0.0,
-                'score': int(row.get('decision_score', 0) or 0),
-                'entry_score': int(row.get('probe_score', row.get('entry_score', 55)) or 55),
-                'master_score': int(row.get('decision_score', 0) or 0),
-                'source_action': 'PAPER_ENTRY_EXIT_TRAINING',
-                'virtual_type': V19119_PAPER_BUY_TYPE,
-                'verdict': row.get('decision'),
-                'is_quality': True,
-                'is_paper_buy_decision': True,
-                'paper_buy_tier': tier,
-                'paper_size': row.get('paper_size'),
-                'paper_size_pct': 2.0 if tier == 'quality_buy_test' else 1.0,
-                'entry_plan': {
-                    **plan,
-                    'exit_rule': 'T1 частичная фиксация; T2 полный успех; stop/слабость BTC/потеря объёма = урок выхода',
-                    'lesson_rule': 'минус не блокирует обучение; он классифицируется как ранний/поздний вход, слабый актив или плохой рынок',
-                },
-                'decision_reasons': list(row.get('reasons', []))[:4] if isinstance(row.get('reasons'), list) else [],
-                'decision_risks': list(row.get('risks', []))[:4] if isinstance(row.get('risks'), list) else [],
-                'entry_reason': row.get('entry_reason') or v2010_entry_reason(row),
-                'source_probe_key': row.get('source_probe_key'),
-                'probe_pnl_at_decision': row.get('probe_pnl'),
-                'probe_age_h_at_decision': row.get('age_h'),
-                'fast_evidence_adj': row.get('fast_evidence_adj'),
-                'fast_evidence_reason': row.get('fast_evidence_reason'),
-                'lesson_router_adj': row.get('lesson_router_adj'),
-                'lesson_router_reason': row.get('lesson_router_reason'),
-                'results': {},
-                'result_details': {},
-                'status': 'open',
-                'note': 'PAPER TRAINING only: real BUY 0, autotrading OFF, BUY weights +0',
-                'created_by': BOT_VERSION,
-            }
-            open_trades[key] = trade
-            created.append(trade)
-            active_assets.add(asset)
-        if created:
-            data['open'] = open_trades
-            data['last_paper_training_at'] = now
-            data['last_paper_buy_decision_version'] = BOT_VERSION
-            save_paper_store(data, sync=False)
-    return {
-        'created': created,
-        'decisions': decisions,
-        'skipped': decisions,
-        'gate': gate,
-        'snapshot_result': snapshot_result,
-        'active': max(int(gate.get('active_count', 0) or 0), len(v19119_active_paper_buy_assets(open_trades))),
-        'blocked_by_unified_gate': not gate.get('allowed'),
-    }
-
-
-def v191111_checkpoint_lines(decisions=None):
-    checkpoints = v191111_active_checkpoints(decisions=decisions, limit=8)
-    lines = ['🧭 PAPER BUY CHECKPOINT LIFECYCLE']
-    if not checkpoints:
-        return lines + ['• активных PAPER BUY нет']
-    for row in checkpoints:
-        lines.append(
-            f"• {row.get('asset')}: {row.get('status')} | {float(row.get('pct', 0)):+.2f}% | "
-            f"{float(row.get('age_h', 0)):.1f}ч | probe-score {row.get('probe_score')}/100"
-        )
-        lines.append(f"  Действие: {row.get('action')}")
-    weak = [row for row in checkpoints if row.get('weak')]
-    lines.append('')
-    if weak:
-        lines.append(f"Итог: 🟠 слабых active BUY: {len(weak)}; они дают уроки, но не останавливают PAPER TRAINING полностью.")
-    else:
-        lines.append('Итог: критичной слабости нет; PAPER TRAINING может искать новые входы.')
-    return lines
-
-
-def v191111_candidate_lines(decisions, limit=8):
-    lines = []
-    for row in list(decisions or [])[:int(limit or 8)]:
-        confidence = 'confirmed' if row.get('lesson_router_confidence_ready') else 'low-sample'
-        lines.append(
-            f"• {row.get('asset')}: {row.get('decision')} | raw {row.get('raw_decision_score')}/100 → "
-            f"paper-score {row.get('decision_score')}/100 | probe-score {row.get('probe_score')}/100 | "
-            f"probe {float(row.get('probe_pnl', 0)):+.2f}% | lessons {int(row.get('lesson_router_adj', 0)):+d} | "
-            f"hourly {int(row.get('fast_evidence_adj', 0)):+d} ({confidence})"
-        )
-        lines.append(f"  Почему вход: {row.get('entry_reason') or v2010_entry_reason(row)}")
-    return lines
-
-
-def v191111_trace_lines(decisions=None):
-    decisions = decisions if isinstance(decisions, list) else v191111_ranked_paper_buy_decisions()
-    gate = v191111_gate_state(decisions)
-    lines = [
-        '🔎 PAPER DECISION TRACE',
-        f"• Global training gate: {gate.get('status')} | active {gate.get('active_count')}/{gate.get('max_active')} | strong {gate.get('strong_count')}/{gate.get('strong_max')}",
-        '• Причина: ' + '; '.join(gate.get('reasons', [])),
-    ]
-    if gate.get('notes'):
-        lines.append('• Примечание: ' + '; '.join(gate.get('notes', [])))
-    for row in decisions[:8]:
-        lines.append(
-            f"• {row.get('asset')}: raw {row.get('raw_decision_score')}/100 → "
-            f"lessons {int(row.get('lesson_router_adj', 0)):+d} → hourly {int(row.get('fast_evidence_adj', 0)):+d} → "
-            f"adjusted {row.get('decision_score')}/100 → gate {row.get('global_gate')} → {row.get('decision')} | "
-            f"probe {float(row.get('probe_pnl', 0)):+.2f}% | why: {row.get('entry_reason') or v2010_entry_reason(row)}"
-        )
-    return lines
-
-
-def v2021_paper_buy_user_report(create=False):
-    result = v191111_open_paper_buy_decisions(create=bool(create), max_new=2, force_one=False)
-    decisions = result.get('decisions', []) if isinstance(result.get('decisions'), list) else []
-    created = result.get('created', []) if isinstance(result.get('created'), list) else []
-    gate = result.get('gate', {}) if isinstance(result.get('gate', {}), dict) else v191111_gate_state(decisions)
-    checkpoints = v191111_active_checkpoints(decisions=decisions, limit=8)
-    st = v2097_open_observation_stats()
-    lines = [
-        '🧪 Виртуальные покупки и обучение',
-        f'Версия: {v2021_user_version()}',
-        '',
-        'Реальные деньги не используются. Автоторговля выключена.',
-        f"PAPER TRAINING: {'разрешён' if gate.get('allowed') else 'временно остановлен'} | лимит {gate.get('active_count')}/{gate.get('max_active')}",
-        f"Открыто PAPER BUY: {len(checkpoints)} | quality-проб: {st['quality_probe_open']} | уникальных активов: {st.get('unique_assets_open', st['total_open'])} | создано сейчас: {len(created)}",
-    ]
-    if created:
-        lines += ['', 'Созданы учебные PAPER-входы:']
-        for row in created:
-            plan = row.get('entry_plan', {}) if isinstance(row.get('entry_plan'), dict) else {}
-            lines.append(
-                f"• {row.get('asset')}: {row.get('verdict')} | вход {v19119_format_price(row.get('entry_price'))} | "
-                f"T1 {v19119_format_price(plan.get('target1'))} | stop {v19119_format_price(plan.get('stop'))}"
-            )
-            lines.append(f"  Почему вход: {row.get('entry_reason')}")
-    if checkpoints:
-        lines += ['', 'Открытые PAPER BUY:']
-        for row in checkpoints:
-            pct = float(row.get('pct', 0) or 0)
-            if pct >= 0.5:
-                status = '🟢 пока полезно'
-            elif pct <= -1.0:
-                status = '🟠 слабый результат'
-            else:
-                status = '🟡 без ясного результата'
-            lines.append(f"• {row.get('asset')}: {status} | {pct:+.2f}% | {float(row.get('age_h', 0) or 0):.1f}ч")
-    if st['quality_probe_open']:
-        lines += ['', f"Открытые quality-пробы: {', '.join(st.get('quality_assets', [])[:8])} | средний PnL {st['quality_avg_pct']:+.2f}% | полезные {st['quality_useful']} / нейтральные {st['quality_neutral']} / слабые {st['quality_weak']}"]
-    active_assets = {str(row.get('asset') or '').upper() for row in checkpoints}
-    candidates = [row for row in decisions if int(row.get('decision_score', 0) or 0) >= 55 and str(row.get('asset') or '').upper() not in active_assets][:3]
-    if candidates:
-        lines += ['', 'Ближайшие учебные входы:']
-        for row in candidates:
-            lines.append(f"• {row.get('asset')}: оценка {int(row.get('decision_score', 0) or 0)}/100 — {row.get('decision')}")
-            lines.append(f"  Почему вход: {row.get('entry_reason') or v2010_entry_reason(row)}")
-    if not gate.get('allowed'):
-        lines += ['', 'Почему training остановлен: ' + '; '.join(gate.get('reasons', [])) + '.']
-    elif gate.get('notes'):
-        lines += ['', 'Важно: ' + '; '.join(gate.get('notes', [])) + '.']
-    lines += ['', 'Вывод: бот учится входам/выходам на бумаге, реальные деньги не трогает.', 'Подробная техника: /audit_file']
-    return '\n'.join(lines)
-
-
-def v203_learn_fast_report(start=False):
-    try:
-        result = v203_load_result()
-    except Exception:
-        result = {}
-    validation = result.get('selected_validation', {}) if isinstance(result.get('selected_validation', {}), dict) else {}
-    st = v2097_open_observation_stats()
-    return '\n'.join([
-        '🧠 Ускоренное обучение',
-        f'Версия: {v2021_user_version()}',
-        '',
-        'Состояние: исторический эталон защищён, добавлен PAPER ENTRY/EXIT TRAINING.',
-        'Активный ориентир по эффективности: v20.7, потому что v20.8 не улучшил результат.',
-        'PAPER TRAINING: может открывать учебные micro-входы; реальные покупки всегда 0.',
-        f"Историческая проверка: {int(result.get('readiness_passed', 0) or 0)}/6",
-        f"Стабильные периоды: {int(result.get('stable_windows', 0) or 0)}/3",
-        f"Средний результат через 48 часов: {float(validation.get('avg48', 0) or 0):+.2f}%",
-        f"Ожидаемый результат торгового плана: {float(validation.get('plan_expectancy', 0) or 0):+.2f}%",
-        f"Открытые наблюдения сейчас: {st['total_open']} — PAPER BUY {st['paper_buy_open']}, quality-пробы {st['quality_probe_open']}, уникальных активов {st.get('unique_assets_open', st['total_open'])}.",
-        f"Quality-пробы: средний cached PnL {st['quality_avg_pct']:+.2f}% — полезные {st['quality_useful']}, нейтральные {st['quality_neutral']}, слабые {st['quality_weak']}.",
-        'В итоговую оценку они попадут только после закрытия 24/48ч.',
-        '',
-        'Вывод: бот перестаёт просто ждать и собирает учебные входы/выходы на бумаге.',
-        'Реальные покупки и автоторговля выключены.',
-        '',
-        'Полные технические данные: /audit_file',
-    ])
-
-
-def v2010_training_lab_lines():
-    decisions = v191111_ranked_paper_buy_decisions()
-    gate = v191111_gate_state(decisions)
-    checkpoints = v191111_active_checkpoints(decisions=decisions, limit=8)
-    lines = [
-        '🎓 PAPER ENTRY/EXIT TRAINING LAB V20.10',
-        f"• режим: {'ALLOW' if gate.get('allowed') else 'BLOCK'} | active {gate.get('active_count')}/{gate.get('max_active')} | strong {gate.get('strong_count')}/{gate.get('strong_max')}",
-        '• реальные покупки: 0 | автоторговля: OFF | BUY-веса: +0',
-        '• правило: слабый paper-вход становится уроком, но не парализует всё обучение.',
-        '• оценка эффективности не растёт по открытым входам, только после закрытия 24/48ч.',
-    ]
-    if gate.get('notes'):
-        lines.append('• notes: ' + '; '.join(gate.get('notes', [])))
-    if checkpoints:
-        lines.append('• active lesson focus:')
-        for row in checkpoints[:5]:
-            lines.append(f"  - {row.get('asset')}: {float(row.get('pct', 0)):+.2f}% | {row.get('action')}")
-    if decisions:
-        lines.append('• next entry candidates:')
-        for row in decisions[:5]:
-            lines.append(f"  - {row.get('asset')}: {row.get('decision_score')}/100 | {row.get('decision')} | why: {row.get('entry_reason') or v2010_entry_reason(row)}")
-    return lines
-
-
-def v191181_fast_audit_build_content():
-    try:
-        base = _v2010_old_fast_audit() if callable(_v2010_old_fast_audit) else 'ALEX EDGE ULTRA FAST TECH AUDIT FILE'
-    except Exception as exc:
-        base = f'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n\nBOT_VERSION: {BOT_VERSION}\nAudit error: {exc}'
-    marker = '\n' + '=' * 80 + '\nPAPER ENTRY/EXIT TRAINING LAB V20.10\n' + '=' * 80 + '\n'
-    if marker in base:
-        base = base.split(marker)[0].rstrip()
-    return base + '\n\n' + '=' * 80 + '\nPAPER ENTRY/EXIT TRAINING LAB V20.10\n' + '=' * 80 + '\n' + '\n'.join(v2010_training_lab_lines())
-
-
-def v191111_audit_content():
-    return v191181_fast_audit_build_content()
-
-
-def version_user_report():
-    return (
-        '✅ Версия: v20.10\n'
-        'Название: PAPER ENTRY/EXIT TRAINING LAB\n\n'
-        'Что изменено:\n'
-        '• PAPER-режим теперь учебная лаборатория, а не копия страха перед реальными деньгами;\n'
-        '• слабый PAPER BUY больше не блокирует всё обучение, он становится уроком;\n'
-        '• лимит учебных PAPER-входов расширен до 6, сильные BUY по-прежнему ограничены;\n'
-        '• каждый кандидат получает строку “Почему вход”;\n'
-        '• выход теперь проверяется через T1/T2/stop и причину ошибки;\n'
-        '• исправлено противоречие ALLOW vs “gate блокирует новые входы”.\n\n'
-        'Безопасность:\n'
-        '• реальные покупки: 0;\n'
-        '• автоторговля: OFF;\n'
-        '• BUY-веса: +0;\n'
-        '• открытые наблюдения не повышают эффективность до закрытия 24/48ч.\n\n'
-        'Команды проверки: /version | /paper_buy_status | /learn_fast | /effectiveness | /audit_file'
-    )
-
-
-try:
-    globals()['BOT_VERSION'] = BOT_VERSION
-    globals()['V191111_VERSION'] = V191111_VERSION
-    globals()['v191111_active_checkpoints'] = v191111_active_checkpoints
-    globals()['v191111_gate_state'] = v191111_gate_state
-    globals()['v191111_ranked_paper_buy_decisions'] = v191111_ranked_paper_buy_decisions
-    globals()['v191111_open_paper_buy_decisions'] = v191111_open_paper_buy_decisions
-    globals()['v191111_checkpoint_lines'] = v191111_checkpoint_lines
-    globals()['v191111_candidate_lines'] = v191111_candidate_lines
-    globals()['v191111_trace_lines'] = v191111_trace_lines
-    globals()['v2021_paper_buy_user_report'] = v2021_paper_buy_user_report
-    globals()['v19119_paper_buy_decision_report'] = v2021_paper_buy_user_report
-    globals()['v203_learn_fast_report'] = v203_learn_fast_report
-    globals()['learn_fast_report'] = v203_learn_fast_report
-    globals()['v191181_fast_audit_build_content'] = v191181_fast_audit_build_content
-    globals()['v191111_audit_content'] = v191111_audit_content
-    globals()['version_user_report'] = version_user_report
-except Exception:
-    pass
-
 
 if __name__ == "__main__":
     try:
