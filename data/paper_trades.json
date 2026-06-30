@@ -2232,6 +2232,107 @@
       "last_price": 0.05366,
       "last_price_time": 1782819337.5851388,
       "last_pct": 0.0
+    },
+    "NEAR:PAPER_BUY_DECISION_TEST:495179": {
+      "id": "NEAR:PAPER_BUY_DECISION_TEST:495179",
+      "asset": "NEAR",
+      "entry_time": 1782646362.306717,
+      "entry_price": 1.8596,
+      "last_price": 1.841,
+      "last_pct": -1.0,
+      "score": 68,
+      "entry_score": 62,
+      "probe_score_at_decision": 55,
+      "probe_bucket_at_decision": "neutral",
+      "master_score": 68,
+      "source_action": "PAPER_BUY_DECISION",
+      "virtual_type": "PAPER_BUY_DECISION_TEST",
+      "verdict": "🟢 PAPER BUY",
+      "is_quality": true,
+      "is_paper_buy_decision": true,
+      "paper_buy_tier": "quality_buy_test",
+      "paper_size": "2.0% paper-capital",
+      "entry_plan": {
+        "target1": 1.90609,
+        "target2": 1.95258,
+        "stop": 1.803812,
+        "target1_pct": 2.5,
+        "target2_pct": 5.0,
+        "stop_pct": -3.0,
+        "cancel_rule": "если BTC резко давит или цена уходит ниже stop — paper BUY считается плохим/ранним"
+      },
+      "decision_reasons": [
+        "quality-актив из белого списка",
+        "нормальный исходный probe-score",
+        "текущий probe-score нейтральный, без подтверждённого преимущества",
+        "точка не выглядит погоней за свечой"
+      ],
+      "decision_risks": [
+        "без критичных блокеров"
+      ],
+      "source_probe_key": "NEAR:VIRTUAL_PROBE_ENTRY_TEST:495158",
+      "probe_pnl_at_decision": -0.43,
+      "probe_age_h_at_decision": 20.8,
+      "btc_change": 1.72,
+      "macro_mod": -2.0,
+      "change_24": 4.9,
+      "results": {
+        "15m": 0.32,
+        "30m": 0.32,
+        "1h": -0.01,
+        "3h": 1.12,
+        "6h": -1.08,
+        "12h": -1.74,
+        "24h": -0.25
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782648394.1767888,
+          "checkpoint_price": 1.8655,
+          "source": "learning_cache:snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782648394.1767888,
+          "checkpoint_price": 1.8655,
+          "source": "learning_cache:snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782650204.5676918,
+          "checkpoint_price": 1.8595,
+          "source": "learning_cache:snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782657519.3670166,
+          "checkpoint_price": 1.8804,
+          "source": "learning_cache:snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782666630.2755895,
+          "checkpoint_price": 1.8395,
+          "source": "learning_cache:snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782669895.8735402,
+          "checkpoint_price": 1.8273,
+          "source": "learning_cache:paper_last_price_fallback"
+        },
+        "24h": {
+          "checkpoint_time": 1782730021.274496,
+          "checkpoint_price": 1.8549,
+          "source": "learning_cache:snapshot"
+        }
+      },
+      "status": "open",
+      "persistence_required": true,
+      "persistence_version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
+      "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
+      "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
+      "last_price_time": 1782783095.6821496,
+      "durable_saved_by": "v20.9.8 QUALITY OBSERVATION CONSISTENCY",
+      "durable_saved_at": 1782792179.6801372,
+      "restored_from": "paper_buy_state.json",
+      "restored_at": 1782823066.9876075,
+      "restored_by": "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
     }
   },
   "closed": [
@@ -12552,6 +12653,70 @@
       "decision": "🟡 BUY-КАНДИДАТ, ВХОД ЗАБЛОКИРОВАН",
       "captured_at": 1782792159.525095,
       "version": "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
+    },
+    {
+      "snapshot_key": "candidate:INJ:VIRTUAL_PROBE_ENTRY_TEST:495208:h19",
+      "kind": "paper_candidate",
+      "asset": "INJ",
+      "stage": "12–24ч",
+      "hour_bucket": 19,
+      "age_h": 19.9,
+      "pnl_pct": -0.7,
+      "probe_score": 55,
+      "raw_score": 68,
+      "adjusted_score": 66,
+      "gate": "ALLOW",
+      "decision": "🟢 PAPER BUY",
+      "captured_at": 1782823066.085177,
+      "version": "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
+    },
+    {
+      "snapshot_key": "candidate:SOL:VIRTUAL_PROBE_ENTRY_TEST:495208:h19",
+      "kind": "paper_candidate",
+      "asset": "SOL",
+      "stage": "12–24ч",
+      "hour_bucket": 19,
+      "age_h": 19.9,
+      "pnl_pct": -0.65,
+      "probe_score": 55,
+      "raw_score": 68,
+      "adjusted_score": 65,
+      "gate": "ALLOW",
+      "decision": "🟡 PAPER MICRO-BUY",
+      "captured_at": 1782823066.085177,
+      "version": "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
+    },
+    {
+      "snapshot_key": "candidate:SUI:VIRTUAL_PROBE_ENTRY_TEST:495208:h19",
+      "kind": "paper_candidate",
+      "asset": "SUI",
+      "stage": "12–24ч",
+      "hour_bucket": 19,
+      "age_h": 19.9,
+      "pnl_pct": 0.23,
+      "probe_score": 55,
+      "raw_score": 68,
+      "adjusted_score": 62,
+      "gate": "ALLOW",
+      "decision": "🟡 PAPER MICRO-BUY",
+      "captured_at": 1782823066.085177,
+      "version": "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
+    },
+    {
+      "snapshot_key": "candidate:LINK:VIRTUAL_PROBE_ENTRY_TEST:495208:h19",
+      "kind": "paper_candidate",
+      "asset": "LINK",
+      "stage": "12–24ч",
+      "hour_bucket": 19,
+      "age_h": 19.9,
+      "pnl_pct": -0.28,
+      "probe_score": 55,
+      "raw_score": 68,
+      "adjusted_score": 62,
+      "gate": "ALLOW",
+      "decision": "🟡 PAPER MICRO-BUY",
+      "captured_at": 1782823066.085177,
+      "version": "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
     }
   ],
   "last_policy_forward_scan_at": 1782733864.2760766,
@@ -12570,5 +12735,11 @@
       },
       "active": 4
     }
+  },
+  "paper_buy_restore_v1911101": {
+    "last_restore_at": 1782823066.9876075,
+    "restored": 1,
+    "reason": "paper_buy_status",
+    "version": "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
   }
 }
