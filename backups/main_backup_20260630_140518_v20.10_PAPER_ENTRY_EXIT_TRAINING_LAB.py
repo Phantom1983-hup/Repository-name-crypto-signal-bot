@@ -24,7 +24,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16853,7 +16853,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17961,7 +17961,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18436,7 +18436,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18600,7 +18600,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18945,7 +18945,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19326,7 +19326,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19633,7 +19633,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20147,7 +20147,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20288,7 +20288,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 
 def v19115_quality_probe_candidate(c):
@@ -20599,7 +20599,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 
 def v191151_collect_quality_probe_candidates():
@@ -20890,7 +20890,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
@@ -21750,7 +21750,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 try:
     _v191161_old_unified_signal_report = unified_signal_report
@@ -22154,7 +22154,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
@@ -22723,7 +22723,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
@@ -23231,7 +23231,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
@@ -23537,7 +23537,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 try:
     _v19118_old_build_audit_file = build_audit_file
@@ -24065,7 +24065,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 try:
     _v191181_old_build_audit_file = build_audit_file
@@ -25282,7 +25282,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 
 def _v191191_branch_ref_name():
@@ -25427,7 +25427,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 
 def v191192_probe_sync_classification(pnl):
@@ -25715,7 +25715,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 
 def v191193_backup_in_recent_list(path, limit=50):
@@ -25944,7 +25944,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
@@ -26317,7 +26317,7 @@ def version_user_report():
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
@@ -26931,7 +26931,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 
 def v1911101_section(title, body):
@@ -26986,7 +26986,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 
 def v1911101_fmt_created_paper_buy(trade):
@@ -27087,7 +27087,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 
 def v1911101_load_buy_state():
@@ -27210,7 +27210,7 @@ def v19119_paper_buy_audit_report():
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 
 def v1911102_count_active_buy_in_data(data=None):
@@ -27517,7 +27517,7 @@ def version_user_report():
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
@@ -27824,7 +27824,7 @@ def version_user_report():
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+V191111_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
@@ -32389,7 +32389,7 @@ except Exception:
 # === v20.9.7 REPORT CONSISTENCY FULL PASS ===
 # Runtime-safe cleanup: this block is deliberately placed BEFORE __main__.
 # It fixes labels that v20.9.5 could not clean because its cleanup code was appended after main().
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32469,7 +32469,7 @@ except Exception:
 # - make /effectiveness, /learn_fast, /paper_buy_status and /audit_file count open observations consistently;
 # - do not count open observations in final score until 24/48h;
 # - no trading logic changes.
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32952,11 +32952,11 @@ except Exception:
 
 
 
-# === v20.10.1 PAPER TRAINING AUTO-CREATE FIX ===
+# === v20.10 PAPER ENTRY EXIT TRAINING LAB ===
 # One final report-consistency pass based on live audit evidence from v20.9.7.
 # Fix: open quality-probe average in /effectiveness, /paper_buy_status and audit must match FAST PROBE SCORING.
 # No trading logic changes: real BUY 0, autotrading OFF, open observations do not increase effectiveness before 24/48h close.
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -33406,11 +33406,11 @@ try:
 except Exception:
     pass
 
-# === v20.10.1 PAPER TRAINING AUTO-CREATE FIX ===
+# === v20.10 PAPER ENTRY EXIT TRAINING LAB ===
 # Purpose: PAPER mode is a training lab, not a live-risk clone.
 # Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
 # Open observations still do not increase effectiveness until 24/48h close.
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
+BOT_VERSION = "v20.10 PAPER ENTRY EXIT TRAINING LAB"
 try:
     V191111_VERSION = BOT_VERSION
     V19119_PAPER_BUY_MAX_ACTIVE = 6
@@ -33925,105 +33925,6 @@ try:
     globals()['learn_fast_report'] = v203_learn_fast_report
     globals()['v191181_fast_audit_build_content'] = v191181_fast_audit_build_content
     globals()['v191111_audit_content'] = v191111_audit_content
-    globals()['version_user_report'] = version_user_report
-except Exception:
-    pass
-
-
-# === v20.10.1 PAPER TRAINING AUTO-CREATE FIX ===
-# Fix: /paper_buy_status must move PAPER training forward when gate is ALLOW.
-# Previously it showed PAPER MICRO-BUY candidates but created 0 because the report default was create=False.
-# Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
-BOT_VERSION = "v20.10.1 PAPER TRAINING AUTO-CREATE FIX"
-try:
-    V191111_VERSION = BOT_VERSION
-except Exception:
-    pass
-
-
-def v2021_paper_buy_user_report(create=True):
-    # Status is now also the safe training trigger: paper-only, no real money.
-    result = v191111_open_paper_buy_decisions(create=bool(create), max_new=2, force_one=False)
-    decisions = result.get('decisions', []) if isinstance(result.get('decisions'), list) else []
-    created = result.get('created', []) if isinstance(result.get('created'), list) else []
-    gate = result.get('gate', {}) if isinstance(result.get('gate', {}), dict) else v191111_gate_state(decisions)
-    checkpoints = v191111_active_checkpoints(decisions=decisions, limit=8)
-    st = v2097_open_observation_stats()
-    lines = [
-        '🧪 Виртуальные покупки и обучение',
-        f'Версия: {v2021_user_version()}',
-        '',
-        'Реальные деньги не используются. Автоторговля выключена.',
-        f"PAPER TRAINING: {'разрешён' if gate.get('allowed') else 'временно остановлен'} | лимит {gate.get('active_count')}/{gate.get('max_active')}",
-        f"Открыто PAPER BUY: {len(checkpoints)} | quality-проб: {st['quality_probe_open']} | уникальных активов: {st.get('unique_assets_open', st['total_open'])} | создано сейчас: {len(created)}",
-    ]
-    if created:
-        lines += ['', 'Созданы учебные PAPER-входы:']
-        for row in created:
-            plan = row.get('entry_plan', {}) if isinstance(row.get('entry_plan'), dict) else {}
-            lines.append(
-                f"• {row.get('asset')}: {row.get('verdict')} | вход {v19119_format_price(row.get('entry_price'))} | "
-                f"T1 {v19119_format_price(plan.get('target1'))} | stop {v19119_format_price(plan.get('stop'))}"
-            )
-            lines.append(f"  Почему вход: {row.get('entry_reason')}")
-
-    # Refresh active checkpoints after creation so the same report reflects new paper entries.
-    if created:
-        decisions = v191111_ranked_paper_buy_decisions()
-        checkpoints = v191111_active_checkpoints(decisions=decisions, limit=8)
-        st = v2097_open_observation_stats()
-
-    if checkpoints:
-        lines += ['', 'Открытые PAPER BUY:']
-        for row in checkpoints:
-            pct = float(row.get('pct', 0) or 0)
-            if pct >= 0.5:
-                status = '🟢 пока полезно'
-            elif pct <= -1.0:
-                status = '🟠 слабый результат'
-            else:
-                status = '🟡 без ясного результата'
-            lines.append(f"• {row.get('asset')}: {status} | {pct:+.2f}% | {float(row.get('age_h', 0) or 0):.1f}ч")
-    if st['quality_probe_open']:
-        lines += ['', f"Открытые quality-пробы: {', '.join(st.get('quality_assets', [])[:8])} | средний PnL {st['quality_avg_pct']:+.2f}% | полезные {st['quality_useful']} / нейтральные {st['quality_neutral']} / слабые {st['quality_weak']}"]
-    active_assets = {str(row.get('asset') or '').upper() for row in checkpoints}
-    candidates = [row for row in decisions if int(row.get('decision_score', 0) or 0) >= 55 and str(row.get('asset') or '').upper() not in active_assets][:3]
-    if candidates:
-        lines += ['', 'Ближайшие учебные входы:']
-        for row in candidates:
-            lines.append(f"• {row.get('asset')}: оценка {int(row.get('decision_score', 0) or 0)}/100 — {row.get('decision')}")
-            lines.append(f"  Почему вход: {row.get('entry_reason') or v2010_entry_reason(row)}")
-    if not gate.get('allowed'):
-        lines += ['', 'Почему training остановлен: ' + '; '.join(gate.get('reasons', [])) + '.']
-    elif gate.get('notes'):
-        lines += ['', 'Важно: ' + '; '.join(gate.get('notes', [])) + '.']
-    lines += ['', 'Вывод: бот учится входам/выходам на бумаге, реальные деньги не трогает.', 'Подробная техника: /audit_file']
-    return '\n'.join(lines)
-
-
-def version_user_report():
-    return (
-        '✅ Версия: v20.10.1\n'
-        'Название: PAPER TRAINING AUTO-CREATE FIX\n\n'
-        'Что исправлено:\n'
-        '• /paper_buy_status теперь запускает безопасные учебные PAPER-входы, если gate ALLOW;\n'
-        '• больше не должно быть ситуации: кандидаты PAPER MICRO-BUY есть, но создано сейчас 0 без причины;\n'
-        '• после создания отчёт сразу обновляет открытые PAPER BUY;\n'
-        '• v20.10 логика вход/выход сохранена.\n\n'
-        'Безопасность:\n'
-        '• реальные покупки: 0;\n'
-        '• автоторговля: OFF;\n'
-        '• BUY-веса: +0;\n'
-        '• открытые наблюдения не повышают эффективность до закрытия 24/48ч.\n\n'
-        'Команды проверки: /version | /paper_buy_status | /learn_fast | /effectiveness | /audit_file'
-    )
-
-
-try:
-    globals()['BOT_VERSION'] = BOT_VERSION
-    globals()['V191111_VERSION'] = V191111_VERSION
-    globals()['v2021_paper_buy_user_report'] = v2021_paper_buy_user_report
-    globals()['v19119_paper_buy_decision_report'] = v2021_paper_buy_user_report
     globals()['version_user_report'] = version_user_report
 except Exception:
     pass
