@@ -10742,6 +10742,74 @@
         "risk_level": "caution",
         "change_24": -5.64
       }
+    },
+    {
+      "key": "NEAR:1782646362:48h_historical_buy",
+      "asset": "NEAR",
+      "stage": "48h_historical_buy",
+      "version": "v20.9.8 QUALITY OBSERVATION CONSISTENCY",
+      "entry_time": 1782646362.306717,
+      "lesson_time": 1782823090.0876365,
+      "entry_price": 1.8596,
+      "pct": -1.12,
+      "bucket": "neutral",
+      "label": "🟡 нейтрально",
+      "lesson": "преимущества входа нет; веса не усиливать",
+      "paper_delta": 0,
+      "lesson_score": 55,
+      "entry_score": 68,
+      "results": {
+        "1h": -0.01,
+        "3h": 1.12,
+        "6h": -1.08,
+        "12h": -1.74,
+        "24h": -0.25,
+        "48h": -1.12
+      },
+      "snapshot": {
+        "btc_change": 1.72,
+        "fear": null,
+        "news": null,
+        "rsi": null,
+        "volume_trend": null,
+        "risk_level": null,
+        "change_24": 4.9
+      },
+      "source": "historical_closed_buy_backfill"
+    },
+    {
+      "key": "LINK:1782646362:48h_historical_buy",
+      "asset": "LINK",
+      "stage": "48h_historical_buy",
+      "version": "v20.9.8 QUALITY OBSERVATION CONSISTENCY",
+      "entry_time": 1782646362.306717,
+      "lesson_time": 1782823090.08767,
+      "entry_price": 7.3031,
+      "pct": -0.64,
+      "bucket": "neutral",
+      "label": "🟡 нейтрально",
+      "lesson": "преимущества входа нет; веса не усиливать",
+      "paper_delta": 0,
+      "lesson_score": 55,
+      "entry_score": 68,
+      "results": {
+        "1h": -0.29,
+        "3h": -0.29,
+        "6h": -0.29,
+        "12h": -0.29,
+        "24h": -0.05,
+        "48h": -0.64
+      },
+      "snapshot": {
+        "btc_change": 1.72,
+        "fear": null,
+        "news": null,
+        "rsi": null,
+        "volume_trend": null,
+        "risk_level": null,
+        "change_24": 2.61
+      },
+      "source": "historical_closed_buy_backfill"
     }
   ],
   "last_probe_lesson_engine_at": 1782749926.7414596,
@@ -12717,6 +12785,20 @@
       "decision": "🟡 PAPER MICRO-BUY",
       "captured_at": 1782823066.085177,
       "version": "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
+    },
+    {
+      "snapshot_key": "active:NEAR:PAPER_BUY_DECISION_TEST:495179:h49",
+      "kind": "active_paper_buy",
+      "asset": "NEAR",
+      "stage": "48ч+",
+      "hour_bucket": 49,
+      "age_h": 49.1,
+      "pnl_pct": -1.0,
+      "probe_score": 62,
+      "severity": 3,
+      "status": "🟠 48ч+ слабость / WATCH",
+      "captured_at": 1782823091.324152,
+      "version": "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
     }
   ],
   "last_policy_forward_scan_at": 1782733864.2760766,
@@ -12741,5 +12823,7 @@
     "restored": 1,
     "reason": "paper_buy_status",
     "version": "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
-  }
+  },
+  "last_historical_buy_backfill_at": 1782823090.0876827,
+  "last_historical_buy_backfill_version": "v20.9.8 QUALITY OBSERVATION CONSISTENCY"
 }
