@@ -24,7 +24,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16853,7 +16853,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17961,7 +17961,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18436,7 +18436,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18600,7 +18600,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18945,7 +18945,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19326,7 +19326,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19633,7 +19633,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20147,7 +20147,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20288,7 +20288,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 def v19115_quality_probe_candidate(c):
     """Качественный актив растёт умеренно: реальный BUY ещё запрещён,
     но нужна виртуальная проба, чтобы бот не учился только на пропусках.
@@ -20597,7 +20597,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 def v191151_collect_quality_probe_candidates():
     """Собрать текущие quality-probe кандидаты без сетевого перебора всего рынка."""
     out = []
@@ -20886,7 +20886,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
 except Exception:
@@ -21607,12 +21607,6 @@ def main():
                 elif text in ["/forward_status", "/forward_cycle", "/cycle_status"]:
                     send_message(chat_id, v20105_forward_status_report())
 
-                elif text in ["/health_check", "/health", "/state_check"]:
-                    send_message(chat_id, v20106_health_check_report())
-
-                elif text in ["/dev_status", "/freeze_status", "/dev_freeze"]:
-                    send_message(chat_id, v20106_dev_status_report())
-
                 elif text in ["/probe_lessons", "/lesson_engine", "/probe_finalizer", "/quality_lessons"]:
                     send_message(chat_id, v19118_probe_lesson_engine_report())
 
@@ -21757,7 +21751,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     _v191161_old_unified_signal_report = unified_signal_report
 except Exception:
@@ -22160,7 +22154,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
 except Exception:
@@ -22728,7 +22722,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
 except Exception:
@@ -23235,7 +23229,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
 except Exception:
@@ -23540,7 +23534,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     _v19118_old_build_audit_file = build_audit_file
 except Exception:
@@ -24067,7 +24061,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     _v191181_old_build_audit_file = build_audit_file
 except Exception:
@@ -25283,7 +25277,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 def _v191191_branch_ref_name():
     try:
         br = str(GITHUB_BRANCH or "main").strip()
@@ -25426,7 +25420,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 def v191192_probe_sync_classification(pnl):
     """Возвращает текущий drawdown-aware probe bucket/score по той же шкале, что FAST PROBE SCORING."""
     try:
@@ -25712,7 +25706,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 def v191193_backup_in_recent_list(path, limit=50):
     """Возвращает запись из /backups, если exact path найден в списке GitHub contents."""
     try:
@@ -25939,7 +25933,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
 
@@ -26311,7 +26305,7 @@ def version_user_report():
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
 V1911101_RESTORE_META_KEY = "paper_buy_restore_v1911101"
@@ -26924,7 +26918,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 def v1911101_section(title, body):
     return "\n\n" + "="*80 + "\n" + str(title) + "\n" + "="*80 + "\n" + str(body or "")
 
@@ -26977,7 +26971,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 def v1911101_fmt_created_paper_buy(trade):
     try:
         asset = v19119_trade_asset(trade)
@@ -27076,7 +27070,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 def v1911101_load_buy_state():
     try:
         if os.path.exists(V1911101_PAPER_BUY_STATE_FILE):
@@ -27197,7 +27191,7 @@ def v19119_paper_buy_audit_report():
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 def v1911102_count_active_buy_in_data(data=None):
     try:
         if not isinstance(data, dict):
@@ -27502,7 +27496,7 @@ def version_user_report():
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
 except Exception:
@@ -27808,7 +27802,7 @@ def version_user_report():
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+V191111_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
@@ -32373,7 +32367,7 @@ except Exception:
 # === v20.9.7 REPORT CONSISTENCY FULL PASS ===
 # Runtime-safe cleanup: this block is deliberately placed BEFORE __main__.
 # It fixes labels that v20.9.5 could not clean because its cleanup code was appended after main().
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32453,7 +32447,7 @@ except Exception:
 # - make /effectiveness, /learn_fast, /paper_buy_status and /audit_file count open observations consistently;
 # - do not count open observations in final score until 24/48h;
 # - no trading logic changes.
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32940,7 +32934,7 @@ except Exception:
 # One final report-consistency pass based on live audit evidence from v20.9.7.
 # Fix: open quality-probe average in /effectiveness, /paper_buy_status and audit must match FAST PROBE SCORING.
 # No trading logic changes: real BUY 0, autotrading OFF, open observations do not increase effectiveness before 24/48h close.
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -33394,7 +33388,7 @@ except Exception:
 # Purpose: PAPER mode is a training lab, not a live-risk clone.
 # Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
 # Open observations still do not increase effectiveness until 24/48h close.
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     V191111_VERSION = BOT_VERSION
     V19119_PAPER_BUY_MAX_ACTIVE = 6
@@ -33918,7 +33912,7 @@ except Exception:
 # Fix: /paper_buy_status must move PAPER training forward when gate is ALLOW.
 # Previously it showed PAPER MICRO-BUY candidates but created 0 because the report default was create=False.
 # Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34019,7 +34013,7 @@ except Exception:
 # Fix: the status wrapper ignores that legacy False and runs safe PAPER training creation.
 # Also keep user-facing effectiveness honest: research learning speed cannot replace the 44/100 benchmark
 # before closed 24/48h forward evidence exists.
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34159,7 +34153,7 @@ except Exception:
 # === v20.10.3 OBSERVABILITY + NEXT CHECK UX ===
 # Service-fix only: do not change BUY thresholds, weights, asset selection, entry/exit scoring,
 # real buying or autotrading. The goal is to make PAPER BUY lifecycle and score reporting consistent.
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34720,7 +34714,7 @@ def v191111_audit_content():
 
 def version_user_report():
     return (
-        '✅ Версия: v20.10.6\n'
+        '✅ Версия: v20.10.5\n'
         'Название: FORWARD COUNTER LABEL FIX\n\n'
         'Что исправлено:\n'
         '• /effectiveness и /audit_file получили единый источник оценки;\n'
@@ -34750,10 +34744,10 @@ try:
 except Exception:
     pass
 
-# === v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD ===
+# === v20.10.5 OBSERVABILITY + NEXT CHECK UX ===
 # Service-fix only: no trading logic changes. This layer fixes labels/counters so
 # historical closed PAPER lessons are not shown as current forward BUY closes.
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -35159,7 +35153,7 @@ def v191111_audit_content():
 
 def version_user_report():
     return (
-        '✅ Версия: v20.10.6\n'
+        '✅ Версия: v20.10.5\n'
         'Название: FORWARD COUNTER LABEL FIX\n\n'
         'Что исправлено:\n'
         '• старые закрытые PAPER-уроки больше не считаются как закрытый forward BUY текущего цикла;\n'
@@ -35194,9 +35188,9 @@ except Exception:
     pass
 
 
-# === v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD ===
+# === v20.10.5 OBSERVABILITY + NEXT CHECK UX ===
 # Safe service layer only: no BUY thresholds, no weights, no coin selection, no entry/exit logic changed.
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
+BOT_VERSION = "v20.10.5 OBSERVABILITY + NEXT CHECK UX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -35524,7 +35518,7 @@ def v20103_audit_section():
 
 def version_user_report():
     return (
-        "✅ Версия: v20.10.6\n"
+        "✅ Версия: v20.10.5\n"
         "Название: OBSERVABILITY + NEXT CHECK UX\n\n"
         "Что добавлено:\n"
         "• /next_check — точное время следующих 24ч/48ч проверок по МСК;\n"
@@ -35555,315 +35549,6 @@ try:
     globals()['v203_learn_fast_report'] = v203_learn_fast_report
     globals()['learn_fast_report'] = learn_fast_report
     globals()['v20103_audit_section'] = v20103_audit_section
-    globals()['version_user_report'] = version_user_report
-except Exception:
-    pass
-
-
-# === v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD ===
-# Safe service layer only: no BUY thresholds, no BUY weights, no coin selection,
-# no entry/exit logic, no useful/neutral/bad classification, no autotrading changes.
-BOT_VERSION = "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD"
-try:
-    V191111_VERSION = BOT_VERSION
-except Exception:
-    pass
-
-try:
-    _v20106_base_fast_audit_build_content = v191181_fast_audit_build_content
-except Exception:
-    _v20106_base_fast_audit_build_content = None
-try:
-    _v20106_base_audit_section = v20103_audit_section
-except Exception:
-    _v20106_base_audit_section = None
-
-V20106_FROZEN_UNTIL_MSK = "02.07.2026 в 18:30 МСК"
-V20106_NEXT_24H_MSK = "01.07.2026 в 18:30 МСК"
-V20106_NEXT_48H_MSK = "02.07.2026 в 18:30 МСК"
-V20106_COMMAND_LIST = [
-    "/paper_buy_status",
-    "/effectiveness",
-    "/learn_fast",
-    "/audit_file",
-]
-
-
-def v20106_user_version():
-    return "v20.10.6"
-
-
-def v20105_user_version():
-    return v20106_user_version()
-
-
-def v2021_user_version():
-    return v20106_user_version()
-
-
-def v20106_commands_block():
-    return "\n".join(V20106_COMMAND_LIST)
-
-
-def v20106_safe_counts():
-    try:
-        counts = v20103_forward_counts()
-        if not isinstance(counts, dict):
-            counts = {}
-    except Exception:
-        counts = {}
-    return counts
-
-
-def v20106_durable_active_count():
-    try:
-        repair = v1911102_ensure_durable_state_synced(reason='health_check_v20106')
-        if isinstance(repair, dict):
-            return int(repair.get('durable_active_after', repair.get('durable_active_before', 0)) or 0), repair.get('mode', 'unknown')
-    except Exception:
-        pass
-    try:
-        return int(v1911102_state_active_count() or 0), 'read-only'
-    except Exception:
-        return 0, 'unavailable'
-
-
-def v20106_counter_summary():
-    try:
-        return v20104_forward_counter_summary()
-    except Exception:
-        c = v20106_safe_counts()
-        denom = max(1, int(c.get('current_cycle_total', c.get('active_paper_buy', 0)) or 0))
-        return "\n".join([
-            f"Forward всего: closed {int(c.get('closed_forward_buy', 0) or 0)} | 24ч checkpoints {int(c.get('checkpoint_24_total', 0) or 0)}",
-            f"Текущий цикл: active {int(c.get('current_cycle_active', c.get('active_paper_buy', 0)) or 0)} | 24ч checkpoints {int(c.get('current_cycle_checkpoint_24', 0) or 0)}/{denom} | closed {int(c.get('current_cycle_closed', 0) or 0)}/{denom}",
-        ])
-
-
-def v20106_next_check_times_text():
-    try:
-        p = v20105_forward_schedule_payload()
-        r24 = p.get('recommended_24_ts')
-        r48 = p.get('recommended_48_ts')
-        t24 = v20105_format_msk_ts(r24) if r24 else V20106_NEXT_24H_MSK
-        t48 = v20105_format_msk_ts(r48) if r48 else V20106_NEXT_48H_MSK
-    except Exception:
-        t24, t48 = V20106_NEXT_24H_MSK, V20106_NEXT_48H_MSK
-    return t24, t48
-
-
-def v20106_health_check_report():
-    c = v20106_safe_counts()
-    active = int(c.get('current_cycle_active', c.get('active_paper_buy', 0)) or 0)
-    denom = max(1, int(c.get('current_cycle_total', active) or active or 0))
-    checkpoint_24 = int(c.get('current_cycle_checkpoint_24', 0) or 0)
-    closed_48 = int(c.get('current_cycle_closed', 0) or 0)
-    strict_closed = int(c.get('closed_forward_buy', 0) or 0)
-    strict_24 = int(c.get('checkpoint_24_total', 0) or 0)
-    durable_count, durable_mode = v20106_durable_active_count()
-    durable_ok = durable_count >= active if active > 0 else True
-    t24, t48 = v20106_next_check_times_text()
-    counters_ok = (strict_closed >= 0 and strict_24 >= 0 and 0 <= checkpoint_24 <= denom and 0 <= closed_48 <= denom and active >= 0)
-    state_icon = '✅' if durable_ok and counters_ok else '⚠️'
-    return "\n".join([
-        f"{state_icon} Health check ALEX EDGE",
-        f"Версия: {v20106_user_version()}",
-        "",
-        "State:",
-        f"• active PAPER BUY: {active}",
-        f"• durable-state active: {durable_count}",
-        f"• durable sync: {'OK' if durable_ok else 'CHECK'} | {durable_mode}",
-        f"• counters consistent: {'PASS' if counters_ok else 'CHECK'}",
-        "",
-        v20106_counter_summary(),
-        "",
-        "Safety:",
-        "• live BUY: 0",
-        "• autotrade: OFF",
-        "• BUY-веса: +0",
-        "",
-        "Следующие проверки по МСК:",
-        f"• 24ч checkpoint: {t24}",
-        f"• 48ч final close: {t48}",
-        "",
-        "Команды на 24ч/48ч проверку:",
-        v20106_commands_block(),
-    ])
-
-
-def v20106_dev_status_report():
-    t24, t48 = v20106_next_check_times_text()
-    return "\n".join([
-        "🧰 Dev status / freeze guard",
-        f"Версия: {v20106_user_version()}",
-        "",
-        f"🔒 Заморожено до: {V20106_FROZEN_UNTIL_MSK}",
-        "Нельзя менять до закрытия текущего forward-цикла:",
-        "• BUY-пороги",
-        "• paper-score",
-        "• entry/exit-логику",
-        "• выбор монет",
-        "• классификацию useful / neutral / bad",
-        "• BUY-веса",
-        "• автопокупки",
-        "",
-        "✅ Можно менять безопасно:",
-        "• формат отчётов",
-        "• audit_file",
-        "• health/dev/status-команды",
-        "• таймеры и UX-подсказки",
-        "• проверки консистентности state/durable",
-        "",
-        "Контрольные точки:",
-        f"• 24ч checkpoint: {t24}",
-        f"• 48ч final close: {t48}",
-        "",
-        v20106_counter_summary(),
-    ])
-
-
-def v20106_strip_legacy_observability_sections(text):
-    """Remove duplicated old UX/observability sections from audit_file.
-    Keeps the main benchmark/learning/router sections intact, then v20.10.6 appends one clean section.
-    """
-    try:
-        lines = str(text or '').splitlines()
-        out = []
-        i = 0
-        eq = '=' * 80
-        drop_tokens = [
-            'OBSERVABILITY + NEXT CHECK UX',
-            'FORWARD COUNTER LABEL FIX V20.10.4',
-            'FORWARD COUNTER LABEL FINAL FIX',
-            'AUDIT CLEANUP + CONSISTENCY GUARD V20.10.6',
-        ]
-        while i < len(lines):
-            if lines[i] == eq and i + 2 < len(lines) and lines[i + 2] == eq:
-                title = lines[i + 1]
-                j = i + 3
-                while j < len(lines):
-                    if lines[j] == eq and j + 2 < len(lines) and lines[j + 2] == eq:
-                        break
-                    j += 1
-                if any(tok in title for tok in drop_tokens):
-                    i = j
-                    continue
-                out.extend(lines[i:j])
-                i = j
-            else:
-                out.append(lines[i])
-                i += 1
-        return "\n".join(out).rstrip()
-    except Exception:
-        return str(text or '').rstrip()
-
-
-def v20106_sanity_audit_section():
-    c = v20106_safe_counts()
-    active = int(c.get('current_cycle_active', c.get('active_paper_buy', 0)) or 0)
-    denom = max(1, int(c.get('current_cycle_total', active) or active or 0))
-    checkpoint_24 = int(c.get('current_cycle_checkpoint_24', 0) or 0)
-    closed_48 = int(c.get('current_cycle_closed', 0) or 0)
-    strict_closed = int(c.get('closed_forward_buy', 0) or 0)
-    strict_24 = int(c.get('checkpoint_24_total', 0) or 0)
-    durable_count, durable_mode = v20106_durable_active_count()
-    durable_ok = durable_count >= active if active > 0 else True
-    counters_ok = (strict_closed >= 0 and strict_24 >= 0 and 0 <= checkpoint_24 <= denom and 0 <= closed_48 <= denom and active >= 0)
-    t24, t48 = v20106_next_check_times_text()
-    return "\n".join([
-        "🧩 AUDIT CLEANUP + CONSISTENCY GUARD",
-        "",
-        f"Версия: {BOT_VERSION}",
-        "",
-        "Назначение:",
-        "• убрать дубли OBSERVABILITY-секций в audit_file;",
-        "• отделить legacy technical score от основной торговой оценки;",
-        "• добавить /health_check и /dev_status;",
-        "• добавить state/durable sanity-check;",
-        "• не менять торговую логику, BUY-веса, выбор монет и entry/exit.",
-        "",
-        "Score labels:",
-        "• основная торговая оценка пользователя: 44/100",
-        "• лабораторная оценка текущей версии: 45/100",
-        "• legacy technical score в старых внутренних секциях может показывать 48/100 и НЕ является разрешением на автопокупки.",
-        "",
-        "STATE SANITY CHECK:",
-        f"• active PAPER BUY current cycle: {active}",
-        f"• durable-state active: {durable_count} | mode {durable_mode}",
-        f"• durable sync: {'PASS' if durable_ok else 'CHECK'}",
-        f"• total strict closed forward BUY: {strict_closed}",
-        f"• total strict 24h checkpoints: {strict_24}",
-        f"• current cycle 24h checkpoints: {checkpoint_24}/{denom}",
-        f"• current cycle closed: {closed_48}/{denom}",
-        f"• counters consistent: {'PASS' if counters_ok else 'CHECK'}",
-        "• live BUY: 0",
-        "• autotrade: OFF",
-        "• BUY-веса: +0",
-        "",
-        "Next user checks:",
-        f"• full 24h checkpoint: {t24}",
-        f"• full 48h final close: {t48}",
-        "",
-        "Command pack:",
-        v20106_commands_block(),
-        "",
-        "Dev freeze:",
-        f"• ядро BUY-логики заморожено до {V20106_FROZEN_UNTIL_MSK}",
-    ])
-
-
-def v20103_audit_section():
-    try:
-        base = _v20106_base_audit_section() if callable(_v20106_base_audit_section) else ''
-    except Exception:
-        base = ''
-    base = v20106_strip_legacy_observability_sections(base)
-    return base.rstrip() + "\n\n" + "=" * 80 + "\nAUDIT CLEANUP + CONSISTENCY GUARD V20.10.6\n" + "=" * 80 + "\n" + v20106_sanity_audit_section()
-
-
-def v191181_fast_audit_build_content():
-    try:
-        base = _v20106_base_fast_audit_build_content() if callable(_v20106_base_fast_audit_build_content) else 'ALEX EDGE ULTRA FAST TECH AUDIT FILE'
-    except Exception as exc:
-        base = f'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n\nBOT_VERSION: {BOT_VERSION}\nAudit error: {exc}'
-    base = v20106_strip_legacy_observability_sections(base)
-    return base.rstrip() + "\n\n" + "=" * 80 + "\nAUDIT CLEANUP + CONSISTENCY GUARD V20.10.6\n" + "=" * 80 + "\n" + v20106_sanity_audit_section()
-
-
-def v191111_audit_content():
-    return v191181_fast_audit_build_content()
-
-
-def version_user_report():
-    return (
-        "✅ Версия: v20.10.6\n"
-        "Название: AUDIT CLEANUP + CONSISTENCY GUARD\n\n"
-        "Что добавлено:\n"
-        "• /health_check — быстрая проверка state, durable-state, счётчиков и безопасности;\n"
-        "• /dev_status — показывает, что заморожено до 48ч и что можно дорабатывать;\n"
-        "• audit_file очищает дубли observability-секций;\n"
-        "• legacy technical score 48/100 подписан как внутренний технический показатель, не торговое разрешение;\n"
-        "• добавлен STATE SANITY CHECK в audit_file.\n\n"
-        "Безопасность:\n"
-        "• BUY-пороги не менялись;\n"
-        "• BUY-веса не менялись;\n"
-        "• выбор монет не менялся;\n"
-        "• entry/exit-логика не менялась;\n"
-        "• реальные покупки: 0;\n"
-        "• автоторговля: OFF.\n\n"
-        "Команды проверки: /version | /health_check | /dev_status | /next_check | /forward_status | /audit_file"
-    )
-
-try:
-    globals()['BOT_VERSION'] = BOT_VERSION
-    globals()['V191111_VERSION'] = BOT_VERSION
-    globals()['v20106_health_check_report'] = v20106_health_check_report
-    globals()['v20106_dev_status_report'] = v20106_dev_status_report
-    globals()['v20105_user_version'] = v20105_user_version
-    globals()['v2021_user_version'] = v2021_user_version
-    globals()['v20103_audit_section'] = v20103_audit_section
-    globals()['v191181_fast_audit_build_content'] = v191181_fast_audit_build_content
-    globals()['v191111_audit_content'] = v191111_audit_content
     globals()['version_user_report'] = version_user_report
 except Exception:
     pass
