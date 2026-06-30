@@ -1,6 +1,6 @@
 {
   "version": "v20.9.8 QUALITY OBSERVATION CONSISTENCY",
-  "created_at": 1782763819.2828586,
+  "created_at": 1782790548.2000425,
   "active_count": 2,
   "active_buys": [
     {
@@ -8,8 +8,8 @@
       "asset": "NEAR",
       "entry_time": 1782646362.306717,
       "entry_price": 1.8596,
-      "last_price": 1.9019,
-      "last_pct": 2.27,
+      "last_price": 1.841,
+      "last_pct": -1.0,
       "score": 68,
       "entry_score": 62,
       "probe_score_at_decision": 55,
@@ -97,17 +97,17 @@
       "persistence_version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
       "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
       "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
-      "last_price_time": 1782762384.698194,
+      "last_price_time": 1782783095.6821496,
       "durable_saved_by": "v20.9.8 QUALITY OBSERVATION CONSISTENCY",
-      "durable_saved_at": 1782763819.2828455
+      "durable_saved_at": 1782790548.2000296
     },
     {
       "id": "LINK:PAPER_BUY_DECISION_TEST:495179",
       "asset": "LINK",
       "entry_time": 1782646362.306717,
       "entry_price": 7.3031,
-      "last_price": 7.4788,
-      "last_pct": 2.41,
+      "last_price": 7.3141,
+      "last_pct": 0.15,
       "score": 68,
       "entry_score": 62,
       "probe_score_at_decision": 55,
@@ -195,9 +195,9 @@
       "persistence_version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
       "note": "PAPER BUY only: реальные деньги не используются, автоторговля OFF, BUY-веса +0",
       "created_by": "v19.11.9.5 PAPER BUY DURABLE STATE FIX",
-      "last_price_time": 1782762384.698194,
+      "last_price_time": 1782788537.17977,
       "durable_saved_by": "v20.9.8 QUALITY OBSERVATION CONSISTENCY",
-      "durable_saved_at": 1782763819.282848
+      "durable_saved_at": 1782790548.2000318
     }
   ],
   "journal": [
