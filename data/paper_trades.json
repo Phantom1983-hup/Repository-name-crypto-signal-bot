@@ -1860,7 +1860,8 @@
         "30m": 2.82,
         "1h": 2.82,
         "3h": 3.19,
-        "6h": 2.34
+        "6h": 2.34,
+        "12h": 0.54
       },
       "result_details": {
         "15m": {
@@ -1886,6 +1887,11 @@
         "6h": {
           "checkpoint_time": 1782772178.9802299,
           "checkpoint_price": 75.37,
+          "source": "learning_cache:snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782794025.8900087,
+          "checkpoint_price": 74.05,
           "source": "learning_cache:snapshot"
         }
       },
@@ -1938,7 +1944,8 @@
         "30m": 1.5,
         "1h": 1.5,
         "3h": 1.73,
-        "6h": 1.28
+        "6h": 1.28,
+        "12h": 0.32
       },
       "result_details": {
         "15m": {
@@ -1964,6 +1971,11 @@
         "6h": {
           "checkpoint_time": 1782772178.9802299,
           "checkpoint_price": 0.7024,
+          "source": "learning_cache:snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782794025.8900087,
+          "checkpoint_price": 0.6957,
           "source": "learning_cache:snapshot"
         }
       },
@@ -2016,7 +2028,8 @@
         "30m": 1.74,
         "1h": 1.74,
         "3h": 2.0,
-        "6h": 1.44
+        "6h": 1.44,
+        "12h": -0.25
       },
       "result_details": {
         "15m": {
@@ -2042,6 +2055,11 @@
         "6h": {
           "checkpoint_time": 1782772178.9802299,
           "checkpoint_price": 7.4378,
+          "source": "learning_cache:snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782788537.17977,
+          "checkpoint_price": 7.3141,
           "source": "learning_cache:snapshot"
         }
       },
@@ -2094,7 +2112,8 @@
         "30m": 1.08,
         "1h": 1.08,
         "3h": -0.34,
-        "6h": -0.15
+        "6h": -0.15,
+        "12h": 1.33
       },
       "result_details": {
         "15m": {
@@ -2120,6 +2139,11 @@
         "6h": {
           "checkpoint_time": 1782772178.9802299,
           "checkpoint_price": 4.727,
+          "source": "learning_cache:snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782794025.8900087,
+          "checkpoint_price": 4.797,
           "source": "learning_cache:snapshot"
         }
       },
@@ -9805,7 +9829,7 @@
     }
   ],
   "last_created_at": 1782790374.315327,
-  "last_update_at": 1782794028.583738,
+  "last_update_at": 1782795586.4779112,
   "last_quality_probe_created_at": 1782751580.5157573,
   "last_probe_scoring_snapshot_at": 1782751632.7169902,
   "paper_buy_journal_v191194": [
