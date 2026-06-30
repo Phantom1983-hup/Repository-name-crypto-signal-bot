@@ -24,7 +24,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16853,7 +16853,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17961,7 +17961,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18436,7 +18436,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18600,7 +18600,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18945,7 +18945,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19326,7 +19326,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19633,7 +19633,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20147,7 +20147,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20288,7 +20288,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 def v19115_quality_probe_candidate(c):
     """Качественный актив растёт умеренно: реальный BUY ещё запрещён,
     но нужна виртуальная проба, чтобы бот не учился только на пропусках.
@@ -20597,7 +20597,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 def v191151_collect_quality_probe_candidates():
     """Собрать текущие quality-probe кандидаты без сетевого перебора всего рынка."""
     out = []
@@ -20886,7 +20886,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
 except Exception:
@@ -21745,7 +21745,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 try:
     _v191161_old_unified_signal_report = unified_signal_report
 except Exception:
@@ -22148,7 +22148,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
 except Exception:
@@ -22716,7 +22716,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
 except Exception:
@@ -23223,7 +23223,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
 except Exception:
@@ -23528,7 +23528,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 try:
     _v19118_old_build_audit_file = build_audit_file
 except Exception:
@@ -24055,7 +24055,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 try:
     _v191181_old_build_audit_file = build_audit_file
 except Exception:
@@ -25271,7 +25271,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 def _v191191_branch_ref_name():
     try:
         br = str(GITHUB_BRANCH or "main").strip()
@@ -25414,7 +25414,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 def v191192_probe_sync_classification(pnl):
     """Возвращает текущий drawdown-aware probe bucket/score по той же шкале, что FAST PROBE SCORING."""
     try:
@@ -25700,7 +25700,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 def v191193_backup_in_recent_list(path, limit=50):
     """Возвращает запись из /backups, если exact path найден в списке GitHub contents."""
     try:
@@ -25927,7 +25927,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
 
@@ -26299,7 +26299,7 @@ def version_user_report():
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
 V1911101_RESTORE_META_KEY = "paper_buy_restore_v1911101"
@@ -26912,7 +26912,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 def v1911101_section(title, body):
     return "\n\n" + "="*80 + "\n" + str(title) + "\n" + "="*80 + "\n" + str(body or "")
 
@@ -26965,7 +26965,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 def v1911101_fmt_created_paper_buy(trade):
     try:
         asset = v19119_trade_asset(trade)
@@ -27064,7 +27064,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 def v1911101_load_buy_state():
     try:
         if os.path.exists(V1911101_PAPER_BUY_STATE_FILE):
@@ -27185,7 +27185,7 @@ def v19119_paper_buy_audit_report():
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 def v1911102_count_active_buy_in_data(data=None):
     try:
         if not isinstance(data, dict):
@@ -27490,7 +27490,7 @@ def version_user_report():
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
 except Exception:
@@ -27796,7 +27796,7 @@ def version_user_report():
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+V191111_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
@@ -32361,7 +32361,7 @@ except Exception:
 # === v20.9.7 REPORT CONSISTENCY FULL PASS ===
 # Runtime-safe cleanup: this block is deliberately placed BEFORE __main__.
 # It fixes labels that v20.9.5 could not clean because its cleanup code was appended after main().
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32441,7 +32441,7 @@ except Exception:
 # - make /effectiveness, /learn_fast, /paper_buy_status and /audit_file count open observations consistently;
 # - do not count open observations in final score until 24/48h;
 # - no trading logic changes.
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32924,11 +32924,11 @@ except Exception:
 
 
 
-# === v20.10.3 FORWARD COUNTER LABEL FINAL FIX ===
+# === v20.10.3 FORWARD CLOSE + SCORE CONSISTENCY FIX ===
 # One final report-consistency pass based on live audit evidence from v20.9.7.
 # Fix: open quality-probe average in /effectiveness, /paper_buy_status and audit must match FAST PROBE SCORING.
 # No trading logic changes: real BUY 0, autotrading OFF, open observations do not increase effectiveness before 24/48h close.
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -33378,11 +33378,11 @@ try:
 except Exception:
     pass
 
-# === v20.10.3 FORWARD COUNTER LABEL FINAL FIX ===
+# === v20.10.3 FORWARD CLOSE + SCORE CONSISTENCY FIX ===
 # Purpose: PAPER mode is a training lab, not a live-risk clone.
 # Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
 # Open observations still do not increase effectiveness until 24/48h close.
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 try:
     V191111_VERSION = BOT_VERSION
     V19119_PAPER_BUY_MAX_ACTIVE = 6
@@ -33902,11 +33902,11 @@ except Exception:
     pass
 
 
-# === v20.10.3 FORWARD COUNTER LABEL FINAL FIX ===
+# === v20.10.3 FORWARD CLOSE + SCORE CONSISTENCY FIX ===
 # Fix: /paper_buy_status must move PAPER training forward when gate is ALLOW.
 # Previously it showed PAPER MICRO-BUY candidates but created 0 because the report default was create=False.
 # Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34001,13 +34001,13 @@ except Exception:
     pass
 
 
-# === v20.10.3 FORWARD COUNTER LABEL FINAL FIX ===
+# === v20.10.3 FORWARD CLOSE + SCORE CONSISTENCY FIX ===
 # Root cause: the Telegram handler calls v19119_paper_buy_decision_report(create=False)
 # for /paper_buy_status. The previous fix changed the default only, so the handler still disabled creation.
 # Fix: the status wrapper ignores that legacy False and runs safe PAPER training creation.
 # Also keep user-facing effectiveness honest: research learning speed cannot replace the 44/100 benchmark
 # before closed 24/48h forward evidence exists.
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34144,10 +34144,10 @@ except Exception:
 
 
 
-# === v20.10.3 FORWARD COUNTER LABEL FINAL FIX ===
+# === v20.10.3 FORWARD CLOSE + SCORE CONSISTENCY FIX ===
 # Service-fix only: do not change BUY thresholds, weights, asset selection, entry/exit scoring,
 # real buying or autotrading. The goal is to make PAPER BUY lifecycle and score reporting consistent.
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
+BOT_VERSION = "v20.10.4 FORWARD COUNTER LABEL FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34657,7 +34657,7 @@ def v20103_audit_section():
     closed_now_text = ', '.join(closed_now) if closed_now else 'none'
     checkpointed_now_text = ', '.join(checkpointed_now) if checkpointed_now else 'none'
     return '\n'.join([
-        '🧩 FORWARD COUNTER LABEL FINAL FIX',
+        '🧩 FORWARD CLOSE + SCORE CONSISTENCY FIX',
         '',
         f"Версия: {v2021_user_version()}",
         '',
@@ -34695,7 +34695,7 @@ def v191181_fast_audit_build_content():
         base = _v20103_base_fast_audit_build_content() if callable(_v20103_base_fast_audit_build_content) else 'ALEX EDGE ULTRA FAST TECH AUDIT FILE'
     except Exception as exc:
         base = f'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n\nBOT_VERSION: {BOT_VERSION}\nAudit error: {exc}'
-    title = 'FORWARD COUNTER LABEL FINAL FIX V20.10.4.1'
+    title = 'FORWARD CLOSE + SCORE CONSISTENCY FIX V20.10.3'
     marker = '\n' + '=' * 80 + '\n' + title + '\n' + '=' * 80 + '\n'
     if marker in base:
         base = base.split(marker)[0].rstrip()
@@ -34708,8 +34708,8 @@ def v191111_audit_content():
 
 def version_user_report():
     return (
-        '✅ Версия: v20.10.4.1\n'
-        'Название: FORWARD COUNTER LABEL FIX\n\n'
+        '✅ Версия: v20.10.3\n'
+        'Название: FORWARD CLOSE + SCORE CONSISTENCY FIX\n\n'
         'Что исправлено:\n'
         '• /effectiveness и /audit_file получили единый источник оценки;\n'
         '• основная торговая оценка удерживается 44/100 до закрытых forward BUY;\n'
@@ -34732,449 +34732,6 @@ try:
     globals()['v20102_paper_training_status_report'] = v20103_paper_training_status_report
     globals()['v2021_paper_buy_user_report'] = v2021_paper_buy_user_report
     globals()['v19119_paper_buy_decision_report'] = v19119_paper_buy_decision_report
-    globals()['v191181_fast_audit_build_content'] = v191181_fast_audit_build_content
-    globals()['v191111_audit_content'] = v191111_audit_content
-    globals()['version_user_report'] = version_user_report
-except Exception:
-    pass
-
-# === v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX ===
-# Service-fix only: no trading logic changes. This layer fixes labels/counters so
-# historical closed PAPER lessons are not shown as current forward BUY closes.
-BOT_VERSION = "v20.10.4.1 FORWARD COUNTER LABEL FINAL FIX"
-try:
-    V191111_VERSION = BOT_VERSION
-except Exception:
-    pass
-
-try:
-    _v20104_base_fast_audit_build_content = v191181_fast_audit_build_content
-except Exception:
-    _v20104_base_fast_audit_build_content = None
-try:
-    _v20104_base_audit_section = v20103_audit_section
-except Exception:
-    _v20104_base_audit_section = None
-
-V20104_MAIN_TRADE_SCORE = 44
-V20104_LAB_VERSION_SCORE = 45
-V20104_REQUIRED_FORWARD_SAMPLE = 20
-
-
-def v20104_trade_asset(trade):
-    try:
-        return str((trade or {}).get('asset') or (trade or {}).get('symbol') or '').replace('-USDT', '').upper().strip()
-    except Exception:
-        return ''
-
-
-def v20104_trade_entry_time(trade):
-    try:
-        return float((trade or {}).get('entry_time') or (trade or {}).get('created_at') or (trade or {}).get('created_ts') or 0)
-    except Exception:
-        return 0.0
-
-
-def v20104_has_forward_24_checkpoint(trade):
-    """Strict 24h forward checkpoint marker.
-    Regular historical PAPER results with a plain '24h' key are NOT counted here.
-    """
-    if not isinstance(trade, dict):
-        return False
-    details = trade.get('result_details', {}) if isinstance(trade.get('result_details', {}), dict) else {}
-    d24 = details.get('24h', {}) if isinstance(details.get('24h', {}), dict) else {}
-    if d24.get('v20103_forward_checkpoint') or d24.get('v20104_forward_checkpoint'):
-        return True
-    if trade.get('checkpoint_24h_done') and (
-        trade.get('forward_stage') == '24h_checkpoint'
-        or trade.get('forward_stage') == '48h_final'
-        or 'FORWARD CLOSE' in str(trade.get('closed_by') or '')
-        or 'FORWARD COUNTER' in str(trade.get('closed_by') or '')
-    ):
-        return True
-    return False
-
-
-def v20104_is_strict_forward_closed_trade(trade):
-    """Strict final forward close marker.
-    Fixes v20.10.3 reporting bug where all closed PAPER BUY lessons were counted
-    as closed forward BUY.
-    """
-    if not isinstance(trade, dict):
-        return False
-    try:
-        if not v20103_is_paper_buy_trade(trade):
-            return False
-    except Exception:
-        return False
-    if str(trade.get('forward_stage') or '') == '48h_final':
-        return True
-    if 'FORWARD CLOSE' in str(trade.get('closed_by') or '') or 'FORWARD COUNTER' in str(trade.get('closed_by') or ''):
-        return True
-    details = trade.get('result_details', {}) if isinstance(trade.get('result_details', {}), dict) else {}
-    d48 = details.get('48h', {}) if isinstance(details.get('48h', {}), dict) else {}
-    if d48.get('v20103_forward_final') or d48.get('v20104_forward_final'):
-        return True
-    return False
-
-
-def v20103_closed_forward_buy_trades(data=None):
-    """v20.10.4 override: closed forward BUY means explicit 48h forward final only."""
-    try:
-        data = data if isinstance(data, dict) else paper_store()
-    except Exception:
-        data = {}
-    closed = data.get('closed', []) if isinstance(data.get('closed', []), list) else []
-    return [t for t in closed if v20104_is_strict_forward_closed_trade(t)]
-
-
-def v20104_cycle_start_from_active(active):
-    times = []
-    for _, trade in active:
-        ts = v20104_trade_entry_time(trade)
-        if ts > 0:
-            times.append(ts)
-    return min(times) if times else 0.0
-
-
-def v20104_closed_for_current_cycle(data, active, closed_forward):
-    """Count strict closed forward trades belonging to the currently visible cycle.
-    If active trades exist, use their earliest entry_time as cycle boundary.
-    This prevents old forward/PAPER closes from being mixed into the active SOL/INJ/SUI/LINK cycle.
-    """
-    cycle_start = v20104_cycle_start_from_active(active)
-    if cycle_start <= 0:
-        try:
-            meta = data.get('service_fix_v20_10_4', {}) if isinstance(data.get('service_fix_v20_10_4', {}), dict) else {}
-            cycle_start = float(meta.get('current_cycle_start_ts') or 0)
-        except Exception:
-            cycle_start = 0.0
-    if cycle_start <= 0:
-        return list(closed_forward)
-    return [t for t in closed_forward if v20104_trade_entry_time(t) >= cycle_start - 60]
-
-
-def v20103_forward_counts():
-    """v20.10.4 override: split total counters and current-cycle counters."""
-    try:
-        data = paper_store()
-    except Exception:
-        data = {'open': {}, 'closed': []}
-    active = v20103_active_paper_buy_trades(data)
-    closed_forward = v20103_closed_forward_buy_trades(data)
-    current_closed = v20104_closed_for_current_cycle(data, active, closed_forward)
-
-    checkpoint_24_total = 0
-    for _, trade in active:
-        if v20104_has_forward_24_checkpoint(trade):
-            checkpoint_24_total += 1
-    for trade in closed_forward:
-        if v20104_has_forward_24_checkpoint(trade):
-            checkpoint_24_total += 1
-
-    current_checkpoint_24 = 0
-    for _, trade in active:
-        if v20104_has_forward_24_checkpoint(trade):
-            current_checkpoint_24 += 1
-    for trade in current_closed:
-        if v20104_has_forward_24_checkpoint(trade):
-            current_checkpoint_24 += 1
-
-    current_total = len(active) + len(current_closed)
-    if current_total <= 0:
-        current_total = len(active)
-
-    return {
-        'active_paper_buy': len(active),
-        'closed_forward_buy': len(closed_forward),
-        'checkpoint_24_total': checkpoint_24_total,
-        'current_cycle_total': current_total,
-        'current_cycle_active': len(active),
-        'current_cycle_closed': len(current_closed),
-        'current_cycle_checkpoint_24': current_checkpoint_24,
-    }
-
-
-def v20104_forward_counter_summary():
-    counts = v20103_forward_counts()
-    denom = max(1, int(counts.get('current_cycle_total', 0) or counts.get('active_paper_buy', 0) or 0))
-    return '\n'.join([
-        f"Forward всего: closed {int(counts.get('closed_forward_buy', 0) or 0)} | 24ч checkpoints {int(counts.get('checkpoint_24_total', 0) or 0)}",
-        f"Текущий цикл: active {int(counts.get('current_cycle_active', 0) or 0)} | 24ч checkpoints {int(counts.get('current_cycle_checkpoint_24', 0) or 0)}/{denom} | closed {int(counts.get('current_cycle_closed', 0) or 0)}/{denom}",
-    ])
-
-
-def v20103_canonical_effectiveness():
-    counts = v20103_forward_counts()
-    closed_forward = int(counts.get('closed_forward_buy', 0) or 0)
-    if closed_forward < V20104_REQUIRED_FORWARD_SAMPLE:
-        status = 'исследовательский режим'
-        reason = 'закрытая forward-выборка ещё недостаточна'
-    else:
-        status = 'forward-оценка обновляется'
-        reason = 'есть достаточная закрытая forward-выборка'
-    return {
-        'version': BOT_VERSION,
-        'main_score': V20104_MAIN_TRADE_SCORE,
-        'lab_score': V20104_LAB_VERSION_SCORE,
-        'forecast_accuracy': 43 if closed_forward <= 0 else 44,
-        'confidence': 52,
-        'status': status,
-        'reason': reason,
-        'active_benchmark': 'v20.7 MODEL SELECTION GUARD',
-        'active_benchmark_score': 44,
-        **counts,
-        'live_buy': 0,
-        'autotrade': 'OFF',
-        'buy_weight_delta': 0,
-    }
-
-
-def v201_effectiveness_report(record=True, technical=False):
-    if technical and callable(globals().get('_v20103_base_effectiveness_report')):
-        try:
-            return globals()['_v20103_base_effectiveness_report'](record=record, technical=technical)
-        except Exception:
-            pass
-    try:
-        v20103_forward_close_sweep()
-    except Exception:
-        pass
-    eff = v20103_canonical_effectiveness()
-    try:
-        stats = v191111_lesson_stats()
-    except Exception:
-        stats = {}
-    try:
-        st = v2097_open_observation_stats()
-    except Exception:
-        st = {'total_open': 0, 'paper_buy_open': eff.get('active_paper_buy', 0), 'quality_probe_open': 0, 'quality_avg_pct': 0.0}
-    denom = max(1, int(eff.get('current_cycle_total', 0) or eff.get('active_paper_buy', 0) or 0))
-    closed_score = min(100, int(eff.get('closed_forward_buy', 0) or 0) * 10)
-    return '\n'.join([
-        '📈 Эффективность ALEX EDGE',
-        f"Версия: {v2021_user_version()}",
-        '',
-        f"Общая оценка: {eff['main_score']}/100 — {eff['status']}",
-        f"Лабораторная оценка текущей версии: {eff['lab_score']}/100",
-        f"Активный торговый ориентир: {eff['active_benchmark']} — {eff['active_benchmark_score']}/100",
-        '',
-        f"Почему не {eff['lab_score']} в основной оценке:",
-        'закрытая forward-выборка ещё недостаточна; открытые PAPER BUY не повышают основную оценку.',
-        '',
-        f"Точность прогнозов: {eff['forecast_accuracy']}/100",
-        f"Достоверность оценки: {eff['confidence']}/100",
-        'Состояние оценки: актуальный результат',
-        'Изменение после обновления: стабильный ориентир не повышен без достаточной закрытой forward-выборки',
-        '',
-        '✅ Защита от плохих входов: 93/100',
-        '🟡 Историческая проверка: 33/100',
-        '🟡 Скорость обучения: 82/100',
-        '🔴 Качество точек покупки: 21/100',
-        f"🔴 Закрытая проверка на новых данных: {closed_score}/100",
-        '',
-        f"Forward всего: closed {eff['closed_forward_buy']} | 24ч checkpoints {eff['checkpoint_24_total']}",
-        f"Текущий цикл: active {eff['current_cycle_active']} | 24ч checkpoints {eff['current_cycle_checkpoint_24']}/{denom} | closed {eff['current_cycle_closed']}/{denom}",
-        f"Открытые PAPER BUY: {eff['active_paper_buy']}",
-        f"Открытые наблюдения сейчас: {st.get('total_open', 0)} — PAPER BUY {st.get('paper_buy_open', eff['active_paper_buy'])}, quality-пробы {st.get('quality_probe_open', 0)}.",
-        f"Quality-пробы сейчас: средний cached PnL {float(st.get('quality_avg_pct', 0) or 0):+.2f}%.",
-        f"BUY-уроки: всего {int(stats.get('total', 0) or 0)} | полезные {int(stats.get('good', 0) or 0)} | нейтральные {int(stats.get('neutral', 0) or 0)} | плохие {int(stats.get('bad', 0) or 0)}.",
-        '',
-        'Готовность к автопокупкам: 🔴 BLOCK 0/4',
-        'Главная проблема: текущий цикл PAPER BUY должен закрыться в 24/48ч и дать зачётные forward-уроки.',
-        'Вывод: бот хорошо защищает от плохих решений, но включать реальные покупки ещё рано.',
-        'Подробная техника: /audit_file',
-    ])
-
-
-def v20103_paper_training_status_report():
-    try:
-        v20103_forward_close_sweep()
-    except Exception:
-        pass
-    result = v191111_open_paper_buy_decisions(create=True, max_new=2, force_one=False)
-    decisions = result.get('decisions', []) if isinstance(result.get('decisions'), list) else []
-    created = result.get('created', []) if isinstance(result.get('created'), list) else []
-    gate = result.get('gate', {}) if isinstance(result.get('gate', {}), dict) else v191111_gate_state(decisions)
-    if created:
-        try:
-            decisions = v191111_ranked_paper_buy_decisions()
-        except Exception:
-            pass
-    checkpoints = v191111_active_checkpoints(decisions=decisions, limit=8)
-    try:
-        st = v2097_open_observation_stats()
-    except Exception:
-        st = {'quality_probe_open': 0, 'unique_assets_open': len(checkpoints), 'total_open': len(checkpoints), 'quality_avg_pct': 0.0, 'quality_useful': 0, 'quality_neutral': 0, 'quality_weak': 0, 'quality_assets': []}
-
-    lines = [
-        '🧪 Виртуальные покупки и обучение',
-        f'Версия: {v2021_user_version()}',
-        '',
-        'Реальные деньги не используются. Автоторговля выключена.',
-        f"PAPER TRAINING: {'разрешён' if gate.get('allowed') else 'временно остановлен'} | лимит {len(checkpoints)}/{gate.get('max_active')}",
-        f"Открыто PAPER BUY: {len(checkpoints)} | quality-проб: {st.get('quality_probe_open', 0)} | уникальных активов: {st.get('unique_assets_open', st.get('total_open', len(checkpoints)))} | создано сейчас: {len(created)}",
-        v20104_forward_counter_summary(),
-    ]
-
-    if created:
-        lines += ['', 'Созданы учебные PAPER-входы:']
-        for row in created:
-            plan = row.get('entry_plan', {}) if isinstance(row.get('entry_plan'), dict) else {}
-            lines.append(
-                f"• {row.get('asset')}: {row.get('verdict')} | вход {v19119_format_price(row.get('entry_price'))} | "
-                f"T1 {v19119_format_price(plan.get('target1'))} | stop {v19119_format_price(plan.get('stop'))}"
-            )
-            lines.append(f"  Почему вход: {row.get('entry_reason')}")
-
-    if checkpoints:
-        lines += ['', 'Открытые PAPER BUY:']
-        for row in checkpoints:
-            pct = float(row.get('pct', 0) or 0)
-            if pct >= 0.5:
-                status = '🟢 пока полезно'
-            elif pct <= -1.0:
-                status = '🟠 слабый результат'
-            else:
-                status = '🟡 без ясного результата'
-            lines.append(f"• {row.get('asset')}: {status} | {pct:+.2f}% | {float(row.get('age_h', 0) or 0):.1f}ч")
-
-    lines += ['', v20103_forward_timers_report()]
-
-    if st.get('quality_probe_open', 0):
-        lines += ['', f"Открытые quality-пробы: {', '.join(st.get('quality_assets', [])[:8])} | средний PnL {float(st.get('quality_avg_pct', 0) or 0):+.2f}% | полезные {st.get('quality_useful', 0)} / нейтральные {st.get('quality_neutral', 0)} / слабые {st.get('quality_weak', 0)}"]
-
-    active_assets = {str(row.get('asset') or '').upper() for row in checkpoints}
-    candidates = [
-        row for row in decisions
-        if int(row.get('decision_score', 0) or 0) >= 55 and str(row.get('asset') or '').upper() not in active_assets
-    ][:3]
-    if candidates:
-        lines += ['', 'Ближайшие учебные входы:']
-        for row in candidates:
-            lines.append(f"• {row.get('asset')}: оценка {int(row.get('decision_score', 0) or 0)}/100 — {row.get('decision')}")
-            lines.append(f"  Почему вход: {row.get('entry_reason') or v2010_entry_reason(row)}")
-
-    if not created and gate.get('allowed') and not checkpoints and candidates:
-        lines += ['', '⚠️ Training разрешён, но вход не создан. Это ошибка wiring/state, нужна проверка /audit_file.']
-    if not gate.get('allowed'):
-        lines += ['', 'Почему training остановлен: ' + '; '.join(gate.get('reasons', [])) + '.']
-    elif gate.get('notes'):
-        lines += ['', 'Важно: ' + '; '.join(gate.get('notes', [])) + '.']
-
-    lines += ['', 'Вывод: бот учится входам/выходам на бумаге, реальные деньги не трогает.', 'Подробная техника: /audit_file']
-    return '\n'.join(lines)
-
-
-def v2021_paper_buy_user_report(create=False):
-    return v20103_paper_training_status_report()
-
-
-def v19119_paper_buy_decision_report(create=False):
-    return v20103_paper_training_status_report()
-
-
-def v20103_audit_section():
-    try:
-        v20103_forward_close_sweep()
-    except Exception:
-        pass
-    eff = v20103_canonical_effectiveness()
-    try:
-        sweep_info = paper_store().get('service_fix_v20_10_3', {})
-    except Exception:
-        sweep_info = {}
-    closed_now = sweep_info.get('closed_now', []) if isinstance(sweep_info, dict) else []
-    checkpointed_now = sweep_info.get('checkpointed_now', []) if isinstance(sweep_info, dict) else []
-    closed_now_text = ', '.join(closed_now) if closed_now else 'none'
-    checkpointed_now_text = ', '.join(checkpointed_now) if checkpointed_now else 'none'
-    denom = max(1, int(eff.get('current_cycle_total', 0) or eff.get('active_paper_buy', 0) or 0))
-    return '\n'.join([
-        '🧩 FORWARD COUNTER LABEL FIX',
-        '',
-        f"Версия: {v2021_user_version()}",
-        '',
-        'Назначение:',
-        '• не менять торговую логику;',
-        '• не менять BUY-веса;',
-        '• не включать реальные покупки;',
-        '• разделить старые закрытые PAPER-уроки и текущий forward-цикл;',
-        '• убрать ложное ощущение, что SOL/INJ/SUI/LINK уже закрылись в 24/48ч.',
-        '',
-        'Score source:',
-        f"• основная торговая оценка: {eff.get('main_score')}/100",
-        f"• лабораторная оценка версии: {eff.get('lab_score')}/100",
-        f"• причина удержания {eff.get('main_score')}/100: {eff.get('reason')}",
-        f"• активный ориентир: {eff.get('active_benchmark')} — {eff.get('active_benchmark_score')}/100",
-        '',
-        'Forward counters:',
-        f"• total strict closed forward BUY: {eff.get('closed_forward_buy')}",
-        f"• total strict 24h checkpoints: {eff.get('checkpoint_24_total')}",
-        f"• current cycle active: {eff.get('current_cycle_active')}",
-        f"• current cycle 24h checkpoints: {eff.get('current_cycle_checkpoint_24')}/{denom}",
-        f"• current cycle closed: {eff.get('current_cycle_closed')}/{denom}",
-        f"• checkpointed now: {checkpointed_now_text}",
-        f"• closed now: {closed_now_text}",
-        '',
-        v20103_forward_timers_report(),
-        '',
-        'Safety:',
-        '• live BUY: 0',
-        '• autotrade: OFF',
-        '• BUY-веса: +0',
-    ])
-
-
-def v191181_fast_audit_build_content():
-    try:
-        base = _v20104_base_fast_audit_build_content() if callable(_v20104_base_fast_audit_build_content) else 'ALEX EDGE ULTRA FAST TECH AUDIT FILE'
-    except Exception as exc:
-        base = f'ALEX EDGE ULTRA FAST TECH AUDIT FILE\n\nBOT_VERSION: {BOT_VERSION}\nAudit error: {exc}'
-    for old_title in (
-        'FORWARD COUNTER LABEL FINAL FIX V20.10.4.1',
-        'FORWARD COUNTER LABEL FIX V20.10.4',
-    ):
-        marker = '\n' + '=' * 80 + '\n' + old_title + '\n' + '=' * 80 + '\n'
-        if marker in base:
-            base = base.split(marker)[0].rstrip()
-    title = 'FORWARD COUNTER LABEL FIX V20.10.4'
-    return base.rstrip() + '\n\n' + '=' * 80 + '\n' + title + '\n' + '=' * 80 + '\n' + v20103_audit_section()
-
-
-def v191111_audit_content():
-    return v191181_fast_audit_build_content()
-
-
-def version_user_report():
-    return (
-        '✅ Версия: v20.10.4.1\n'
-        'Название: FORWARD COUNTER LABEL FIX\n\n'
-        'Что исправлено:\n'
-        '• старые закрытые PAPER-уроки больше не считаются как закрытый forward BUY текущего цикла;\n'
-        '• /paper_buy_status показывает Forward всего и Текущий цикл отдельно;\n'
-        '• /effectiveness больше не создаёт впечатление, что новые SOL/INJ/SUI/LINK уже закрылись;\n'
-        '• причина удержания 44/100: закрытая forward-выборка ещё недостаточна;\n'
-        '• таймеры 24/48ч сохранены.\n\n'
-        'Безопасность:\n'
-        '• реальные покупки: 0;\n'
-        '• автоторговля: OFF;\n'
-        '• BUY-веса: +0;\n'
-        '• BUY-пороги, веса, выбор монет и entry/exit-логика не менялись.\n\n'
-        'Команды проверки: /version | /paper_buy_status | /effectiveness | /learn_fast | /audit_file'
-    )
-
-try:
-    globals()['BOT_VERSION'] = BOT_VERSION
-    globals()['V191111_VERSION'] = V191111_VERSION
-    globals()['v20103_closed_forward_buy_trades'] = v20103_closed_forward_buy_trades
-    globals()['v20103_forward_counts'] = v20103_forward_counts
-    globals()['v20103_canonical_effectiveness'] = v20103_canonical_effectiveness
-    globals()['v201_effectiveness_report'] = v201_effectiveness_report
-    globals()['v20102_paper_training_status_report'] = v20103_paper_training_status_report
-    globals()['v20103_paper_training_status_report'] = v20103_paper_training_status_report
-    globals()['v2021_paper_buy_user_report'] = v2021_paper_buy_user_report
-    globals()['v19119_paper_buy_decision_report'] = v19119_paper_buy_decision_report
-    globals()['v20103_audit_section'] = v20103_audit_section
     globals()['v191181_fast_audit_build_content'] = v191181_fast_audit_build_content
     globals()['v191111_audit_content'] = v191111_audit_content
     globals()['version_user_report'] = version_user_report
