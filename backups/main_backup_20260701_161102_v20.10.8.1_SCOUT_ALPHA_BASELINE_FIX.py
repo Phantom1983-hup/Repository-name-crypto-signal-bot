@@ -24,7 +24,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16853,7 +16853,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17961,7 +17961,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18436,7 +18436,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18600,7 +18600,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18945,7 +18945,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19326,7 +19326,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19633,7 +19633,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20147,7 +20147,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20288,7 +20288,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 def v19115_quality_probe_candidate(c):
     """Качественный актив растёт умеренно: реальный BUY ещё запрещён,
     но нужна виртуальная проба, чтобы бот не учился только на пропусках.
@@ -20597,7 +20597,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 def v191151_collect_quality_probe_candidates():
     """Собрать текущие quality-probe кандидаты без сетевого перебора всего рынка."""
     out = []
@@ -20886,7 +20886,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
 except Exception:
@@ -21757,7 +21757,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     _v191161_old_unified_signal_report = unified_signal_report
 except Exception:
@@ -22160,7 +22160,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
 except Exception:
@@ -22728,7 +22728,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
 except Exception:
@@ -23235,7 +23235,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
 except Exception:
@@ -23540,7 +23540,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     _v19118_old_build_audit_file = build_audit_file
 except Exception:
@@ -24067,7 +24067,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     _v191181_old_build_audit_file = build_audit_file
 except Exception:
@@ -25283,7 +25283,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 def _v191191_branch_ref_name():
     try:
         br = str(GITHUB_BRANCH or "main").strip()
@@ -25426,7 +25426,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 def v191192_probe_sync_classification(pnl):
     """Возвращает текущий drawdown-aware probe bucket/score по той же шкале, что FAST PROBE SCORING."""
     try:
@@ -25712,7 +25712,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 def v191193_backup_in_recent_list(path, limit=50):
     """Возвращает запись из /backups, если exact path найден в списке GitHub contents."""
     try:
@@ -25939,7 +25939,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
 
@@ -26311,7 +26311,7 @@ def version_user_report():
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
 V1911101_RESTORE_META_KEY = "paper_buy_restore_v1911101"
@@ -26924,7 +26924,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 def v1911101_section(title, body):
     return "\n\n" + "="*80 + "\n" + str(title) + "\n" + "="*80 + "\n" + str(body or "")
 
@@ -26977,7 +26977,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 def v1911101_fmt_created_paper_buy(trade):
     try:
         asset = v19119_trade_asset(trade)
@@ -27076,7 +27076,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 def v1911101_load_buy_state():
     try:
         if os.path.exists(V1911101_PAPER_BUY_STATE_FILE):
@@ -27197,7 +27197,7 @@ def v19119_paper_buy_audit_report():
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 def v1911102_count_active_buy_in_data(data=None):
     try:
         if not isinstance(data, dict):
@@ -27502,7 +27502,7 @@ def version_user_report():
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
 except Exception:
@@ -27808,7 +27808,7 @@ def version_user_report():
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+V191111_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
@@ -32373,7 +32373,7 @@ except Exception:
 # === v20.9.7 REPORT CONSISTENCY FULL PASS ===
 # Runtime-safe cleanup: this block is deliberately placed BEFORE __main__.
 # It fixes labels that v20.9.5 could not clean because its cleanup code was appended after main().
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32453,7 +32453,7 @@ except Exception:
 # - make /effectiveness, /learn_fast, /paper_buy_status and /audit_file count open observations consistently;
 # - do not count open observations in final score until 24/48h;
 # - no trading logic changes.
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32940,7 +32940,7 @@ except Exception:
 # One final report-consistency pass based on live audit evidence from v20.9.7.
 # Fix: open quality-probe average in /effectiveness, /paper_buy_status and audit must match FAST PROBE SCORING.
 # No trading logic changes: real BUY 0, autotrading OFF, open observations do not increase effectiveness before 24/48h close.
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -33394,7 +33394,7 @@ except Exception:
 # Purpose: PAPER mode is a training lab, not a live-risk clone.
 # Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
 # Open observations still do not increase effectiveness until 24/48h close.
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     V191111_VERSION = BOT_VERSION
     V19119_PAPER_BUY_MAX_ACTIVE = 6
@@ -33918,7 +33918,7 @@ except Exception:
 # Fix: /paper_buy_status must move PAPER training forward when gate is ALLOW.
 # Previously it showed PAPER MICRO-BUY candidates but created 0 because the report default was create=False.
 # Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34019,7 +34019,7 @@ except Exception:
 # Fix: the status wrapper ignores that legacy False and runs safe PAPER training creation.
 # Also keep user-facing effectiveness honest: research learning speed cannot replace the 44/100 benchmark
 # before closed 24/48h forward evidence exists.
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34159,7 +34159,7 @@ except Exception:
 # === v20.10.3 OBSERVABILITY + NEXT CHECK UX ===
 # Service-fix only: do not change BUY thresholds, weights, asset selection, entry/exit scoring,
 # real buying or autotrading. The goal is to make PAPER BUY lifecycle and score reporting consistent.
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34750,10 +34750,10 @@ try:
 except Exception:
     pass
 
-# === v20.10.8.2 LEARN FAST GUARANTEED FIX ===
+# === v20.10.8.1 SCOUT ALPHA BASELINE FIX ===
 # Service-fix only: no trading logic changes. This layer fixes labels/counters so
 # historical closed PAPER lessons are not shown as current forward BUY closes.
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -35194,9 +35194,9 @@ except Exception:
     pass
 
 
-# === v20.10.8.2 LEARN FAST GUARANTEED FIX ===
+# === v20.10.8.1 SCOUT ALPHA BASELINE FIX ===
 # Safe service layer only: no BUY thresholds, no weights, no coin selection, no entry/exit logic changed.
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -35560,10 +35560,10 @@ except Exception:
     pass
 
 
-# === v20.10.8.2 LEARN FAST GUARANTEED FIX ===
+# === v20.10.8.1 SCOUT ALPHA BASELINE FIX ===
 # Safe service layer only: no BUY thresholds, no BUY weights, no coin selection,
 # no entry/exit logic, no useful/neutral/bad classification, no autotrading changes.
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -35868,10 +35868,10 @@ try:
 except Exception:
     pass
 
-# === v20.10.8.2 LEARN FAST GUARANTEED FIX ===
+# === v20.10.8.1 SCOUT ALPHA BASELINE FIX ===
 # Research-only layer: learns exits without touching active PAPER BUY.
 # No real BUY, no autotrading, no BUY weight changes, no forced close.
-BOT_VERSION = "v20.10.8.2 LEARN FAST GUARANTEED FIX"
+BOT_VERSION = "v20.10.8.1 SCOUT ALPHA BASELINE FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -36034,7 +36034,7 @@ except Exception:
     pass
 
 
-# === v20.10.8.2 LEARN FAST GUARANTEED FIX ===
+# === v20.10.8.1 SCOUT ALPHA BASELINE FIX ===
 # Цель: обычный /signal должен отвечать быстро и понятно объяснять no-buy.
 # Торговая логика, PAPER BUY, реальные покупки, автоторговля и BUY-веса не меняются.
 def v201071_safe_float(value, default=0.0):
@@ -36048,7 +36048,7 @@ def v201071_ticker_rows():
     try:
         tickers = kucoin_tickers()
     except Exception as exc:
-        print(f"v20.10.8.2 signal ticker error: {exc}")
+        print(f"v20.10.8.1 signal ticker error: {exc}")
         tickers = []
 
     active_assets = set()
@@ -36345,7 +36345,7 @@ def v20108_ticker_map():
     try:
         tickers = kucoin_tickers()
     except Exception as exc:
-        print(f"v20.10.8.2 ticker map error: {exc}")
+        print(f"v20.10.8.1 ticker map error: {exc}")
         tickers = []
     for t in tickers if isinstance(tickers, list) else []:
         symbol = str(t.get("symbol") or "")
@@ -36769,60 +36769,9 @@ def v201_effectiveness_report(record=True, technical=False):
     return v20108_normalize_user_version(base)
 
 
-def v201082_fast_learn_report(start=False):
-    try:
-        st = v2098_open_observation_stats() if "v2098_open_observation_stats" in globals() else {}
-    except Exception:
-        st = {}
-    try:
-        eff = v20103_canonical_effectiveness() if "v20103_canonical_effectiveness" in globals() else {}
-    except Exception:
-        eff = {}
-    try:
-        mem = v20108_memory_summary(update=True)
-    except Exception:
-        mem = {"active": [], "plus": [], "minus": [], "neutral": [], "alpha_plus": []}
-
-    paper_open = int(st.get("paper_buy_open", eff.get("active_paper_buy", 0)) or 0)
-    quality_open = int(st.get("quality_probe_open", 0) or 0)
-    total_open = int(st.get("total_open", paper_open + quality_open) or 0)
-    quality_avg = v20108_safe_float(st.get("quality_avg_pct", 0.0), 0.0)
-
-    lines = [
-        "🧠 Ускоренное обучение",
-        f"Версия: {BOT_VERSION}",
-        "",
-        "Состояние: обучение активно, реальные покупки выключены.",
-        "Реальные покупки: 0 | автоторговля: OFF | BUY-веса: +0",
-        f"Открытые наблюдения: {total_open} — PAPER BUY {paper_open}, quality-пробы {quality_open}.",
-        f"Quality-пробы: средний cached PnL {quality_avg:+.2f}%.",
-        f"SCOUT-память: active {len(mem.get('active', []))} | plus {len(mem.get('plus', []))} | neutral {len(mem.get('neutral', []))} | minus {len(mem.get('minus', []))} | alpha+ {len(mem.get('alpha_plus', []))}.",
-        "Что бот сейчас учит: alpha против рынка, MAE/MFE, ранний/поздний вход, частичный выход.",
-        "",
-        "Важно: открытые PAPER/SCOUT не повышают эффективность до закрытых 24/48ч уроков.",
-        "",
-        "📌 Следующее действие пользователя:",
-        "• 24ч checkpoint: 01.07.2026 в 19:10 МСК",
-        "• команды прислать одним сообщением:",
-        "/paper_buy_status",
-        "/effectiveness",
-        "/learn_fast",
-        "/audit_file",
-    ]
-    return "\n".join(lines)
-
-
 def v203_learn_fast_report(start=False):
-    try:
-        return v201082_fast_learn_report(start=start)
-    except Exception as exc:
-        return (
-            "🧠 Ускоренное обучение\n"
-            f"Версия: {BOT_VERSION}\n\n"
-            f"Короткий отчёт fallback: {exc}\n"
-            "Реальные покупки: 0 | автоторговля: OFF | BUY-веса: +0\n"
-            "Подробности: /audit_file"
-        )
+    base = _v20108_base_learn_fast(start=start) if callable(_v20108_base_learn_fast) else "🧠 Ускоренное обучение"
+    return v20108_normalize_user_version(base)
 
 
 def learn_fast_report(start=False):
@@ -36831,8 +36780,8 @@ def learn_fast_report(start=False):
 
 def version_user_report():
     return (
-        "✅ Версия: v20.10.8.2\n"
-        "Название: LEARN FAST GUARANTEED FIX\n\n"
+        "✅ Версия: v20.10.8.1\n"
+        "Название: SCOUT ALPHA BASELINE FIX\n\n"
         "Что добавлено:\n"
         "• анализ/SCOUT по top-50 крупным монетам, без мусорных активов;\n"
         "• постоянная память paper_lesson_memory.json для PAPER/SCOUT-уроков;\n"
@@ -36840,7 +36789,6 @@ def version_user_report():
         "• alpha против BTC, ETH и среднего top-50 теперь считается от момента создания SCOUT;\n"
         "• BTC/ETH используются как benchmark, а не как SCOUT-сделки;\n"
         "• /alerts не показывает нулевые SCOUT как сигналы;\n"
-        "• /learn_fast получил гарантированный быстрый fallback и не должен пропадать из пула;\n"
         "• MAE/MFE для оценки качества входа;\n"
         "• классификация: хороший вход, рынок вытянул, ранний/поздний вход, упущен выход;\n"
         "• /signal разделяет REAL BUY, PAPER/SCOUT, WATCH и НЕ ДОГОНЯТЬ;\n"
