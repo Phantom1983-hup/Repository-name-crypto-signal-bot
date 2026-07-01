@@ -1,5 +1,5 @@
 {
-  "version": "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX",
+  "version": "v20.10.7.3 SIGNAL RISK LABEL FINAL FIX",
   "open": {
     "AVAX:VIRTUAL_WATCH_ENTRY_TEST:495208": {
       "id": "AVAX:VIRTUAL_WATCH_ENTRY_TEST:495208",
@@ -2236,6 +2236,25 @@
       "last_price": 549.561,
       "last_price_time": 1782918032.3474052,
       "last_pct": 0.18
+    },
+    "TAO:VIRTUAL_WATCH_ENTRY_TEST:495255": {
+      "id": "TAO:VIRTUAL_WATCH_ENTRY_TEST:495255",
+      "asset": "TAO",
+      "entry_time": 1782918586.6939113,
+      "entry_price": 203.58,
+      "score": 57,
+      "master_score": 57,
+      "source_action": "WATCH",
+      "virtual_type": "VIRTUAL_WATCH_ENTRY_TEST",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "is_quality": true,
+      "change_24": 0.37,
+      "btc_change": 2.51,
+      "macro_mod": -15,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [
@@ -11699,7 +11718,7 @@
       "outcome": "watch_missed_gain"
     }
   ],
-  "last_created_at": 1782914303.2247248,
+  "last_created_at": 1782918586.6939113,
   "last_update_at": 1782918033.8960688,
   "last_quality_probe_created_at": 1782751580.5157573,
   "last_probe_scoring_snapshot_at": 1782751632.7169902,
