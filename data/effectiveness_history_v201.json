@@ -1091,14 +1091,14 @@
       }
     },
     {
-      "timestamp": 1782846175.5440938,
+      "timestamp": 1782877252.0567837,
       "version": "v20.10.6 AUDIT CLEANUP + CONSISTENCY GUARD",
       "measurement_valid": true,
       "overall": 48,
       "forecast_accuracy": 46,
       "evidence_confidence": 56,
       "scores": {
-        "protection": 93,
+        "protection": 94,
         "entry_accuracy": 28,
         "historical_validation": 33,
         "forward_proof": 0,
@@ -1106,7 +1106,7 @@
         "technical_reliability": 100
       },
       "evidence": {
-        "paper_closed": 107,
+        "paper_closed": 111,
         "lessons": 12,
         "good_lessons": 0,
         "bad_lessons": 4,
@@ -1120,7 +1120,7 @@
         "forward_avg_pct": 0.0,
         "experiment_forward_active": 0,
         "experiment_forward_closed": 0,
-        "checkpoints": 155,
+        "checkpoints": 167,
         "evidence_ready_assets": 7,
         "evidence_tracked_assets": 7,
         "technical_checks": "benchmark checksum PASS; repeatability PASS",
@@ -1137,9 +1137,9 @@
         "open_quality_probes": 4,
         "open_quality_probe_assets": "SOL, SUI, LINK, INJ",
         "open_paper_buy_assets": "SOL, INJ, SUI, LINK",
-        "open_quality_probe_avg_pct": -0.56,
-        "open_quality_probe_useful": 0,
-        "open_quality_probe_neutral": 3,
+        "open_quality_probe_avg_pct": 0.04,
+        "open_quality_probe_useful": 1,
+        "open_quality_probe_neutral": 2,
         "open_quality_probe_weak": 1,
         "open_observation_rule": "visible in reports, not counted into effectiveness until 24/48h close",
         "report_consistency_fix": "v20.10",
