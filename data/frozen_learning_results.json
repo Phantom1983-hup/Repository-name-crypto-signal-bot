@@ -4421,6 +4421,2338 @@
       "outcome": "spec_watch_pump",
       "frozen_at": 1782665736.8713222,
       "version": "v19.11.9.5 PAPER BUY DURABLE STATE FIX"
+    },
+    "BTC:1782671455:59651.4": {
+      "asset": "BTC",
+      "time": 1782671455.3635085,
+      "price": 59651.4,
+      "score": 58,
+      "action": "WATCH",
+      "verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
+      "results": {
+        "15m": -0.24,
+        "30m": -0.24,
+        "1h": -0.36,
+        "3h": 0.01,
+        "6h": -0.59,
+        "12h": 0.66,
+        "24h": 1.06,
+        "48h": -1.71
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782674019.8334239,
+          "target_time": 1782672355.3635085,
+          "checkpoint_price": 59510.8,
+          "checkpoint_pct": -0.24,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782674019.8334239,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782674019.8334239,
+          "target_time": 1782673255.3635085,
+          "checkpoint_price": 59510.8,
+          "checkpoint_pct": -0.24,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782674019.8334239,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782675827.6298964,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 59436.9,
+          "checkpoint_pct": -0.36,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782675827.6298964,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782683137.427415,
+          "target_time": 1782682255.3635085,
+          "checkpoint_price": 59655.0,
+          "checkpoint_pct": 0.01,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782683137.427415,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782694057.2344368,
+          "target_time": 1782693055.3635085,
+          "checkpoint_price": 59298.1,
+          "checkpoint_pct": -0.59,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782694057.2344368,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782716435.4273927,
+          "target_time": 1782714655.3635085,
+          "checkpoint_price": 60046.1,
+          "checkpoint_pct": 0.66,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782757831.924026,
+          "target_time": 1782757855.3635085,
+          "checkpoint_price": 60284.9,
+          "checkpoint_pct": 1.06,
+          "source": "near_snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782845509.732123,
+          "target_time": 1782844255.3635085,
+          "checkpoint_price": 58631.1,
+          "checkpoint_pct": -1.71,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "ETH:1782671455:1570.08": {
+      "asset": "ETH",
+      "time": 1782671455.3635085,
+      "price": 1570.08,
+      "score": 56,
+      "action": "WATCH",
+      "verdict": "🟡 НАБЛЮДАТЬ / ЖДАТЬ СТАБИЛИЗАЦИЮ",
+      "results": {
+        "15m": -0.03,
+        "30m": -0.03,
+        "1h": -0.14,
+        "3h": 0.02,
+        "6h": -0.58,
+        "12h": 0.76,
+        "24h": 3.15,
+        "48h": 0.57
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782674019.8334239,
+          "target_time": 1782672355.3635085,
+          "checkpoint_price": 1569.62,
+          "checkpoint_pct": -0.03,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782674019.8334239,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782674019.8334239,
+          "target_time": 1782673255.3635085,
+          "checkpoint_price": 1569.62,
+          "checkpoint_pct": -0.03,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782674019.8334239,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782675827.6298964,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 1567.85,
+          "checkpoint_pct": -0.14,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782675827.6298964,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782683137.427415,
+          "target_time": 1782682255.3635085,
+          "checkpoint_price": 1570.36,
+          "checkpoint_pct": 0.02,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782683137.427415,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782694057.2344368,
+          "target_time": 1782693055.3635085,
+          "checkpoint_price": 1561.0,
+          "checkpoint_pct": -0.58,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782694057.2344368,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782716435.4273927,
+          "target_time": 1782714655.3635085,
+          "checkpoint_price": 1581.99,
+          "checkpoint_pct": 0.76,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782757831.924026,
+          "target_time": 1782757855.3635085,
+          "checkpoint_price": 1619.52,
+          "checkpoint_pct": 3.15,
+          "source": "near_snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782845509.732123,
+          "target_time": 1782844255.3635085,
+          "checkpoint_price": 1579.05,
+          "checkpoint_pct": 0.57,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "VELVET:1782671455:1.81021": {
+      "asset": "VELVET",
+      "time": 1782671455.3635085,
+      "price": 1.81021,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": 1.23,
+        "30m": 1.23,
+        "1h": 0.75,
+        "3h": 1.15,
+        "6h": 0.86,
+        "12h": -2.85,
+        "24h": -13.32,
+        "48h": -18.44
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782674019.8334239,
+          "target_time": 1782672355.3635085,
+          "checkpoint_price": 1.83243,
+          "checkpoint_pct": 1.23,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782674019.8334239,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782674019.8334239,
+          "target_time": 1782673255.3635085,
+          "checkpoint_price": 1.83243,
+          "checkpoint_pct": 1.23,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782674019.8334239,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782675827.6298964,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 1.82386,
+          "checkpoint_pct": 0.75,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782675827.6298964,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782683137.427415,
+          "target_time": 1782682255.3635085,
+          "checkpoint_price": 1.831,
+          "checkpoint_pct": 1.15,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782683137.427415,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782694057.2344368,
+          "target_time": 1782693055.3635085,
+          "checkpoint_price": 1.8257,
+          "checkpoint_pct": 0.86,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782694057.2344368,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782719083.357533,
+          "target_time": 1782714655.3635085,
+          "checkpoint_price": 1.75857,
+          "checkpoint_pct": -2.85,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782719083.357533,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782757859.0281868,
+          "target_time": 1782757855.3635085,
+          "checkpoint_price": 1.56917,
+          "checkpoint_pct": -13.32,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782844255.3635085,
+          "checkpoint_price": 1.47636,
+          "checkpoint_pct": -18.44,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "watch_saved",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "GWEI:1782671455:0.160837": {
+      "asset": "GWEI",
+      "time": 1782671455.3635085,
+      "price": 0.160837,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": 1.34,
+        "30m": 1.34,
+        "1h": -0.15,
+        "3h": 2.21,
+        "6h": 1.29,
+        "12h": 3.51,
+        "24h": -8.43,
+        "48h": -25.65
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782674019.8334239,
+          "target_time": 1782672355.3635085,
+          "checkpoint_price": 0.162995,
+          "checkpoint_pct": 1.34,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782674019.8334239,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782674019.8334239,
+          "target_time": 1782673255.3635085,
+          "checkpoint_price": 0.162995,
+          "checkpoint_pct": 1.34,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782674019.8334239,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782675827.6298964,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 0.160593,
+          "checkpoint_pct": -0.15,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782675827.6298964,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782683137.427415,
+          "target_time": 1782682255.3635085,
+          "checkpoint_price": 0.164388,
+          "checkpoint_pct": 2.21,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782683137.427415,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782694057.2344368,
+          "target_time": 1782693055.3635085,
+          "checkpoint_price": 0.162904,
+          "checkpoint_pct": 1.29,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782694057.2344368,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782716435.4273927,
+          "target_time": 1782714655.3635085,
+          "checkpoint_price": 0.166478,
+          "checkpoint_pct": 3.51,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782757859.0281868,
+          "target_time": 1782757855.3635085,
+          "checkpoint_price": 0.147277,
+          "checkpoint_pct": -8.43,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782844255.3635085,
+          "checkpoint_price": 0.119581,
+          "checkpoint_pct": -25.65,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "watch_saved",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "O:1782671455:0.53449": {
+      "asset": "O",
+      "time": 1782671455.3635085,
+      "price": 0.53449,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": -2.75,
+        "30m": -2.75,
+        "1h": -2.75,
+        "3h": -4.05,
+        "6h": -8.12,
+        "12h": 4.24,
+        "24h": -0.37,
+        "48h": 5.03
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782672215.327445,
+          "target_time": 1782672355.3635085,
+          "checkpoint_price": 0.51981,
+          "checkpoint_pct": -2.75,
+          "source": "cache_due_near_snapshot",
+          "cache_price_time": 1782672215.327445,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782672215.327445,
+          "target_time": 1782673255.3635085,
+          "checkpoint_price": 0.51981,
+          "checkpoint_pct": -2.75,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782672215.327445,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782672215.327445,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 0.51981,
+          "checkpoint_pct": -2.75,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782672215.327445,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782683137.427415,
+          "target_time": 1782682255.3635085,
+          "checkpoint_price": 0.51282,
+          "checkpoint_pct": -4.05,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782683137.427415,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782694057.2344368,
+          "target_time": 1782693055.3635085,
+          "checkpoint_price": 0.49109,
+          "checkpoint_pct": -8.12,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782694057.2344368,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782724926.82097,
+          "target_time": 1782714655.3635085,
+          "checkpoint_price": 0.55714,
+          "checkpoint_pct": 4.24,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782757859.0281868,
+          "target_time": 1782757855.3635085,
+          "checkpoint_price": 0.53249,
+          "checkpoint_pct": -0.37,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782916103.9215045,
+          "target_time": 1782844255.3635085,
+          "checkpoint_price": 0.56135,
+          "checkpoint_pct": 5.03,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "watch_saved",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "SYN:1782671455:0.3464": {
+      "asset": "SYN",
+      "time": 1782671455.3635085,
+      "price": 0.3464,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": 2.25,
+        "30m": 2.25,
+        "1h": 0.78,
+        "3h": 2.25,
+        "6h": 14.12,
+        "12h": 12.18,
+        "24h": 29.42,
+        "48h": 70.67
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782674019.8334239,
+          "target_time": 1782672355.3635085,
+          "checkpoint_price": 0.3542,
+          "checkpoint_pct": 2.25,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782674019.8334239,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782674019.8334239,
+          "target_time": 1782673255.3635085,
+          "checkpoint_price": 0.3542,
+          "checkpoint_pct": 2.25,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782674019.8334239,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782675827.6298964,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 0.3491,
+          "checkpoint_pct": 0.78,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782675827.6298964,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782683137.427415,
+          "target_time": 1782682255.3635085,
+          "checkpoint_price": 0.3542,
+          "checkpoint_pct": 2.25,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782683137.427415,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782694057.2344368,
+          "target_time": 1782693055.3635085,
+          "checkpoint_price": 0.3953,
+          "checkpoint_pct": 14.12,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782694057.2344368,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782716435.4273927,
+          "target_time": 1782714655.3635085,
+          "checkpoint_price": 0.3886,
+          "checkpoint_pct": 12.18,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782757859.0281868,
+          "target_time": 1782757855.3635085,
+          "checkpoint_price": 0.4483,
+          "checkpoint_pct": 29.42,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782845509.732123,
+          "target_time": 1782844255.3635085,
+          "checkpoint_price": 0.5912,
+          "checkpoint_pct": 70.67,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "spec_watch_pump",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "S:1782671455:0.02632": {
+      "asset": "S",
+      "time": 1782671455.3635085,
+      "price": 0.02632,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": 0.0,
+        "30m": 0.0,
+        "1h": 0.0,
+        "3h": -5.36,
+        "6h": -5.36,
+        "12h": -8.81,
+        "24h": -5.59,
+        "48h": -13.72
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782671455.3635085,
+          "target_time": 1782672355.3635085,
+          "checkpoint_price": 0.02632,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782671455.3635085,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782671455.3635085,
+          "target_time": 1782673255.3635085,
+          "checkpoint_price": 0.02632,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782671455.3635085,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782671455.3635085,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 0.02632,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782671455.3635085,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782704377.3332403,
+          "target_time": 1782682255.3635085,
+          "checkpoint_price": 0.02491,
+          "checkpoint_pct": -5.36,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782704377.3332403,
+          "target_time": 1782693055.3635085,
+          "checkpoint_price": 0.02491,
+          "checkpoint_pct": -5.36,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782724926.82097,
+          "target_time": 1782714655.3635085,
+          "checkpoint_price": 0.024,
+          "checkpoint_pct": -8.81,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782757859.0281868,
+          "target_time": 1782757855.3635085,
+          "checkpoint_price": 0.02485,
+          "checkpoint_pct": -5.59,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782844255.3635085,
+          "checkpoint_price": 0.02271,
+          "checkpoint_pct": -13.72,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "watch_saved",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "MANTA:1782671455:0.0959": {
+      "asset": "MANTA",
+      "time": 1782671455.3635085,
+      "price": 0.0959,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": 5.11,
+        "30m": 5.11,
+        "1h": 2.29,
+        "3h": -0.1,
+        "6h": -10.84,
+        "12h": -13.45,
+        "24h": -16.37,
+        "48h": -36.39
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782674019.8334239,
+          "target_time": 1782672355.3635085,
+          "checkpoint_price": 0.1008,
+          "checkpoint_pct": 5.11,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782674019.8334239,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782674019.8334239,
+          "target_time": 1782673255.3635085,
+          "checkpoint_price": 0.1008,
+          "checkpoint_pct": 5.11,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782674019.8334239,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782675827.6298964,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 0.0981,
+          "checkpoint_pct": 2.29,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782675827.6298964,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782679497.0331764,
+          "target_time": 1782682255.3635085,
+          "checkpoint_price": 0.0958,
+          "checkpoint_pct": -0.1,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782679497.0331764,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782704377.3332403,
+          "target_time": 1782693055.3635085,
+          "checkpoint_price": 0.0855,
+          "checkpoint_pct": -10.84,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782724926.82097,
+          "target_time": 1782714655.3635085,
+          "checkpoint_price": 0.083,
+          "checkpoint_pct": -13.45,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782757859.0281868,
+          "target_time": 1782757855.3635085,
+          "checkpoint_price": 0.0802,
+          "checkpoint_pct": -16.37,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782844255.3635085,
+          "checkpoint_price": 0.061,
+          "checkpoint_pct": -36.39,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "watch_saved",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "UB:1782671455:0.082927": {
+      "asset": "UB",
+      "time": 1782671455.3635085,
+      "price": 0.082927,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": 0.89,
+        "30m": 0.89,
+        "1h": 1.25,
+        "3h": 1.25,
+        "6h": 1.98,
+        "12h": 13.73,
+        "24h": 37.53,
+        "48h": 4.54
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782674019.8334239,
+          "target_time": 1782672355.3635085,
+          "checkpoint_price": 0.083666,
+          "checkpoint_pct": 0.89,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782674019.8334239,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782674019.8334239,
+          "target_time": 1782673255.3635085,
+          "checkpoint_price": 0.083666,
+          "checkpoint_pct": 0.89,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782674019.8334239,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782675827.6298964,
+          "target_time": 1782675055.3635085,
+          "checkpoint_price": 0.083961,
+          "checkpoint_pct": 1.25,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782675827.6298964,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782675827.6298964,
+          "target_time": 1782682255.3635085,
+          "checkpoint_price": 0.083961,
+          "checkpoint_pct": 1.25,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782675827.6298964,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782690418.6343036,
+          "target_time": 1782693055.3635085,
+          "checkpoint_price": 0.084569,
+          "checkpoint_pct": 1.98,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782690418.6343036,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782716435.4273927,
+          "target_time": 1782714655.3635085,
+          "checkpoint_price": 0.094315,
+          "checkpoint_pct": 13.73,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782757831.924026,
+          "target_time": 1782757855.3635085,
+          "checkpoint_price": 0.114051,
+          "checkpoint_pct": 37.53,
+          "source": "near_snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782844255.3635085,
+          "checkpoint_price": 0.086693,
+          "checkpoint_pct": 4.54,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "missed_move",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "SOL:1782677670:71.1": {
+      "asset": "SOL",
+      "time": 1782677670.841845,
+      "price": 71.1,
+      "score": 56,
+      "action": "WATCH",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "results": {
+        "15m": 0.0,
+        "30m": 0.0,
+        "1h": 0.0,
+        "3h": -0.11,
+        "6h": 0.59,
+        "12h": 2.33,
+        "24h": 6.41,
+        "48h": 4.16
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782677670.841845,
+          "target_time": 1782678570.841845,
+          "checkpoint_price": 71.1,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782677670.841845,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782677670.841845,
+          "target_time": 1782679470.841845,
+          "checkpoint_price": 71.1,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782677670.841845,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782677670.841845,
+          "target_time": 1782681270.841845,
+          "checkpoint_price": 71.1,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782677670.841845,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782684952.036889,
+          "target_time": 1782688470.841845,
+          "checkpoint_price": 71.02,
+          "checkpoint_pct": -0.11,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782684952.036889,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782697692.430946,
+          "target_time": 1782699270.841845,
+          "checkpoint_price": 71.52,
+          "checkpoint_pct": 0.59,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782697692.430946,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782720900.966011,
+          "target_time": 1782720870.841845,
+          "checkpoint_price": 72.76,
+          "checkpoint_pct": 2.33,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782723190.4711196,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782764389.181196,
+          "target_time": 1782764070.841845,
+          "checkpoint_price": 75.66,
+          "checkpoint_pct": 6.41,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782871494.3156762,
+          "target_time": 1782850470.841845,
+          "checkpoint_price": 74.06,
+          "checkpoint_pct": 4.16,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "missed_move",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "AVAX:1782679497:6.443": {
+      "asset": "AVAX",
+      "time": 1782679497.0331764,
+      "price": 6.443,
+      "score": 56,
+      "action": "WATCH",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "results": {
+        "15m": 0.0,
+        "30m": 0.0,
+        "1h": 0.0,
+        "3h": 0.42,
+        "6h": 1.23,
+        "12h": 1.68,
+        "24h": 3.62,
+        "48h": 4.07
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782679497.0331764,
+          "target_time": 1782680397.0331764,
+          "checkpoint_price": 6.443,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782679497.0331764,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782679497.0331764,
+          "target_time": 1782681297.0331764,
+          "checkpoint_price": 6.443,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782679497.0331764,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782679497.0331764,
+          "target_time": 1782683097.0331764,
+          "checkpoint_price": 6.443,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782679497.0331764,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782690418.6343036,
+          "target_time": 1782690297.0331764,
+          "checkpoint_price": 6.47,
+          "checkpoint_pct": 0.42,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782690418.6343036,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782701330.9313822,
+          "target_time": 1782701097.0331764,
+          "checkpoint_price": 6.522,
+          "checkpoint_pct": 1.23,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782701330.9313822,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782723190.4711196,
+          "target_time": 1782722697.0331764,
+          "checkpoint_price": 6.551,
+          "checkpoint_pct": 1.68,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782723190.4711196,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782766728.7801847,
+          "target_time": 1782765897.0331764,
+          "checkpoint_price": 6.676,
+          "checkpoint_pct": 3.62,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782877931.2244303,
+          "target_time": 1782852297.0331764,
+          "checkpoint_price": 6.705,
+          "checkpoint_pct": 4.07,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "AAVE:1782683137:90.397": {
+      "asset": "AAVE",
+      "time": 1782683137.427415,
+      "price": 90.397,
+      "score": 50,
+      "action": "WATCH",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "results": {
+        "15m": 0.0,
+        "30m": 0.0,
+        "1h": 0.0,
+        "3h": 3.93,
+        "6h": 1.89,
+        "12h": 1.19,
+        "24h": 1.79,
+        "48h": -4.67
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782683137.427415,
+          "target_time": 1782684037.427415,
+          "checkpoint_price": 90.397,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782683137.427415,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782683137.427415,
+          "target_time": 1782684937.427415,
+          "checkpoint_price": 90.397,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782683137.427415,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782683137.427415,
+          "target_time": 1782686737.427415,
+          "checkpoint_price": 90.397,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782683137.427415,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782704377.3332403,
+          "target_time": 1782693937.427415,
+          "checkpoint_price": 93.948,
+          "checkpoint_pct": 3.93,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782718247.9296987,
+          "target_time": 1782704737.427415,
+          "checkpoint_price": 92.104,
+          "checkpoint_pct": 1.89,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782726351.1039221,
+          "target_time": 1782726337.427415,
+          "checkpoint_price": 91.469,
+          "checkpoint_pct": 1.19,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782770363.17982,
+          "target_time": 1782769537.427415,
+          "checkpoint_price": 92.012,
+          "checkpoint_pct": 1.79,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782912488.9264743,
+          "target_time": 1782855937.427415,
+          "checkpoint_price": 86.174,
+          "checkpoint_pct": -4.67,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "NES:1782686780:0.1985": {
+      "asset": "NES",
+      "time": 1782686780.8384805,
+      "price": 0.1985,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": 0.0,
+        "30m": 0.0,
+        "1h": 0.0,
+        "3h": 2.42,
+        "6h": -8.11,
+        "12h": -12.44,
+        "24h": -6.75,
+        "48h": -6.75
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782686780.8384805,
+          "target_time": 1782687680.8384805,
+          "checkpoint_price": 0.1985,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782686780.8384805,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782686780.8384805,
+          "target_time": 1782688580.8384805,
+          "checkpoint_price": 0.1985,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782686780.8384805,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782686780.8384805,
+          "target_time": 1782690380.8384805,
+          "checkpoint_price": 0.1985,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782686780.8384805,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782692231.9363065,
+          "target_time": 1782697580.8384805,
+          "checkpoint_price": 0.2033,
+          "checkpoint_pct": 2.42,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782692231.9363065,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782724926.82097,
+          "target_time": 1782708380.8384805,
+          "checkpoint_price": 0.1824,
+          "checkpoint_pct": -8.11,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782735237.3980873,
+          "target_time": 1782729980.8384805,
+          "checkpoint_price": 0.1738,
+          "checkpoint_pct": -12.44,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782912488.9264743,
+          "target_time": 1782773180.8384805,
+          "checkpoint_price": 0.1851,
+          "checkpoint_pct": -6.75,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782912488.9264743,
+          "target_time": 1782859580.8384805,
+          "checkpoint_price": 0.1851,
+          "checkpoint_pct": -6.75,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "watch_saved",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "TAO:1782688592:203.4": {
+      "asset": "TAO",
+      "time": 1782688592.934614,
+      "price": 203.4,
+      "score": 50,
+      "action": "WATCH",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "results": {
+        "15m": 0.0,
+        "30m": 0.0,
+        "1h": 0.0,
+        "3h": 1.99,
+        "6h": 2.1,
+        "12h": 2.49,
+        "24h": 2.14,
+        "48h": -0.59
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782688592.934614,
+          "target_time": 1782689492.934614,
+          "checkpoint_price": 203.4,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782688592.934614,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782688592.934614,
+          "target_time": 1782690392.934614,
+          "checkpoint_price": 203.4,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782688592.934614,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782688592.934614,
+          "target_time": 1782692192.934614,
+          "checkpoint_price": 203.4,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782688592.934614,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782704377.3332403,
+          "target_time": 1782699392.934614,
+          "checkpoint_price": 207.45,
+          "checkpoint_pct": 1.99,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782714608.2176304,
+          "target_time": 1782710192.934614,
+          "checkpoint_price": 207.67,
+          "checkpoint_pct": 2.1,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782735237.3980873,
+          "target_time": 1782731792.934614,
+          "checkpoint_price": 208.46,
+          "checkpoint_pct": 2.49,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782775822.581266,
+          "target_time": 1782774992.934614,
+          "checkpoint_price": 207.76,
+          "checkpoint_pct": 2.14,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782861392.934614,
+          "checkpoint_price": 202.21,
+          "checkpoint_pct": -0.59,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "DN:1782688592:0.44223": {
+      "asset": "DN",
+      "time": 1782688592.934614,
+      "price": 0.44223,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": -6.58,
+        "30m": -6.58,
+        "1h": -4.77,
+        "3h": -12.18,
+        "6h": -13.82,
+        "12h": -22.15,
+        "24h": -32.53,
+        "48h": -32.53
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782690418.6343036,
+          "target_time": 1782689492.934614,
+          "checkpoint_price": 0.41315,
+          "checkpoint_pct": -6.58,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782690418.6343036,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782690418.6343036,
+          "target_time": 1782690392.934614,
+          "checkpoint_price": 0.41315,
+          "checkpoint_pct": -6.58,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782690418.6343036,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782692231.9363065,
+          "target_time": 1782692192.934614,
+          "checkpoint_price": 0.42114,
+          "checkpoint_pct": -4.77,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782694057.2344368,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782699505.5374305,
+          "target_time": 1782699392.934614,
+          "checkpoint_price": 0.38836,
+          "checkpoint_pct": -12.18,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782701330.9313822,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782711181.3209655,
+          "target_time": 1782710192.934614,
+          "checkpoint_price": 0.38113,
+          "checkpoint_pct": -13.82,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782714608.2176304,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782733625.477095,
+          "target_time": 1782731792.934614,
+          "checkpoint_price": 0.34429,
+          "checkpoint_pct": -22.15,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782774992.934614,
+          "checkpoint_price": 0.29837,
+          "checkpoint_pct": -32.53,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782861392.934614,
+          "checkpoint_price": 0.29837,
+          "checkpoint_pct": -32.53,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "watch_saved",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "BILL:1782690418:0.04426": {
+      "asset": "BILL",
+      "time": 1782690418.6343036,
+      "price": 0.04426,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": 0.0,
+        "30m": 0.0,
+        "1h": 0.0,
+        "3h": -4.04,
+        "6h": -0.25,
+        "12h": -1.06,
+        "24h": 24.36,
+        "48h": -4.9
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782690418.6343036,
+          "target_time": 1782691318.6343036,
+          "checkpoint_price": 0.04426,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782690418.6343036,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782690418.6343036,
+          "target_time": 1782692218.6343036,
+          "checkpoint_price": 0.04426,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782690418.6343036,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782690418.6343036,
+          "target_time": 1782694018.6343036,
+          "checkpoint_price": 0.04426,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782690418.6343036,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782704377.3332403,
+          "target_time": 1782701218.6343036,
+          "checkpoint_price": 0.04247,
+          "checkpoint_pct": -4.04,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782724926.82097,
+          "target_time": 1782712018.6343036,
+          "checkpoint_price": 0.04415,
+          "checkpoint_pct": -0.25,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782735237.3980873,
+          "target_time": 1782733618.6343036,
+          "checkpoint_price": 0.04379,
+          "checkpoint_pct": -1.06,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782777627.0747156,
+          "target_time": 1782776818.6343036,
+          "checkpoint_price": 0.05504,
+          "checkpoint_pct": 24.36,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782863218.6343036,
+          "checkpoint_price": 0.04209,
+          "checkpoint_pct": -4.9,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "missed_move",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "LINK:1782701330:7.2962": {
+      "asset": "LINK",
+      "time": 1782701330.9313822,
+      "price": 7.2962,
+      "score": 56,
+      "action": "WATCH",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "results": {
+        "15m": 0.0,
+        "30m": 0.33,
+        "1h": 0.23,
+        "3h": 0.23,
+        "6h": 0.2,
+        "12h": 0.42,
+        "24h": 0.25,
+        "48h": 0.09
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782701330.9313822,
+          "target_time": 1782702230.9313822,
+          "checkpoint_price": 7.2962,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782701330.9313822,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782704262.12267,
+          "target_time": 1782703130.9313822,
+          "checkpoint_price": 7.3201,
+          "checkpoint_pct": 0.33,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782706099.7863884,
+          "target_time": 1782704930.9313822,
+          "checkpoint_price": 7.313,
+          "checkpoint_pct": 0.23,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782713012.3335373,
+          "target_time": 1782712130.9313822,
+          "checkpoint_price": 7.3133,
+          "checkpoint_pct": 0.23,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782721375.367151,
+          "target_time": 1782722930.9313822,
+          "checkpoint_price": 7.3106,
+          "checkpoint_pct": 0.2,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782721375.367151,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782748831.486644,
+          "target_time": 1782744530.9313822,
+          "checkpoint_price": 7.3266,
+          "checkpoint_pct": 0.42,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782748831.486644,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782788537.17977,
+          "target_time": 1782787730.9313822,
+          "checkpoint_price": 7.3141,
+          "checkpoint_pct": 0.25,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782879766.314873,
+          "target_time": 1782874130.9313822,
+          "checkpoint_price": 7.303,
+          "checkpoint_pct": 0.09,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "SUI:1782701330:0.6838": {
+      "asset": "SUI",
+      "time": 1782701330.9313822,
+      "price": 0.6838,
+      "score": 56,
+      "action": "WATCH",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "results": {
+        "15m": 0.0,
+        "30m": 0.95,
+        "1h": 0.85,
+        "3h": 0.66,
+        "6h": 1.04,
+        "12h": 1.16,
+        "24h": 1.59,
+        "48h": 2.37
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782701330.9313822,
+          "target_time": 1782702230.9313822,
+          "checkpoint_price": 0.6838,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782701330.9313822,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782704262.12267,
+          "target_time": 1782703130.9313822,
+          "checkpoint_price": 0.6903,
+          "checkpoint_pct": 0.95,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782706099.7863884,
+          "target_time": 1782704930.9313822,
+          "checkpoint_price": 0.6896,
+          "checkpoint_pct": 0.85,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782713012.3335373,
+          "target_time": 1782712130.9313822,
+          "checkpoint_price": 0.6883,
+          "checkpoint_pct": 0.66,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782723190.4711196,
+          "target_time": 1782722930.9313822,
+          "checkpoint_price": 0.6909,
+          "checkpoint_pct": 1.04,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782723190.4711196,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782745188.9853415,
+          "target_time": 1782744530.9313822,
+          "checkpoint_price": 0.6917,
+          "checkpoint_pct": 1.16,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782748831.486644,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782788537.17977,
+          "target_time": 1782787730.9313822,
+          "checkpoint_price": 0.6947,
+          "checkpoint_pct": 1.59,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782875125.5674577,
+          "target_time": 1782874130.9313822,
+          "checkpoint_price": 0.7,
+          "checkpoint_pct": 2.37,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "RAVE:1782704262:0.42": {
+      "asset": "RAVE",
+      "time": 1782704262.12267,
+      "price": 0.42,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": 1.19,
+        "30m": 1.19,
+        "1h": -1.9,
+        "3h": 23.57,
+        "6h": 10.71,
+        "12h": 15.24,
+        "24h": -28.33,
+        "48h": -28.33
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782706099.7863884,
+          "target_time": 1782705162.12267,
+          "checkpoint_price": 0.425,
+          "checkpoint_pct": 1.19,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782706099.7863884,
+          "target_time": 1782706062.12267,
+          "checkpoint_price": 0.425,
+          "checkpoint_pct": 1.19,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782709435.363969,
+          "target_time": 1782707862.12267,
+          "checkpoint_price": 0.412,
+          "checkpoint_pct": -1.9,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782716435.4273927,
+          "target_time": 1782715062.12267,
+          "checkpoint_price": 0.519,
+          "checkpoint_pct": 23.57,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782726351.1039221,
+          "target_time": 1782725862.12267,
+          "checkpoint_price": 0.465,
+          "checkpoint_pct": 10.71,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782748831.486644,
+          "target_time": 1782747462.12267,
+          "checkpoint_price": 0.484,
+          "checkpoint_pct": 15.24,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782748831.486644,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782790662.12267,
+          "checkpoint_price": 0.301,
+          "checkpoint_pct": -28.33,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782877062.12267,
+          "checkpoint_price": 0.301,
+          "checkpoint_pct": -28.33,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "watch_saved",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "ADA:1782713012:0.1452": {
+      "asset": "ADA",
+      "time": 1782713012.3335373,
+      "price": 0.1452,
+      "score": 56,
+      "action": "WATCH",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "results": {
+        "15m": 0.55,
+        "30m": -0.14,
+        "1h": 0.0,
+        "3h": 0.0,
+        "6h": 0.48,
+        "12h": 1.45,
+        "24h": 0.28,
+        "48h": 3.24
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782714608.2176304,
+          "target_time": 1782713912.3335373,
+          "checkpoint_price": 0.146,
+          "checkpoint_pct": 0.55,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782716435.4273927,
+          "target_time": 1782714812.3335373,
+          "checkpoint_price": 0.145,
+          "checkpoint_pct": -0.14,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782717555.9669955,
+          "target_time": 1782716612.3335373,
+          "checkpoint_price": 0.1452,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782718247.9296987,
+          "target_time": 1782723812.3335373,
+          "checkpoint_price": 0.1452,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782734707.4883952,
+          "target_time": 1782734612.3335373,
+          "checkpoint_price": 0.1459,
+          "checkpoint_pct": 0.48,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782757746.4775786,
+          "target_time": 1782756212.3335373,
+          "checkpoint_price": 0.1473,
+          "checkpoint_pct": 1.45,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782803080.3777668,
+          "target_time": 1782799412.3335373,
+          "checkpoint_price": 0.1456,
+          "checkpoint_pct": 0.28,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782887047.617927,
+          "target_time": 1782885812.3335373,
+          "checkpoint_price": 0.1499,
+          "checkpoint_pct": 3.24,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "NEAR:1782714608:1.866": {
+      "asset": "NEAR",
+      "time": 1782714608.2176304,
+      "price": 1.866,
+      "score": 57,
+      "action": "WATCH",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "results": {
+        "15m": -0.31,
+        "30m": -0.31,
+        "1h": 0.38,
+        "3h": -0.59,
+        "6h": 0.29,
+        "12h": 1.44,
+        "24h": -0.09,
+        "48h": -4.24
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782716435.4273927,
+          "target_time": 1782715508.2176304,
+          "checkpoint_price": 1.8603,
+          "checkpoint_pct": -0.31,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782716435.4273927,
+          "target_time": 1782716408.2176304,
+          "checkpoint_price": 1.8603,
+          "checkpoint_pct": -0.31,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782718247.9296987,
+          "target_time": 1782718208.2176304,
+          "checkpoint_price": 1.8731,
+          "checkpoint_pct": 0.38,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782718247.9296987,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782730021.274496,
+          "target_time": 1782725408.2176304,
+          "checkpoint_price": 1.8549,
+          "checkpoint_pct": -0.59,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782735646.6459584,
+          "target_time": 1782736208.2176304,
+          "checkpoint_price": 1.8714,
+          "checkpoint_pct": 0.29,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782735646.6459584,
+          "cache_price_source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782757831.924026,
+          "target_time": 1782757808.2176304,
+          "checkpoint_price": 1.8929,
+          "checkpoint_pct": 1.44,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782801273.7853723,
+          "target_time": 1782801008.2176304,
+          "checkpoint_price": 1.8643,
+          "checkpoint_pct": -0.09,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782910655.333788,
+          "target_time": 1782887408.2176304,
+          "checkpoint_price": 1.7869,
+          "checkpoint_pct": -4.24,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "INJ:1782728869:4.708": {
+      "asset": "INJ",
+      "time": 1782728869.5906174,
+      "price": 4.708,
+      "score": 56,
+      "action": "WATCH",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "results": {
+        "15m": 0.21,
+        "30m": 0.21,
+        "1h": 0.21,
+        "3h": 0.3,
+        "6h": 0.49,
+        "12h": 0.4,
+        "24h": -1.19,
+        "48h": -1.19
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782735237.3980873,
+          "target_time": 1782729769.5906174,
+          "checkpoint_price": 4.718,
+          "checkpoint_pct": 0.21,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782735237.3980873,
+          "target_time": 1782730669.5906174,
+          "checkpoint_price": 4.718,
+          "checkpoint_pct": 0.21,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782735237.3980873,
+          "target_time": 1782732469.5906174,
+          "checkpoint_price": 4.718,
+          "checkpoint_pct": 0.21,
+          "source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782740201.0092719,
+          "target_time": 1782739669.5906174,
+          "checkpoint_price": 4.722,
+          "checkpoint_pct": 0.3,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782740851.4685996,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782751411.6210644,
+          "target_time": 1782750469.5906174,
+          "checkpoint_price": 4.731,
+          "checkpoint_pct": 0.49,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782772178.9802299,
+          "target_time": 1782772069.5906174,
+          "checkpoint_price": 4.727,
+          "checkpoint_pct": 0.4,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782903396.3226504,
+          "target_time": 1782815269.5906174,
+          "checkpoint_price": 4.652,
+          "checkpoint_pct": -1.19,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782903396.3226504,
+          "target_time": 1782901669.5906174,
+          "checkpoint_price": 4.652,
+          "checkpoint_pct": -1.19,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "RE:1782731829:0.73323": {
+      "asset": "RE",
+      "time": 1782731829.7805996,
+      "price": 0.73323,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": 7.27,
+        "30m": 7.58,
+        "1h": 4.96,
+        "3h": 2.67,
+        "6h": 6.03,
+        "12h": 4.48,
+        "24h": -15.34,
+        "48h": -15.34
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782733625.477095,
+          "target_time": 1782732729.7805996,
+          "checkpoint_price": 0.78651,
+          "checkpoint_pct": 7.27,
+          "source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782733838.5804946,
+          "target_time": 1782733629.7805996,
+          "checkpoint_price": 0.78882,
+          "checkpoint_pct": 7.58,
+          "source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782735646.6459584,
+          "target_time": 1782735429.7805996,
+          "checkpoint_price": 0.76963,
+          "checkpoint_pct": 4.96,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782740851.4685996,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782743885.3164656,
+          "target_time": 1782742629.7805996,
+          "checkpoint_price": 0.75283,
+          "checkpoint_pct": 2.67,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782748831.486644,
+          "cache_price_source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782754489.9177384,
+          "target_time": 1782753429.7805996,
+          "checkpoint_price": 0.77746,
+          "checkpoint_pct": 6.03,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782775822.581266,
+          "target_time": 1782775029.7805996,
+          "checkpoint_price": 0.76608,
+          "checkpoint_pct": 4.48,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782818229.7805996,
+          "checkpoint_price": 0.62078,
+          "checkpoint_pct": -15.34,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782904629.7805996,
+          "checkpoint_price": 0.62078,
+          "checkpoint_pct": -15.34,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "watch_saved",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "BNB:1782735646:557.725": {
+      "asset": "BNB",
+      "time": 1782735646.6459584,
+      "price": 557.725,
+      "score": 56,
+      "action": "WATCH",
+      "verdict": "🟡 АКТИВ К НАБЛЮДЕНИЮ ПОСЛЕ СТАБИЛИЗАЦИИ BTC",
+      "results": {
+        "15m": 0.0,
+        "30m": 0.0,
+        "1h": 0.0,
+        "3h": -0.74,
+        "6h": 0.52,
+        "12h": -0.19,
+        "24h": -1.44,
+        "48h": -1.64
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782735646.6459584,
+          "target_time": 1782736546.6459584,
+          "checkpoint_price": 557.725,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782735646.6459584,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782735646.6459584,
+          "target_time": 1782737446.6459584,
+          "checkpoint_price": 557.725,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782735646.6459584,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782735646.6459584,
+          "target_time": 1782739246.6459584,
+          "checkpoint_price": 557.725,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782735646.6459584,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782751411.6210644,
+          "target_time": 1782746446.6459584,
+          "checkpoint_price": 553.57,
+          "checkpoint_pct": -0.74,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782757746.4775786,
+          "target_time": 1782757246.6459584,
+          "checkpoint_price": 560.637,
+          "checkpoint_pct": 0.52,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782779454.9881396,
+          "target_time": 1782778846.6459584,
+          "checkpoint_price": 556.655,
+          "checkpoint_pct": -0.19,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782828462.1033347,
+          "target_time": 1782822046.6459584,
+          "checkpoint_price": 549.711,
+          "checkpoint_pct": -1.44,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782914300.4235315,
+          "target_time": 1782908446.6459584,
+          "checkpoint_price": 548.582,
+          "checkpoint_pct": -1.64,
+          "source": "cache_due_snapshot",
+          "cache_price_time": 1782916103.9215045,
+          "cache_price_source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "FARTCOIN:1782735646:0.146": {
+      "asset": "FARTCOIN",
+      "time": 1782735646.6459584,
+      "price": 0.146,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": 0.0,
+        "30m": 0.0,
+        "1h": 0.0,
+        "3h": -2.67,
+        "6h": -2.67,
+        "12h": -1.78,
+        "24h": -1.78,
+        "48h": -1.78
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782735646.6459584,
+          "target_time": 1782736546.6459584,
+          "checkpoint_price": 0.146,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782735646.6459584,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782735646.6459584,
+          "target_time": 1782737446.6459584,
+          "checkpoint_price": 0.146,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782735646.6459584,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782735646.6459584,
+          "target_time": 1782739246.6459584,
+          "checkpoint_price": 0.146,
+          "checkpoint_pct": 0.0,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782735646.6459584,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782757859.0281868,
+          "target_time": 1782746446.6459584,
+          "checkpoint_price": 0.1421,
+          "checkpoint_pct": -2.67,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782757859.0281868,
+          "target_time": 1782757246.6459584,
+          "checkpoint_price": 0.1421,
+          "checkpoint_pct": -2.67,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782778846.6459584,
+          "checkpoint_price": 0.1434,
+          "checkpoint_pct": -1.78,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782822046.6459584,
+          "checkpoint_price": 0.1434,
+          "checkpoint_pct": -1.78,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782908446.6459584,
+          "checkpoint_price": 0.1434,
+          "checkpoint_pct": -1.78,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "neutral",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    "BEAT:1782744368:2.8079": {
+      "asset": "BEAT",
+      "time": 1782744368.8055992,
+      "price": 2.8079,
+      "score": 55,
+      "action": "WATCH",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "results": {
+        "15m": -0.2,
+        "30m": -0.2,
+        "1h": -0.2,
+        "3h": -2.2,
+        "6h": -7.23,
+        "12h": -7.23,
+        "24h": -7.23,
+        "48h": -7.23
+      },
+      "result_details": {
+        "15m": {
+          "checkpoint_time": 1782745188.9853415,
+          "target_time": 1782745268.8055992,
+          "checkpoint_price": 2.8023,
+          "checkpoint_pct": -0.2,
+          "source": "cache_due_near_snapshot",
+          "cache_price_time": 1782745188.9853415,
+          "cache_price_source": "snapshot"
+        },
+        "30m": {
+          "checkpoint_time": 1782745188.9853415,
+          "target_time": 1782746168.8055992,
+          "checkpoint_price": 2.8023,
+          "checkpoint_pct": -0.2,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782745188.9853415,
+          "cache_price_source": "snapshot"
+        },
+        "1h": {
+          "checkpoint_time": 1782745188.9853415,
+          "target_time": 1782747968.8055992,
+          "checkpoint_price": 2.8023,
+          "checkpoint_pct": -0.2,
+          "source": "cache_due_late_estimate",
+          "cache_price_time": 1782745188.9853415,
+          "cache_price_source": "snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782755937.3832269,
+          "target_time": 1782755168.8055992,
+          "checkpoint_price": 2.746,
+          "checkpoint_pct": -2.2,
+          "source": "snapshot"
+        },
+        "6h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782765968.8055992,
+          "checkpoint_price": 2.605,
+          "checkpoint_pct": -7.23,
+          "source": "snapshot"
+        },
+        "12h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782787568.8055992,
+          "checkpoint_price": 2.605,
+          "checkpoint_pct": -7.23,
+          "source": "snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782830768.8055992,
+          "checkpoint_price": 2.605,
+          "checkpoint_pct": -7.23,
+          "source": "snapshot"
+        },
+        "48h": {
+          "checkpoint_time": 1782917488.84419,
+          "target_time": 1782917168.8055992,
+          "checkpoint_price": 2.605,
+          "checkpoint_pct": -7.23,
+          "source": "snapshot"
+        }
+      },
+      "outcome": "watch_saved",
+      "frozen_at": 1782917488.84419,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
     }
   }
 }
