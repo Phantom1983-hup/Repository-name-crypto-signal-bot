@@ -1145,6 +1145,62 @@
         "report_consistency_fix": "v20.10",
         "open_unique_assets": 4
       }
+    },
+    {
+      "timestamp": 1782877946.6027446,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH",
+      "measurement_valid": true,
+      "overall": 48,
+      "forecast_accuracy": 46,
+      "evidence_confidence": 56,
+      "scores": {
+        "protection": 94,
+        "entry_accuracy": 28,
+        "historical_validation": 33,
+        "forward_proof": 0,
+        "learning_speed": 88,
+        "technical_reliability": 100
+      },
+      "evidence": {
+        "paper_closed": 111,
+        "lessons": 12,
+        "good_lessons": 0,
+        "bad_lessons": 4,
+        "lesson_avg_pct": -1.29,
+        "validation_n": 146,
+        "entry_lab_version": "v20.10.7 EXIT SHADOW RESEARCH",
+        "entry_lab_fresh": true,
+        "entry_lab_recovery_error": "",
+        "validation_expectancy": 0.08,
+        "forward_closed": 0,
+        "forward_avg_pct": 0.0,
+        "experiment_forward_active": 0,
+        "experiment_forward_closed": 0,
+        "checkpoints": 167,
+        "evidence_ready_assets": 7,
+        "evidence_tracked_assets": 7,
+        "technical_checks": "benchmark checksum PASS; repeatability PASS",
+        "benchmark_hash": "7fea2d252e303565de5523093c21a0af31eab5c828c5162028a434379388caa9",
+        "evaluation_hash": "5174d9786aba016b0b1f2eaa01267b82dfa5957b2508ad5ddfe7364f38ffbf7b",
+        "benchmark_repeatable": true,
+        "retained_best_version": "v20.7 MODEL SELECTION GUARD",
+        "retained_best_score": 44,
+        "rejected_research_version": "v20.8 ADAPTIVE EXIT PLAN GUARD",
+        "research_overall": 48,
+        "auto_quality_probe_guard": "blocked until benchmark forward guard passes",
+        "open_observations": 8,
+        "open_paper_buy": 4,
+        "open_quality_probes": 4,
+        "open_quality_probe_assets": "SOL, SUI, LINK, INJ",
+        "open_paper_buy_assets": "SOL, INJ, SUI, LINK",
+        "open_quality_probe_avg_pct": 0.54,
+        "open_quality_probe_useful": 2,
+        "open_quality_probe_neutral": 1,
+        "open_quality_probe_weak": 1,
+        "open_observation_rule": "visible in reports, not counted into effectiveness until 24/48h close",
+        "report_consistency_fix": "v20.10",
+        "open_unique_assets": 4
+      }
     }
   ]
 }
