@@ -1573,7 +1573,8 @@
         "1h": -1.77,
         "3h": -1.13,
         "6h": -2.7,
-        "12h": -2.7
+        "12h": -2.7,
+        "24h": -2.7
       },
       "result_details": {
         "15m": {
@@ -1605,6 +1606,11 @@
           "checkpoint_time": 1782821147.8738635,
           "checkpoint_price": 1.981e-05,
           "source": "learning_cache:snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782821147.8738635,
+          "checkpoint_price": 1.981e-05,
+          "source": "learning_cache:snapshot"
         }
       },
       "status": "open",
@@ -1633,7 +1639,8 @@
         "1h": 0.33,
         "3h": 0.49,
         "6h": 0.49,
-        "12h": 0.49
+        "12h": 0.49,
+        "24h": 0.49
       },
       "result_details": {
         "15m": {
@@ -1662,6 +1669,11 @@
           "source": "learning_cache:snapshot"
         },
         "12h": {
+          "checkpoint_time": 1782806691.1772912,
+          "checkpoint_price": 5.6747,
+          "source": "learning_cache:snapshot"
+        },
+        "24h": {
           "checkpoint_time": 1782806691.1772912,
           "checkpoint_price": 5.6747,
           "source": "learning_cache:snapshot"
@@ -11294,7 +11306,7 @@
     }
   ],
   "last_created_at": 1782879769.3333604,
-  "last_update_at": 1782887049.834093,
+  "last_update_at": 1782888761.4207716,
   "last_quality_probe_created_at": 1782751580.5157573,
   "last_probe_scoring_snapshot_at": 1782751632.7169902,
   "paper_buy_journal_v191194": [
@@ -14519,6 +14531,126 @@
       "decision": "🟡 PAPER MICRO-BUY",
       "captured_at": 1782877933.4151955,
       "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    {
+      "snapshot_key": "active:SOL:PAPER_BUY_DECISION_TEST:495230:h16",
+      "kind": "active_paper_buy",
+      "asset": "SOL",
+      "stage": "12–24ч",
+      "hour_bucket": 16,
+      "age_h": 16.2,
+      "pnl_pct": 1.79,
+      "probe_score": 68,
+      "severity": -2,
+      "status": "🟢 12–24ч подтверждение",
+      "captured_at": 1782887373.5148537,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    {
+      "snapshot_key": "active:INJ:PAPER_BUY_DECISION_TEST:495230:h16",
+      "kind": "active_paper_buy",
+      "asset": "INJ",
+      "stage": "12–24ч",
+      "hour_bucket": 16,
+      "age_h": 16.2,
+      "pnl_pct": 0.0,
+      "probe_score": 55,
+      "severity": 1,
+      "status": "🟡 12–24ч нейтрально",
+      "captured_at": 1782887373.5148537,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    {
+      "snapshot_key": "active:SUI:PAPER_BUY_DECISION_TEST:495231:h15",
+      "kind": "active_paper_buy",
+      "asset": "SUI",
+      "stage": "12–24ч",
+      "hour_bucket": 15,
+      "age_h": 15.1,
+      "pnl_pct": 1.3,
+      "probe_score": 55,
+      "severity": -1,
+      "status": "🟢 12–24ч умеренно полезно",
+      "captured_at": 1782887373.5148537,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    {
+      "snapshot_key": "active:LINK:PAPER_BUY_DECISION_TEST:495231:h15",
+      "kind": "active_paper_buy",
+      "asset": "LINK",
+      "stage": "12–24ч",
+      "hour_bucket": 15,
+      "age_h": 15.1,
+      "pnl_pct": 0.97,
+      "probe_score": 55,
+      "severity": -1,
+      "status": "🟢 12–24ч умеренно полезно",
+      "captured_at": 1782887373.5148537,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    {
+      "snapshot_key": "candidate:SOL:VIRTUAL_PROBE_ENTRY_TEST:495208:h37",
+      "kind": "paper_candidate",
+      "asset": "SOL",
+      "stage": "24–48ч",
+      "hour_bucket": 37,
+      "age_h": 37.7,
+      "pnl_pct": 1.37,
+      "probe_score": 68,
+      "raw_score": 78,
+      "adjusted_score": 78,
+      "gate": "ALLOW",
+      "decision": "🟢 PAPER BUY",
+      "captured_at": 1782887373.5148537,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    {
+      "snapshot_key": "candidate:INJ:VIRTUAL_PROBE_ENTRY_TEST:495208:h37",
+      "kind": "paper_candidate",
+      "asset": "INJ",
+      "stage": "24–48ч",
+      "hour_bucket": 37,
+      "age_h": 37.7,
+      "pnl_pct": -0.7,
+      "probe_score": 55,
+      "raw_score": 68,
+      "adjusted_score": 67,
+      "gate": "ALLOW",
+      "decision": "🟢 PAPER BUY",
+      "captured_at": 1782887373.5148537,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    {
+      "snapshot_key": "candidate:SUI:VIRTUAL_PROBE_ENTRY_TEST:495208:h37",
+      "kind": "paper_candidate",
+      "asset": "SUI",
+      "stage": "24–48ч",
+      "hour_bucket": 37,
+      "age_h": 37.7,
+      "pnl_pct": 0.85,
+      "probe_score": 55,
+      "raw_score": 68,
+      "adjusted_score": 62,
+      "gate": "ALLOW",
+      "decision": "🟡 PAPER MICRO-BUY",
+      "captured_at": 1782887373.5148537,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
+    },
+    {
+      "snapshot_key": "candidate:LINK:VIRTUAL_PROBE_ENTRY_TEST:495208:h37",
+      "kind": "paper_candidate",
+      "asset": "LINK",
+      "stage": "24–48ч",
+      "hour_bucket": 37,
+      "age_h": 37.7,
+      "pnl_pct": -0.18,
+      "probe_score": 55,
+      "raw_score": 68,
+      "adjusted_score": 62,
+      "gate": "ALLOW",
+      "decision": "🟡 PAPER MICRO-BUY",
+      "captured_at": 1782887373.5148537,
+      "version": "v20.10.7 EXIT SHADOW RESEARCH"
     }
   ],
   "last_policy_forward_scan_at": 1782733864.2760766,
@@ -14548,7 +14680,7 @@
   "last_historical_buy_backfill_version": "v20.9.8 QUALITY OBSERVATION CONSISTENCY",
   "last_paper_training_at": 1782833139.5719275,
   "service_fix_v20_10_3": {
-    "last_run_ts": 1782877933.4142065,
+    "last_run_ts": 1782887373.4291847,
     "checkpointed_now": [],
     "closed_now": [],
     "active_after": 4,
