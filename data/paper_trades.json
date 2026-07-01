@@ -1005,7 +1005,8 @@
         "1h": 0.41,
         "3h": 0.48,
         "6h": 0.37,
-        "12h": 1.41
+        "12h": 1.41,
+        "24h": 3.09
       },
       "result_details": {
         "15m": {
@@ -1037,6 +1038,11 @@
           "checkpoint_time": 1782883405.7166538,
           "checkpoint_price": 59215.2,
           "source": "learning_cache:snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782927649.5591023,
+          "checkpoint_price": 60199.4,
+          "source": "learning_cache:snapshot"
         }
       },
       "status": "open",
@@ -1065,7 +1071,8 @@
         "1h": 0.51,
         "3h": 0.24,
         "6h": -0.03,
-        "12h": 1.52
+        "12h": 1.52,
+        "24h": 3.37
       },
       "result_details": {
         "15m": {
@@ -1096,6 +1103,11 @@
         "12h": {
           "checkpoint_time": 1782883405.7166538,
           "checkpoint_price": 1594.9,
+          "source": "learning_cache:snapshot"
+        },
+        "24h": {
+          "checkpoint_time": 1782927649.5591023,
+          "checkpoint_price": 1623.87,
           "source": "learning_cache:snapshot"
         }
       },
@@ -1548,7 +1560,8 @@
       "results": {
         "15m": 0.41,
         "30m": 0.41,
-        "1h": 1.13
+        "1h": 1.13,
+        "3h": 0.79
       },
       "result_details": {
         "15m": {
@@ -1564,6 +1577,11 @@
         "1h": {
           "checkpoint_time": 1782921811.0251582,
           "checkpoint_price": 205.88,
+          "source": "learning_cache:snapshot"
+        },
+        "3h": {
+          "checkpoint_time": 1782927649.5591023,
+          "checkpoint_price": 205.19,
           "source": "learning_cache:snapshot"
         }
       },
@@ -1656,6 +1674,25 @@
       "last_price": 86.242,
       "last_price_time": 1782927649.5591023,
       "last_pct": -0.62
+    },
+    "ILY:AVOID_PUMP_TEST:495258": {
+      "id": "ILY:AVOID_PUMP_TEST:495258",
+      "asset": "ILY",
+      "entry_time": 1782931266.8740842,
+      "entry_price": 0.1652,
+      "score": 55,
+      "master_score": 55,
+      "source_action": "WATCH",
+      "virtual_type": "AVOID_PUMP_TEST",
+      "verdict": "🟡 СПЕКУЛЯТИВНОЕ НАБЛЮДЕНИЕ / НЕ ДОГОНЯТЬ",
+      "is_quality": false,
+      "change_24": 12.3,
+      "btc_change": 3.07,
+      "macro_mod": -15,
+      "results": {},
+      "result_details": {},
+      "status": "open",
+      "note": "paper trading only: реальные сделки и автопокупки выключены"
     }
   },
   "closed": [
@@ -11943,8 +11980,8 @@
       "outcome": "paper_neutral"
     }
   ],
-  "last_created_at": 1782922993.2270973,
-  "last_update_at": 1782927652.4654286,
+  "last_created_at": 1782931266.8740842,
+  "last_update_at": 1782929410.661668,
   "last_quality_probe_created_at": 1782751580.5157573,
   "last_probe_scoring_snapshot_at": 1782751632.7169902,
   "paper_buy_journal_v191194": [
