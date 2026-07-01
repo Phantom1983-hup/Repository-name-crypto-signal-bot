@@ -24,7 +24,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16853,7 +16853,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17961,7 +17961,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18436,7 +18436,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18600,7 +18600,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18945,7 +18945,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19326,7 +19326,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19633,7 +19633,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20147,7 +20147,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20288,7 +20288,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 def v19115_quality_probe_candidate(c):
     """Качественный актив растёт умеренно: реальный BUY ещё запрещён,
     но нужна виртуальная проба, чтобы бот не учился только на пропусках.
@@ -20597,7 +20597,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 def v191151_collect_quality_probe_candidates():
     """Собрать текущие quality-probe кандидаты без сетевого перебора всего рынка."""
     out = []
@@ -20886,7 +20886,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
 except Exception:
@@ -21757,7 +21757,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     _v191161_old_unified_signal_report = unified_signal_report
 except Exception:
@@ -22160,7 +22160,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
 except Exception:
@@ -22728,7 +22728,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
 except Exception:
@@ -23235,7 +23235,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
 except Exception:
@@ -23540,7 +23540,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     _v19118_old_build_audit_file = build_audit_file
 except Exception:
@@ -24067,7 +24067,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     _v191181_old_build_audit_file = build_audit_file
 except Exception:
@@ -25283,7 +25283,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 def _v191191_branch_ref_name():
     try:
         br = str(GITHUB_BRANCH or "main").strip()
@@ -25426,7 +25426,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 def v191192_probe_sync_classification(pnl):
     """Возвращает текущий drawdown-aware probe bucket/score по той же шкале, что FAST PROBE SCORING."""
     try:
@@ -25712,7 +25712,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 def v191193_backup_in_recent_list(path, limit=50):
     """Возвращает запись из /backups, если exact path найден в списке GitHub contents."""
     try:
@@ -25939,7 +25939,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
 
@@ -26311,7 +26311,7 @@ def version_user_report():
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
 V1911101_RESTORE_META_KEY = "paper_buy_restore_v1911101"
@@ -26924,7 +26924,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 def v1911101_section(title, body):
     return "\n\n" + "="*80 + "\n" + str(title) + "\n" + "="*80 + "\n" + str(body or "")
 
@@ -26977,7 +26977,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 def v1911101_fmt_created_paper_buy(trade):
     try:
         asset = v19119_trade_asset(trade)
@@ -27076,7 +27076,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 def v1911101_load_buy_state():
     try:
         if os.path.exists(V1911101_PAPER_BUY_STATE_FILE):
@@ -27197,7 +27197,7 @@ def v19119_paper_buy_audit_report():
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 def v1911102_count_active_buy_in_data(data=None):
     try:
         if not isinstance(data, dict):
@@ -27502,7 +27502,7 @@ def version_user_report():
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
 except Exception:
@@ -27808,7 +27808,7 @@ def version_user_report():
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+V191111_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
@@ -32373,7 +32373,7 @@ except Exception:
 # === v20.9.7 REPORT CONSISTENCY FULL PASS ===
 # Runtime-safe cleanup: this block is deliberately placed BEFORE __main__.
 # It fixes labels that v20.9.5 could not clean because its cleanup code was appended after main().
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32453,7 +32453,7 @@ except Exception:
 # - make /effectiveness, /learn_fast, /paper_buy_status and /audit_file count open observations consistently;
 # - do not count open observations in final score until 24/48h;
 # - no trading logic changes.
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32940,7 +32940,7 @@ except Exception:
 # One final report-consistency pass based on live audit evidence from v20.9.7.
 # Fix: open quality-probe average in /effectiveness, /paper_buy_status and audit must match FAST PROBE SCORING.
 # No trading logic changes: real BUY 0, autotrading OFF, open observations do not increase effectiveness before 24/48h close.
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -33394,7 +33394,7 @@ except Exception:
 # Purpose: PAPER mode is a training lab, not a live-risk clone.
 # Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
 # Open observations still do not increase effectiveness until 24/48h close.
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     V191111_VERSION = BOT_VERSION
     V19119_PAPER_BUY_MAX_ACTIVE = 6
@@ -33918,7 +33918,7 @@ except Exception:
 # Fix: /paper_buy_status must move PAPER training forward when gate is ALLOW.
 # Previously it showed PAPER MICRO-BUY candidates but created 0 because the report default was create=False.
 # Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34019,7 +34019,7 @@ except Exception:
 # Fix: the status wrapper ignores that legacy False and runs safe PAPER training creation.
 # Also keep user-facing effectiveness honest: research learning speed cannot replace the 44/100 benchmark
 # before closed 24/48h forward evidence exists.
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34159,7 +34159,7 @@ except Exception:
 # === v20.10.3 OBSERVABILITY + NEXT CHECK UX ===
 # Service-fix only: do not change BUY thresholds, weights, asset selection, entry/exit scoring,
 # real buying or autotrading. The goal is to make PAPER BUY lifecycle and score reporting consistent.
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34750,10 +34750,10 @@ try:
 except Exception:
     pass
 
-# === v20.10.7.1 SIGNAL FAST CLARITY HOTFIX ===
+# === v20.10.7 EXIT SHADOW RESEARCH ===
 # Service-fix only: no trading logic changes. This layer fixes labels/counters so
 # historical closed PAPER lessons are not shown as current forward BUY closes.
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -35194,9 +35194,9 @@ except Exception:
     pass
 
 
-# === v20.10.7.1 SIGNAL FAST CLARITY HOTFIX ===
+# === v20.10.7 EXIT SHADOW RESEARCH ===
 # Safe service layer only: no BUY thresholds, no weights, no coin selection, no entry/exit logic changed.
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -35560,10 +35560,10 @@ except Exception:
     pass
 
 
-# === v20.10.7.1 SIGNAL FAST CLARITY HOTFIX ===
+# === v20.10.7 EXIT SHADOW RESEARCH ===
 # Safe service layer only: no BUY thresholds, no BUY weights, no coin selection,
 # no entry/exit logic, no useful/neutral/bad classification, no autotrading changes.
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -35868,10 +35868,10 @@ try:
 except Exception:
     pass
 
-# === v20.10.7.1 SIGNAL FAST CLARITY HOTFIX ===
+# === v20.10.7 EXIT SHADOW RESEARCH ===
 # Research-only layer: learns exits without touching active PAPER BUY.
 # No real BUY, no autotrading, no BUY weight changes, no forced close.
-BOT_VERSION = "v20.10.7.1 SIGNAL FAST CLARITY HOTFIX"
+BOT_VERSION = "v20.10.7 EXIT SHADOW RESEARCH"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -36030,252 +36030,6 @@ try:
     globals()['v19119_paper_buy_decision_report'] = v19119_paper_buy_decision_report
     globals()['v2021_paper_buy_user_report'] = v19119_paper_buy_decision_report
     globals()['version_user_report'] = version_user_report
-except Exception:
-    pass
-
-
-# === v20.10.7.1 SIGNAL FAST CLARITY HOTFIX ===
-# Цель: обычный /signal должен отвечать быстро и понятно объяснять no-buy.
-# Торговая логика, PAPER BUY, реальные покупки, автоторговля и BUY-веса не меняются.
-def v201071_safe_float(value, default=0.0):
-    try:
-        return float(value)
-    except Exception:
-        return float(default)
-
-
-def v201071_ticker_rows():
-    try:
-        tickers = kucoin_tickers()
-    except Exception as exc:
-        print(f"v20.10.7.1 signal ticker error: {exc}")
-        tickers = []
-
-    active_assets = set()
-    try:
-        active_assets = set(v191161_probe_assets())
-    except Exception:
-        active_assets = set()
-
-    preferred = [
-        "BTC", "ETH", "SOL", "SUI", "INJ", "LINK",
-        "BNB", "XRP", "ADA", "AVAX", "NEAR", "TAO",
-    ]
-    by_asset = {}
-    for t in tickers if isinstance(tickers, list) else []:
-        symbol = str(t.get("symbol") or "")
-        if not symbol.endswith("-USDT"):
-            continue
-        asset = symbol.replace("-USDT", "").upper()
-        price = v201071_safe_float(t.get("last"), 0.0)
-        change = v201071_safe_float(t.get("changeRate"), 0.0) * 100.0
-        volume = v201071_safe_float(t.get("volValue"), 0.0)
-        if price <= 0:
-            continue
-        by_asset[asset] = {
-            "asset": asset,
-            "price": price,
-            "change": change,
-            "volume": volume,
-            "active": asset in active_assets,
-        }
-
-    rows = []
-    seen = set()
-    for asset in preferred:
-        row = by_asset.get(asset)
-        if row:
-            rows.append(row)
-            seen.add(asset)
-
-    # Если активная PAPER/quality-проба не попала в preferred, всё равно показываем её.
-    for asset in sorted(active_assets):
-        if asset in seen:
-            continue
-        row = by_asset.get(asset)
-        if row:
-            rows.append(row)
-            seen.add(asset)
-
-    # Небольшой топ ликвидного роста как предупреждение "не догонять".
-    extra = sorted(
-        [
-            row for asset, row in by_asset.items()
-            if asset not in seen and row.get("volume", 0) >= 1_000_000
-        ],
-        key=lambda r: (r.get("change", 0), r.get("volume", 0)),
-        reverse=True,
-    )[:4]
-    rows.extend(extra)
-    return rows[:10], active_assets
-
-
-def v201071_signal_score(row):
-    asset = row.get("asset", "")
-    change = v201071_safe_float(row.get("change"), 0.0)
-    volume = v201071_safe_float(row.get("volume"), 0.0)
-    active = bool(row.get("active"))
-    quality_assets = set()
-    try:
-        quality_assets = set(v191161_quality_assets())
-    except Exception:
-        quality_assets = {"BTC", "ETH", "SOL", "SUI", "INJ", "LINK", "BNB", "AAVE", "AVAX", "NEAR", "TAO"}
-
-    score = 35
-    if asset in ("BTC", "ETH"):
-        score += 8
-    if asset in quality_assets:
-        score += 10
-    if active:
-        score += 7
-    score += min(max(change, -5), 6) * 2
-    score += min(volume / 25_000_000, 8)
-    return int(max(20, min(round(score), 78)))
-
-
-def v201071_signal_label(row):
-    asset = row.get("asset", "")
-    change = v201071_safe_float(row.get("change"), 0.0)
-    active = bool(row.get("active"))
-    score = v201071_signal_score(row)
-
-    if asset in ("BTC", "ETH"):
-        return "🟦 индикатор рынка", score
-    if active and change >= 4.5:
-        return "🟠 paper-проба активна, рост уже сильный — не добирать с рынка", min(score, 55)
-    if active and change >= 0.5:
-        return "🟡 quality-рост, paper-проба активна", max(score, 45)
-    if active:
-        return "🟦 paper-проба активна — ждать checkpoint", max(score, 35)
-    if change >= 8:
-        return "🟠 рост уже поздний — ждать откат", min(score, 55)
-    if change >= 2 and score >= 55:
-        return "🟡 quality-рост — только наблюдение", score
-    return "🟦 обычное наблюдение", score
-
-
-def v201071_no_buy_reason_lines(ctx, rows, active_assets):
-    fear = ctx.get("fg_value", "?") if isinstance(ctx, dict) else "?"
-    news = int((ctx or {}).get("macro_mod", (ctx or {}).get("geo_mod", 0)) or 0)
-    btc = v201071_safe_float((ctx or {}).get("btc_change"), 0.0)
-    reasons = []
-    try:
-        if isinstance(fear, (int, float)) and fear <= 15:
-            reasons.append(f"страх {fear}: рынок зелёный, но риск остаётся высоким")
-        elif str(fear).isdigit() and int(str(fear)) <= 15:
-            reasons.append(f"страх {fear}: рынок зелёный, но риск остаётся высоким")
-    except Exception:
-        pass
-    if news <= -8:
-        reasons.append(f"новости {news:+d}: фон давит на входы")
-    if active_assets:
-        reasons.append("открытые PAPER уже учатся; новые реальные входы запрещены до 24/48ч")
-    hot = [r for r in rows if v201071_safe_float(r.get("change"), 0.0) >= 4.5]
-    if hot:
-        assets = ", ".join([r.get("asset", "?") for r in hot[:3]])
-        reasons.append(f"{assets} уже сильно выросли: не догонять рынок")
-    if btc > 0 and not reasons:
-        reasons.append("зелёный рынок сам по себе не сигнал BUY: нужен откат, объём и закрытый урок")
-    if not reasons:
-        reasons.append("BUY разрешается только после подтверждения score, риска и закрытых уроков")
-    return reasons[:4]
-
-
-def v201071_fast_growth_radar_report(full=False):
-    try:
-        ctx = market_context(force_refresh=False)
-    except Exception:
-        ctx = {}
-
-    rows, active_assets = v201071_ticker_rows()
-    btc = v201071_safe_float(ctx.get("btc_change"), 0.0) if isinstance(ctx, dict) else 0.0
-    fear = ctx.get("fg_value", "?") if isinstance(ctx, dict) else "?"
-    news = int((ctx or {}).get("macro_mod", (ctx or {}).get("geo_mod", 0)) or 0)
-    try:
-        score = v191161_quality_score_value()
-    except Exception:
-        score = 55
-
-    mode = "ОСТОРОЖНО"
-    if news <= -8 or (str(fear).isdigit() and int(str(fear)) <= 15):
-        mode = "ОСТОРОЖНО / РИСК"
-    elif btc > 0:
-        mode = "УМЕРЕННО ЗЕЛЁНЫЙ"
-
-    focus = []
-    for row in rows:
-        label, _score = v201071_signal_label(row)
-        asset = row.get("asset", "")
-        if asset not in ("BTC", "ETH") and ("🟡" in label or bool(row.get("active"))):
-            focus.append(asset)
-        if len(focus) >= 3:
-            break
-    focus_text = ", ".join(focus) if focus else "ждать откат и подтверждение"
-    active_line = ", ".join(sorted(active_assets)) if active_assets else "нет"
-
-    body = []
-    for idx, row in enumerate(rows[:8 if not full else 10], start=1):
-        label, row_score = v201071_signal_label(row)
-        try:
-            price = format_usd_price(row.get("price"))
-        except Exception:
-            price = str(row.get("price", "?"))
-        body.append(
-            f"{idx}. {row.get('asset', '?')} — {label}\n"
-            f"   {row_score}/100 | {price} | 24ч {v201071_safe_float(row.get('change'), 0.0):+.2f}%"
-        )
-
-    reason_lines = v201071_no_buy_reason_lines(ctx if isinstance(ctx, dict) else {}, rows, active_assets)
-    reasons = "\n".join(f"• {r}" for r in reason_lines)
-
-    return (
-        "📊 Сигнал рынка — быстрый радар роста\n\n"
-        f"🟡 РЕЖИМ: {mode}\n"
-        "Покупки: 🔴 НЕТ\n"
-        f"BTC: {btc:+.2f}% | страх: {fear} | новости: {news:+d}\n"
-        f"Оценка бота: 🟢 {score}/100\n\n"
-        "Почему не покупать, хотя рынок зелёный:\n"
-        f"{reasons}\n\n"
-        f"🎯 Фокус сейчас: {focus_text}\n"
-        f"🧪 Активные paper-пробы: {active_line}\n\n"
-        "Что смотреть в первую очередь:\n"
-        + ("\n".join(body) if body else "Данные рынка временно недоступны.")
-        + "\n\n"
-        "Итог: 🔴 реальных покупок нет. Бот только наблюдает и учится через PAPER.\n"
-        "Тяжёлый полный анализ: /coin <тикер> или /audit_file"
-    )
-
-
-def user_signal_report():
-    return v201071_fast_growth_radar_report(full=False)
-
-
-def unified_signal_report():
-    return v201071_fast_growth_radar_report(full=True)
-
-
-def version_user_report():
-    return (
-        "✅ Версия: v20.10.7.1\n"
-        "Название: SIGNAL FAST CLARITY HOTFIX\n\n"
-        "Что исправлено:\n"
-        "• /signal теперь отвечает быстрым радаром, без тяжёлого анализа каждой монеты;\n"
-        "• добавлен простой блок “Почему не покупать, хотя рынок зелёный”;\n"
-        "• убрана путаница: зелёный рынок не равен разрешению BUY;\n"
-        "• v20.10.7 Exit Shadow сохранён.\n\n"
-        "Безопасность:\n"
-        "• реальные покупки: 0;\n"
-        "• автоторговля: OFF;\n"
-        "• BUY-веса: +0;\n"
-        "• PAPER BUY и текущий 24/48ч тест не менялись.\n\n"
-        "Команды проверки: /version | /signal | /paper_buy_status | /effectiveness | /audit_file"
-    )
-
-
-try:
-    globals()["user_signal_report"] = user_signal_report
-    globals()["unified_signal_report"] = unified_signal_report
-    globals()["version_user_report"] = version_user_report
 except Exception:
     pass
 
