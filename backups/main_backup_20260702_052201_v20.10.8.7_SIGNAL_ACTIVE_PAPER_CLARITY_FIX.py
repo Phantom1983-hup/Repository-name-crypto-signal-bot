@@ -24,7 +24,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16853,7 +16853,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17961,7 +17961,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18436,7 +18436,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18600,7 +18600,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18945,7 +18945,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19326,7 +19326,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19633,7 +19633,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20147,7 +20147,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20288,7 +20288,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 def v19115_quality_probe_candidate(c):
     """Качественный актив растёт умеренно: реальный BUY ещё запрещён,
     но нужна виртуальная проба, чтобы бот не учился только на пропусках.
@@ -20597,7 +20597,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 def v191151_collect_quality_probe_candidates():
     """Собрать текущие quality-probe кандидаты без сетевого перебора всего рынка."""
     out = []
@@ -20886,7 +20886,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
 except Exception:
@@ -21613,9 +21613,6 @@ def main():
                 elif text in ["/dev_status", "/freeze_status", "/dev_freeze"]:
                     send_message(chat_id, v20106_dev_status_report())
 
-                elif text in ["/manual_ready", "/manual_trade", "/manual_mode", "/trade_ready", "/micro_trade"]:
-                    send_message(chat_id, v201088_manual_ready_report())
-
                 elif text in ["/probe_lessons", "/lesson_engine", "/probe_finalizer", "/quality_lessons"]:
                     send_message(chat_id, v19118_probe_lesson_engine_report())
 
@@ -21760,7 +21757,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     _v191161_old_unified_signal_report = unified_signal_report
 except Exception:
@@ -22163,7 +22160,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
 except Exception:
@@ -22731,7 +22728,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
 except Exception:
@@ -23238,7 +23235,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
 except Exception:
@@ -23543,7 +23540,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     _v19118_old_build_audit_file = build_audit_file
 except Exception:
@@ -24070,7 +24067,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     _v191181_old_build_audit_file = build_audit_file
 except Exception:
@@ -25286,7 +25283,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 def _v191191_branch_ref_name():
     try:
         br = str(GITHUB_BRANCH or "main").strip()
@@ -25429,7 +25426,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 def v191192_probe_sync_classification(pnl):
     """Возвращает текущий drawdown-aware probe bucket/score по той же шкале, что FAST PROBE SCORING."""
     try:
@@ -25715,7 +25712,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 def v191193_backup_in_recent_list(path, limit=50):
     """Возвращает запись из /backups, если exact path найден в списке GitHub contents."""
     try:
@@ -25942,7 +25939,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
 
@@ -26314,7 +26311,7 @@ def version_user_report():
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
 V1911101_RESTORE_META_KEY = "paper_buy_restore_v1911101"
@@ -26927,7 +26924,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 def v1911101_section(title, body):
     return "\n\n" + "="*80 + "\n" + str(title) + "\n" + "="*80 + "\n" + str(body or "")
 
@@ -26980,7 +26977,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 def v1911101_fmt_created_paper_buy(trade):
     try:
         asset = v19119_trade_asset(trade)
@@ -27079,7 +27076,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 def v1911101_load_buy_state():
     try:
         if os.path.exists(V1911101_PAPER_BUY_STATE_FILE):
@@ -27200,7 +27197,7 @@ def v19119_paper_buy_audit_report():
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 def v1911102_count_active_buy_in_data(data=None):
     try:
         if not isinstance(data, dict):
@@ -27505,7 +27502,7 @@ def version_user_report():
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
 except Exception:
@@ -27811,7 +27808,7 @@ def version_user_report():
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+V191111_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
@@ -32376,7 +32373,7 @@ except Exception:
 # === v20.9.7 REPORT CONSISTENCY FULL PASS ===
 # Runtime-safe cleanup: this block is deliberately placed BEFORE __main__.
 # It fixes labels that v20.9.5 could not clean because its cleanup code was appended after main().
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32456,7 +32453,7 @@ except Exception:
 # - make /effectiveness, /learn_fast, /paper_buy_status and /audit_file count open observations consistently;
 # - do not count open observations in final score until 24/48h;
 # - no trading logic changes.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32943,7 +32940,7 @@ except Exception:
 # One final report-consistency pass based on live audit evidence from v20.9.7.
 # Fix: open quality-probe average in /effectiveness, /paper_buy_status and audit must match FAST PROBE SCORING.
 # No trading logic changes: real BUY 0, autotrading OFF, open observations do not increase effectiveness before 24/48h close.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -33397,7 +33394,7 @@ except Exception:
 # Purpose: PAPER mode is a training lab, not a live-risk clone.
 # Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
 # Open observations still do not increase effectiveness until 24/48h close.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     V191111_VERSION = BOT_VERSION
     V19119_PAPER_BUY_MAX_ACTIVE = 6
@@ -33921,7 +33918,7 @@ except Exception:
 # Fix: /paper_buy_status must move PAPER training forward when gate is ALLOW.
 # Previously it showed PAPER MICRO-BUY candidates but created 0 because the report default was create=False.
 # Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34022,7 +34019,7 @@ except Exception:
 # Fix: the status wrapper ignores that legacy False and runs safe PAPER training creation.
 # Also keep user-facing effectiveness honest: research learning speed cannot replace the 44/100 benchmark
 # before closed 24/48h forward evidence exists.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34162,7 +34159,7 @@ except Exception:
 # === v20.10.3 OBSERVABILITY + NEXT CHECK UX ===
 # Service-fix only: do not change BUY thresholds, weights, asset selection, entry/exit scoring,
 # real buying or autotrading. The goal is to make PAPER BUY lifecycle and score reporting consistent.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34753,10 +34750,10 @@ try:
 except Exception:
     pass
 
-# === v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER ===
+# === v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX ===
 # Service-fix only: no trading logic changes. This layer fixes labels/counters so
 # historical closed PAPER lessons are not shown as current forward BUY closes.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -35197,9 +35194,9 @@ except Exception:
     pass
 
 
-# === v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER ===
+# === v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX ===
 # Safe service layer only: no BUY thresholds, no weights, no coin selection, no entry/exit logic changed.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -35563,10 +35560,10 @@ except Exception:
     pass
 
 
-# === v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER ===
+# === v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX ===
 # Safe service layer only: no BUY thresholds, no BUY weights, no coin selection,
 # no entry/exit logic, no useful/neutral/bad classification, no autotrading changes.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -35871,10 +35868,10 @@ try:
 except Exception:
     pass
 
-# === v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER ===
+# === v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX ===
 # Research-only layer: learns exits without touching active PAPER BUY.
 # No real BUY, no autotrading, no BUY weight changes, no forced close.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -36037,7 +36034,7 @@ except Exception:
     pass
 
 
-# === v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER ===
+# === v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX ===
 # Цель: обычный /signal должен отвечать быстро и понятно объяснять no-buy.
 # Торговая логика, PAPER BUY, реальные покупки, автоторговля и BUY-веса не меняются.
 def v201071_safe_float(value, default=0.0):
@@ -37301,10 +37298,10 @@ except Exception:
     pass
 
 
-# === v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER ===
+# === v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX ===
 # Report-only fix: /signal and /coin must not call an active PAPER BUY "just observation".
 # No BUY thresholds, entries, exits, live trading, autotrading, or weights are changed.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
+BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -37609,269 +37606,6 @@ try:
     globals()["unified_signal_report"] = unified_signal_report
     globals()["format_single_coin_user_report"] = format_single_coin_user_report
     globals()["format_single_coin_report"] = format_single_coin_report
-    globals()["v191181_fast_audit_build_content"] = v191181_fast_audit_build_content
-    globals()["v191111_audit_content"] = v191111_audit_content
-    globals()["version_user_report"] = version_user_report
-except Exception:
-    pass
-
-
-# === v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER ===
-# Report-only readiness layer for staged manual micro-trades.
-# It does not place orders, does not enable autotrading, and does not change BUY weights.
-BOT_VERSION = "v20.10.8.8 MANUAL MICRO TRADE READINESS LADDER"
-try:
-    V191111_VERSION = BOT_VERSION
-except Exception:
-    pass
-
-try:
-    _v201088_base_signal_report = user_signal_report
-except Exception:
-    _v201088_base_signal_report = None
-try:
-    _v201088_base_effectiveness_report = v201_effectiveness_report
-except Exception:
-    _v201088_base_effectiveness_report = None
-try:
-    _v201088_base_fast_audit = v191181_fast_audit_build_content
-except Exception:
-    _v201088_base_fast_audit = None
-try:
-    _v201088_base_version = version_user_report
-except Exception:
-    _v201088_base_version = None
-
-
-def v201088_market_risk_payload():
-    try:
-        ctx = market_context(force_refresh=False)
-    except Exception:
-        ctx = {}
-    if not isinstance(ctx, dict):
-        ctx = {}
-    try:
-        news = int(ctx.get("macro_mod", ctx.get("geo_mod", 0)) or 0)
-    except Exception:
-        news = 0
-    try:
-        fear = int(ctx.get("fg_value", 50) or 50)
-    except Exception:
-        fear = 50
-    try:
-        btc = float(ctx.get("btc_change", 0.0) or 0.0)
-    except Exception:
-        btc = 0.0
-    risk_red = bool(news <= -8 or fear <= 15)
-    return {"news": news, "fear": fear, "btc": btc, "risk_red": risk_red}
-
-
-def v201088_forward_payload():
-    try:
-        c = v20103_forward_counts()
-        if not isinstance(c, dict):
-            c = {}
-    except Exception:
-        c = {}
-    active = int(c.get("current_cycle_active", c.get("active_paper_buy", 0)) or 0)
-    total = int(c.get("current_cycle_total", active) or active or 0)
-    closed = int(c.get("current_cycle_closed", c.get("closed_forward_buy", 0)) or 0)
-    strict_24 = int(c.get("current_cycle_checkpoint_24", c.get("checkpoint_24_total", 0)) or 0)
-    live_24 = 0
-    try:
-        live_24 = int(v201085_live_ready_24_count() or 0)
-    except Exception:
-        live_24 = strict_24
-    return {
-        "active": active,
-        "total": max(total, active, 0),
-        "closed": closed,
-        "strict_24": strict_24,
-        "live_24": live_24,
-        "closed_forward_total": int(c.get("closed_forward_buy", 0) or 0),
-    }
-
-
-def v201088_active_paper_rows():
-    try:
-        rows = v201087_active_paper_rows(limit=12)
-    except Exception:
-        rows = []
-    return rows if isinstance(rows, list) else []
-
-
-def v201088_manual_snapshot():
-    rows = v201088_active_paper_rows()
-    fwd = v201088_forward_payload()
-    risk = v201088_market_risk_payload()
-    winners = [r for r in rows if v201087_float(r.get("pct"), 0.0) >= 1.0]
-    weak = [r for r in rows if v201087_float(r.get("pct"), 0.0) <= -2.0]
-    stop_hit = [
-        r for r in rows
-        if v201087_float(r.get("pct"), 0.0) <= -2.0
-        or "закрыть paper" in str(r.get("action", "")).lower()
-        or "stop" in str(r.get("action", "")).lower() and v201087_float(r.get("pct"), 0.0) < 0
-    ]
-    avg_pct = sum(v201087_float(r.get("pct"), 0.0) for r in rows) / max(1, len(rows))
-    blockers = []
-    if fwd.get("closed", 0) < max(1, fwd.get("total", 0)):
-        blockers.append("текущий forward-цикл ещё не закрыт 48ч")
-    if stop_hit:
-        blockers.append("есть нерешённый stop-hit/слабый вход: " + ", ".join(r.get("asset", "?") for r in stop_hit[:3]))
-    if risk.get("risk_red"):
-        blockers.append(f"риск-фон красный: новости {risk['news']:+d}, страх {risk['fear']}")
-    if len(rows) < 4:
-        blockers.append("мало активных PAPER BUY для решения")
-
-    if blockers:
-        stage = "🔴 BLOCK"
-        mode = "manual real-money trades blocked"
-    elif len(winners) >= 3 and avg_pct > 1.0:
-        stage = "🟢 MANUAL MICRO READY"
-        mode = "ручная micro-сделка возможна только после подтверждения сигнала"
-    else:
-        stage = "🟡 WATCH ONLY"
-        mode = "готовить ручной режим, но вход не разрешён"
-
-    return {
-        "rows": rows,
-        "winners": winners,
-        "weak": weak,
-        "stop_hit": stop_hit,
-        "avg_pct": avg_pct,
-        "forward": fwd,
-        "risk": risk,
-        "blockers": blockers,
-        "stage": stage,
-        "mode": mode,
-    }
-
-
-def v201088_size_ladder_lines():
-    return [
-        "Размеры ручного режима:",
-        "• Stage 0: 0 USDT — пока BLOCK;",
-        "• Stage 1 manual micro: 0.25-0.50% капитала на сделку, только 1 позиция;",
-        "• Stage 2 manual small: 0.75-1.00% после 10+ закрытых manual/PAPER уроков с positive expectancy;",
-        "• Stage 3 auto: только после 20+ закрытых BUY-уроков, bad <=25%, avg PnL >+0.5%, useful >=55%.",
-    ]
-
-
-def v201088_manual_ready_report():
-    s = v201088_manual_snapshot()
-    f = s["forward"]
-    r = s["risk"]
-    lines = [
-        "🧭 Manual Micro Trade Readiness",
-        f"Версия: {BOT_VERSION}",
-        "",
-        f"Статус: {s['stage']} — {s['mode']}",
-        "Реальные автопокупки: OFF | BUY-веса: +0",
-        "",
-        f"Forward: active {f['active']} | live 24ч {f['live_24']}/{max(1, f['total'])} | closed 48ч {f['closed']}/{max(1, f['total'])}",
-        f"Риск-фон: {'🔴 высокий' if r['risk_red'] else '🟡 допустимый'} | BTC {r['btc']:+.2f}% | страх {r['fear']} | новости {r['news']:+d}",
-        f"Active PAPER avg: {s['avg_pct']:+.2f}% | winners {len(s['winners'])}/{len(s['rows'])} | weak {len(s['weak'])}/{len(s['rows'])}",
-        "",
-    ]
-    if s["rows"]:
-        lines.append("Текущие PAPER как репетиция manual:")
-        for row in s["rows"][:6]:
-            tag = "good" if v201087_float(row.get("pct"), 0.0) >= 1.0 else ("weak" if v201087_float(row.get("pct"), 0.0) <= -2.0 else "neutral")
-            lines.append(f"• {row.get('asset')}: {v201087_float(row.get('pct'), 0.0):+.2f}% | {tag} | {v201087_short_action(row.get('action'))}")
-        lines.append("")
-    if s["blockers"]:
-        lines.append("Что блокирует ручные сделки сейчас:")
-        for item in s["blockers"]:
-            lines.append(f"• {item}")
-        lines.append("")
-    lines += v201088_size_ladder_lines()
-    lines += [
-        "",
-        "Правила Stage 1:",
-        "• вход только вручную, без автоторговли;",
-        "• заранее задан stop, без усреднения и без переноса стопа вниз;",
-        "• если цена уже ушла выше зоны, бот пишет 'поздно, не догонять';",
-        "• после каждой сделки обязателен урок: вход, MAE/MFE, alpha против BTC/ETH/top-50.",
-        "",
-        "Следующий шаг: дождаться 48ч close текущего цикла и записать INJ как stop-hit/prevent-rule.",
-    ]
-    return "\n".join(lines)
-
-
-def v201088_manual_brief_line():
-    s = v201088_manual_snapshot()
-    if s["stage"].startswith("🟢"):
-        return "Manual micro: 🟢 READY только для ручного входа после подтверждения /coin."
-    if s["blockers"]:
-        return "Manual micro: 🔴 BLOCK — " + "; ".join(s["blockers"][:2])
-    return "Manual micro: 🟡 WATCH ONLY."
-
-
-def user_signal_report():
-    try:
-        base = _v201088_base_signal_report() if callable(_v201088_base_signal_report) else ""
-    except Exception as exc:
-        base = f"📊 Сигнал\nВерсия: {BOT_VERSION}\n\nSignal fallback: {exc}"
-    return str(base).rstrip() + "\n\n" + v201088_manual_brief_line() + "\nПодробно: /manual_ready"
-
-
-def unified_signal_report():
-    return user_signal_report()
-
-
-def v201_effectiveness_report(record=True, technical=False):
-    base = _v201088_base_effectiveness_report(record=record, technical=technical) if callable(_v201088_base_effectiveness_report) else "📈 Эффективность ALEX EDGE"
-    if technical:
-        return base
-    return str(base).rstrip() + "\n\n" + v201088_manual_brief_line()
-
-
-def v201088_audit_section():
-    return v201088_manual_ready_report()
-
-
-def v191181_fast_audit_build_content():
-    try:
-        base = _v201088_base_fast_audit() if callable(_v201088_base_fast_audit) else "ALEX EDGE ULTRA FAST TECH AUDIT FILE"
-    except Exception as exc:
-        base = f"ALEX EDGE ULTRA FAST TECH AUDIT FILE\n\nBOT_VERSION: {BOT_VERSION}\nAudit error: {exc}"
-    marker = "\n" + "=" * 80 + "\nMANUAL MICRO TRADE READINESS V20.10.8.8\n" + "=" * 80 + "\n"
-    if marker in str(base):
-        base = str(base).split(marker)[0].rstrip()
-    return str(base).rstrip() + marker + v201088_audit_section() + "\n"
-
-
-def v191111_audit_content():
-    return v191181_fast_audit_build_content()
-
-
-def version_user_report():
-    return (
-        "✅ Версия: v20.10.8.8\n"
-        "Название: MANUAL MICRO TRADE READINESS LADDER\n\n"
-        "Что добавлено:\n"
-        "• новая команда /manual_ready для перехода от PAPER к ручным micro-сделкам;\n"
-        "• staged ladder: BLOCK → WATCH ONLY → MANUAL MICRO READY → MANUAL SMALL → AUTO;\n"
-        "• ручной режим требует 48ч close, разбора stop-hit и допустимого риск-фона;\n"
-        "• /signal и /effectiveness показывают краткий manual-ready статус;\n"
-        "• audit_file получил отдельный блок readiness.\n\n"
-        "Безопасность:\n"
-        "• автоторговля не включалась;\n"
-        "• реальные ордера бот не ставит;\n"
-        "• BUY-веса: +0;\n"
-        "• торговые пороги и entry/exit не менялись;\n"
-        "• Stage 1 ограничен 0.25-0.50% капитала и только ручным подтверждением.\n\n"
-        "Команды проверки: /version | /manual_ready | /signal | /paper_buy_status | /effectiveness | /audit_file"
-    )
-
-
-try:
-    globals()["BOT_VERSION"] = BOT_VERSION
-    globals()["V191111_VERSION"] = BOT_VERSION
-    globals()["v201088_manual_ready_report"] = v201088_manual_ready_report
-    globals()["user_signal_report"] = user_signal_report
-    globals()["unified_signal_report"] = unified_signal_report
-    globals()["v201_effectiveness_report"] = v201_effectiveness_report
     globals()["v191181_fast_audit_build_content"] = v191181_fast_audit_build_content
     globals()["v191111_audit_content"] = v191111_audit_content
     globals()["version_user_report"] = version_user_report
