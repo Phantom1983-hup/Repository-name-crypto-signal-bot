@@ -24,7 +24,7 @@ def keep_alive():
     Thread(target=run).start()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 # === v19.11.4.2 version header hard fix ===
 # Все явные BOT_VERSION assignments в файле приведены к одной версии.
 
@@ -16853,7 +16853,7 @@ def build_audit_file(chat_id):
 # === v19.11.1 FAST PAPER CHECKPOINTS ===
 # Цель: перевести проверенные гипотезы в paper-профили, не трогая реальные BUY-веса,
 # Risk Engine и автоторговлю. v19.11 меняет только отчёты/исследовательские веса.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 def _v1911_safe_int(v, default=0):
     try:
         return int(v or 0)
@@ -17961,7 +17961,7 @@ def build_audit_file(chat_id):
 # Цель hotfix: v19.11.2.2.1 спас audit от KeyError, но слишком грубо отправлял типы в unknown_alt.
 # Эта версия сохраняет safe fallback, но восстанавливает нормальное распределение типов по asset/coin_type.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 V191122_BASE_ASSETS = set(["BTC", "ETH", "BNB"])
 V191122_QUALITY_ASSETS = set(["AAVE", "SOL", "INJ", "AVAX", "LINK", "SUI", "TAO", "NEAR", "ADA", "XRP"])
 V191122_SHORT_MOMENTUM_ASSETS = set(["SYN", "BAS", "LAB", "UB"])
@@ -18436,7 +18436,7 @@ def v1911_paper_profile_report():
 # "v19.11.2.2.1.2.2.1" в ADAPTIVE LEARNING ENGINE. Это не влияет на BUY/Risk,
 # но может вводить в заблуждение при проверке отчёта, поэтому фиксируем сразу.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 V1911222_CANON = "v19.11.2.2.2"
 
 
@@ -18600,7 +18600,7 @@ def build_audit_file(chat_id):
 # обычное наблюдение -> priority-watch -> paper-entry ready.
 # Это НЕ live BUY, НЕ изменение Risk Engine и НЕ автоторговля.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 V19113_CANON = "v19.11.3.1"
 
 
@@ -18945,7 +18945,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, BUY-веса, Risk Engine/блок риска и автоторговлю.
 # Меняются только текст, структура и язык пользовательских команд.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 V191131_CANON = "v19.11.3.1"
 
 
@@ -19326,7 +19326,7 @@ def build_audit_file(chat_id):
 # Эта версия НЕ меняет алгоритм, веса покупки, блок риска и автоторговлю.
 # Меняются только пользовательские отчёты и безопасная нормализация метрик.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 V191132_CANON = "v19.11.3.2"
 try:
     V191131_CANON = V191132_CANON
@@ -19633,7 +19633,7 @@ def build_audit_file(chat_id):
 # Меняется paper/shadow-логика: качественные монеты меньше душатся общим страхом, пампы уходят в отдельную карту тайминга,
 # а 15м/30м/1ч/3ч/6ч/12ч/24ч превращаются в быстрые уроки до финального 48ч контроля.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 V19114_CANON = "v19.11.4"
 try:
     V191132_CANON = V19114_CANON
@@ -20147,7 +20147,7 @@ def build_audit_file(chat_id):
 # Исправляет расхождение оценок и защищает Full-Skip Memory от ложного обнуления.
 # Важно: алгоритм реальных покупок, боевой риск-блок и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 V191141_CANON = "v19.11.4.1"
 try:
     V19114_CANON = V191141_CANON
@@ -20288,7 +20288,7 @@ def version_user_report():
 # Исправление: добавлен безопасный paper-probe режим.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение risk engine.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 def v19115_quality_probe_candidate(c):
     """Качественный актив растёт умеренно: реальный BUY ещё запрещён,
     но нужна виртуальная проба, чтобы бот не учился только на пропусках.
@@ -20597,7 +20597,7 @@ def build_audit_file(chat_id):
 # но и реально записываться в paper_trades как отдельная виртуальная проверка.
 # Это НЕ реальный BUY, НЕ автоторговля и НЕ изменение блока риска.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 def v191151_collect_quality_probe_candidates():
     """Собрать текущие quality-probe кандидаты без сетевого перебора всего рынка."""
     out = []
@@ -20886,7 +20886,7 @@ def build_audit_file(chat_id):
 # Каждые ~30 минут он сам ищет SOL/AAVE/INJ/AVAX/SUI/NEAR/LINK-like quality-ситуации
 # и создаёт только paper-пробы. Реальные покупки, автоторговля и risk engine не меняются.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     AUTO_QUALITY_PROBE_STATE_FILE = data_path('auto_quality_probe_state.json')
 except Exception:
@@ -21757,7 +21757,7 @@ def main():
 # Цель: /signal должен быть радаром начала роста, а не только общим списком наблюдения.
 # Реальные покупки, автоторговля и боевой risk engine НЕ меняются.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     _v191161_old_unified_signal_report = unified_signal_report
 except Exception:
@@ -22160,7 +22160,7 @@ def build_audit_file(chat_id):
 # а авто-проверка продолжала брать старую оценку из _v1982_metrics и присылала 69/100.
 # Исправление только отчётное/метрическое: реальные покупки, автоторговля и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     _v191162_old_auto_audit_build_text = auto_audit_build_text
 except Exception:
@@ -22728,7 +22728,7 @@ def build_audit_file(chat_id):
 # 5) radar decay logic: /signal не пишет "рост уже сильный", если активная проба уже просела.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     _v19117_old_quality_probe_user_report = quality_probe_user_report
 except Exception:
@@ -23235,7 +23235,7 @@ def build_audit_file(chat_id):
 # Исправление: единый refresh-слой перед любым коротким score-отчётом.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     _v191171_old_quality_metrics = _v191162_quality_metrics
 except Exception:
@@ -23540,7 +23540,7 @@ def build_audit_file(chat_id):
 # закрывать/классифицировать 24/48ч уроки. Это слой самообучения, а не BUY.
 # Реальные покупки, BUY-веса, Risk Engine и автоторговля НЕ меняются.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     _v19118_old_build_audit_file = build_audit_file
 except Exception:
@@ -24067,7 +24067,7 @@ def build_audit_file(chat_id):
 # собираться слишком долго из-за тяжёлых refresh/finalizer/price-секций.
 # Цель: быстрый txt-файл за секунды, без блокировки Telegram и без изменения BUY/Risk.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     _v191181_old_build_audit_file = build_audit_file
 except Exception:
@@ -25283,7 +25283,7 @@ def version_user_report():
 # а не /git/ref/... (singular). Это сервисный hotfix деплойщика.
 # Торговая логика, paper BUY layer, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 def _v191191_branch_ref_name():
     try:
         br = str(GITHUB_BRANCH or "main").strip()
@@ -25426,7 +25426,7 @@ def version_user_report():
 # Fix: decision_score теперь синхронизирован с live probe-score/bucket.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 def v191192_probe_sync_classification(pnl):
     """Возвращает текущий drawdown-aware probe bucket/score по той же шкале, что FAST PROBE SCORING."""
     try:
@@ -25712,7 +25712,7 @@ def version_user_report():
 # Fix: /backup_verify использует metadata + raw/blob fallback + проверку списка backups.
 # Торговая логика, PAPER BUY scoring, BUY-веса, Risk Engine и автоторговля не меняются.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 def v191193_backup_in_recent_list(path, limit=50):
     """Возвращает запись из /backups, если exact path найден в списке GitHub contents."""
     try:
@@ -25939,7 +25939,7 @@ def version_user_report():
 # пишем journal/persistence metadata и явно показываем persistence status в отчётах.
 # Торговая логика, реальные покупки, BUY-веса, Risk Engine не меняются.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 V191194_PAPER_BUY_JOURNAL_KEY = 'paper_buy_journal_v191194'
 V191194_PAPER_BUY_PERSISTENCE_KEY = 'paper_buy_persistence_v191194'
 
@@ -26311,7 +26311,7 @@ def version_user_report():
 # inserted before __main__ and also appended at EOF for import/smoke parity.
 # It wires active PAPER BUY 6h status, lesson router, and durable state before runtime starts.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 V1911101_PAPER_BUY_STATE_FILE = data_path("paper_buy_state.json")
 V1911101_STATE_KEY = "paper_buy_durable_state_v1911101"
 V1911101_RESTORE_META_KEY = "paper_buy_restore_v1911101"
@@ -26924,7 +26924,7 @@ def version_user_report():
 
 # === v19.11.10.1 SAFE AUDIT WIRING OVERRIDE ===
 # Prevents post-__main__ historical override chains from creating recursive audit builders.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 def v1911101_section(title, body):
     return "\n\n" + "="*80 + "\n" + str(title) + "\n" + "="*80 + "\n" + str(body or "")
 
@@ -26977,7 +26977,7 @@ def v191181_fast_audit_build_content():
 
 # === v19.11.10.1 SAFE REPORT WIRING OVERRIDE ===
 # Standalone report builder: does not call old report functions, avoiding recursive override chains.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 def v1911101_fmt_created_paper_buy(trade):
     try:
         asset = v19119_trade_asset(trade)
@@ -27076,7 +27076,7 @@ def v19119_paper_buy_audit_report():
 
 # === v19.11.10.1 SAFE STATUS FINAL OVERRIDE ===
 # Avoids calling historical open/report chains for status mode and reads durable state directly from local file.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 def v1911101_load_buy_state():
     try:
         if os.path.exists(V1911101_PAPER_BUY_STATE_FILE):
@@ -27197,7 +27197,7 @@ def v19119_paper_buy_audit_report():
 # Fix: автосинхронизация durable-state из store при status/audit, числовой fast-score,
 # восстановленный shadow report. Торговая логика и live BUY не меняются.
 
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 def v1911102_count_active_buy_in_data(data=None):
     try:
         if not isinstance(data, dict):
@@ -27502,7 +27502,7 @@ def version_user_report():
 # Фоновая проверка остаётся для самообучения/финализации и пишет краткий log в audit_file.
 # Ручная команда /auto_audit_now по-прежнему отправляет карточку, потому что её запускает пользователь.
 # Реальные покупки, автоторговля, BUY-веса и Risk Engine не меняются.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     AUTO_AUDIT_SILENT_LOG_FILE = data_path('auto_audit_silent_log.json')
 except Exception:
@@ -27808,7 +27808,7 @@ def version_user_report():
 # One decision path: raw signal -> confidence router -> checkpoint gate -> final paper action.
 # Live trading remains disabled. Early checkpoints accelerate learning without promoting BUY weights.
 
-V191111_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+V191111_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 V191111_MIN_ASSET_LESSONS = 3
 V191111_FAST_CHECKPOINT_KEY = "unified_fast_checkpoint_log_v1911111"
 V201_EFFECTIVENESS_HISTORY_FILE = data_path("effectiveness_history_v201.json")
@@ -32373,7 +32373,7 @@ except Exception:
 # === v20.9.7 REPORT CONSISTENCY FULL PASS ===
 # Runtime-safe cleanup: this block is deliberately placed BEFORE __main__.
 # It fixes labels that v20.9.5 could not clean because its cleanup code was appended after main().
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32453,7 +32453,7 @@ except Exception:
 # - make /effectiveness, /learn_fast, /paper_buy_status and /audit_file count open observations consistently;
 # - do not count open observations in final score until 24/48h;
 # - no trading logic changes.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -32940,7 +32940,7 @@ except Exception:
 # One final report-consistency pass based on live audit evidence from v20.9.7.
 # Fix: open quality-probe average in /effectiveness, /paper_buy_status and audit must match FAST PROBE SCORING.
 # No trading logic changes: real BUY 0, autotrading OFF, open observations do not increase effectiveness before 24/48h close.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -33394,7 +33394,7 @@ except Exception:
 # Purpose: PAPER mode is a training lab, not a live-risk clone.
 # Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
 # Open observations still do not increase effectiveness until 24/48h close.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     V191111_VERSION = BOT_VERSION
     V19119_PAPER_BUY_MAX_ACTIVE = 6
@@ -33918,7 +33918,7 @@ except Exception:
 # Fix: /paper_buy_status must move PAPER training forward when gate is ALLOW.
 # Previously it showed PAPER MICRO-BUY candidates but created 0 because the report default was create=False.
 # Real BUY remains 0, autotrading remains OFF, BUY weights remain +0.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34019,7 +34019,7 @@ except Exception:
 # Fix: the status wrapper ignores that legacy False and runs safe PAPER training creation.
 # Also keep user-facing effectiveness honest: research learning speed cannot replace the 44/100 benchmark
 # before closed 24/48h forward evidence exists.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34159,7 +34159,7 @@ except Exception:
 # === v20.10.3 OBSERVABILITY + NEXT CHECK UX ===
 # Service-fix only: do not change BUY thresholds, weights, asset selection, entry/exit scoring,
 # real buying or autotrading. The goal is to make PAPER BUY lifecycle and score reporting consistent.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -34750,10 +34750,10 @@ try:
 except Exception:
     pass
 
-# === v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX ===
+# === v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP ===
 # Service-fix only: no trading logic changes. This layer fixes labels/counters so
 # historical closed PAPER lessons are not shown as current forward BUY closes.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -35194,9 +35194,9 @@ except Exception:
     pass
 
 
-# === v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX ===
+# === v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP ===
 # Safe service layer only: no BUY thresholds, no weights, no coin selection, no entry/exit logic changed.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -35560,10 +35560,10 @@ except Exception:
     pass
 
 
-# === v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX ===
+# === v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP ===
 # Safe service layer only: no BUY thresholds, no BUY weights, no coin selection,
 # no entry/exit logic, no useful/neutral/bad classification, no autotrading changes.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -35868,10 +35868,10 @@ try:
 except Exception:
     pass
 
-# === v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX ===
+# === v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP ===
 # Research-only layer: learns exits without touching active PAPER BUY.
 # No real BUY, no autotrading, no BUY weight changes, no forced close.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
+BOT_VERSION = "v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP"
 try:
     V191111_VERSION = BOT_VERSION
 except Exception:
@@ -36034,7 +36034,7 @@ except Exception:
     pass
 
 
-# === v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX ===
+# === v20.10.8.6 AUDIT UX SCOUT AGE CLEANUP ===
 # Цель: обычный /signal должен отвечать быстро и понятно объяснять no-buy.
 # Торговая логика, PAPER BUY, реальные покупки, автоторговля и BUY-веса не меняются.
 def v201071_safe_float(value, default=0.0):
@@ -37294,321 +37294,6 @@ try:
     globals()["version_user_report"] = version_user_report
     globals()["v20108_user_memory_block"] = v20108_user_memory_block
     globals()["v20108_audit_memory_section"] = v20108_audit_memory_section
-except Exception:
-    pass
-
-
-# === v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX ===
-# Report-only fix: /signal and /coin must not call an active PAPER BUY "just observation".
-# No BUY thresholds, entries, exits, live trading, autotrading, or weights are changed.
-BOT_VERSION = "v20.10.8.7 SIGNAL ACTIVE PAPER CLARITY FIX"
-try:
-    V191111_VERSION = BOT_VERSION
-except Exception:
-    pass
-
-try:
-    _v201087_base_signal_report = user_signal_report
-except Exception:
-    _v201087_base_signal_report = None
-try:
-    _v201087_base_unified_signal_report = unified_signal_report
-except Exception:
-    _v201087_base_unified_signal_report = None
-try:
-    _v201087_base_coin_user_report = format_single_coin_user_report
-except Exception:
-    _v201087_base_coin_user_report = None
-try:
-    _v201087_base_coin_report = format_single_coin_report
-except Exception:
-    _v201087_base_coin_report = None
-try:
-    _v201087_base_fast_audit = v191181_fast_audit_build_content
-except Exception:
-    _v201087_base_fast_audit = None
-
-
-def v201087_float(value, default=0.0):
-    try:
-        return float(value)
-    except Exception:
-        return float(default)
-
-
-def v201087_asset_from_trade(trade):
-    try:
-        asset = trade.get("asset") or trade.get("symbol") or trade.get("coin") or ""
-        return str(asset).replace("-USDT", "").upper().strip()
-    except Exception:
-        return ""
-
-
-def v201087_active_paper_rows(limit=12):
-    try:
-        data = paper_store()
-    except Exception:
-        data = {}
-    try:
-        active = v20103_active_paper_buy_trades(data)
-    except Exception:
-        active = []
-    exit_by_asset = {}
-    try:
-        for row in v20107_exit_shadow_rows(limit=20):
-            if isinstance(row, dict) and row.get("asset"):
-                exit_by_asset[str(row.get("asset")).upper()] = row
-    except Exception:
-        exit_by_asset = {}
-
-    rows = []
-    for key, trade in active if isinstance(active, list) else []:
-        if not isinstance(trade, dict):
-            continue
-        asset = v201087_asset_from_trade(trade)
-        if not asset:
-            continue
-        entry = v201087_float(trade.get("entry_price"), 0.0)
-        last = v201087_float(trade.get("last_price"), entry)
-        pct = trade.get("last_pct")
-        if not isinstance(pct, (int, float)):
-            pct = ((last - entry) / entry * 100.0) if entry > 0 and last > 0 else 0.0
-        entry_time = v201087_float(trade.get("entry_time"), 0.0)
-        age_h = max(0.0, (time.time() - entry_time) / 3600.0) if entry_time > 0 else 0.0
-        shadow = exit_by_asset.get(asset, {})
-        rows.append({
-            "asset": asset,
-            "entry": entry,
-            "last": last,
-            "pct": v201087_float(pct, 0.0),
-            "age_h": age_h,
-            "action": shadow.get("action") or "PAPER BUY active: ждать checkpoint/exit shadow",
-        })
-    rows.sort(key=lambda r: (0 if r.get("asset") == "SOL" else 1, r.get("asset", "")))
-    return rows[:int(limit or 12)]
-
-
-def v201087_active_paper_assets():
-    return {r.get("asset") for r in v201087_active_paper_rows(limit=50) if r.get("asset")}
-
-
-def v201087_price_text(value):
-    try:
-        if "format_usd_price" in globals():
-            return format_usd_price(value)
-    except Exception:
-        pass
-    try:
-        return f"${float(value):.6g}"
-    except Exception:
-        return str(value)
-
-
-def v201087_short_action(action):
-    text = str(action or "")
-    text = text.replace("🟢 EXIT SHADOW: ", "")
-    text = text.replace("🔴 EXIT SHADOW: ", "")
-    text = text.replace("🟠 EXIT SHADOW: ", "")
-    text = text.replace("🟡 EXIT SHADOW: ", "")
-    return text[:90]
-
-
-def v201087_active_paper_block():
-    rows = v201087_active_paper_rows(limit=8)
-    if not rows:
-        return ""
-    lines = ["", "PAPER BUY уже открыты (виртуально, без реальных денег):"]
-    for r in rows:
-        lines.append(
-            f"• {r['asset']}: entry {v201087_price_text(r['entry'])} → now {v201087_price_text(r['last'])} "
-            f"({r['pct']:+.2f}%) | {r['age_h']:.1f}ч | {v201087_short_action(r.get('action'))}"
-        )
-    if any(r.get("asset") == "SOL" for r in rows):
-        lines += [
-            "",
-            "Почему SOL не должен называться просто наблюдением:",
-            "• ранний SOL-вход уже взят на PAPER, поэтому это активный урок входа/выхода;",
-            "• текущая цена выше первой зоны, значит новый вход с рынка считается поздним;",
-            "• реальный BUY остаётся запрещён до закрытых 48ч forward-уроков и критериев готовности.",
-        ]
-    return "\n".join(lines)
-
-
-def v201087_active_signal_label(asset, old_label):
-    asset = str(asset or "").upper()
-    if asset == "SOL":
-        return "🟢 PAPER BUY уже открыт; новый вход сейчас поздний, контроль T1/stop"
-    return "🟢 PAPER BUY уже открыт; ждать 48ч урок/exit shadow"
-
-
-def v201087_normalize_signal_text(text):
-    text = str(text or "")
-    rows = v201087_active_paper_rows(limit=12)
-    if not rows:
-        return text
-    assets = [r["asset"] for r in rows if r.get("asset")]
-    active_line = ", ".join(assets)
-    try:
-        text = re.sub(r"Версия:\s*v20\.[^\n]+", f"Версия: {BOT_VERSION}", text)
-        text = re.sub(
-            r"🧪 Активные paper-пробы: [^\n]+",
-            f"🧪 Активные PAPER BUY: {active_line}",
-            text,
-        )
-        text = re.sub(
-            r"PAPER/SCOUT: 🟢 ДА \| active SCOUT (\d+)",
-            rf"PAPER/SCOUT: 🟢 ДА | active PAPER {len(rows)} | active SCOUT \1",
-            text,
-        )
-        for asset in assets:
-            text = re.sub(
-                rf"(\d+\.\s+{re.escape(asset)}\s+—\s+)[^\n]+",
-                lambda m, a=asset: m.group(1) + v201087_active_signal_label(a, m.group(0)),
-                text,
-            )
-    except Exception:
-        pass
-    block = v201087_active_paper_block()
-    if block and "PAPER BUY уже открыты (виртуально" not in text:
-        text = text.rstrip() + "\n" + block
-    return text
-
-
-def user_signal_report():
-    try:
-        base = _v201087_base_signal_report() if callable(_v201087_base_signal_report) else v201071_fast_growth_radar_report(full=False)
-    except Exception as exc:
-        base = f"📊 Сигнал\nВерсия: {BOT_VERSION}\n\nSignal fallback: {exc}"
-    return v201087_normalize_signal_text(base)
-
-
-def unified_signal_report():
-    try:
-        base = _v201087_base_unified_signal_report() if callable(_v201087_base_unified_signal_report) else user_signal_report()
-    except Exception:
-        base = user_signal_report()
-    return v201087_normalize_signal_text(base)
-
-
-def v201087_coin_paper_block(symbol):
-    symbol = str(symbol or "").replace("-USDT", "").upper().strip()
-    rows = [r for r in v201087_active_paper_rows(limit=20) if r.get("asset") == symbol]
-    if not rows:
-        return ""
-    r = rows[0]
-    return "\n".join([
-        "",
-        "PAPER статус:",
-        f"• {symbol}: PAPER BUY уже открыт от {v201087_price_text(r['entry'])}; сейчас {r['pct']:+.2f}% и {r['age_h']:.1f}ч.",
-        f"• Следующее действие: {v201087_short_action(r.get('action'))}.",
-        "• Новый real BUY запрещён: ждём 48ч close и закрытые forward-уроки.",
-    ])
-
-
-def v201087_normalize_coin_text(symbol, text):
-    symbol = str(symbol or "").replace("-USDT", "").upper().strip()
-    if symbol not in v201087_active_paper_assets():
-        return str(text or "")
-    out = str(text or "")
-    try:
-        out = re.sub(r"Версия:\s*v20\.[^\n]+", f"Версия: {BOT_VERSION}", out)
-        out = re.sub(
-            r"Решение:\s*[^\n]*НЕ БОЕВОЙ BUY[^\n]*",
-            "Решение: 🟢 **PAPER BUY УЖЕ ОТКРЫТ; РЕАЛЬНЫЙ BUY ВСЁ ЕЩЁ ЗАПРЕЩЁН**",
-            out,
-        )
-        out = out.replace(
-            "Вывод: монета не должна быть в красном “не покупать”. Это quality-watch: следить ближе и проверять виртуально.",
-            "Вывод: виртуальная проверка уже идёт. Сейчас задача не догонять цену, а контролировать T1/stop и записать 48ч урок.",
-        )
-        out = out.replace(
-            "Вывод: монета интересна, но вход только после отката.",
-            "Вывод: PAPER BUY уже открыт; новый вход только после отката, реальный BUY запрещён.",
-        )
-    except Exception:
-        pass
-    block = v201087_coin_paper_block(symbol)
-    if block and "PAPER статус:" not in out:
-        out = out.rstrip() + "\n" + block
-    return out
-
-
-def format_single_coin_user_report(c):
-    symbol = str((c or {}).get("symbol") or (c or {}).get("asset") or "").replace("-USDT", "").upper().strip()
-    try:
-        base = _v201087_base_coin_user_report(c) if callable(_v201087_base_coin_user_report) else str(c)
-    except Exception as exc:
-        base = f"{symbol or 'COIN'}\nВерсия: {BOT_VERSION}\n\nCoin fallback: {exc}"
-    return v201087_normalize_coin_text(symbol, base)
-
-
-def format_single_coin_report(c):
-    symbol = str((c or {}).get("symbol") or (c or {}).get("asset") or "").replace("-USDT", "").upper().strip()
-    try:
-        base = _v201087_base_coin_report(c) if callable(_v201087_base_coin_report) else format_single_coin_user_report(c)
-    except Exception:
-        base = format_single_coin_user_report(c)
-    return v201087_normalize_coin_text(symbol, base)
-
-
-def v201087_audit_section():
-    rows = v201087_active_paper_rows(limit=8)
-    lines = [
-        "🧭 SIGNAL ACTIVE PAPER CLARITY V20.10.8.7",
-        "• торговая логика не менялась;",
-        "• /signal теперь показывает active PAPER BUY, а не только quality-пробы;",
-        "• /coin для активного PAPER-актива пишет, что виртуальная проверка уже идёт;",
-        "• real BUY: 0 | autotrading: OFF | BUY-веса: +0.",
-    ]
-    if rows:
-        lines.append("• active PAPER BUY: " + ", ".join(r["asset"] for r in rows))
-    return "\n".join(lines)
-
-
-def v191181_fast_audit_build_content():
-    try:
-        base = _v201087_base_fast_audit() if callable(_v201087_base_fast_audit) else "ALEX EDGE ULTRA FAST TECH AUDIT FILE"
-    except Exception as exc:
-        base = f"ALEX EDGE ULTRA FAST TECH AUDIT FILE\n\nBOT_VERSION: {BOT_VERSION}\nAudit error: {exc}"
-    marker = "\n" + "=" * 80 + "\nSIGNAL ACTIVE PAPER CLARITY V20.10.8.7\n" + "=" * 80 + "\n"
-    if marker in str(base):
-        base = str(base).split(marker)[0].rstrip()
-    return str(base).rstrip() + marker + v201087_audit_section() + "\n"
-
-
-def v191111_audit_content():
-    return v191181_fast_audit_build_content()
-
-
-def version_user_report():
-    return (
-        "✅ Версия: v20.10.8.7\n"
-        "Название: SIGNAL ACTIVE PAPER CLARITY FIX\n\n"
-        "Что исправлено:\n"
-        "• /signal больше не пишет “paper-пробы: нет”, если открыты PAPER BUY;\n"
-        "• SOL с активным PAPER BUY показывается как активный виртуальный урок, а не просто наблюдение;\n"
-        "• /coin SOL поясняет: ранний PAPER-вход уже открыт, новый вход с рынка поздний;\n"
-        "• добавлен audit-блок консистентности signal/PAPER.\n\n"
-        "Безопасность:\n"
-        "• торговая логика не менялась;\n"
-        "• реальные покупки: 0;\n"
-        "• автоторговля: OFF;\n"
-        "• BUY-веса: +0;\n"
-        "• основная эффективность не повышается по открытым наблюдениям.\n\n"
-        "Команды проверки: /version | /signal | /coin SOL | /paper_buy_status | /audit_file"
-    )
-
-
-try:
-    globals()["BOT_VERSION"] = BOT_VERSION
-    globals()["V191111_VERSION"] = BOT_VERSION
-    globals()["user_signal_report"] = user_signal_report
-    globals()["unified_signal_report"] = unified_signal_report
-    globals()["format_single_coin_user_report"] = format_single_coin_user_report
-    globals()["format_single_coin_report"] = format_single_coin_report
-    globals()["v191181_fast_audit_build_content"] = v191181_fast_audit_build_content
-    globals()["v191111_audit_content"] = v191111_audit_content
-    globals()["version_user_report"] = version_user_report
 except Exception:
     pass
 
